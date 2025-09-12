@@ -109,6 +109,21 @@ img{max-width:100%; display:block}
   padding: 6px 8px;
   font-size: 1rem;
 }
+.brochure-btn {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  color: #fff;
+  background: #7c5cff;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.2s ease-in-out;
+}
+
+.brochure-btn:hover {
+  background: #5a3fd6;
+}
 
 /* Sections */
 section{padding:34px 0}
