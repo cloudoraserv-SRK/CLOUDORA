@@ -55,13 +55,69 @@ img{max-width:100%; display:block}
 .mobile a:hover{background:rgba(255,255,255,.06)}
 
 /* Hero */
-.hero{padding:80px 0 40px}
-.hero-grid{display:grid; grid-template-columns:1.2fr .8fr; gap:40px; align-items:center}
-.title{font-family:Poppins,Inter,sans-serif; font-weight:700; font-size:clamp(2rem, 4.8vw, 3.3rem); line-height:1.08}
-.subtitle{color:var(--muted); font-size:1.05rem; margin:14px 0 24px}
-.cta-row{display:flex; gap:12px; flex-wrap:wrap}
-.statbar{display:flex; gap:16px; margin-top:20px; flex-wrap:wrap}
-.stat{display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:14px; background:var(--panel); border:1px solid rgba(255,255,255,.06)}
+.hero {
+  padding: 100px 20px 60px;
+  background: radial-gradient(circle at top left, rgba(124,92,255,0.15), transparent 60%),
+              radial-gradient(circle at bottom right, rgba(0,212,255,0.15), transparent 60%);
+  text-align: center;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* ✅ Only one column */
+  gap: 40px;
+  justify-items: center;
+}
+
+.hero-content {
+  max-width: 800px;
+}
+
+.title {
+  font-family: Poppins, Inter, sans-serif;
+  font-weight: 700;
+  font-size: clamp(2rem, 4.8vw, 3.3rem);
+  line-height: 1.08;
+  background: linear-gradient(90deg, #7c5cff, #00d4ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 20px;
+}
+
+.subtitle {
+  color: var(--muted, #ccc);
+  font-size: 1.2rem;
+  margin: 14px 0 24px;
+}
+
+.cta-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.statbar {
+  display: flex;
+  gap: 16px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #fff;
+}
 
 /* launch offer */
 .launch-offer {
