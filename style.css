@@ -165,7 +165,20 @@ section{padding:34px 0}
 .fade-mask:before{left:0; background:linear-gradient(90deg, var(--bg), transparent)}
 .fade-mask:after{right:0; background:linear-gradient(270deg, var(--bg), transparent)}
 
-.scroller{display:grid; grid-auto-flow:column; grid-auto-columns: 320px; gap:18px; overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding:16px; padding:16px 4px 22px; -webkit-overflow-scrolling:touch}
+.scroller {
+  display: flex;                 /* simpler than grid here */
+  gap: 18px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 16px;
+  padding: 16px 4px 22px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scroller > .card {
+  flex: 0 0 320px;               /* each card fixed width */
+  scroll-snap-align: start;
+}
 .scroller::-webkit-scrollbar{height:10px}
 .scroller::-webkit-scrollbar-thumb{background:linear-gradient(90deg, rgba(124,92,255,.5), rgba(0,212,255,.5)); border-radius:999px}
 
