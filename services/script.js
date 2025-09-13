@@ -8,6 +8,17 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     }
   });
 });
+// Mobile nav toggle
+document.addEventListener("DOMContentLoaded", () => {
+  const toggleBtn = document.querySelector(".nav-toggle");
+  const navLinks = document.querySelector(".nav-links");
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener("click", () => {
+      navLinks.classList.toggle("open");
+    });
+  }
+});
 
 // Reveal on scroll
 const revealElements = document.querySelectorAll("[data-reveal]");
