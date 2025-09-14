@@ -102,3 +102,30 @@ filterBtns.forEach(btn => {
 [privacyModal, termsModal].forEach(modal => {
   modal?.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
 });
+// Modal functionality
+const modal = document.getElementById("portfolioModal");
+const modalImg = document.getElementById("modal-img");
+const modalTitle = document.getElementById("modal-title");
+const modalDesc = document.getElementById("modal-desc");
+const modalLink = document.getElementById("modal-link");
+const closeBtn = document.querySelector(".close-btn");
+
+document.querySelectorAll(".view-more").forEach(btn => {
+  btn.addEventListener("click", () => {
+    modal.style.display = "block";
+    modalTitle.textContent = btn.getAttribute("data-title");
+    modalImg.src = btn.getAttribute("data-img");
+    modalDesc.textContent = btn.getAttribute("data-desc");
+    modalLink.href = btn.getAttribute("data-link");
+  });
+});
+
+closeBtn.onclick = () => {
+  modal.style.display = "none";
+};
+
+window.onclick = (e) => {
+  if (e.target == modal) {
+    modal.style.display = "none";
+  }
+};
