@@ -1,81 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Apply Now | Cloudora</title>
-  <link rel="stylesheet" href="apply.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apply Now | Cloudora Careers</title>
+  <link rel="stylesheet" href="apply.css">
 </head>
 <body>
 
   <!-- Navbar -->
   <nav class="navbar">
-    <a href="index.html" class="logo">Cloudora</a>
+    <a href="../index.html" class="logo">Cloudora</a>
     <ul class="nav-links">
-      <li><a href="index.html#services">Services</a></li>
-      <li><a href="index.html#why">Why Us</a></li>
-      <li><a href="index.html#hiring">Hiring</a></li>
-      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="../index.html#services">Services</a></li>
+      <li><a href="../index.html#why">Why Us</a></li>
+      <li><a href="../index.html#hiring">Careers</a></li>
+      <li><a href="../index.html#contact">Contact</a></li>
     </ul>
     <button class="nav-toggle">☰</button>
   </nav>
 
   <!-- Hero -->
   <section class="hero">
-    <h1 data-animate>Join Cloudora</h1>
-    <p data-animate>Apply for remote roles and become part of our global team.</p>
+    <h1>Apply Now</h1>
+    <p>Join Cloudora and be part of our global remote-first team 🚀</p>
   </section>
 
-  <!-- Apply Form -->
-  <section class="form-section">
-    <div class="form-card" data-animate>
-      <h2>Apply Now</h2>
-      <form id="applyForm">
-        
-        <label for="fullname">Full Name</label>
-        <input type="text" id="fullname" name="fullname" required>
+  <!-- Application Form -->
+  <section class="apply-section">
+    <form class="apply-form" id="jobForm">
+      <h2>Application Form</h2>
 
-        <label for="email">Email Address</label>
-        <input type="email" id="email" name="email" required>
+      <label>Full Name</label>
+      <input type="text" name="name" required>
 
-        <label for="role">Select Role</label>
-        <select id="role" name="role" required>
-          <option value="">-- Choose a role --</option>
-          <optgroup label="Sales & Marketing">
-            <option value="field-sales">Field Sales Executive</option>
-            <option value="tele-sales">Tele-Sales Executive (Cold Calls)</option>
-            <option value="lead-sales">Tele-Sales Executive (Lead Calls)</option>
-            <option value="sales-manager">Sales Manager</option>
-          </optgroup>
-          <optgroup label="Support & Calling">
-            <option value="customer-support">Customer Support (L1)</option>
-            <option value="telecallers">Telecallers (Lead Generation)</option>
-          </optgroup>
-          <optgroup label="Developers & Tech">
-            <option value="react-node">React / Node Developer</option>
-            <option value="flutter">Flutter Developer</option>
-            <option value="solidity">Solidity / Blockchain Dev</option>
-            <option value="unity-unreal">Unity / Unreal Game Dev</option>
-          </optgroup>
-        </select>
+      <label>Email</label>
+      <input type="email" name="email" required>
 
-        <label for="resume">Upload Resume</label>
-        <input type="file" id="resume" name="resume" required>
+      <label>Mobile Number</label>
+      <input type="tel" name="phone" placeholder="+91 9876543210" required>
 
-        <label for="message">Why should we hire you?</label>
-        <textarea id="message" name="message" rows="4" required></textarea>
+      <label>Country</label>
+      <input type="text" name="country" required>
 
-        <button type="submit" class="btn">Submit Application</button>
-      </form>
-    </div>
-  </section>
+      <label>City</label>
+      <input type="text" name="city" required>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 Cloudora. All rights reserved.</p>
-    <p><a href="#">LinkedIn</a> | <a href="#">Twitter</a> | <a href="#">Instagram</a></p>
-  </footer>
+      <label>Area</label>
+      <input type="text" name="area">
 
-  <script src="apply.js"></script>
-</body>
-</html>
+      <label>Vacancy Applying For</label>
+      <select name="vacancy" required>
+        <option value="">-- Select Vacancy --</option>
+        <optgroup label="Sales & Marketing">
+          <option>Field Sales Executive</option>
+          <option>Sales Manager</option>
+          <option>Digital Marketing Specialist</option>
+        </optgroup>
+        <optgroup label="Customer Support & Calling">
+          <option>Cold Calling Executive</option>
+          <option>Lead Nurturing Executive</option>
+          <option>Support Associate (Chat/Email/Phone)</option>
+        </optgroup>
+        <optgroup label="Development & Tech">
+          <option>Frontend Developer (React/Next.js)</option>
+          <option>Backend Developer (Node.js)</option>
+          <option>Flutter Developer</option>
+          <option>Blockchain Engineer (Solidity)</option>
+          <option>Unity/Unreal Game Developer</option>
+        </optgroup>
+      </select>
+
+      <label>Specialty / Skills</label>
+      <input type="text" name="skills" placeholder="e.g. SEO, React, Sales, Customer Success">
+
+      <label>Experience</label>
+      <select name="experience" required>
+        <option value="">-- Select Experience --</option>
+        <option>Fresher</option>
+        <option>0-1 Years</option>
+        <option>1-3 Years</option>
