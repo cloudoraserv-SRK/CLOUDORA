@@ -102,30 +102,24 @@ filterBtns.forEach(btn => {
 [privacyModal, termsModal].forEach(modal => {
   modal?.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
 });
-// Modal functionality
-const modal = document.getElementById("portfolioModal");
-const modalImg = document.getElementById("modal-img");
-const modalTitle = document.getElementById("modal-title");
-const modalDesc = document.getElementById("modal-desc");
-const modalLink = document.getElementById("modal-link");
-const closeBtn = document.querySelector(".close-btn");
+// GSAP slider effect
+const slides = document.querySelectorAll('.slide');
+let current = 0;
 
-document.querySelectorAll(".view-more").forEach(btn => {
-  btn.addEventListener("click", () => {
-    modal.style.display = "block";
-    modalTitle.textContent = btn.getAttribute("data-title");
-    modalImg.src = btn.getAttribute("data-img");
-    modalDesc.textContent = btn.getAttribute("data-desc");
-    modalLink.href = btn.getAttribute("data-link");
+function showSlide(index) {
+  gsap.to(slides, {
+    x: -index * 320, // slide width + gap
+    duration: 1,
+    ease: "power2.inOut"
   });
+}
+
+document.querySelector('.next').addEventListener('click', () => {
+  current = (current + 1) % slides.length;
+  showSlide(current);
 });
 
-closeBtn.onclick = () => {
-  modal.style.display = "none";
-};
-
-window.onclick = (e) => {
-  if (e.target == modal) {
-    modal.style.display = "none";
-  }
-};
+document.querySelector('.prev').addEventListener('click', () => {
+  current = (current - 1 + slides.length) % slides.length;
+  showSlide(current);
+});
