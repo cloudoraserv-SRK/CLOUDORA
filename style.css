@@ -437,7 +437,13 @@ section{padding:34px 0}
   text-align: center;
   color: #00d4ff;
 }
-
+.slider {
+  position: relative;
+  display: flex;        /* makes slides go in a row */
+  overflow: hidden;     /* hide extra slides */
+  width: 100%;
+  gap: 20px;
+}
 /* Slider cards */
 .slide {
   min-width: 320px;
