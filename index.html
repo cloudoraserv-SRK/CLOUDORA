@@ -359,70 +359,56 @@
 </section>
 
 
-<!-- Portfolio / Our Works -->
+<!-- Portfolio -->
 <section id="portfolio">
-  <div class="container">
-    <div class="section-head">
-      <h2>Portfolio</h2>
-      <p class="sub-head">Some of our proudest creations — from web to apps, design to videos.</p>
+  <div class="main">
+    <h2 class="main_heading">Our Portfolio</h2>
+
+    <!-- Slider -->
+    <div class="slider">
+      <div class="slide"><img src="logo1.png" alt="JFC Website"></div>
+      <div class="slide"><img src="logo2.png" alt="BHIX Website"></div>
+      <div class="slide"><img src="logo3.png" alt="SKNKS Website"></div>
+      <div class="slide"><img src="apk-placeholder.png" alt="Mobile App"></div>
+      <div class="slide"><img src="design-placeholder.png" alt="Design Work"></div>
     </div>
 
-    <!-- Portfolio Filters -->
-    <div class="portfolio-filters">
-      <button class="filter-btn active" data-filter="all">All</button>
-      <button class="filter-btn" data-filter="web">Websites</button>
-      <button class="filter-btn" data-filter="app">Apps (APK)</button>
-      <button class="filter-btn" data-filter="design">Images</button>
-      <button class="filter-btn" data-filter="video">Videos</button>
+    <!-- Navigation Buttons -->
+    <div class="buttons">
+      <button class="btn prev">⬅ Prev</button>
+      <button class="btn next">Next ➡</button>
     </div>
 
-    <!-- Portfolio Grid -->
-    <div class="portfolio-grid">
+    <!-- Card Grid -->
+    <div class="cards">
+      <div class="cards_inner">
+        <article class="card">
+          <h3>JFC Website</h3>
+          <p>Blockchain-integrated responsive website built with modern UI/UX.</p>
+          <a href="https://beggardefi.github.io/BHIXMETAEWEB/JFC/index.html" target="_blank" class="overlay_cta">Visit</a>
+        </article>
 
-      <!-- Website Project -->
-      <article class="project web" data-reveal>
-        <img src="logo1.png" alt="JFC Website Logo"/>
-        <h4>JFC Website</h4>
-        <p>Modern responsive website with integrated blockchain services.</p>
-        <button class="view-more" data-title="JFC Website" data-img="logo1.png" data-desc="A blockchain-integrated responsive website built with modern UI/UX." data-link="https://beggardefi.github.io/BHIXMETAEWEB/JFC/index.html">View More</button>
-      </article>
+        <article class="card">
+          <h3>BHIX Website</h3>
+          <p>Professional DeFi ecosystem site showcasing blockchain services.</p>
+          <a href="https://beggardefi.github.io/BHIXMETAEWEB/" target="_blank" class="overlay_cta">Visit</a>
+        </article>
 
-      <article class="project web" data-reveal>
-        <img src="logo2.png" alt="BHIX Website Logo"/>
-        <h4>BHIX Website</h4>
-        <p>Professional digital ecosystem site for DeFi and Web3 services.</p>
-        <button class="view-more" data-title="BHIX Website" data-img="logo2.png" data-desc="A professional DeFi platform showcasing blockchain services and integrations." data-link="https://beggardefi.github.io/BHIXMETAEWEB/">View More</button>
-      </article>
+        <article class="card">
+          <h3>SKNKS Website</h3>
+          <p>Elegant cultural academy site with animations and responsive design.</p>
+          <a href="https://shaguftakathak-netizen.github.io/SKNKS/" target="_blank" class="overlay_cta">Visit</a>
+        </article>
 
-      <article class="project web" data-reveal>
-        <img src="logo3.png" alt="SKNKS Logo"/>
-        <h4>SKNKS Website</h4>
-        <p>Elegant cultural academy site with modern design and animations.</p>
-        <button class="view-more" data-title="SKNKS Website" data-img="logo3.png" data-desc="Cultural academy website with elegant design, responsive UI and animations." data-link="https://shaguftakathak-netizen.github.io/SKNKS/">View More</button>
-      </article>
-
-      <!-- Example for App -->
-      <article class="project app" data-reveal>
-        <img src="apk-placeholder.png" alt="App Logo"/>
-        <h4>Mobile App Demo</h4>
-        <p>APK for clients with full-featured UI, secure login & payment.</p>
-        <button class="view-more" data-title="Mobile App Demo" data-img="apk-placeholder.png" data-desc="Cross-platform mobile app demo with secure login and payments." data-link="#">View More</button>
-      </article>
-
+        <article class="card">
+          <h3>Mobile App Demo</h3>
+          <p>Cross-platform mobile APK with secure login and payment integration.</p>
+          <a href="#" target="_blank" class="overlay_cta">Download</a>
+        </article>
+      </div>
     </div>
   </div>
 </section>
-
-<!-- Modal -->
-<div id="portfolioModal" class="modal">
-  <div class="modal-content">
-    <span class="close-btn">&times;</span>
-    <img id="modal-img" src="" alt="Project Preview"/>
-    <h3 id="modal-title"></h3>
-    <p id="modal-desc"></p>
-    <a id="modal-link" href="#" target="_blank" class="modal-btn">Visit Project</a>
-  </div>
-</div>
 
 
   <!-- Hidden detail anchors (optional deep links from service cards) -->
