@@ -68,23 +68,39 @@ if (y) y.textContent = new Date().getFullYear();
 //slider
 const slider = document.getElementById("portfolioSlider");
 const slides = document.querySelectorAll(".slide");
-let current = 0;
+const totalSlides = slides.length;
 
-function showSlide(index) {
-  const offset = -index * 340; // 320px + padding/gap
+let current = 0;
+const angle = 360 / totalSlides; // distribute evenly in circle
+
+// Position slides in a circle
+slides.forEach((slide, i) => {
+  const rotation = angle * i;
+  gsap.set(slide, {
+    rotationY: rotation,
+    transformOrigin: "center center -500px"
+  });
+});
+
+// Function to rotate carousel
+function rotateCarousel() {
   gsap.to(slider, {
-    x: offset,
-    duration: 0.8,
+    rotationY: -current * angle,
+    duration: 1,
     ease: "power2.inOut"
   });
 }
 
 document.querySelector(".next").addEventListener("click", () => {
-  current = (current + 1) % slides.length;
-  showSlide(current);
+  current = (current + 1) % totalSlides;
+  rotateCarousel();
 });
 
 document.querySelector(".prev").addEventListener("click", () => {
-  current = (current - 1 + slides.length) % slides.length;
-  showSlide(current);
+  current = (current - 1 + totalSlides) % totalSlides;
+  rotateCarousel();
 });
+
+// Initialize
+rotateCarousel();
+
