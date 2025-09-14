@@ -65,43 +65,7 @@ document.getElementById('send')?.addEventListener('click', () => {
 const y = document.getElementById('year');
 if (y) y.textContent = new Date().getFullYear();
 
-// Legal modals
-const privacyModal = document.getElementById('privacyModal');
-const termsModal = document.getElementById('termsModal');
-const openPrivacy = document.getElementById('openPrivacy');
-const openTerms = document.getElementById('openTerms');
 
-openPrivacy?.addEventListener('click', (e) => { e.preventDefault(); privacyModal?.classList.add('show'); });
-openTerms?.addEventListener('click', (e) => { e.preventDefault(); termsModal?.classList.add('show'); });
-
-document.querySelectorAll('[data-close]').forEach(btn => btn.addEventListener('click', () => {
-  privacyModal?.classList.remove('show');
-  termsModal?.classList.remove('show');
-}));
-const filterBtns = document.querySelectorAll(".filter-btn");
-const jobCards = document.querySelectorAll(".job-card");
-
-filterBtns.forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelector(".filter-btn.active").classList.remove("active");
-    btn.classList.add("active");
-
-    const filter = btn.dataset.filter;
-
-    jobCards.forEach(card => {
-      if (filter === "all" || card.classList.contains(filter)) {
-        card.style.display = "block";
-      } else {
-        card.style.display = "none";
-      }
-    });
-  });
-});
-
-// Close modal on backdrop click
-[privacyModal, termsModal].forEach(modal => {
-  modal?.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
-});
 // GSAP slider effect
 const slides = document.querySelectorAll('.slide');
 let current = 0;
