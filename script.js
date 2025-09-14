@@ -78,6 +78,25 @@ document.querySelectorAll('[data-close]').forEach(btn => btn.addEventListener('c
   privacyModal?.classList.remove('show');
   termsModal?.classList.remove('show');
 }));
+const filterBtns = document.querySelectorAll(".filter-btn");
+const jobCards = document.querySelectorAll(".job-card");
+
+filterBtns.forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelector(".filter-btn.active").classList.remove("active");
+    btn.classList.add("active");
+
+    const filter = btn.dataset.filter;
+
+    jobCards.forEach(card => {
+      if (filter === "all" || card.classList.contains(filter)) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+    });
+  });
+});
 
 // Close modal on backdrop click
 [privacyModal, termsModal].forEach(modal => {
