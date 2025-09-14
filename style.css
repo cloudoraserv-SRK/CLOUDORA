@@ -304,10 +304,42 @@ section{padding:34px 0}
 .feature p{margin:0; color:var(--muted)}
 
 /* Hiring */
-.joblist{display:grid; grid-template-columns:repeat(2,1fr); gap:16px}
-.job{padding:18px; background:linear-gradient(180deg, rgba(0,212,255,.06), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.08); border-radius:var(--radius-xl)}
-.job h4{margin:0 0 8px}
-.job p{margin:0 0 10px; color:var(--muted)}
+.job-filters {
+  text-align: center;
+  margin: 20px 0 40px;
+}
+
+.filter-btn {
+  background: #eee;
+  border: none;
+  padding: 12px 24px;
+  margin: 0 8px;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+  background: linear-gradient(135deg, #7c5cff, #00d4ff);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.job-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 15px 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.job-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
 
 /* Portfolio */
 .portfolio-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px}
