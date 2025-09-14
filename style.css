@@ -496,6 +496,14 @@ section{padding:34px 0}
   box-shadow: 0 4px 12px rgba(124, 92, 255, 0.5);
 }
 
+.card video,
+.card img {
+  width: 100%;
+  height: 200px;       /* or same as your design */
+  object-fit: cover;   /* fills container, crops if needed */
+  border-radius: 12px;
+  margin-bottom: 1em;
+}
 
 /* Contact */
 .contact-wrap{display:grid; grid-template-columns:1.1fr .9fr; gap:22px}
