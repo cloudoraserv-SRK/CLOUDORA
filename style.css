@@ -304,42 +304,118 @@ section{padding:34px 0}
 .feature p{margin:0; color:var(--muted)}
 
 /* Hiring */
+/* === Hiring Section === */
+#hiring {
+  padding: 80px 20px;
+  background: linear-gradient(135deg, #f5f5ff, #eaf6ff);
+}
+
+#hiring .section-head h2 {
+  text-align: center;
+  font-size: 2.2rem;
+  margin-bottom: 40px;
+  color: #222;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+/* Filter buttons */
 .job-filters {
   text-align: center;
-  margin: 20px 0 40px;
+  margin-bottom: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
 }
 
 .filter-btn {
-  background: #eee;
-  border: none;
-  padding: 12px 24px;
-  margin: 0 8px;
-  border-radius: 25px;
-  font-weight: 600;
+  background: #fff;
+  border: 2px solid #7c5cff;
+  padding: 12px 26px;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #7c5cff;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .filter-btn.active,
 .filter-btn:hover {
-  background: linear-gradient(135deg, #7c5cff, #00d4ff);
+  background: #7c5cff;
   color: #fff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 6px 16px rgba(124, 92, 255, 0.3);
+  transform: translateY(-2px);
 }
 
+/* Job cards */
 .job-card {
   background: #fff;
+  border-left: 6px solid #7c5cff;
   border-radius: 12px;
-  padding: 20px;
-  margin: 15px 0;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  padding: 24px;
+  margin: 20px auto;
+  max-width: 800px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .job-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.15);
 }
+
+.job-card h4 {
+  font-size: 1.25rem;
+  color: #111;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.job-card p {
+  color: #444;
+  font-size: 1rem;
+  margin-bottom: 16px;
+}
+
+.job-card .btn.small {
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 25px;
+  background: linear-gradient(135deg, #7c5cff, #00d4ff);
+  color: #fff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.job-card .btn.small:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  #hiring {
+    padding: 60px 16px;
+  }
+
+  #hiring .section-head h2 {
+    font-size: 1.8rem;
+  }
+
+  .filter-btn {
+    flex: 1 1 100%;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .job-card {
+    padding: 20px;
+  }
+}
+
 
 /* Portfolio */
 .portfolio-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px}
