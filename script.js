@@ -65,25 +65,26 @@ document.getElementById('send')?.addEventListener('click', () => {
 const y = document.getElementById('year');
 if (y) y.textContent = new Date().getFullYear();
 
-
-// GSAP slider effect
-const slides = document.querySelectorAll('.slide');
+//slider
+const slider = document.getElementById("portfolioSlider");
+const slides = document.querySelectorAll(".slide");
 let current = 0;
 
 function showSlide(index) {
-  gsap.to(slides, {
-    x: -index * 320, // slide width + gap
-    duration: 1,
+  const offset = -index * 340; // 320px + padding/gap
+  gsap.to(slider, {
+    x: offset,
+    duration: 0.8,
     ease: "power2.inOut"
   });
 }
 
-document.querySelector('.next').addEventListener('click', () => {
+document.querySelector(".next").addEventListener("click", () => {
   current = (current + 1) % slides.length;
   showSlide(current);
 });
 
-document.querySelector('.prev').addEventListener('click', () => {
+document.querySelector(".prev").addEventListener("click", () => {
   current = (current - 1 + slides.length) % slides.length;
   showSlide(current);
 });
