@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Apply Now | Cloudora</title>
+  <link rel="stylesheet" href="apply.css" />
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="index.html" class="logo">Cloudora</a>
+    <ul class="nav-links">
+      <li><a href="index.html#services">Services</a></li>
+      <li><a href="index.html#why">Why Us</a></li>
+      <li><a href="index.html#hiring">Hiring</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <button class="nav-toggle">☰</button>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1 data-animate>Join Cloudora</h1>
+    <p data-animate>Apply for remote roles and become part of our global team.</p>
+  </section>
+
+  <!-- Apply Form -->
+  <section class="form-section">
+    <div class="form-card" data-animate>
+      <h2>Apply Now</h2>
+      <form id="applyForm">
+        
+        <label for="fullname">Full Name</label>
+        <input type="text" id="fullname" name="fullname" required>
+
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="role">Select Role</label>
+        <select id="role" name="role" required>
+          <option value="">-- Choose a role --</option>
+          <optgroup label="Sales & Marketing">
+            <option value="field-sales">Field Sales Executive</option>
+            <option value="tele-sales">Tele-Sales Executive (Cold Calls)</option>
+            <option value="lead-sales">Tele-Sales Executive (Lead Calls)</option>
+            <option value="sales-manager">Sales Manager</option>
+          </optgroup>
+          <optgroup label="Support & Calling">
+            <option value="customer-support">Customer Support (L1)</option>
+            <option value="telecallers">Telecallers (Lead Generation)</option>
+          </optgroup>
+          <optgroup label="Developers & Tech">
+            <option value="react-node">React / Node Developer</option>
+            <option value="flutter">Flutter Developer</option>
+            <option value="solidity">Solidity / Blockchain Dev</option>
+            <option value="unity-unreal">Unity / Unreal Game Dev</option>
+          </optgroup>
+        </select>
+
+        <label for="resume">Upload Resume</label>
+        <input type="file" id="resume" name="resume" required>
+
+        <label for="message">Why should we hire you?</label>
+        <textarea id="message" name="message" rows="4" required></textarea>
+
+        <button type="submit" class="btn">Submit Application</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Cloudora. All rights reserved.</p>
+    <p><a href="#">LinkedIn</a> | <a href="#">Twitter</a> | <a href="#">Instagram</a></p>
+  </footer>
+
+  <script src="apply.js"></script>
+</body>
+</html>
