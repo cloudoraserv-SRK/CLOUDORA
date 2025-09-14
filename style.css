@@ -419,31 +419,32 @@ section{padding:34px 0}
 
 
 /-portfolio*-/
-.slider-wrapper {
+/* Portfolio 3D slider only */
+#portfolio .slider-wrapper {
   width: 100%;
-  perspective: 1200px; /* Important for 3D depth */
+  perspective: 1200px;
   overflow: visible;
   position: relative;
 }
 
-.slider {
+#portfolioSlider {
   width: 100%;
   height: 400px;
   position: relative;
   transform-style: preserve-3d;
 }
 
-.slide {
+#portfolioSlider .slide {
   width: 320px;
   height: 100%;
   position: absolute;
   top: 0;
   left: 50%;
-  transform-origin: center center -500px; /* Depth effect */
+  transform-origin: center center -500px; /* same for all slides */
   transform-style: preserve-3d;
 }
 
-.card {
+#portfolioSlider .card {
   width: 100%;
   height: 100%;
   background: #fff;
@@ -454,31 +455,17 @@ section{padding:34px 0}
   transition: transform 0.3s;
 }
 
-.card img, .card video {
+#portfolioSlider .card img,
+#portfolioSlider .card video {
   width: 100%;
   height: auto;
   display: block;
 }
 
-.buttons {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.btn {
-  padding: 10px 20px;
-  border: none;
-  background: linear-gradient(135deg, #7c5cff, #00d4ff);
-  color: #fff;
-  border-radius: 8px;
-  cursor: pointer;
-  margin: 0 5px;
-  transition: 0.3s;
-}
-
-.btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(124,92,255,0.5);
+/* Keep your services slider safe! */
+.services .slide, 
+.services .card {
+  all: unset; /* reset any accidental overrides */
 }
 
 /* Contact */
