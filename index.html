@@ -359,34 +359,71 @@
 </section>
 
 
-  <!-- Portfolio / Our Works -->
-  <section id="portfolio">
-    <div class="container">
-      <div class="section-head"><h2>Our Works</h2></div>
-      <div class="portfolio-grid">
-        <article class="project" data-reveal>
-          <img src="https://images.unsplash.com/photo-1529336953121-04a13b4f4b0c?q=80&w=1600&auto=format&fit=crop" alt="Corporate website"/>
-          <h4>Corporate Website</h4>
-          <p>Responsive, SEO‑ready, CMS‑powered site for a global brand.</p>
-        </article>
-        <article class="project" data-reveal>
-          <img src="https://images.unsplash.com/photo-1558636508-e9f2100791d9?q=80&w=1600&auto=format&fit=crop" alt="E‑commerce app"/>
-          <h4>E‑commerce App</h4>
-          <p>Flutter app with secure payments & realtime inventory.</p>
-        </article>
-        <article class="project" data-reveal>
-          <img src="https://images.unsplash.com/photo-1620812098127-4b42eeb1a4c5?q=80&w=1600&auto=format&fit=crop" alt="NFT marketplace"/>
-          <h4>NFT Marketplace</h4>
-          <p>Smart‑contract powered NFT platform for creators.</p>
-        </article>
-        <article class="project" data-reveal>
-          <img src="https://images.unsplash.com/photo-1535223289827-42f1e9919769?q=80&w=1600&auto=format&fit=crop" alt="3D game"/>
-          <h4>3D Adventure Game</h4>
-          <p>Immersive Unity title with multiplayer support.</p>
-        </article>
-      </div>
+<!-- Portfolio / Our Works -->
+<section id="portfolio">
+  <div class="container">
+    <div class="section-head">
+      <h2>Portfolio</h2>
+      <p class="sub-head">Some of our proudest creations — from web to apps, design to videos.</p>
     </div>
-  </section>
+
+    <!-- Portfolio Filters -->
+    <div class="portfolio-filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="web">Websites</button>
+      <button class="filter-btn" data-filter="app">Apps (APK)</button>
+      <button class="filter-btn" data-filter="design">Images</button>
+      <button class="filter-btn" data-filter="video">Videos</button>
+    </div>
+
+    <!-- Portfolio Grid -->
+    <div class="portfolio-grid">
+
+      <!-- Website Project -->
+      <article class="project web" data-reveal>
+        <img src="logo1.png" alt="JFC Website Logo"/>
+        <h4>JFC Website</h4>
+        <p>Modern responsive website with integrated blockchain services.</p>
+        <button class="view-more" data-title="JFC Website" data-img="logo1.png" data-desc="A blockchain-integrated responsive website built with modern UI/UX." data-link="https://beggardefi.github.io/BHIXMETAEWEB/JFC/index.html">View More</button>
+      </article>
+
+      <article class="project web" data-reveal>
+        <img src="logo2.png" alt="BHIX Website Logo"/>
+        <h4>BHIX Website</h4>
+        <p>Professional digital ecosystem site for DeFi and Web3 services.</p>
+        <button class="view-more" data-title="BHIX Website" data-img="logo2.png" data-desc="A professional DeFi platform showcasing blockchain services and integrations." data-link="https://beggardefi.github.io/BHIXMETAEWEB/">View More</button>
+      </article>
+
+      <article class="project web" data-reveal>
+        <img src="logo3.png" alt="SKNKS Logo"/>
+        <h4>SKNKS Website</h4>
+        <p>Elegant cultural academy site with modern design and animations.</p>
+        <button class="view-more" data-title="SKNKS Website" data-img="logo3.png" data-desc="Cultural academy website with elegant design, responsive UI and animations." data-link="https://shaguftakathak-netizen.github.io/SKNKS/">View More</button>
+      </article>
+
+      <!-- Example for App -->
+      <article class="project app" data-reveal>
+        <img src="apk-placeholder.png" alt="App Logo"/>
+        <h4>Mobile App Demo</h4>
+        <p>APK for clients with full-featured UI, secure login & payment.</p>
+        <button class="view-more" data-title="Mobile App Demo" data-img="apk-placeholder.png" data-desc="Cross-platform mobile app demo with secure login and payments." data-link="#">View More</button>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- Modal -->
+<div id="portfolioModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn">&times;</span>
+    <img id="modal-img" src="" alt="Project Preview"/>
+    <h3 id="modal-title"></h3>
+    <p id="modal-desc"></p>
+    <a id="modal-link" href="#" target="_blank" class="modal-btn">Visit Project</a>
+  </div>
+</div>
+
 
   <!-- Hidden detail anchors (optional deep links from service cards) -->
   <section class="sr-only" id="dm-detail"><h2>Digital Marketing</h2></section>
