@@ -65,36 +65,35 @@ document.getElementById('send')?.addEventListener('click', () => {
 const y = document.getElementById('year');
 if (y) y.textContent = new Date().getFullYear();
 
-const portfolioSlider = document.getElementById("portfolioSlider");
-const portfolioSlides = portfolioSlider.querySelectorAll(".slide");
+const portfolioCarousel = document.getElementById("portfolioCarousel");
+const portfolioSlides = portfolioCarousel.querySelectorAll(".portfolio-slide");
 const totalPortfolioSlides = portfolioSlides.length;
 
 let currentPortfolio = 0;
 const portfolioAngle = 360 / totalPortfolioSlides;
 
-// Arrange portfolio slides in a circle
+// Arrange slides in circle
 portfolioSlides.forEach((slide, i) => {
   gsap.set(slide, {
     rotationY: portfolioAngle * i,
-    transformOrigin: "center center -500px"
+    transformOrigin: "center center -600px"
   });
 });
 
-// Rotate function
 function rotatePortfolio() {
-  gsap.to(portfolioSlider, {
+  gsap.to(portfolioCarousel, {
     rotationY: -currentPortfolio * portfolioAngle,
     duration: 1,
     ease: "power2.inOut"
   });
 }
 
-document.querySelector(".next").addEventListener("click", () => {
+document.querySelector(".portfolio-btn.next").addEventListener("click", () => {
   currentPortfolio = (currentPortfolio + 1) % totalPortfolioSlides;
   rotatePortfolio();
 });
 
-document.querySelector(".prev").addEventListener("click", () => {
+document.querySelector(".portfolio-btn.prev").addEventListener("click", () => {
   currentPortfolio = (currentPortfolio - 1 + totalPortfolioSlides) % totalPortfolioSlides;
   rotatePortfolio();
 });
