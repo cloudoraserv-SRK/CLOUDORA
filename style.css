@@ -487,13 +487,6 @@ section{padding:34px 0}
   box-shadow: 0 4px 12px rgba(124,92,255,0.5);
 }
 
-
-/* Keep your services slider safe! */
-.services .slide, 
-.services .card {
-  all: unset; /* reset any accidental overrides */
-}
-
 /* Contact */
 .contact-wrap{display:grid; grid-template-columns:1.1fr .9fr; gap:22px}
 form{padding:18px; background:var(--panel); border:1px solid rgba(255,255,255,.06); border-radius:var(--radius-xl)}
