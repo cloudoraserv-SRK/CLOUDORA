@@ -76,35 +76,3 @@ filterBtns.forEach(btn => {
   });
 });
 
-// === Portfolio 3D Carousel ===
-const portfolioSlider = document.querySelector(".portfolio-slider");
-const slides = document.querySelectorAll(".portfolio-slide");
-let angle = 0;
-let currentIndex = 0;
-const totalSlides = slides.length;
-
-// Arrange slides in a circle
-const radius = 500;
-slides.forEach((slide, i) => {
-  const theta = (360 / totalSlides) * i;
-  slide.style.transform = `rotateY(${theta}deg) translateZ(${radius}px)`;
-});
-
-// Buttons
-const nextBtn = document.querySelector(".portfolio-btn.next");
-const prevBtn = document.querySelector(".portfolio-btn.prev");
-
-if (nextBtn && prevBtn) {
-  nextBtn.addEventListener("click", () => rotateSlider(1));
-  prevBtn.addEventListener("click", () => rotateSlider(-1));
-}
-
-function rotateSlider(direction) {
-  currentIndex = (currentIndex + direction + totalSlides) % totalSlides;
-  angle = (360 / totalSlides) * currentIndex * -1;
-  gsap.to(portfolioSlider, {
-    rotationY: angle,
-    duration: 1,
-    ease: "power3.inOut"
-  });
-}
