@@ -1,97 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>High-Performance Websites | Cloudora</title>
-  <link rel="stylesheet" href="services.css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>High-Performance Websites | Cloudora</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="services.css" />
 </head>
 <body>
-  <nav class="navbar">
-    <a href="../index.html" class="logo">Cloudora</a>
-    <ul class="nav-links">
-      <li><a href="../index.html#services">Services</a></li>
-      <li><a href="../index.html#why">Why Us</a></li>
-      <li><a href="../index.html#contact">Contact</a></li>
-    </ul>
-    <button class="nav-toggle">☰</button>
-  </nav>
+    <div class="aura" aria-hidden="true"></div>
+    <div class="stars" aria-hidden="true"></div>
 
-  <section class="hero">
-    <h1>High-Performance Websites</h1>
-    <p>Blazing fast websites with SEO, accessibility and conversion optimisation at core.</p>
-  </section>
+    <nav class="navbar">
+        <div class="container nav">
+            <a class="brand" href="../index.html" aria-label="Cloudora home">
+                <span class="logo" aria-hidden="true">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M6.5 12a5.5 5.5 0 0 1 10.8-1.6A4.2 4.2 0 1 1 18 19H7.5a4.5 4.5 0 0 1-1-8.9Z" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+                    </svg>
+                </span>
+                <b>CLOUDORA</b>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="../index.html#services">Services</a></li>
+                <li><a href="../index.html#why">Why Us</a></li>
+                <li><a href="../index.html#hiring">Careers</a></li>
+                <li><a href="../index.html#contact">Contact</a></li>
+            </ul>
+            <button class="nav-toggle">☰</button>
+        </div>
+    </nav>
 
-  <section class="section">
-    <h2>Services</h2>
-    <ul class="list">
-      <li>Next.js / React / Jamstack implementations</li>
-      <li>WordPress & headless CMS builds</li>
-      <li>Core Web Vitals & speed optimisation</li>
-      <li>SEO, schema, and accessibility</li>
-    </ul>
-  </section>
+    <section class="hero">
+        <h1>High-Performance Websites</h1>
+        <p>Blazing-fast websites built for speed, SEO, and conversion. We build digital experiences that not only look great but also drive business results.</p>
+    </section>
 
-  <section class="section pricing">
-    <h2>Plans</h2>
-    <div class="pricing-grid">
-      <div class="plan">
-        <h3>Starter Site</h3>
-        <p><s>₹49,999</s> <span>₹24,999</span> / site</p>
-        <ul><li>Up to 5 pages</li><li>Basic SEO</li></ul>
-        <a class="btn" href="../index.html#contact">Order</a>
-      </div>
-      <div class="plan popular">
-        <h3>Business Site</h3>
-        <p><s>₹99,999</s> <span>₹49,999</span> / site</p>
-        <ul><li>Custom design</li><li>Performance & SEO</li></ul>
-        <a class="btn" href="../index.html#contact">Get Business</a>
-      </div>
-      <div class="plan">
-        <h3>Platform</h3>
-        <p>Custom Quote</p>
-        <ul><li>eCommerce & integrations</li><li>Performance SLAs</li></ul>
-        <a class="btn" href="../index.html#contact">Request Quote</a>
-      </div>
-    </div>
-  </section>
+    <section class="section">
+        <h2>Our Services</h2>
+        <div class="list">
+            <h3>Custom Website Development</h3>
+            <ul>
+                <li>Modern websites and web applications using **React** and **Next.js**.</li>
+                <li>**Jamstack implementations** for unparalleled speed and security.</li>
+                <li>**Headless CMS** integration for easy content management.</li>
+            </ul>
+        </div>
+        <div class="list" style="margin-top: 2rem;">
+            <h3>Website Optimization & Audits</h3>
+            <ul>
+                <li>Optimization for **Google's Core Web Vitals** to improve user experience and search rankings.</li>
+                <li>Comprehensive **SEO** including on-page optimization, schema markup, and sitemaps.</li>
+                <li>Accessibility (**A11y**) audits to ensure your site is usable for all users.</li>
+            </ul>
+        </div>
+        <div class="list" style="margin-top: 2rem;">
+            <h3>CMS & E-commerce Solutions</h3>
+            <ul>
+                <li>Custom **WordPress** theme and plugin development.</li>
+                <li>Scalable **e-commerce platforms** with seamless payment and product integrations.</li>
+                <li>Dedicated support for content updates and site maintenance.</li>
+            </ul>
+        </div>
+    </section>
 
-  <section class="section process">
-    <h2>How we deliver</h2>
-    <div class="steps">
-      <div class="step">Discovery & IA</div>
-      <div class="step">Design & prototype</div>
-      <div class="step">Build & optimise</div>
-      <div class="step">Launch & monitor</div>
-    </div>
-  </section>
+    <section class="section pricing">
+        <h2>Website Packages</h2>
+        <div class="pricing-grid">
+            <div class="plan">
+                <h3>Starter Site</h3>
+                <p>Ideal for personal brands, portfolios, and small businesses.</p>
+                <p class="price"><span>₹24,999</span> / site</p>
+                <ul>
+                    <li>Up to 5 pages with a professional template design.</li>
+                    <li>Basic on-page SEO and mobile responsiveness.</li>
+                    <li>1 month of post-launch support.</li>
+                </ul>
+                <a class="btn" href="../index.html#contact">Order Starter</a>
+            </div>
 
-  <section class="section why">
-    <h2>Why Cloudora Websites</h2>
-    <div class="grid-3">
-      <div class="feature"><h4>Speed obsessed</h4><p>Fast pages convert better — we optimise for Core Web Vitals.</p></div>
-      <div class="feature"><h4>SEO native</h4><p>Built-in schema, sitemaps and indexability.</p></div>
-      <div class="feature"><h4>Modern stack</h4><p>SSR/SSG where needed for performance & SEO.</p></div>
-    </div>
-  </section>
+            <div class="plan popular">
+                <h3>Business Site</h3>
+                <p>For businesses that need a custom, high-performing website.</p>
+                <p class="price"><span>₹49,999</span> / site</p>
+                <ul>
+                    <li>Custom UI/UX design and unlimited pages.</li>
+                    <li>Advanced SEO and Core Web Vitals optimization.</li>
+                    <li>Headless CMS integration for easy content editing.</li>
+                    <li>3 months of performance monitoring.</li>
+                </ul>
+                <a class="btn" href="../index.html#contact">Get Business</a>
+            </div>
 
-  <section class="section faq">
-    <h2>FAQ</h2>
-    <details><summary>Do you handle hosting?</summary><p>Yes — deploy on Vercel, Netlify, AWS or your preferred host.</p></details>
-    <details><summary>Do you provide maintenance?</summary><p>We offer monthly support & performance monitoring packages.</p></details>
-  </section>
+            <div class="plan">
+                <h3>Custom Platform</h3>
+                <p>For complex e-commerce, membership, or enterprise solutions.</p>
+                <p class="price">Custom Quote</p>
+                <ul>
+                    <li>E-commerce functionality with custom integrations.</li>
+                    <li>Performance SLAs and dedicated hosting.</li>
+                    <li>Marketing automation and analytics setup.</li>
+                    <li>Long-term maintenance and growth partnership.</li>
+                </ul>
+                <a class="btn" href="../index.html#contact">Request Quote</a>
+            </div>
+        </div>
+    </section>
 
-  <div class="cta"><a href="../index.html#contact">Start Website Project</a></div>
+    <section class="section process">
+        <h2>How We Deliver</h2>
+        <div class="steps">
+            <div class="step">
+                <h4>1. Discovery & Planning</h4>
+                <p>We begin by understanding your business goals and audience to create a strategic roadmap and sitemap.</p>
+            </div>
+            <div class="step">
+                <h4>2. Design & Prototype</h4>
+                <p>We create a custom design and a clickable prototype to ensure the user experience is perfect before development.</p>
+            </div>
+            <div class="step">
+                <h4>3. Build & Optimize</h4>
+                <p>Our developers build the website, focusing on clean code, speed optimization, and SEO from day one.</p>
+            </div>
+            <div class="step">
+                <h4>4. Launch & Monitor</h4>
+                <p>We handle the launch process and provide post-launch monitoring to ensure your site continues to perform flawlessly.</p>
+            </div>
+        </div>
+    </section>
 
-  <footer>
-    <div class="footer-grid">
-      <div><h4>Cloudora</h4><p>High-performance web builds.</p></div>
-      <div><h4>Contact</h4><ul><li><a href="mailto:hello@cloudora.studio">hello@cloudora.studio</a></li></ul></div>
-      <div><h4>Social</h4><p><a href="#">LinkedIn</a></p></div>
-    </div>
-    <p style="margin-top:18px;">© 2025 Cloudora</p>
-  </footer>
+    <section class="section why">
+        <h2>Why Cloudora for Your Website?</h2>
+        <div class="grid-3">
+            <div class="feature">
+                <h4>Speed Obsessed</h4>
+                <p>We prioritize speed because we know fast websites lead to better conversions and happier users. We optimize for every millisecond.</p>
+            </div>
+            <div class="feature">
+                <h4>SEO Native</h4>
+                <p>Our websites are built from the ground up to be search engine friendly, with built-in schema markup and a focus on indexability.</p>
+            </div>
+            <div class="feature">
+                <h4>Modern & Secure</h4>
+                <p>We use the latest technology stacks like Next.js and headless CMS to build websites that are not only high-performing but also secure and easy to maintain.</p>
+            </div>
+        </div>
+    </section>
 
-  <script src="services.js"></script>
+    <section class="section faq">
+        <h2>Frequently Asked Questions</h2>
+        <details>
+            <summary>Do you handle website hosting?</summary>
+            <p>Yes, we can deploy your website on high-performance hosting platforms like Vercel, Netlify, or AWS, and we can also work with your preferred hosting provider.</p>
+        </details>
+        <details>
+            <summary>Do you provide ongoing maintenance?</summary>
+            <p>Yes, we offer monthly maintenance packages that include security updates, performance monitoring, and content updates to keep your site running smoothly.</p>
+        </details>
+        <details>
+            <summary>How long does a typical project take?</summary>
+            <p>A Starter Site can be completed in as little as 2-4 weeks. A Business Site or Custom Platform project timeline varies depending on the complexity, usually ranging from 6 to 12 weeks or more.</p>
+        </details>
+    </section>
+
+    <div class="cta"><a href="../index.html#contact">Start Your Website Project</a></div>
+
+    <footer>
+        <div class="container foot">
+            <div class="foot-left">
+                <div class="brand-mini">
+                    <span class="logo mini" aria-hidden="true"></span>
+                    <b>Cloudora</b>
+                </div>
+                <span class="copyright">© <span id="year"></span> All rights reserved</span>
+                <div class="contact-info">
+                    <div class="contact-row">📞 <a href="tel:+919335655896">+91-93356-55896</a></div>
+                    <div class="contact-row">✉️ <a href="mailto:Cloudoraserv@gmail.com">Cloudoraserv@gmail.com</a></div>
+                    <div class="contact-row">🌍 Serving clients in India, US, EU & MEA</div>
+                    <div class="contact-row">🕒 Mon–Fri • 9:30 AM – 7:00 PM IST</div>
+                </div>
+            </div>
+            <div class="social">
+                <a class="icon" href="https://www.instagram.com/cloudora_services?igsh=MXUzZWlqNnkxbGk0YQ==" aria-label="Instagram" title="Instagram">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm10 2c1.7 0 3 1.3 3 3v10c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V7c0-1.7 1.3-3 3-3h10zm-5 3.5A5.5 5.5 0 1 0 17.5 13 5.5 5.5 0 0 0 12 7.5zm0 2A3.5 3.5 0 1 1 8.5 13 3.5 3.5 0 0 1 12 9.5zm5.8-3.6a1 1 0 1 0 1 1 1 1 0 0 0-1-1z"/></svg>
+                </a>
+                <a class="icon" href="https://www.facebook.com/share/1FtH8Xcd8b/" aria-label="facebook" title="Facebook">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm3 8h-1.35c-.522 0-.65.234-.65.65v1.35h2l-.246 2h-1.754v6h-3v-6h-2v-2h2v-1.157c0-1.789.97-2.843 2.866-2.843h1.134v3z"/></svg>
+                </a>
+                <a class="icon" href="https://github.com/cloudoraserv-SRK/CLOUDORA" aria-label="GitHub" title="GitHub">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.17c-3.34.73-4.04-1.44-4.04-1.44-.55-1.4-1.35-1.77-1.35-1.77-1.1-.77.08-.75.08-.75 1.22.09 1.87 1.25 1.87 1.25 1.08 1.85 2.83 1.32 3.52 1.01.11-.79.42-1.32.76-1.62-2.67-.3-5.48-1.34-5.48-5.97 0-1.32.47-2.41 1.24-3.26-.12-.3-.54-1.52.12-3.16 0 0 1.01-.32 3.3 1.24a11.4 11.4 0 0 1 6 0c2.29-1.56 3.3-1.24 3.3-1.24.66 1.64.24 2.86.12 3.16.77.85 1.23 1.94 1.23 3.26 0 4.64-2.81 5.67-5.49 5.97.43.37.8 1.1.8 2.22v3.3c0 .32.21.7.82.58A12 12 0 0 0 12 .5z"/></svg>
+                </a>
+            </div>
+            <div class="legal">
+                <a href="../index.html" id="openPrivacy">Privacy Policy</a>
+                <span>•</span>
+                <a href="../index.html" id="openTerms">Terms & Conditions</a>
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/919335655896" class="btn whatsapp" aria-label="WhatsApp us">WhatsApp</a>
+
+    <script src="services.js"></script>
 </body>
 </html>
