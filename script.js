@@ -135,27 +135,28 @@ const portfolioSlides = portfolioCarousel.querySelectorAll(".portfolio-slide");
 const totalPortfolioSlides = portfolioSlides.length;
 
 let currentPortfolio = 0;
-const radius = 600; // how far back slides sit
 const portfolioAngle = 360 / totalPortfolioSlides;
+const radius = 500; // Adjust to control "depth"
 
-// Arrange slides in circle
+// Arrange slides evenly in a circle
 portfolioSlides.forEach((slide, i) => {
   gsap.set(slide, {
-    rotationY: portfolioAngle * i,
-    transformOrigin: `center center -${radius}px`
+    rotationY: i * portfolioAngle,
+    transformOrigin: `center center -${radius}px`,
+    zIndex: i === 0 ? 1 : 0
   });
 });
 
-// Rotate function
+// Rotation function
 function rotatePortfolio() {
   gsap.to(portfolioCarousel, {
     rotationY: -currentPortfolio * portfolioAngle,
-    duration: 1.2,
+    duration: 1,
     ease: "power2.inOut"
   });
 }
 
-// Buttons
+// Next & Prev buttons
 document.querySelector(".portfolio-btn.next").addEventListener("click", () => {
   currentPortfolio = (currentPortfolio + 1) % totalPortfolioSlides;
   rotatePortfolio();
@@ -168,4 +169,3 @@ document.querySelector(".portfolio-btn.prev").addEventListener("click", () => {
 
 // Init
 rotatePortfolio();
-
