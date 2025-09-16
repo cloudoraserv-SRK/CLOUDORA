@@ -1,131 +1,110 @@
-// script.js — Clean & Modular
-document.addEventListener("DOMContentLoaded", () => {
+// === Navbar Hamburger Toggle ===
+const hamburger = document.querySelector(".hamburger");
+const mobileMenu = document.getElementById("mobileMenu");
 
-  /* ---------------------------
-     Mobile menu toggle
-     --------------------------- */
-  const burger = document.querySelector('.hamburger');
-  const mobile = document.getElementById('mobileMenu');
-  if (burger && mobile) {
-    burger.addEventListener('click', () => {
-      burger.classList.toggle('active');
-      mobile.classList.toggle('open'); // use CSS class instead of inline style
-    });
-  }
-
-  /* ---------------------------
-     Services scroller
-     --------------------------- */
-  const scroller = document.getElementById('serviceScroller');
-  const nextBtn = document.getElementById('next');
-  const prevBtn = document.getElementById('prev');
-
-  function scrollByCard(dir = 1) {
-    if (!scroller) return;
-    const card = scroller.querySelector('.card');
-    if (!card) return;
-    const rect = card.getBoundingClientRect();
-    const gap = 18;
-    scroller.scrollBy({ left: dir * (rect.width + gap), behavior: 'smooth' });
-  }
-
-  if (nextBtn) nextBtn.addEventListener('click', () => scrollByCard(1));
-  if (prevBtn) prevBtn.addEventListener('click', () => scrollByCard(-1));
-
-  /* ---------------------------
-     Reveal on scroll
-     --------------------------- */
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('reveal-in');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.2 });
-    document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
-  }
-
-  /* ---------------------------
-     Contact form (Formspree-friendly)
-     --------------------------- */
-  const form = document.getElementById('contactForm');
-  const status = document.getElementById('formStatus');
-  if (form) {
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if (!form.checkValidity()) {
-        form.reportValidity();
-        return;
-      }
-      const data = new FormData(form);
-      try {
-        const res = await fetch(form.action, {
-          method: form.method || 'POST',
-          body: data,
-          headers: { 'Accept': 'application/json' }
-        });
-        if (status) {
-          status.textContent = res.ok
-            ? "✅ Thanks! We’ll contact you soon."
-            : "⚠️ Oops! Something went wrong.";
-        }
-        if (res.ok) form.reset();
-      } catch (err) {
-        if (status) status.textContent = "⚠️ Network error, please try again.";
-      }
-    });
-  }
-
-  /* ---------------------------
-     Portfolio carousel (GSAP 3D)
-     --------------------------- */
-  const portfolioCarousel = document.getElementById("portfolioCarousel");
-  if (portfolioCarousel && typeof gsap !== "undefined") {
-    const slides = portfolioCarousel.querySelectorAll(".portfolio-slide");
-    const total = slides.length;
-    if (total > 0) {
-      let current = 0;
-      const angle = 360 / total;
-      const radius = 500;
-
-      slides.forEach((slide, i) => {
-        gsap.set(slide, {
-          rotationY: i * angle,
-          transformOrigin: `center center -${radius}px`,
-          backfaceVisibility: "hidden"
-        });
-      });
-
-      function rotate() {
-        gsap.to(portfolioCarousel, {
-          rotationY: -current * angle,
-          duration: 1,
-          ease: "power2.inOut"
-        });
-      }
-
-      const next = document.querySelector(".portfolio-btn.next");
-      const prev = document.querySelector(".portfolio-btn.prev");
-
-      if (next) next.addEventListener("click", () => {
-        current = (current + 1) % total;
-        rotate();
-      });
-      if (prev) prev.addEventListener("click", () => {
-        current = (current - 1 + total) % total;
-        rotate();
-      });
-
-      rotate();
-    }
-  }
-
-  /* ---------------------------
-     Footer year
-     --------------------------- */
-  const y = document.getElementById('year');
-  if (y) y.textContent = new Date().getFullYear();
-
+hamburger.addEventListener("click", () => {
+  hamburger.classList.toggle("active");
+  const expanded = hamburger.classList.contains("active");
+  hamburger.setAttribute("aria-expanded", expanded);
+  mobileMenu.style.display = expanded ? "block" : "none";
+  mobileMenu.setAttribute("aria-modal", expanded ? "true" : "false");
 });
+
+// Close menu on link click
+mobileMenu.querySelectorAll("a").forEach(link => {
+  link.addEventListener("click", () => {
+    hamburger.classList.remove("active");
+    hamburger.setAttribute("aria-expanded", "false");
+    mobileMenu.style.display = "none";
+  });
+});
+
+// === Services Scroller Controls ===
+const scroller = document.getElementById("serviceScroller");
+document.getElementById("prev").addEventListener("click", () => {
+  scroller.scrollBy({ left: -340, behavior: "smooth" });
+});
+document.getElementById("next").addEventListener("click", () => {
+  scroller.scrollBy({ left: 340, behavior: "smooth" });
+});
+
+// === GSAP Animations ===
+gsap.registerPlugin(ScrollTrigger);
+
+// Hero title + subtitle entrance
+gsap.from(".hero .title", {
+  y: 50, opacity: 0, duration: 1, ease: "power3.out"
+});
+gsap.from(".hero .subtitle", {
+  y: 30, opacity: 0, duration: 1, ease: "power3.out", delay: 0.3
+});
+gsap.from(".launch-offer", {
+  scale: 0.9, opacity: 0, duration: 1, ease: "back.out(1.7)", delay: 0.6
+});
+
+// Reveal animations for [data-reveal]
+document.querySelectorAll("[data-reveal]").forEach(el => {
+  gsap.from(el, {
+    scrollTrigger: {
+      trigger: el,
+      start: "top 85%",
+    },
+    y: 40,
+    opacity: 0,
+    duration: 0.8,
+    ease: "power2.out"
+  });
+});
+
+// === Hiring Filter Buttons ===
+const filterBtns = document.querySelectorAll(".filter-btn");
+const jobCards = document.querySelectorAll(".job-card");
+
+filterBtns.forEach(btn => {
+  btn.addEventListener("click", () => {
+    filterBtns.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    const filter = btn.dataset.filter;
+
+    jobCards.forEach(card => {
+      if (card.classList.contains(filter)) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+    });
+  });
+});
+
+// === Portfolio 3D Carousel ===
+const portfolioSlider = document.querySelector(".portfolio-slider");
+const slides = document.querySelectorAll(".portfolio-slide");
+let angle = 0;
+let currentIndex = 0;
+const totalSlides = slides.length;
+
+// Arrange slides in a circle
+const radius = 500;
+slides.forEach((slide, i) => {
+  const theta = (360 / totalSlides) * i;
+  slide.style.transform = `rotateY(${theta}deg) translateZ(${radius}px)`;
+});
+
+// Buttons
+const nextBtn = document.querySelector(".portfolio-btn.next");
+const prevBtn = document.querySelector(".portfolio-btn.prev");
+
+if (nextBtn && prevBtn) {
+  nextBtn.addEventListener("click", () => rotateSlider(1));
+  prevBtn.addEventListener("click", () => rotateSlider(-1));
+}
+
+function rotateSlider(direction) {
+  currentIndex = (currentIndex + direction + totalSlides) % totalSlides;
+  angle = (360 / totalSlides) * currentIndex * -1;
+  gsap.to(portfolioSlider, {
+    rotationY: angle,
+    duration: 1,
+    ease: "power3.inOut"
+  });
+}
