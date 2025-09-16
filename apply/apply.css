@@ -35,9 +35,22 @@ body {
     padding: 2rem 0 6rem;
 }
 
+.apply-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+    .apply-grid {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 3rem;
+    }
+}
+
 .apply-form {
-    max-width: 700px;
-    margin: 0 auto;
+    flex: 1 1 70%;
     background: #111;
     border: 1px solid #222;
     border-radius: 1rem;
@@ -114,7 +127,89 @@ body {
     color: var(--color-dark);
 }
 
-/* Footer specific styles for this page */
+/* Image Collage */
+.collage-wrap {
+    flex: 1 1 30%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (min-width: 1024px) {
+    .collage-wrap {
+        display: flex;
+    }
+}
+
+.collage {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 1.5rem;
+    padding: 2rem;
+    background: #111;
+    border-radius: 1rem;
+    border: 1px solid #222;
+}
+
+.image-box {
+    border-radius: 0.75rem;
+    overflow: hidden;
+    aspect-ratio: 1/1;
+    position: relative;
+}
+
+.image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.image-box img:hover {
+    transform: scale(1.05);
+}
+
+/* Footer specific styles */
 footer {
     margin-top: 4rem;
+}
+
+.foot {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .foot {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .foot-left {
+        align-items: flex-start;
+    }
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+@media (min-width: 768px) {
+    .contact-info {
+        text-align: left;
+    }
+}
+
+.contact-info a {
+    color: var(--color-secondary);
+}
+
+.contact-info a:hover {
+    color: var(--color-light);
 }
