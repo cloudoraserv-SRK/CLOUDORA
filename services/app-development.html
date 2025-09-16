@@ -1,97 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Custom Apps & Softwares | Cloudora</title>
-  <link rel="stylesheet" href="services.css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Custom Apps & Softwares | Cloudora</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="services.css" />
 </head>
 <body>
-  <nav class="navbar">
-    <a href="../index.html" class="logo">Cloudora</a>
-    <ul class="nav-links">
-      <li><a href="../index.html#services">Services</a></li>
-      <li><a href="../index.html#why">Why Us</a></li>
-      <li><a href="../index.html#contact">Contact</a></li>
-    </ul>
-    <button class="nav-toggle">☰</button>
-  </nav>
+    <div class="aura" aria-hidden="true"></div>
+    <div class="stars" aria-hidden="true"></div>
 
-  <section class="hero">
-    <h1>Custom Apps & Software</h1>
-    <p>Design and build secure, scalable web & mobile apps tailored to your business needs.</p>
-  </section>
+    <nav class="navbar">
+        <div class="container nav">
+            <a class="brand" href="../index.html" aria-label="Cloudora home">
+                <span class="logo" aria-hidden="true">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M6.5 12a5.5 5.5 0 0 1 10.8-1.6A4.2 4.2 0 1 1 18 19H7.5a4.5 4.5 0 0 1-1-8.9Z" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+                    </svg>
+                </span>
+                <b>CLOUDORA</b>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="../index.html#services">Services</a></li>
+                <li><a href="../index.html#why">Why Us</a></li>
+                <li><a href="../index.html#hiring">Careers</a></li>
+                <li><a href="../index.html#contact">Contact</a></li>
+            </ul>
+            <button class="nav-toggle">☰</button>
+        </div>
+    </nav>
 
-  <section class="section">
-    <h2>Capabilities</h2>
-    <ul class="list">
-      <li>React / Next.js single page apps & headless sites</li>
-      <li>Mobile: Flutter, React Native</li>
-      <li>Backend: Node.js, Express, serverless and cloud infra</li>
-      <li>APIs, payments, analytics, integrations</li>
-    </ul>
-  </section>
+    <section class="hero">
+        <h1>Custom Apps & Software</h1>
+        <p>Design and build secure, scalable web & mobile apps tailored to your business needs, from ideation to launch and beyond.</p>
+    </section>
 
-  <section class="section pricing">
-    <h2>Packages</h2>
-    <div class="pricing-grid">
-      <div class="plan">
-        <h3>Starter</h3>
-        <p><s>₹1,50,000</s> <span>₹75,000</span> / project</p>
-        <ul><li>1-platform MVP</li><li>Basic backend + DB</li><li>2 months support</li></ul>
-        <a class="btn" href="../index.html#contact">Start</a>
-      </div>
-      <div class="plan popular">
-        <h3>Business</h3>
-        <p><s>₹3,00,000</s> <span>₹1,50,000</span> / project</p>
-        <ul><li>iOS + Android or Web + Mobile</li><li>Admin dashboards & APIs</li><li>6 months support</li></ul>
-        <a class="btn" href="../index.html#contact">Get Quote</a>
-      </div>
-      <div class="plan">
-        <h3>Enterprise</h3>
-        <p>Custom Quote</p>
-        <ul><li>Dedicated team</li><li>SLA, scaling & security</li><li>Long-term partnership</li></ul>
-        <a class="btn" href="../index.html#contact">Request Proposal</a>
-      </div>
-    </div>
-  </section>
+    <section class="section">
+        <h2>Our Capabilities</h2>
+        <div class="list">
+            <h3>Frontend Development</h3>
+            <ul>
+                <li>Scalable web applications using **React** and **Next.js**.</li>
+                <li>Dynamic and interactive user interfaces for an exceptional user experience.</li>
+                <li>Seamless migration from legacy systems to modern technology stacks.</li>
+            </ul>
+        </div>
+        <div class="list" style="margin-top: 2rem;">
+            <h3>Mobile & Cross-Platform</h3>
+            <ul>
+                <li>High-performance mobile apps for **iOS** and **Android**.</li>
+                <li>Cross-platform development using **Flutter** and **React Native** for cost-effective solutions.</li>
+                <li>Integration with native device features and services.</li>
+            </ul>
+        </div>
+        <div class="list" style="margin-top: 2rem;">
+            <h3>Backend & Infrastructure</h3>
+            <ul>
+                <li>Robust and secure backends with **Node.js** and **Express**.</li>
+                <li>Cloud-native solutions on **AWS**, **GCP**, and **Vercel** using serverless architecture.</li>
+                <li>Secure API development, database management, and third-party integrations (payments, analytics, etc.).</li>
+            </ul>
+        </div>
+    </section>
 
-  <section class="section process">
-    <h2>Development Flow</h2>
-    <div class="steps">
-      <div class="step">Discovery</div>
-      <div class="step">Design & Prototype</div>
-      <div class="step">Sprint Development</div>
-      <div class="step">QA & Launch</div>
-    </div>
-  </section>
+    <section class="section pricing">
+        <h2>Development Packages</h2>
+        <div class="pricing-grid">
+            <div class="plan">
+                <h3>Starter Plan</h3>
+                <p>Perfect for a Proof-of-Concept or initial product launch.</p>
+                <p class="price"><span>₹75,000</span> / project</p>
+                <ul>
+                    <li>Single-platform MVP (Minimum Viable Product).</li>
+                    <li>Basic user authentication & database setup.</li>
+                    <li>2 months of bug support & maintenance.</li>
+                </ul>
+                <a class="btn" href="../index.html#contact">Get Started</a>
+            </div>
 
-  <section class="section why">
-    <h2>Why Cloudora?</h2>
-    <div class="grid-3">
-      <div class="feature"><h4>Modern Stack</h4><p>We use proven tools for maintainable code.</p></div>
-      <div class="feature"><h4>Secure by design</h4><p>Encryption, secrets management & role-based access.</p></div>
-      <div class="feature"><h4>Transparent delivery</h4><p>Weekly demos, milestone-based billing.</p></div>
-    </div>
-  </section>
+            <div class="plan popular">
+                <h3>Business Plan</h3>
+                <p>Ideal for growing companies needing full-stack development.</p>
+                <p class="price"><span>₹1,50,000</span> / project</p>
+                <ul>
+                    <li>Cross-platform app (iOS + Android or Web + Mobile).</li>
+                    <li>Custom admin dashboard & secure APIs.</li>
+                    <li>6 months of priority support & feature updates.</li>
+                </ul>
+                <a class="btn" href="../index.html#contact">Request Quote</a>
+            </div>
 
-  <section class="section faq">
-    <h2>FAQ</h2>
-    <details><summary>Do you provide designs?</summary><p>Yes — UI/UX & clickable prototypes are included in plans.</p></details>
-    <details><summary>Which hosting do you use?</summary><p>We work with AWS, GCP, Vercel, Netlify and can follow your preferred provider.</p></details>
-  </section>
+            <div class="plan">
+                <h3>Enterprise Plan</h3>
+                <p>For complex projects requiring a dedicated team.</p>
+                <p class="price">Custom Quote</p>
+                <ul>
+                    <li>Dedicated engineering and QA team.</li>
+                    <li>Comprehensive SLA, advanced security, and scalability testing.</li>
+                    <li>Long-term partnership with ongoing development and support.</li>
+                </ul>
+                <a class="btn" href="../index.html#contact">Request Proposal</a>
+            </div>
+        </div>
+    </section>
 
-  <div class="cta"><a href="../index.html#contact">Start Your App</a></div>
+    <section class="section process">
+        <h2>Our Development Process</h2>
+        <div class="steps">
+            <div class="step">
+                <h4>1. Discovery & Planning</h4>
+                <p>We work with you to define project requirements, scope, and technical specifications.</p>
+            </div>
+            <div class="step">
+                <h4>2. UI/UX Design</h4>
+                <p>Our designers create intuitive wireframes, mockups, and clickable prototypes for your approval.</p>
+            </div>
+            <div class="step">
+                <h4>3. Agile Development</h4>
+                <p>We use agile methodologies with weekly sprints and demos for transparent progress tracking.</p>
+            </div>
+            <div class="step">
+                <h4>4. Testing & Launch</h4>
+                <p>Rigorous QA testing ensures a bug-free experience before we launch your application to the market.</p>
+            </div>
+        </div>
+    </section>
 
-  <footer>
-    <div class="footer-grid">
-      <div><h4>Cloudora</h4><p>Custom apps & long-term engineering support.</p></div>
-      <div><h4>Contact</h4><ul><li><a href="mailto:hello@cloudora.studio">hello@cloudora.studio</a></li></ul></div>
-      <div><h4>Social</h4><p><a href="#">LinkedIn</a> | <a href="#">Instagram</a></p></div>
-    </div>
-    <p style="margin-top:18px;">© 2025 Cloudora</p>
-  </footer>
+    <section class="section why">
+        <h2>Why Cloudora for Custom Software?</h2>
+        <div class="grid-3">
+            <div class="feature">
+                <h4>Modern Tech Stack</h4>
+                <p>We use cutting-edge, proven technologies to build future-proof, maintainable, and scalable applications.</p>
+            </div>
+            <div class="feature">
+                <h4>Secure by Design</h4>
+                <p>Security is our top priority. We build with encryption, proper access control, and best practices to protect your data.</p>
+            </div>
+            <div class="feature">
+                <h4>Transparent Delivery</h4>
+                <p>You'll always be in the loop. We provide clear communication, regular updates, and milestone-based billing.</p>
+            </div>
+        </div>
+    </section>
 
-  <script src="services.js"></script>
+    <section class="section faq">
+        <h2>Frequently Asked Questions</h2>
+        <details>
+            <summary>How long does a typical project take?</summary>
+            <p>A typical MVP can be built in 2-3 months. More complex projects can take 6-12 months, depending on features and scope. We provide a detailed timeline after the discovery phase.</p>
+        </details>
+        <details>
+            <summary>Do you provide ongoing maintenance?</summary>
+            <p>Yes. Our packages include initial support, and we offer long-term maintenance and support contracts to ensure your application remains secure, up-to-date, and performs optimally.</p>
+        </details>
+        <details>
+            <summary>What is your payment model?</summary>
+            <p>We use a milestone-based payment model. Payments are released upon the completion and your approval of each project milestone, ensuring transparency and trust.</p>
+        </details>
+    </section>
+
+    <div class="cta"><a href="../index.html#contact">Start Your App Project Today</a></div>
+
+    <footer>
+        <div class="container foot">
+            <div class="foot-left">
+                <div class="brand-mini">
+                    <span class="logo mini" aria-hidden="true"></span>
+                    <b>Cloudora</b>
+                </div>
+                <span class="copyright">© <span id="year"></span> All rights reserved</span>
+                <div class="contact-info">
+                    <div class="contact-row">📞 <a href="tel:+919335655896">+91-93356-55896</a></div>
+                    <div class="contact-row">✉️ <a href="mailto:Cloudoraserv@gmail.com">Cloudoraserv@gmail.com</a></div>
+                    <div class="contact-row">🌍 Serving clients in India, US, EU & MEA</div>
+                    <div class="contact-row">🕒 Mon–Fri • 9:30 AM – 7:00 PM IST</div>
+                </div>
+            </div>
+            <div class="social">
+                <a class="icon" href="https://www.instagram.com/cloudora_services?igsh=MXUzZWlqNnkxbGk0YQ==" aria-label="Instagram" title="Instagram">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm10 2c1.7 0 3 1.3 3 3v10c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V7c0-1.7 1.3-3 3-3h10zm-5 3.5A5.5 5.5 0 1 0 17.5 13 5.5 5.5 0 0 0 12 7.5zm0 2A3.5 3.5 0 1 1 8.5 13 3.5 3.5 0 0 1 12 9.5zm5.8-3.6a1 1 0 1 0 1 1 1 1 0 0 0-1-1z"/></svg>
+                </a>
+                <a class="icon" href="https://www.facebook.com/share/1FtH8Xcd8b/" aria-label="facebook" title="Facebook">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm3 8h-1.35c-.522 0-.65.234-.65.65v1.35h2l-.246 2h-1.754v6h-3v-6h-2v-2h2v-1.157c0-1.789.97-2.843 2.866-2.843h1.134v3z"/></svg>
+                </a>
+                <a class="icon" href="https://github.com/cloudoraserv-SRK/CLOUDORA" aria-label="GitHub" title="GitHub">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.17c-3.34.73-4.04-1.44-4.04-1.44-.55-1.4-1.35-1.77-1.35-1.77-1.1-.77.08-.75.08-.75 1.22.09 1.87 1.25 1.87 1.25 1.08 1.85 2.83 1.32 3.52 1.01.11-.79.42-1.32.76-1.62-2.67-.3-5.48-1.34-5.48-5.97 0-1.32.47-2.41 1.24-3.26-.12-.3-.54-1.52.12-3.16 0 0 1.01-.32 3.3 1.24a11.4 11.4 0 0 1 6 0c2.29-1.56 3.3-1.24 3.3-1.24.66 1.64.24 2.86.12 3.16.77.85 1.23 1.94 1.23 3.26 0 4.64-2.81 5.67-5.49 5.97.43.37.8 1.1.8 2.22v3.3c0 .32.21.7.82.58A12 12 0 0 0 12 .5z"/></svg>
+                </a>
+            </div>
+            <div class="legal">
+                <a href="../index.html" id="openPrivacy">Privacy Policy</a>
+                <span>•</span>
+                <a href="../index.html" id="openTerms">Terms & Conditions</a>
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/919335655896" class="btn whatsapp" aria-label="WhatsApp us">WhatsApp</a>
+
+    <script src="services.js"></script>
 </body>
 </html>
