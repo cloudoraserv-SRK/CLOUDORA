@@ -1,517 +1,476 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cloudora — Digital Innovation Studio</title>
-  <meta name="description" content="Cloudora: Digital marketing, software/app development, blockchain, game design, video generation & web design. Global remote delivery."/>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script defer src="script.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cloudora — Digital Innovation Studio</title>
+    <meta name="description" content="Cloudora: Digital marketing, software/app development, blockchain, game design, video generation & web design. Global remote delivery."/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script defer src="script.js"></script>
 </head>
 <body>
-  <div class="aura" aria-hidden="true"></div>
-  <div class="stars" aria-hidden="true"></div>
+    <div class="aura" aria-hidden="true"></div>
+    <div class="stars" aria-hidden="true"></div>
 
-  <!-- Header / Navbar -->
-  <header class="site-header">
-    <div class="container nav">
-      <a class="brand" href="#top" aria-label="Cloudora home">
-        <span class="logo" aria-hidden="true">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M6.5 12a5.5 5.5 0 0 1 10.8-1.6A4.2 4.2 0 1 1 18 19H7.5a4.5 4.5 0 0 1-1-8.9Z" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
-          </svg>
-        </span>
-        <b>CLOUDORA</b>
-      </a>
+    <header class="site-header">
+        <div class="container nav">
+            <a class="brand" href="#top" aria-label="Cloudora home">
+                <span class="logo" aria-hidden="true">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M6.5 12a5.5 5.5 0 0 1 10.8-1.6A4.2 4.2 0 1 1 18 19H7.5a4.5 4.5 0 0 1-1-8.9Z" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+                    </svg>
+                </span>
+                <b>CLOUDORA</b>
+            </a>
 
-      <nav class="navlinks" aria-label="primary">
-        <a href="#services">Services</a>
-        <a href="#why">Why Us</a>
-        <a href="#hiring">We’re Hiring</a>
-        <a href="#portfolio">Our Works</a>
-        <a href="#contact">Contact</a>
-      </nav>
+            <nav class="navlinks" aria-label="primary">
+                <a href="#services">Services</a>
+                <a href="#why">Why Us</a>
+                <a href="#hiring">We’re Hiring</a>
+                <a href="#portfolio">Our Works</a>
+                <a href="#contact">Contact</a>
+            </nav>
 
-      <button class="hamburger" aria-label="menu" aria-expanded="false" aria-controls="mobileMenu"><span></span></button>
-    </div>
-    <div class="mobile" id="mobileMenu" role="dialog" aria-modal="false">
-      <a href="#services">Services</a>
-      <a href="#why">Why Us</a>
-      <a href="#hiring">We’re Hiring</a>
-      <a href="#portfolio">Our Works</a>
-      <a href="#contact">Contact</a>
-    </div>
-  </header>
-
-  <section class="hero">
-  <div class="hero-content">
-    <h1 class="title">Grow Your Business with Cloudora 🚀</h1>
-    <p class="subtitle">
-      Digital marketing, SEO, social media & ad campaigns — all at exclusive
-      <span class="highlight">50% Launch Discount</span>.
-    </p>
-
-    <div class="launch-offer">
-      <h2>🎉 Special Launch Offer</h2>
-      <table class="pricing-table">
-  <tr>
-    <td>3-Day Trial</td>
-    <td><s>₹1999</s> <span class="new-price">₹999</span> 
-      <a href="docs/3days.jpeg" class="brochure-btn" target="_blank">Download Brochure</a>
-    </td>
-  </tr>
-  <tr>
-    <td>7-Day Trial</td>
-    <td><s>₹3999</s> <span class="new-price">₹1999</span> 
-      <a href="docs/7days.jpeg" class="brochure-btn" target="_blank">Download Brochure</a>
-    </td>
-  </tr>
-  <tr>
-    <td>1 Month</td>
-    <td><s>₹19,999</s> <span class="new-price">₹9,999</span> 
-      <a href="docs/1month.jpeg" class="brochure-btn" target="_blank">Download Brochure</a>
-    </td>
-  </tr>
-  <tr>
-    <td>3 Month</td>
-    <td><s>₹49,999</s> <span class="new-price">₹24,999</span> 
-      <a href="docs/3months.jpeg" class="brochure-btn" target="_blank">Download Brochure</a>
-    </td>
-  </tr>
-  <tr>
-    <td>6 Month</td>
-    <td><s>₹99,999</s> <span class="new-price">₹49,999</span> 
-      <a href="docs/6months.jpeg" class="brochure-btn" target="_blank">Download Brochure</a>
-    </td>
-  </tr>
-  <tr>
-    <td>12 Month</td>
-    <td><s>₹1,99,999</s> <span class="new-price">₹99,999</span> 
-      <a href="docs/1year.jpeg" class="brochure-btn" target="_blank">Download Brochure</a>
-    </td>
-  </tr>
-</table>
-
-      <p class="limited">⚡ Limited time offer for our early clients only.</p>
-    </div>
-  </div>
-</section>
-
-    <!-- Services: horizontal scroller -->
-  <section id="services">
-    <div class="container section-head">
-      <h2>Services</h2>
-      <div class="ctrls">
-        <button class="btn small" id="prev">◀</button>
-        <button class="btn small" id="next">▶</button>
-      </div>
-    </div>
-      <div class="container scroller-wrap fade-mask">
-      <div class="scroller" id="serviceScroller" aria-label="scrollable service cards">
-       
-    <!-- Digital Marketing -->
-<article class="card" data-reveal>
-  <div class="img">
-    <img alt="Digital Marketing" src="assets/digitalmarketing.png"/>
-    <span class="badge pill">Digital Marketing</span>
-    <span class="ribbon">50% OFF</span>
-  </div>
-  <div class="body">
-    <h3><a href="services/digitalmarketing.html">Social Media & Ads</a></h3>
-    <p>Boost your brand with ROI-driven ads, content strategy & growth campaigns across Google, Meta & LinkedIn.</p>
-    <div class="price">
-      <s>₹19,999</s> <span class="new-price">₹9,999</span> <small>/mo</small>
-    </div>
-    <a class="btn small" href="#contact">Get Proposal</a>
-    <a class="explore-link" href="services/digital-marketing.html">Explore More →</a>
-  </div>
-</article>
-
-<!-- App / Software -->
-<article class="card" data-reveal>
-  <div class="img">
-    <img alt="App Development" src="assets/apk&software.png"/>
-    <span class="badge pill">App / Software</span>
-    <span class="ribbon">50% OFF</span>
-  </div>
-  <div class="body">
-    <h3><a href="services/app-development.html">Custom Apps & Software</a></h3>
-    <p>Build powerful mobile & web apps using React, Next.js, Node & Flutter with secure cloud-native backends.</p>
-    <div class="price">
-      <s>₹1,50,000</s> <span class="new-price">₹75,000</span> <small>/project</small>
-    </div>
-    <a class="btn small" href="#contact">Build My App</a>
-    <a class="explore-link" href="services/app-development.html">Explore More →</a>
-  </div>
-</article>
-
-<!-- Blockchain -->
-<article class="card" data-reveal>
-  <div class="img">
-    <img alt="Blockchain" src="assets/blockchain.png"/>
-    <span class="badge pill">Blockchain</span>
-    <span class="ribbon">50% OFF</span>
-  </div>
-  <div class="body">
-    <h3><a href="services/blockchain.html">Smart Contracts & dApps</a></h3>
-    <p>Deploy secure & audited smart contracts, wallets, tokens, and decentralized dashboards with Solidity.</p>
-    <div class="price">
-      <s>₹2,20,000</s> <span class="new-price">₹1,10,000</span> <small>/project</small>
-    </div>
-    <a class="btn small" href="#contact">Discuss Use-Case</a>
-    <a class="explore-link" href="services/blockchain.html">Explore More →</a>
-  </div>
-</article>
-
-<!-- Game Development -->
-<article class="card" data-reveal>
-  <div class="img">
-    <img alt="Game Development" src="assets/game.png"/>
-    <span class="badge pill">Game Dev</span>
-    <span class="ribbon">50% OFF</span>
-  </div>
-  <div class="body">
-    <h3><a href="services/game-development.html">Games with Unity & Unreal</a></h3>
-    <p>Create immersive games from concept to launch with stunning visuals, monetization & publishing support.</p>
-    <div class="price">
-      <s>₹3,00,000</s> <span class="new-price">₹1,50,000</span> <small>/project</small>
-    </div>
-    <a class="btn small" href="#contact">Start a Game</a>
-    <a class="explore-link" href="services/game-development.html">Explore More →</a>
-  </div>
-</article>
-
-<!-- Web Design -->
-<article class="card" data-reveal>
-  <div class="img">
-    <img alt="Web Design" src="assets/websites.png"/>
-    <span class="badge pill">Web Design</span>
-    <span class="ribbon">50% OFF</span>
-  </div>
-  <div class="body">
-    <h3><a href="services/web-design.html">High-Performance Websites</a></h3>
-    <p>Next.js & WordPress sites optimized for SEO, schema, lightning speed & brand-first experiences.</p>
-    <div class="price">
-      <s>₹49,999</s> <span class="new-price">₹24,999</span> <small>/site</small>
-    </div>
-    <a class="btn small" href="#contact">Design My Site</a>
-    <a class="explore-link" href="services/web-design.html">Explore More →</a>
-  </div>
-</article>
-
-<!-- AI Videos -->
-<article class="card" data-reveal>
-  <div class="img">
-    <img alt="Video Generation" src="assets/aivideo.png"/>
-    <span class="badge pill">AI Video</span>
-    <span class="ribbon">50% OFF</span>
-  </div>
-  <div class="body">
-    <h3><a href="services/ai-video.html">AI Videos & Motion Graphics</a></h3>
-    <p>Studio-grade ads, reels & explainers made with AI tools + professional editing for premium quality.</p>
-    <div class="price">
-      <s>₹24,999</s> <span class="new-price">₹12,499</span> <small>/video</small>
-    </div>
-    <a class="btn small" href="#contact">Create a Video</a>
-    <a class="explore-link" href="services/ai-video.html">Explore More →</a>
-  </div>
-  </article>
-</div><!-- /.scroller -->
-  </div><!-- /.scroller-wrap -->
-</section><!-- /#services -->
- 
-  <!-- Why Us -->
-  <section id="why">
-  <div class="container">
-    <div class="section-head">
-      <h2>Why choose Cloudora?</h2>
-      <p class="sub-head">We’re not just another agency — we’re your growth partner 🚀</p>
-    </div>
-    
-    <div class="grid-3">
-      
-      <div class="feature" data-reveal>
-        <h4>🌍 Senior Talent, On-Demand</h4>
-        <p>Elastic remote team across timezones: architects, marketers, designers & producers.</p>
-      </div>
-
-      <div class="feature" data-reveal>
-        <h4>💡 Innovation First</h4>
-        <p>From AI-powered campaigns to blockchain apps, we embrace the latest tech to keep you ahead.</p>
-      </div>
-
-      <div class="feature" data-reveal>
-        <h4>📊 Transparent Pricing</h4>
-        <p>Clear SOWs, milestone billing, and weekly progress demos keep you in control of costs.</p>
-      </div>
-
-      <div class="feature" data-reveal>
-        <h4>🔐 Security & Compliance</h4>
-        <p>Secure SDLC, NDA by default, role-based access and audit-ready processes for enterprise clients.</p>
-      </div>
-
-      <div class="feature" data-reveal>
-        <h4>⚡ Fast Delivery</h4>
-        <p>Agile workflows and a distributed team enable quick turnarounds without compromising quality.</p>
-      </div>
-
-      <div class="feature" data-reveal>
-        <h4>🤝 Client Success Stories</h4>
-        <p>We measure our success by yours — from startups raising funds to enterprises scaling globally.</p>
-      </div>
-
-      <div class="feature" data-reveal>
-        <h4>📈 Data-Driven Results</h4>
-        <p>Analytics and KPIs built into every service to ensure measurable business growth.</p>
-      </div>
-
-      <div class="feature" data-reveal>
-        <h4>🎨 Creative + Tech</h4>
-        <p>A unique blend of designers, developers & storytellers who craft experiences that sell.</p>
-      </div>
-
-    </div>
-
-    <div class="why-cta">
-      <a href="#contact" class="btn big">Let’s Work Together</a>
-    </div>
-  </div>
-</section>
-
-  
-  <!-- We Are Hiring -->
-  <section id="hiring">
-  <div class="container">
-    <div class="section-head"><h2>🚀 We’re Hiring Remote & Field Teams</h2></div>
-
-    <!-- Filter Tabs -->
-    <div class="job-filters">
-      <button class="filter-btn active" data-filter="sales">🔥 Sales & Marketing</button>
-      <button class="filter-btn" data-filter="support">📞 Support & Telecalling</button>
-      <button class="filter-btn" data-filter="dev">💻 Developers & Product</button>
-    </div>
-
-    <!-- Job Listings -->
-    <div class="joblist">
-
-      <!-- Sales & Marketing -->
-      <div class="job-card sales">
-        <h4>Sales Executives (Field / Cold Visits)</h4>
-        <p>Meet clients face-to-face, pitch services & close deals. PAN India & Global.</p>
-        <a class="btn small" href="apply/apply.html">Apply Now</a>
-      </div>
-
-      <div class="job-card sales">
-        <h4>Inside Sales Executives (Online Cold Calls)</h4>
-        <p>Generate leads via cold calls, LinkedIn outreach & email campaigns.</p>
-       <a class="btn small" href="apply/apply.html">Apply Now</a>
-      </div>
-
-      <div class="job-card sales">
-        <h4>Digital Marketing Specialist (SEO & Ads)</h4>
-        <p>Run ROI-driven campaigns across Google, Meta & LinkedIn.</p>
-        <a class="btn small" href="apply/apply.html">Apply Now</a>
-      </div>
-
-      <!-- Support & Calling -->
-      <div class="job-card support">
-        <h4>Cold Calling Associates</h4>
-        <p>Mass call outreach for prospecting and first contact with leads.</p>
-       <a class="btn small" href="apply/apply.html">Apply Now</a>
-      </div>
-
-      <div class="job-card support">
-        <h4>Lead Qualification Callers</h4>
-        <p>Engage inbound leads, qualify them and forward to sales team.</p>
-       <a class="btn small" href="apply/apply.html">Apply Now</a>
-      </div>
-
-      <div class="job-card support">
-        <h4>Customer Success Associates</h4>
-        <p>Manage support tickets, onboarding, training & follow-ups.</p>
-        <a class="btn small" href="apply/apply.html">Apply Now</a>
-      </div>
-
-      <!-- Developers -->
-      <div class="job-card dev">
-        <h4>Frontend / Backend / Full-Stack Developers</h4>
-        <p>React, Next.js, Node.js developers to build high-performance apps.</p>
-        <a class="btn small" href="apply/apply.html">Apply Now</a>
-      </div>
-
-      <div class="job-card dev">
-        <h4>Blockchain Engineers (Solidity / DApps / NFTs)</h4>
-        <p>Work on DeFi, NFT & smart contract projects. Prior GitHub required.</p>
-        <a class="btn small" href="apply/apply.html">Apply Now</a>
-      </div>
-
-      <div class="job-card dev">
-        <h4>Game Developers (Unity / Unreal)</h4>
-        <p>Design immersive 2D/3D & blockchain-integrated games.</p>
-       <a class="btn small" href="apply/apply.html">Apply Now</a>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-   
-  <!-- Hidden detail anchors (optional deep links from service cards) -->
-  <section class="sr-only" id="dm-detail"><h2>Digital Marketing</h2></section>
-  <section class="sr-only" id="dev-detail"><h2>Full‑Stack Development</h2></section>
-  <section class="sr-only" id="bc-detail"><h2>Blockchain</h2></section>
-  <section class="sr-only" id="game-detail"><h2>Game Dev</h2></section>
-  <section class="sr-only" id="web-detail"><h2>Web Design</h2></section>
-  <section class="sr-only" id="video-detail"><h2>AI Video</h2></section>
-
- <!-- Contact -->
-<section id="contact">
-  <div class="container">
-    <div class="section-head"><h2>Start a Project</h2></div>
-
-    <div class="contact-wrap">
-      <!-- Contact Form -->
-      <form id="contactForm" action="https://formspree.io/f/xwpnjdop" method="POST">
-        <!-- Name -->
-        <label for="name">Full Name</label>
-        <input id="name" name="name" placeholder="Your full name" required>
-
-        <!-- Email -->
-        <label for="email">Email</label>
-        <input id="email" type="email" name="email" placeholder="you@company.com" required>
-
-        <!-- Phone -->
-        <label for="phone">Phone Number (with Country Code)</label>
-        <input id="phone" name="phone" type="tel" placeholder="+91 9876543210" required>
-
-        <!-- WhatsApp -->
-        <label for="whatsapp">WhatsApp Number</label>
-        <input id="whatsapp" name="whatsapp" type="tel" placeholder="+91 9876543210">
-
-        <!-- Company -->
-        <label for="company">Company / Organization</label>
-        <input id="company" name="company" placeholder="Your company or startup name">
-
-        <!-- Address -->
-        <label for="address">Address</label>
-        <textarea id="address" name="address" placeholder="Your complete address"></textarea>
-
-        <!-- Service -->
-        <label for="service">Service Interested In</label>
-        <select id="service" name="service" required>
-          <option value="">Choose a service</option>
-          <option>Performance Marketing</option>
-          <option>Full-Stack Development</option>
-          <option>Blockchain / Smart Contracts</option>
-          <option>Game Development</option>
-          <option>Web Design</option>
-          <option>AI Video</option>
-          <option>Other</option>
-        </select>
-
-        <!-- Budget -->
-        <label for="budget">Estimated Budget</label>
-        <select id="budget" name="budget">
-          <option value="">Select budget range</option>
-          <option>Under $1,000</option>
-          <option>$1,000 – $5,000</option>
-          <option>$5,000 – $10,000</option>
-          <option>$10,000+</option>
-        </select>
-
-        <!-- Timeline -->
-        <label for="timeline">Expected Timeline</label>
-        <select id="timeline" name="timeline">
-          <option value="">Select timeline</option>
-          <option>ASAP (within 1 month)</option>
-          <option>1 – 3 months</option>
-          <option>3 – 6 months</option>
-          <option>6+ months</option>
-        </select>
-
-        <!-- Project details -->
-        <label for="msg">Project Details</label>
-        <textarea id="msg" name="message" placeholder="Tell us about your goals, timeline and budget…" required></textarea>
-
-        <!-- Form actions -->
-        <div class="form-actions">
-          <button class="btn" type="submit">Request Proposal</button>
-          <span id="formStatus" class="pill" style="display:none"></span>
+            <button class="hamburger" aria-label="menu" aria-expanded="false" aria-controls="mobileMenu"><span></span></button>
         </div>
-      </form>
-
-      <!-- Contact Info -->
-      <div class="contact-card">
-        <h3 style="margin-top:6px">Contact</h3>
-        <div class="contact-row">📞 <a href="tel:+919335655896">+91-93356-55896</a></div>
-        <div class="contact-row">✉️ <a href="mailto:Cloudoraserv@gmail.com">Cloudoraserv@gmail.com</a></div>
-        <div class="contact-row">🌍 Serving clients in India, US, EU & MEA</div>
-        <div class="contact-row">🕒 Mon–Fri • 9:30 AM – 7:00 PM IST</div>
-      </div>
-    </div><!-- /.contact-wrap -->
-  </div><!-- /.container -->
-</section>
-
-  <!-- Footer -->
-  <footer>
-    <div class="container foot">
-      <div class="foot-left">
-        <div class="brand-mini">
-          <span class="logo mini" aria-hidden="true"></span>
-          <b>Cloudora</b>
+        <div class="mobile" id="mobileMenu" role="dialog" aria-modal="false">
+            <a href="#services">Services</a>
+            <a href="#why">Why Us</a>
+            <a href="#hiring">We’re Hiring</a>
+            <a href="#portfolio">Our Works</a>
+            <a href="#contact">Contact</a>
         </div>
-        <span class="copyright">© <span id="year"></span> All rights reserved</span>
-      </div>
-      <div class="social">
-       
-        <a class="icon" href="https://www.instagram.com/cloudora_services?igsh=MXUzZWlqNnkxbGk0YQ==" aria-label="Instagram" title="Instagram">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm10 2c1.7 0 3 1.3 3 3v10c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V7c0-1.7 1.3-3 3-3h10zm-5 3.5A5.5 5.5 0 1 0 17.5 13 5.5 5.5 0 0 0 12 7.5zm0 2A3.5 3.5 0 1 1 8.5 13 3.5 3.5 0 0 1 12 9.5zm5.8-3.6a1 1 0 1 0 1 1 1 1 0 0 0-1-1z"/></svg>
-        </a>
-        <a class="icon" href="https://www.facebook.com/share/1FtH8Xcd8b/" aria-label="facebook" title="Facebook">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.46 6c-.77.35-1.6.58-2.46.69a4.27 4.27 0 0 0 1.87-2.36 8.6 8.6 0 0 1-2.72 1.04 4.26 4.26 0 0 0-7.26 3.88 12.1 12.1 0 0 1-8.8-4.46 4.26 4.26 0 0 0 1.32 5.68c-.63-.02-1.22-.19-1.74-.48v.05a4.26 4.26 0 0 0 3.42 4.18c-.52.14-1.07.17-1.62.06a4.26 4.26 0 0 0 3.98 2.96A8.54 8.54 0 0 1 2 19.54a12.06 12.06 0 0 0 6.55 1.92c7.86 0 12.17-6.51 12.17-12.16 0-.19 0-.38-.01-.56A8.67 8.67 0 0 0 24 6.57c-.74.33-1.54.55-2.38.64z"/></svg>
-        </a>
-        <a class="icon" href="https://github.com/cloudoraserv-SRK/CLOUDORA" aria-label="GitHub" title="GitHub">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.17c-3.34.73-4.04-1.44-4.04-1.44-.55-1.4-1.35-1.77-1.35-1.77-1.1-.77.08-.75.08-.75 1.22.09 1.87 1.25 1.87 1.25 1.08 1.85 2.83 1.32 3.52 1.01.11-.79.42-1.32.76-1.62-2.67-.3-5.48-1.34-5.48-5.97 0-1.32.47-2.41 1.24-3.26-.12-.3-.54-1.52.12-3.16 0 0 1.01-.32 3.3 1.24a11.4 11.4 0 0 1 6 0c2.29-1.56 3.3-1.24 3.3-1.24.66 1.64.24 2.86.12 3.16.77.85 1.23 1.94 1.23 3.26 0 4.64-2.81 5.67-5.49 5.97.43.37.8 1.1.8 2.22v3.3c0 .32.21.7.82.58A12 12 0 0 0 12 .5z"/></svg>
-        </a>
-      </div>
-      <div class="legal">
-        <a href="#" id="openPrivacy">Privacy Policy</a>
-        <span>•</span>
-        <a href="#" id="openTerms">Terms & Conditions</a>
-      </div>
-    </div>
-  </footer>
+    </header>
 
-  <!-- Legal Modals -->
-  <div class="modal" id="privacyModal" aria-hidden="true" role="dialog" aria-labelledby="privacyTitle">
-    <div class="modal-card">
-      <div class="modal-head">
-        <h3 id="privacyTitle">Privacy Policy</h3>
-        <button class="close" data-close>✕</button>
-      </div>
-      <div class="modal-body">
-        <p>We collect only necessary information (name, email, project details) submitted through our form to reply to your inquiry. We do not sell your data. You may request deletion anytime at <a href="mailto:privacy@cloudora.studio">privacy@cloudora.studio</a>.</p>
-      </div>
-    </div>
-  </div>
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="title">Grow Your Business with Cloudora 🚀</h1>
+            <p class="subtitle">
+                Digital marketing, SEO, social media & ad campaigns — all at exclusive
+                <span class="highlight">50% Launch Discount</span>.
+            </p>
 
-  <div class="modal" id="termsModal" aria-hidden="true" role="dialog" aria-labelledby="termsTitle">
-    <div class="modal-card">
-      <div class="modal-head">
-        <h3 id="termsTitle">Terms & Conditions</h3>
-        <button class="close" data-close>✕</button>
-      </div>
-      <div class="modal-body">
-        <p>All estimates are subject to a formal SOW. Work starts post‑advance. IP transfers upon full payment. Confidentiality/NDA available on request.</p>
-      </div>
-    </div>
-  </div>
+            <div class="launch-offer" data-reveal>
+                <h2>🎉 Special Launch Offer</h2>
+                <table class="pricing-table">
+                    <tr>
+                        <td>3-Day Trial</td>
+                        <td><s>₹1999</s> <span class="new-price">₹999</span>
+                            <a href="docs/3days.jpeg" class="brochure-btn" target="_blank">Download Brochure</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>7-Day Trial</td>
+                        <td><s>₹3999</s> <span class="new-price">₹1999</span>
+                            <a href="docs/7days.jpeg" class="brochure-btn" target="_blank">Download Brochure</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1 Month</td>
+                        <td><s>₹19,999</s> <span class="new-price">₹9,999</span>
+                            <a href="docs/1month.jpeg" class="brochure-btn" target="_blank">Download Brochure</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3 Month</td>
+                        <td><s>₹49,999</s> <span class="new-price">₹24,999</span>
+                            <a href="docs/3months.jpeg" class="brochure-btn" target="_blank">Download Brochure</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>6 Month</td>
+                        <td><s>₹99,999</s> <span class="new-price">₹49,999</span>
+                            <a href="docs/6months.jpeg" class="brochure-btn" target="_blank">Download Brochure</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>12 Month</td>
+                        <td><s>₹1,99,999</s> <span class="new-price">₹99,999</span>
+                            <a href="docs/1year.jpeg" class="brochure-btn" target="_blank">Download Brochure</a>
+                        </td>
+                    </tr>
+                </table>
 
-  <!-- WhatsApp CTA -->
-  <a href="https://wa.me/919335655896" class="btn whatsapp" aria-label="WhatsApp us">WhatsApp</a>
+                <p class="limited">⚡ Limited time offer for our early clients only.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="services">
+        <div class="container section-head" data-reveal>
+            <h2>Services</h2>
+            <div class="ctrls">
+                <button class="btn small" id="prev">◀</button>
+                <button class="btn small" id="next">▶</button>
+            </div>
+        </div>
+        <div class="container scroller-wrap fade-mask" data-reveal>
+            <div class="scroller" id="serviceScroller" aria-label="scrollable service cards">
+                
+                <article class="card" data-reveal>
+                    <div class="img">
+                        <img alt="Digital Marketing" src="assets/digitalmarketing.png"/>
+                        <span class="badge pill">Digital Marketing</span>
+                        <span class="ribbon">50% OFF</span>
+                    </div>
+                    <div class="body">
+                        <h3><a href="services/digitalmarketing.html">Social Media & Ads</a></h3>
+                        <p>Boost your brand with ROI-driven ads, content strategy & growth campaigns across Google, Meta & LinkedIn.</p>
+                        <div class="price">
+                            <s>₹19,999</s> <span class="new-price">₹9,999</span> <small>/mo</small>
+                        </div>
+                        <a class="btn small" href="#contact">Get Proposal</a>
+                        <a class="explore-link" href="services/digital-marketing.html">Explore More →</a>
+                    </div>
+                </article>
+
+                <article class="card" data-reveal>
+                    <div class="img">
+                        <img alt="App Development" src="assets/apk&software.png"/>
+                        <span class="badge pill">App / Software</span>
+                        <span class="ribbon">50% OFF</span>
+                    </div>
+                    <div class="body">
+                        <h3><a href="services/app-development.html">Custom Apps & Software</a></h3>
+                        <p>Build powerful mobile & web apps using React, Next.js, Node & Flutter with secure cloud-native backends.</p>
+                        <div class="price">
+                            <s>₹1,50,000</s> <span class="new-price">₹75,000</span> <small>/project</small>
+                        </div>
+                        <a class="btn small" href="#contact">Build My App</a>
+                        <a class="explore-link" href="services/app-development.html">Explore More →</a>
+                    </div>
+                </article>
+
+                <article class="card" data-reveal>
+                    <div class="img">
+                        <img alt="Blockchain" src="assets/blockchain.png"/>
+                        <span class="badge pill">Blockchain</span>
+                        <span class="ribbon">50% OFF</span>
+                    </div>
+                    <div class="body">
+                        <h3><a href="services/blockchain.html">Smart Contracts & dApps</a></h3>
+                        <p>Deploy secure & audited smart contracts, wallets, tokens, and decentralized dashboards with Solidity.</p>
+                        <div class="price">
+                            <s>₹2,20,000</s> <span class="new-price">₹1,10,000</span> <small>/project</small>
+                        </div>
+                        <a class="btn small" href="#contact">Discuss Use-Case</a>
+                        <a class="explore-link" href="services/blockchain.html">Explore More →</a>
+                    </div>
+                </article>
+
+                <article class="card" data-reveal>
+                    <div class="img">
+                        <img alt="Game Development" src="assets/game.png"/>
+                        <span class="badge pill">Game Dev</span>
+                        <span class="ribbon">50% OFF</span>
+                    </div>
+                    <div class="body">
+                        <h3><a href="services/game-development.html">Games with Unity & Unreal</a></h3>
+                        <p>Create immersive games from concept to launch with stunning visuals, monetization & publishing support.</p>
+                        <div class="price">
+                            <s>₹3,00,000</s> <span class="new-price">₹1,50,000</span> <small>/project</small>
+                        </div>
+                        <a class="btn small" href="#contact">Start a Game</a>
+                        <a class="explore-link" href="services/game-development.html">Explore More →</a>
+                    </div>
+                </article>
+
+                <article class="card" data-reveal>
+                    <div class="img">
+                        <img alt="Web Design" src="assets/websites.png"/>
+                        <span class="badge pill">Web Design</span>
+                        <span class="ribbon">50% OFF</span>
+                    </div>
+                    <div class="body">
+                        <h3><a href="services/web-design.html">High-Performance Websites</a></h3>
+                        <p>Next.js & WordPress sites optimized for SEO, schema, lightning speed & brand-first experiences.</p>
+                        <div class="price">
+                            <s>₹49,999</s> <span class="new-price">₹24,999</span> <small>/site</small>
+                        </div>
+                        <a class="btn small" href="#contact">Design My Site</a>
+                        <a class="explore-link" href="services/web-design.html">Explore More →</a>
+                    </div>
+                </article>
+
+                <article class="card" data-reveal>
+                    <div class="img">
+                        <img alt="Video Generation" src="assets/aivideo.png"/>
+                        <span class="badge pill">AI Video</span>
+                        <span class="ribbon">50% OFF</span>
+                    </div>
+                    <div class="body">
+                        <h3><a href="services/ai-video.html">AI Videos & Motion Graphics</a></h3>
+                        <p>Studio-grade ads, reels & explainers made with AI tools + professional editing for premium quality.</p>
+                        <div class="price">
+                            <s>₹24,999</s> <span class="new-price">₹12,499</span> <small>/video</small>
+                        </div>
+                        <a class="btn small" href="#contact">Create a Video</a>
+                        <a class="explore-link" href="services/ai-video.html">Explore More →</a>
+                    </div>
+                </article>
+            </div></div></section><section id="why">
+        <div class="container">
+            <div class="section-head" data-reveal>
+                <h2>Why choose Cloudora?</h2>
+                <p class="sub-head">We’re not just another agency — we’re your growth partner 🚀</p>
+            </div>
+            
+            <div class="grid-3">
+                
+                <div class="feature" data-reveal>
+                    <h4>🌍 Senior Talent, On-Demand</h4>
+                    <p>Elastic remote team across timezones: architects, marketers, designers & producers.</p>
+                </div>
+
+                <div class="feature" data-reveal>
+                    <h4>💡 Innovation First</h4>
+                    <p>From AI-powered campaigns to blockchain apps, we embrace the latest tech to keep you ahead.</p>
+                </div>
+
+                <div class="feature" data-reveal>
+                    <h4>📊 Transparent Pricing</h4>
+                    <p>Clear SOWs, milestone billing, and weekly progress demos keep you in control of costs.</p>
+                </div>
+
+                <div class="feature" data-reveal>
+                    <h4>🔐 Security & Compliance</h4>
+                    <p>Secure SDLC, NDA by default, role-based access and audit-ready processes for enterprise clients.</p>
+                </div>
+
+                <div class="feature" data-reveal>
+                    <h4>⚡ Fast Delivery</h4>
+                    <p>Agile workflows and a distributed team enable quick turnarounds without compromising quality.</p>
+                </div>
+
+                <div class="feature" data-reveal>
+                    <h4>🤝 Client Success Stories</h4>
+                    <p>We measure our success by yours — from startups raising funds to enterprises scaling globally.</p>
+                </div>
+
+                <div class="feature" data-reveal>
+                    <h4>📈 Data-Driven Results</h4>
+                    <p>Analytics and KPIs built into every service to ensure measurable business growth.</p>
+                </div>
+
+                <div class="feature" data-reveal>
+                    <h4>🎨 Creative + Tech</h4>
+                    <p>A unique blend of designers, developers & storytellers who craft experiences that sell.</p>
+                </div>
+
+            </div>
+
+            <div class="why-cta" data-reveal>
+                <a href="#contact" class="btn big">Let’s Work Together</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="hiring" data-reveal>
+        <div class="container">
+            <div class="section-head"><h2>🚀 We’re Hiring Remote & Field Teams</h2></div>
+
+            <div class="job-filters">
+                <button class="filter-btn active" data-filter="sales">🔥 Sales & Marketing</button>
+                <button class="filter-btn" data-filter="support">📞 Support & Telecalling</button>
+                <button class="filter-btn" data-filter="dev">💻 Developers & Product</button>
+            </div>
+
+            <div class="joblist">
+
+                <div class="job-card sales">
+                    <h4>Sales Executives (Field / Cold Visits)</h4>
+                    <p>Meet clients face-to-face, pitch services & close deals. PAN India & Global.</p>
+                    <a class="btn small" href="apply/apply.html">Apply Now</a>
+                </div>
+
+                <div class="job-card sales">
+                    <h4>Inside Sales Executives (Online Cold Calls)</h4>
+                    <p>Generate leads via cold calls, LinkedIn outreach & email campaigns.</p>
+                    <a class="btn small" href="apply/apply.html">Apply Now</a>
+                </div>
+
+                <div class="job-card sales">
+                    <h4>Digital Marketing Specialist (SEO & Ads)</h4>
+                    <p>Run ROI-driven campaigns across Google, Meta & LinkedIn.</p>
+                    <a class="btn small" href="apply/apply.html">Apply Now</a>
+                </div>
+
+                <div class="job-card support">
+                    <h4>Cold Calling Associates</h4>
+                    <p>Mass call outreach for prospecting and first contact with leads.</p>
+                    <a class="btn small" href="apply/apply.html">Apply Now</a>
+                </div>
+
+                <div class="job-card support">
+                    <h4>Lead Qualification Callers</h4>
+                    <p>Engage inbound leads, qualify them and forward to sales team.</p>
+                    <a class="btn small" href="apply/apply.html">Apply Now</a>
+                </div>
+
+                <div class="job-card support">
+                    <h4>Customer Success Associates</h4>
+                    <p>Manage support tickets, onboarding, training & follow-ups.</p>
+                    <a class="btn small" href="apply/apply.html">Apply Now</a>
+                </div>
+
+                <div class="job-card dev">
+                    <h4>Frontend / Backend / Full-Stack Developers</h4>
+                    <p>React, Next.js, Node.js developers to build high-performance apps.</p>
+                    <a class="btn small" href="apply/apply.html">Apply Now</a>
+                </div>
+
+                <div class="job-card dev">
+                    <h4>Blockchain Engineers (Solidity / DApps / NFTs)</h4>
+                    <p>Work on DeFi, NFT & smart contract projects. Prior GitHub required.</p>
+                    <a class="btn small" href="apply/apply.html">Apply Now</a>
+                </div>
+
+                <div class="job-card dev">
+                    <h4>Game Developers (Unity / Unreal)</h4>
+                    <p>Design immersive 2D/3D & blockchain-integrated games.</p>
+                    <a class="btn small" href="apply/apply.html">Apply Now</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="sr-only" id="dm-detail"><h2>Digital Marketing</h2></section>
+    <section class="sr-only" id="dev-detail"><h2>Full‑Stack Development</h2></section>
+    <section class="sr-only" id="bc-detail"><h2>Blockchain</h2></section>
+    <section class="sr-only" id="game-detail"><h2>Game Dev</h2></section>
+    <section class="sr-only" id="web-detail"><h2>Web Design</h2></section>
+    <section class="sr-only" id="video-detail"><h2>AI Video</h2></section>
+
+    <section id="contact" data-reveal>
+        <div class="container">
+            <div class="section-head"><h2>Start a Project</h2></div>
+
+            <div class="contact-wrap">
+                <form id="contactForm" action="https://formspree.io/f/xwpnjdop" method="POST">
+                    <label for="name">Full Name</label>
+                    <input id="name" name="name" placeholder="Your full name" required>
+
+                    <label for="email">Email</label>
+                    <input id="email" type="email" name="email" placeholder="you@company.com" required>
+
+                    <label for="phone">Phone Number (with Country Code)</label>
+                    <input id="phone" name="phone" type="tel" placeholder="+91 9876543210" required>
+
+                    <label for="whatsapp">WhatsApp Number</label>
+                    <input id="whatsapp" name="whatsapp" type="tel" placeholder="+91 9876543210">
+
+                    <label for="company">Company / Organization</label>
+                    <input id="company" name="company" placeholder="Your company or startup name">
+
+                    <label for="address">Address</label>
+                    <textarea id="address" name="address" placeholder="Your complete address"></textarea>
+
+                    <label for="service">Service Interested In</label>
+                    <select id="service" name="service" required>
+                        <option value="">Choose a service</option>
+                        <option>Performance Marketing</option>
+                        <option>Full-Stack Development</option>
+                        <option>Blockchain / Smart Contracts</option>
+                        <option>Game Development</option>
+                        <option>Web Design</option>
+                        <option>AI Video</option>
+                        <option>Other</option>
+                    </select>
+
+                    <label for="budget">Estimated Budget</label>
+                    <select id="budget" name="budget">
+                        <option value="">Select budget range</option>
+                        <option>Under $1,000</option>
+                        <option>$1,000 – $5,000</option>
+                        <option>$5,000 – $10,000</option>
+                        <option>$10,000+</option>
+                    </select>
+
+                    <label for="timeline">Expected Timeline</label>
+                    <select id="timeline" name="timeline">
+                        <option value="">Select timeline</option>
+                        <option>ASAP (within 1 month)</option>
+                        <option>1 – 3 months</option>
+                        <option>3 – 6 months</option>
+                        <option>6+ months</option>
+                    </select>
+
+                    <label for="msg">Project Details</label>
+                    <textarea id="msg" name="message" placeholder="Tell us about your goals, timeline and budget…" required></textarea>
+
+                    <div class="form-actions">
+                        <button class="btn" type="submit">Request Proposal</button>
+                        <span id="formStatus" class="pill" style="display:none"></span>
+                    </div>
+                </form>
+
+                <div class="contact-card">
+                    <h3 style="margin-top:6px">Contact</h3>
+                    <div class="contact-row">📞 <a href="tel:+919335655896">+91-93356-55896</a></div>
+                    <div class="contact-row">✉️ <a href="mailto:Cloudoraserv@gmail.com">Cloudoraserv@gmail.com</a></div>
+                    <div class="contact-row">🌍 Serving clients in India, US, EU & MEA</div>
+                    <div class="contact-row">🕒 Mon–Fri • 9:30 AM – 7:00 PM IST</div>
+                </div>
+            </div></div></section>
+
+    <footer>
+        <div class="container foot">
+            <div class="foot-left">
+                <div class="brand-mini">
+                    <span class="logo mini" aria-hidden="true"></span>
+                    <b>Cloudora</b>
+                </div>
+                <span class="copyright">© <span id="year"></span> All rights reserved</span>
+            </div>
+            <div class="social">
+                
+                <a class="icon" href="https://www.instagram.com/cloudora_services?igsh=MXUzZWlqNnkxbGk0YQ==" aria-label="Instagram" title="Instagram">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm10 2c1.7 0 3 1.3 3 3v10c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V7c0-1.7 1.3-3 3-3h10zm-5 3.5A5.5 5.5 0 1 0 17.5 13 5.5 5.5 0 0 0 12 7.5zm0 2A3.5 3.5 0 1 1 8.5 13 3.5 3.5 0 0 1 12 9.5zm5.8-3.6a1 1 0 1 0 1 1 1 1 0 0 0-1-1z"/></svg>
+                </a>
+                <a class="icon" href="https://www.facebook.com/share/1FtH8Xcd8b/" aria-label="facebook" title="Facebook">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.46 6c-.77.35-1.6.58-2.46.69a4.27 4.27 0 0 0 1.87-2.36 8.6 8.6 0 0 1-2.72 1.04 4.26 4.26 0 0 0-7.26 3.88 12.1 12.1 0 0 1-8.8-4.46 4.26 4.26 0 0 0 1.32 5.68c-.63-.02-1.22-.19-1.74-.48v.05a4.26 4.26 0 0 0 3.42 4.18c-.52.14-1.07.17-1.62.06a4.26 4.26 0 0 0 3.98 2.96A8.54 8.54 0 0 1 2 19.54a12.06 12.06 0 0 0 6.55 1.92c7.86 0 12.17-6.51 12.17-12.16 0-.19 0-.38-.01-.56A8.67 8.67 0 0 0 24 6.57c-.74.33-1.54.55-2.38.64z"/></svg>
+                </a>
+                <a class="icon" href="https://github.com/cloudoraserv-SRK/CLOUDORA" aria-label="GitHub" title="GitHub">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.17c-3.34.73-4.04-1.44-4.04-1.44-.55-1.4-1.35-1.77-1.35-1.77-1.1-.77.08-.75.08-.75 1.22.09 1.87 1.25 1.87 1.25 1.08 1.85 2.83 1.32 3.52 1.01.11-.79.42-1.32.76-1.62-2.67-.3-5.48-1.34-5.48-5.97 0-1.32.47-2.41 1.24-3.26-.12-.3-.54-1.52.12-3.16 0 0 1.01-.32 3.3 1.24a11.4 11.4 0 0 1 6 0c2.29-1.56 3.3-1.24 3.3-1.24.66 1.64.24 2.86.12 3.16.77.85 1.23 1.94 1.23 3.26 0 4.64-2.81 5.67-5.49 5.97.43.37.8 1.1.8 2.22v3.3c0 .32.21.7.82.58A12 12 0 0 0 12 .5z"/></svg>
+                </a>
+            </div>
+            <div class="legal">
+                <a href="#" id="openPrivacy">Privacy Policy</a>
+                <span>•</span>
+                <a href="#" id="openTerms">Terms & Conditions</a>
+            </div>
+        </div>
+    </footer>
+
+    <div class="modal" id="privacyModal" aria-hidden="true" role="dialog" aria-labelledby="privacyTitle">
+        <div class="modal-card">
+            <div class="modal-head">
+                <h3 id="privacyTitle">Privacy Policy</h3>
+                <button class="close" data-close>✕</button>
+            </div>
+            <div class="modal-body">
+                <p>We collect only necessary information (name, email, project details) submitted through our form to reply to your inquiry. We do not sell your data. You may request deletion anytime at <a href="mailto:privacy@cloudora.studio">privacy@cloudora.studio</a>.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="termsModal" aria-hidden="true" role="dialog" aria-labelledby="termsTitle">
+        <div class="modal-card">
+            <div class="modal-head">
+                <h3 id="termsTitle">Terms & Conditions</h3>
+                <button class="close" data-close>✕</button>
+            </div>
+            <div class="modal-body">
+                <p>All estimates are subject to a formal SOW. Work starts post‑advance. IP transfers upon full payment. Confidentiality/NDA available on request.</p>
+            </div>
+        </div>
+    </div>
+
+    <a href="https://wa.me/919335655896" class="btn whatsapp" aria-label="WhatsApp us">WhatsApp</a>
 </body>
-  </html>
+</html>
