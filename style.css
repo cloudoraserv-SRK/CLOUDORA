@@ -425,6 +425,7 @@ section{padding:34px 0}
   perspective: 1200px;
   margin: 40px auto;
   position: relative;
+  z-index: 1;
   overflow: visible;
 }
 
@@ -442,6 +443,7 @@ section{padding:34px 0}
   top: 0;
   left: 50%;
   margin-left: -160px; /* center horizontally */
+  backface-visibility: hidden; /* Hide backside when rotated *
 }
 
 .portfolio-card {
