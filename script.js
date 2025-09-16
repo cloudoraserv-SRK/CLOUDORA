@@ -129,54 +129,43 @@
   /* ---------------------------
      Portfolio carousel (GSAP optional, fallback provided)
      --------------------------- */
-  const portfolioCarousel = document.getElementById('portfolioCarousel');
-  if (portfolioCarousel) {
-    const slides = Array.from(portfolioCarousel.querySelectorAll('.portfolio-slide'));
-    const total = Math.max(1, slides.length);
-    let current = 0;
-    const angle = 360 / total;
+  // GSAP Portfolio 3D Carousel
+const portfolioCarousel = document.getElementById("portfolioCarousel");
+const portfolioSlides = portfolioCarousel.querySelectorAll(".portfolio-slide");
+const totalPortfolioSlides = portfolioSlides.length;
 
-    // If GSAP is available, use 3D circular layout
-    if (typeof gsap !== 'undefined') {
-      slides.forEach((slide, i) => {
-        gsap.set(slide, {
-          rotationY: angle * i,
-          transformOrigin: 'center center -600px'
-        });
-      });
-      function rotatePortfolio() {
-        gsap.to(portfolioCarousel, {
-          rotationY: -current * angle,
-          duration: 1,
-          ease: 'power2.inOut'
-        });
-      }
-      const nextP = document.querySelector('.portfolio-btn.next');
-      const prevP = document.querySelector('.portfolio-btn.prev');
-      if (nextP) nextP.addEventListener('click', () => { current = (current + 1) % total; rotatePortfolio(); });
-      if (prevP) prevP.addEventListener('click', () => { current = (current - 1 + total) % total; rotatePortfolio(); });
-      rotatePortfolio();
-    } else {
-      // fallback: simple horizontal slider (no external lib)
-      portfolioCarousel.style.display = 'flex';
-      portfolioCarousel.style.overflow = 'hidden';
-      portfolioCarousel.style.scrollBehavior = 'smooth';
-      // ensure slides don't overlap
-      slides.forEach(s => s.style.minWidth = s.style.maxWidth = `${s.getBoundingClientRect().width || 320}px`);
+let currentPortfolio = 0;
+const radius = 600; // how far back slides sit
+const portfolioAngle = 360 / totalPortfolioSlides;
 
-      const nextP = document.querySelector('.portfolio-btn.next');
-      const prevP = document.querySelector('.portfolio-btn.prev');
+// Arrange slides in circle
+portfolioSlides.forEach((slide, i) => {
+  gsap.set(slide, {
+    rotationY: portfolioAngle * i,
+    transformOrigin: `center center -${radius}px`
+  });
+});
 
-      function updateFallback() {
-        const w = slides[0]?.getBoundingClientRect().width || 320;
-        portfolioCarousel.scrollLeft = current * (w + 16); // 16 ~ gap
-      }
-      if (nextP) nextP.addEventListener('click', () => { current = Math.min(current + 1, total - 1); updateFallback(); });
-      if (prevP) prevP.addEventListener('click', () => { current = Math.max(current - 1, 0); updateFallback(); });
-      // recalc on resize
-      window.addEventListener('resize', () => setTimeout(updateFallback, 120));
-      updateFallback();
-    }
-  } // end portfolio
+// Rotate function
+function rotatePortfolio() {
+  gsap.to(portfolioCarousel, {
+    rotationY: -currentPortfolio * portfolioAngle,
+    duration: 1.2,
+    ease: "power2.inOut"
+  });
+}
 
-})(); // IIFE
+// Buttons
+document.querySelector(".portfolio-btn.next").addEventListener("click", () => {
+  currentPortfolio = (currentPortfolio + 1) % totalPortfolioSlides;
+  rotatePortfolio();
+});
+
+document.querySelector(".portfolio-btn.prev").addEventListener("click", () => {
+  currentPortfolio = (currentPortfolio - 1 + totalPortfolioSlides) % totalPortfolioSlides;
+  rotatePortfolio();
+});
+
+// Init
+rotatePortfolio();
+
