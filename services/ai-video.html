@@ -1,98 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Creative Studio — AI Videos & Logo Design | Cloudora</title>
-  <link rel="stylesheet" href="services.css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Creative Studio — AI Videos & Logo Design | Cloudora</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="services.css" />
 </head>
 <body>
-  <nav class="navbar">
-    <a href="../index.html" class="logo">Cloudora</a>
-    <ul class="nav-links">
-      <li><a href="../index.html#services">Services</a></li>
-      <li><a href="../index.html#why">Why Us</a></li>
-      <li><a href="../index.html#contact">Contact</a></li>
-    </ul>
-    <button class="nav-toggle">☰</button>
-  </nav>
+    <div class="aura" aria-hidden="true"></div>
+    <div class="stars" aria-hidden="true"></div>
 
-  <section class="hero">
-    <h1>Creative Studio — AI Videos & Logo Design</h1>
-    <p>Studio-quality short videos, motion graphics and brand identity (logos, visual systems) — fast and affordable.</p>
-  </section>
+    <nav class="navbar">
+        <div class="container nav">
+            <a class="brand" href="../index.html" aria-label="Cloudora home">
+                <span class="logo" aria-hidden="true">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M6.5 12a5.5 5.5 0 0 1 10.8-1.6A4.2 4.2 0 1 1 18 19H7.5a4.5 4.5 0 0 1-1-8.9Z" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+                    </svg>
+                </span>
+                <b>CLOUDORA</b>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="../index.html#services">Services</a></li>
+                <li><a href="../index.html#why">Why Us</a></li>
+                <li><a href="../index.html#hiring">Careers</a></li>
+                <li><a href="../index.html#contact">Contact</a></li>
+            </ul>
+            <button class="nav-toggle">☰</button>
+        </div>
+    </nav>
 
-  <section class="section">
-    <h2>Our Creative Services</h2>
-    <ul class="list">
-      <li>AI-assisted video ads, explainers & reels</li>
-      <li>Motion graphics and animated social content</li>
-      <li>Logo design, brand marks and visual identity</li>
-      <li>Styleguides, pitch decks & presentation design</li>
-      <li>Fast-turnaround packages for campaigns</li>
-    </ul>
-  </section>
+    <section class="hero">
+        <h1>Creative Studio</h1>
+        <p>From captivating brand identities to stunning AI-generated videos, we deliver studio-quality creative assets for your business, fast and affordably.</p>
+    </section>
 
-  <section class="section pricing">
-    <h2>Creative Packages</h2>
-    <div class="pricing-grid">
-      <div class="plan">
-        <h3>Starter</h3>
-        <p><s>₹9,999</s> <span>₹4,999</span></p>
-        <ul><li>1 logo concept + revisions</li><li>1 short video (15s)</li></ul>
-        <a class="btn" href="../index.html#contact">Order Starter</a>
-      </div>
-      <div class="plan popular">
-        <h3>Campaign</h3>
-        <p><s>₹29,999</s> <span>₹14,999</span></p>
-        <ul><li>Logo + brand kit</li><li>3 short videos + motion assets</li></ul>
-        <a class="btn" href="../index.html#contact">Get Campaign</a>
-      </div>
-      <div class="plan">
-        <h3>Studio</h3>
-        <p>Custom Quote</p>
-        <ul><li>Full creative direction</li><li>Multiple videos & brand assets</li></ul>
-        <a class="btn" href="../index.html#contact">Request Quote</a>
-      </div>
-    </div>
-  </section>
+    <section class="section">
+        <h2>Our Creative Services</h2>
+        <div class="list">
+            <h3>AI-Assisted Video Production</h3>
+            <ul>
+                <li>High-impact short-form videos for social media (Reels, Shorts, TikTok).</li>
+                <li>Engaging explainer videos and product demos.</li>
+                <li>AI-powered video ads for fast production and testing.</li>
+            </ul>
+        </div>
+        <div class="list" style="margin-top: 2rem;">
+            <h3>Brand & Logo Design</h3>
+            <ul>
+                <li>Unique logo concepts and full brand identity kits.</li>
+                <li>Comprehensive style guides to ensure brand consistency.</li>
+                <li>Design of marketing collateral, pitch decks, and presentations.</li>
+            </ul>
+        </div>
+        <div class="list" style="margin-top: 2rem;">
+            <h3>Motion Graphics & Visuals</h3>
+            <ul>
+                <li>Custom motion graphics and animated social content to stand out online.</li>
+                <li>2D/3D visual effects and animations for video projects.</li>
+                <li>Infographics and visual data storytelling.</li>
+            </ul>
+        </div>
+    </section>
 
-  <section class="section process">
-    <h2>Creative Workflow</h2>
-    <div class="steps">
-      <div class="step">Brief & references</div>
-      <div class="step">Concept & storyboard</div>
-      <div class="step">Production & editing</div>
-      <div class="step">Delivery & assets</div>
-    </div>
-  </section>
+    <section class="section pricing">
+        <h2>Creative Packages</h2>
+        <div class="pricing-grid">
+            <div class="plan">
+                <h3>Logo & Video Pack</h3>
+                <p>The perfect kickstart for a new brand or campaign.</p>
+                <p class="price"><span>₹4,999</span></p>
+                <ul>
+                    <li>1 unique logo concept with revisions.</li>
+                    <li>1 short video (up to 30 seconds).</li>
+                    <li>Source files included.</li>
+                </ul>
+                <a class="btn" href="../index.html#contact">Get Started</a>
+            </div>
 
-  <section class="section why">
-    <h2>Why work with our Creative Studio?</h2>
-    <div class="grid-3">
-      <div class="feature"><h4>Fast turnaround</h4><p>AI-assisted workflows speed production without losing quality.</p></div>
-      <div class="feature"><h4>Brand-first design</h4><p>Logos and motion that scale across platforms.</p></div>
-      <div class="feature"><h4>Affordable studio</h4><p>Studio-grade output at agency-friendly prices.</p></div>
-    </div>
-  </section>
+            <div class="plan popular">
+                <h3>Campaign Package</h3>
+                <p>Everything you need for a complete marketing campaign.</p>
+                <p class="price"><span>₹14,999</span></p>
+                <ul>
+                    <li>3 unique logo concepts + full brand kit.</li>
+                    <li>3 short videos with motion assets.</li>
+                    <li>Custom audio and sound effects.</li>
+                    <li>Dedicated project manager.</li>
+                </ul>
+                <a class="btn" href="../index.html#contact">Best Value</a>
+            </div>
 
-  <section class="section faq">
-    <h2>FAQ</h2>
-    <details><summary>Can you create custom music/sfx?</summary><p>Yes — we source or create soundtracks for videos as needed.</p></details>
-    <details><summary>Do you deliver vector logos?</summary><p>Yes — all logos are delivered in SVG/AI/EPS + PNG/JPG.</p></details>
-  </section>
+            <div class="plan">
+                <h3>Custom Studio</h3>
+                <p>For large-scale or complex creative requirements.</p>
+                <p class="price">Custom Quote</p>
+                <ul>
+                    <li>Full creative direction and art direction.</li>
+                    <li>Comprehensive video production services.</li>
+                    <li>Complete brand system design.</li>
+                    <li>Ongoing support and asset creation.</li>
+                </ul>
+                <a class="btn" href="../index.html#contact">Request Quote</a>
+            </div>
+        </div>
+    </section>
 
-  <div class="cta"><a href="../index.html#contact">Book Creative Studio</a></div>
+    <section class="section process">
+        <h2>Our Creative Workflow</h2>
+        <div class="steps">
+            <div class="step">
+                <h4>1. Brief & Discovery</h4>
+                <p>We work with you to define your creative vision, goals, and target audience.</p>
+            </div>
+            <div class="step">
+                <h4>2. Concept & Storyboard</h4>
+                <p>Our team develops unique concepts and storyboards for your approval before production begins.</p>
+            </div>
+            <div class="step">
+                <h4>3. Production & Revisions</h4>
+                <p>We produce the assets, ensuring your feedback is incorporated at every stage of the creative process.</p>
+            </div>
+            <div class="step">
+                <h4>4. Final Delivery</h4>
+                <p>You receive all final assets in multiple formats, ready for use across all your platforms.</p>
+            </div>
+        </div>
+    </section>
 
-  <footer>
-    <div class="footer-grid">
-      <div><h4>Cloudora Creative</h4><p>AI video + brand identity.</p></div>
-      <div><h4>Contact</h4><ul><li><a href="mailto:hello@cloudora.studio">hello@cloudora.studio</a></li></ul></div>
-      <div><h4>Follow</h4><p><a href="#">Instagram</a> | <a href="#">Dribbble</a></p></div>
-    </div>
-    <p style="margin-top:18px;">© 2025 Cloudora</p>
-  </footer>
+    <section class="section why">
+        <h2>Why Cloudora's Creative Studio?</h2>
+        <div class="grid-3">
+            <div class="feature">
+                <h4>AI-Powered Efficiency</h4>
+                <p>Our AI-assisted workflows drastically speed up production without compromising on the final quality.</p>
+            </div>
+            <div class="feature">
+                <h4>Brand-First Design</h4>
+                <p>We create assets that are not just beautiful but are strategically aligned with your brand identity and goals.</p>
+            </div>
+            <div class="feature">
+                <h4>Affordable Quality</h4>
+                <p>Get the quality of a high-end creative studio at a fraction of the cost, perfect for startups and growing businesses.</p>
+            </div>
+        </div>
+    </section>
 
-  <script src="services.js"></script>
+    <section class="section faq">
+        <h2>Frequently Asked Questions</h2>
+        <details>
+            <summary>Do you create original music or sound effects?</summary>
+            <p>Yes, we can either source licensed, royalty-free soundtracks or work with audio designers to create custom music and sound effects as part of a package.</p>
+        </details>
+        <details>
+            <summary>What file formats do you deliver?</summary>
+            <p>For logos, we deliver vector files (SVG, AI, EPS) and high-resolution raster files (PNG, JPG). For videos, we provide high-quality MP4 files in various aspect ratios (16:9, 9:16, 1:1) as needed.</p>
+        </details>
+        <details>
+            <summary>How many revisions are included?</summary>
+            <p>Each package includes a set number of revisions to ensure you are completely satisfied with the final product. Additional revisions can be added as an a la carte service.</p>
+        </details>
+    </section>
+
+    <div class="cta"><a href="../index.html#contact">Book a Free Consultation</a></div>
+
+    <footer>
+        <div class="container foot">
+            <div class="foot-left">
+                <div class="brand-mini">
+                    <span class="logo mini" aria-hidden="true"></span>
+                    <b>Cloudora</b>
+                </div>
+                <span class="copyright">© <span id="year"></span> All rights reserved</span>
+                <div class="contact-info">
+                    <div class="contact-row">📞 <a href="tel:+919335655896">+91-93356-55896</a></div>
+                    <div class="contact-row">✉️ <a href="mailto:Cloudoraserv@gmail.com">Cloudoraserv@gmail.com</a></div>
+                    <div class="contact-row">🌍 Serving clients in India, US, EU & MEA</div>
+                    <div class="contact-row">🕒 Mon–Fri • 9:30 AM – 7:00 PM IST</div>
+                </div>
+            </div>
+            <div class="social">
+                <a class="icon" href="https://www.instagram.com/cloudora_services?igsh=MXUzZWlqNnkxbGk0YQ==" aria-label="Instagram" title="Instagram">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm10 2c1.7 0 3 1.3 3 3v10c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V7c0-1.7 1.3-3 3-3h10zm-5 3.5A5.5 5.5 0 1 0 17.5 13 5.5 5.5 0 0 0 12 7.5zm0 2A3.5 3.5 0 1 1 8.5 13 3.5 3.5 0 0 1 12 9.5zm5.8-3.6a1 1 0 1 0 1 1 1 1 0 0 0-1-1z"/></svg>
+                </a>
+                <a class="icon" href="https://www.facebook.com/share/1FtH8Xcd8b/" aria-label="facebook" title="Facebook">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm3 8h-1.35c-.522 0-.65.234-.65.65v1.35h2l-.246 2h-1.754v6h-3v-6h-2v-2h2v-1.157c0-1.789.97-2.843 2.866-2.843h1.134v3z"/></svg>
+                </a>
+                <a class="icon" href="https://github.com/cloudoraserv-SRK/CLOUDORA" aria-label="GitHub" title="GitHub">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.17c-3.34.73-4.04-1.44-4.04-1.44-.55-1.4-1.35-1.77-1.35-1.77-1.1-.77.08-.75.08-.75 1.22.09 1.87 1.25 1.87 1.25 1.08 1.85 2.83 1.32 3.52 1.01.11-.79.42-1.32.76-1.62-2.67-.3-5.48-1.34-5.48-5.97 0-1.32.47-2.41 1.24-3.26-.12-.3-.54-1.52.12-3.16 0 0 1.01-.32 3.3 1.24a11.4 11.4 0 0 1 6 0c2.29-1.56 3.3-1.24 3.3-1.24.66 1.64.24 2.86.12 3.16.77.85 1.23 1.94 1.23 3.26 0 4.64-2.81 5.67-5.49 5.97.43.37.8 1.1.8 2.22v3.3c0 .32.21.7.82.58A12 12 0 0 0 12 .5z"/></svg>
+                </a>
+            </div>
+            <div class="legal">
+                <a href="../index.html" id="openPrivacy">Privacy Policy</a>
+                <span>•</span>
+                <a href="../index.html" id="openTerms">Terms & Conditions</a>
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/919335655896" class="btn whatsapp" aria-label="WhatsApp us">WhatsApp</a>
+
+    <script src="services.js"></script>
 </body>
 </html>
