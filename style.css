@@ -55,103 +55,16 @@ img{max-width:100%; display:block}
 .mobile a:hover{background:rgba(255,255,255,.06)}
 
 /* Hero */
-.hero {
-  padding: 100px 20px;
-  background: linear-gradient(135deg, rgba(124,92,255,0.15), rgba(0,212,255,0.15));
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
+.hero{padding:80px 0 40px}
+.hero-grid{display:grid; grid-template-columns:1.2fr .8fr; gap:40px; align-items:center}
+.title{font-family:Poppins,Inter,sans-serif; font-weight:700; font-size:clamp(2rem, 4.8vw, 3.3rem); line-height:1.08}
+.subtitle{color:var(--muted); font-size:1.05rem; margin:14px 0 24px}
+.cta-row{display:flex; gap:12px; flex-wrap:wrap}
+.statbar{display:flex; gap:16px; margin-top:20px; flex-wrap:wrap}
+.stat{display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:14px; background:var(--panel); border:1px solid rgba(255,255,255,.06)}
 
-.hero-content {
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.title {
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
-  font-weight: 700;
-  background: linear-gradient(90deg, #7c5cff, #00d4ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 20px;
-}
-
-.subtitle {
-  font-size: 1.2rem;
-  color: rgba(255,255,255,0.85);
-  margin-bottom: 40px;
-}
-
-.highlight {
-  font-weight: 700;
-  color: #ffeb3b;
-}
-
-/* Launch Offer Box inside Hero */
-.launch-offer {
-  background: linear-gradient(135deg, #7c5cff, #00d4ff);
-  color: #fff;
-  padding: 40px 30px;
-  border-radius: 20px;
-  margin: 0 auto;
-  max-width: 850px;
-  text-align: center;
-  box-shadow: 0 12px 28px rgba(0,0,0,0.35);
-}
-
-.launch-offer h2 {
-  font-size: 2rem;
-  margin-bottom: 16px;
-}
-
-.pricing-table {
-  width: 100%;
-  margin: 20px auto;
-  border-collapse: separate;
-  border-spacing: 0 12px;
-}
-
-.pricing-table td {
-  padding: 12px 16px;
-  font-size: 1.05rem;
-  background: rgba(255,255,255,0.1);
-  border-radius: 10px;
-}
-
-.new-price {
-  font-weight: 700;
-  color: #ffeb3b;
-  margin-left: 6px;
-}
-
-.limited {
-  margin-top: 16px;
-  font-style: italic;
-  font-size: 1rem;
-  opacity: 0.9;
-}
-
-/* Premium Brochure Button */
-.brochure-btn {
-  display: inline-block;
-  margin-left: 12px;
-  padding: 6px 14px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #fff;
-  background: #ff4d8d;
-  border-radius: 20px;
-  text-decoration: none;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.25);
-  transition: all 0.3s ease;
-}
-
-.brochure-btn:hover {
-  background: #e63b7a;
-  transform: translateY(-2px);
-}
-
+.hero-visual{position:relative; aspect-ratio:4/3; border-radius:var(--radius-2xl); overflow:hidden; background:radial-gradient(80% 100% at 20% 10%, rgba(124,92,255,.35), transparent 60%), linear-gradient(180deg, rgba(0,212,255,.2), transparent 60%), linear-gradient(180deg, var(--bg-2), var(--panel)); box-shadow:var(--glow)}
+.hero-visual svg{position:absolute; inset:0; width:100%; height:100%; opacity:.9}
 
 /* Sections */
 section{padding:34px 0}
@@ -165,137 +78,21 @@ section{padding:34px 0}
 .fade-mask:before{left:0; background:linear-gradient(90deg, var(--bg), transparent)}
 .fade-mask:after{right:0; background:linear-gradient(270deg, var(--bg), transparent)}
 
-.scroller {
-  display: flex;                 /* simpler than grid here */
-  gap: 18px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-padding: 16px;
-  padding: 16px 4px 22px;
-  -webkit-overflow-scrolling: touch;
-}
-
-.scroller > .card {
-  flex: 0 0 320px;               /* each card fixed width */
-  scroll-snap-align: start;
-}
+.scroller{display:grid; grid-auto-flow:column; grid-auto-columns: 320px; gap:18px; overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding:16px; padding:16px 4px 22px; -webkit-overflow-scrolling:touch}
 .scroller::-webkit-scrollbar{height:10px}
 .scroller::-webkit-scrollbar-thumb{background:linear-gradient(90deg, rgba(124,92,255,.5), rgba(0,212,255,.5)); border-radius:999px}
 
-/* Service Card */
-.card {
-  position: relative;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 18px;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 12px 25px rgba(0,0,0,0.25);
-}
-
-/* Card Image */
-.card .img {
-  position: relative;
-}
-
-.card img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  border-top-left-radius: 18px;
-  border-top-right-radius: 18px;
-}
-
-/* Discount Ribbon */
-.ribbon {
-  position: absolute;
-  top: 14px;
-  right: -40px;
-  background: linear-gradient(135deg, #ff4b2b, #ff416c);
-  color: #fff;
-  padding: 6px 50px;
-  transform: rotate(45deg);
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  z-index: 2;
-}
-
-/* Card Body */
-.card .body {
-  padding: 20px;
-}
-
-.card h3 {
-  font-size: 1.2rem;
-  margin-bottom: 8px;
-}
-
-.card h3 a {
-  color: #fff;
-  text-decoration: none;
-}
-
-.card p {
-  color: #ccc;
-  font-size: 0.95rem;
-  margin-bottom: 12px;
-  line-height: 1.5;
-}
-
-/* Price */
-.price {
-  margin: 10px 0;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #fff;
-}
-
-.price s {
-  color: rgba(255,255,255,0.6);
-  margin-right: 6px;
-}
-
-.new-price {
-  color: #00d4ff;
-  font-size: 1.1rem;
-  font-weight: 700;
-}
-
-/* Buttons */
-.btn.small {
-  background: linear-gradient(135deg, #7c5cff, #00d4ff);
-  border-radius: 25px;
-  padding: 8px 16px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-decoration: none;
-  color: #fff;
-  transition: all 0.3s ease;
-}
-
-.btn.small:hover {
-  background: linear-gradient(135deg, #5a3fd6, #00b0d4);
-}
-
-.explore-link {
-  display: inline-block;
-  margin-left: 12px;
-  font-size: 0.85rem;
-  color: #00d4ff;
-  text-decoration: none;
-  transition: color 0.3s;
-}
-
-.explore-link:hover {
-  color: #7c5cff;
-}
-
+.card{scroll-snap-align:start; background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03)); border:1px solid rgba(255,255,255,.08); border-radius:var(--radius-xl); overflow:hidden; box-shadow:var(--shadow-xl)}
+.card .img{height:170px; background:#0e1433; position:relative}
+.card .img img{width:100%; height:100%; object-fit:cover; display:block; filter:saturate(1.05)}
+.badge{position:absolute; left:12px; top:12px;}
+.card .body{padding:16px}
+.card h3{margin:2px 0 6px; font-size:1.1rem}
+.card h3 a{color:#bcd7ff; text-decoration:none}
+.card h3 a:hover{color:#fff}
+.card p{margin:0; color:var(--muted); font-size:.95rem; min-height:52px}
+.price{margin:12px 0 14px; font-weight:700}
+.price small{opacity:.7; font-weight:500}
 
 /* Why */
 .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
@@ -304,118 +101,17 @@ section{padding:34px 0}
 .feature p{margin:0; color:var(--muted)}
 
 /* Hiring */
-/* === Hiring Section === */
-#hiring {
-  padding: 80px 20px;
-  background: linear-gradient(135deg, #0d0b1f, #1a1440, #0d1b2a);
-  color: #f5f5f5;
-}
+.joblist{display:grid; grid-template-columns:repeat(2,1fr); gap:16px}
+.job{padding:18px; background:linear-gradient(180deg, rgba(0,212,255,.06), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.08); border-radius:var(--radius-xl)}
+.job h4{margin:0 0 8px}
+.job p{margin:0 0 10px; color:var(--muted)}
 
-#hiring .section-head h2 {
-  text-align: center;
-  font-size: 2.2rem;
-  margin-bottom: 40px;
-  color: #222;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-}
-
-/* Filter buttons */
-.job-filters {
-  text-align: center;
-  margin-bottom: 40px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-}
-
-.filter-btn {
-  background: #fff;
-  border: 2px solid #7c5cff;
-  padding: 12px 26px;
-  border-radius: 30px;
-  font-weight: 700;
-  font-size: 1rem;
-  color: #7c5cff;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.filter-btn.active,
-.filter-btn:hover {
-  background: #7c5cff;
-  color: #fff;
-  box-shadow: 0 6px 16px rgba(124, 92, 255, 0.3);
-  transform: translateY(-2px);
-}
-
-/* Job cards */
-.job-card {
-  background: #fff;
-  border-left: 6px solid #7c5cff;
-  border-radius: 12px;
-  padding: 24px;
-  margin: 20px auto;
-  max-width: 800px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.job-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.15);
-}
-
-.job-card h4 {
-  font-size: 1.25rem;
-  color: #111;
-  margin-bottom: 10px;
-  font-weight: 700;
-}
-
-.job-card p {
-  color: #444;
-  font-size: 1rem;
-  margin-bottom: 16px;
-}
-
-.job-card .btn.small {
-  padding: 10px 20px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  border-radius: 25px;
-  background: linear-gradient(135deg, #7c5cff, #00d4ff);
-  color: #fff;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-.job-card .btn.small:hover {
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-  transform: translateY(-2px);
-}
-
-/* Mobile Responsive */
-@media (max-width: 768px) {
-  #hiring {
-    padding: 60px 16px;
-  }
-
-  #hiring .section-head h2 {
-    font-size: 1.8rem;
-  }
-
-  .filter-btn {
-    flex: 1 1 100%;
-    max-width: 100%;
-    text-align: center;
-  }
-
-  .job-card {
-    padding: 20px;
-  }
-}
+/* Portfolio */
+.portfolio-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px}
+.project{background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03)); border:1px solid rgba(255,255,255,.08); border-radius:var(--radius-xl); overflow:hidden}
+.project img{height:160px; width:100%; object-fit:cover}
+.project h4{margin:12px 12px 4px}
+.project p{margin:0 12px 14px; color:var(--muted)}
 
 /* Contact */
 .contact-wrap{display:grid; grid-template-columns:1.1fr .9fr; gap:22px}
@@ -476,4 +172,4 @@ footer{padding:28px 0 50px; border-top:1px solid rgba(255,255,255,.06); backgrou
 /* Motion preferences */
 @media (prefers-reduced-motion: reduce){
   *{transition:none !important; animation:none !important}
-                                                                                                                              }
+}
