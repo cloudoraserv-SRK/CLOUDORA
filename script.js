@@ -49,17 +49,34 @@ const io = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
 
-// Fake contact submit (static hosting friendly)
-const form = document.getElementById('contactForm');
-const status = document.getElementById('formStatus');
-document.getElementById('send')?.addEventListener('click', () => {
-  if(!form?.checkValidity()){ form?.reportValidity(); return; }
-  if (status){
-    status.textContent = "Thanks! We'll reach out within 24h.";
-    status.style.display = 'inline-block';
+// contact submit (static hosting friendly)
+
+const form = document.getElementById("contactForm");
+const status = document.getElementById("formStatus");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const data = new FormData(form);
+  try {
+    const response = await fetch(form.action, {
+      method: form.method,
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    });
+    if (response.ok) {
+      status.style.display = "inline-block";
+      status.innerText = "✅ Thanks! We’ll contact you soon.";
+      form.reset();
+    } else {
+      status.style.display = "inline-block";
+      status.innerText = "⚠️ Oops! Something went wrong.";
+    }
+  } catch (error) {
+    status.style.display = "inline-block";
+    status.innerText = "⚠️ Network error, please try again.";
   }
-  form?.reset();
 });
+
 
 // Footer year
 const y = document.getElementById('year');
@@ -100,3 +117,4 @@ document.querySelector(".portfolio-btn.prev").addEventListener("click", () => {
 
 // Initialize
 rotatePortfolio();
+for forms
