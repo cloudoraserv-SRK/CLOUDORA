@@ -426,44 +426,83 @@
   <section class="sr-only" id="web-detail"><h2>Web Design</h2></section>
   <section class="sr-only" id="video-detail"><h2>AI Video</h2></section>
 
-  <!-- Contact -->
-  <section id="contact">
-    <div class="container">
-      <div class="section-head"><h2>Start a Project</h2></div>
-      <div class="contact-wrap">
-        <form id="contactForm" onsubmit="return false">
-          <label for="name">Name</label>
-          <input id="name" placeholder="Your name" required>
+  <!-- Contact Form -->
+  <form id="contactForm" action="https://formspree.io/f/abcdxyz" method="POST">
+  <!-- Name -->
+  <label for="name">Full Name</label>
+  <input id="name" name="name" placeholder="Your full name" required>
 
-          <label for="email">Email</label>
-          <input id="email" type="email" placeholder="you@company.com" required>
+  <!-- Email -->
+  <label for="email">Email</label>
+  <input id="email" type="email" name="email" placeholder="you@company.com" required>
 
-          <label for="service">Service</label>
-          <select id="service" required>
-            <option value="">Choose a service</option>
-            <option>Performance Marketing</option>
-            <option>Full‑Stack Development</option>
-            <option>Blockchain / Smart Contracts</option>
-            <option>Game Development</option>
-            <option>Web Design</option>
-            <option>AI Video</option>
-          </select>
+  <!-- Phone -->
+  <label for="phone">Phone Number (with Country Code)</label>
+  <input id="phone" name="phone" type="tel" placeholder="+91 9876543210" required>
 
-          <label for="msg">Project details</label>
-          <textarea id="msg" placeholder="Tell us about your goals, timeline and budget…"></textarea>
+  <!-- WhatsApp -->
+  <label for="whatsapp">WhatsApp Number</label>
+  <input id="whatsapp" name="whatsapp" type="tel" placeholder="+91 9876543210">
 
-          <div class="form-actions">
-            <button class="btn" id="send">Request Proposal</button>
-            <span id="formStatus" class="pill" style="display:none"></span>
-          </div>
-        </form>
+  <!-- Company -->
+  <label for="company">Company / Organization</label>
+  <input id="company" name="company" placeholder="Your company or startup name">
+
+  <!-- Address -->
+  <label for="address">Address</label>
+  <textarea id="address" name="address" placeholder="Your complete address"></textarea>
+
+  <!-- Service -->
+  <label for="service">Service Interested In</label>
+  <select id="service" name="service" required>
+    <option value="">Choose a service</option>
+    <option>Performance Marketing</option>
+    <option>Full-Stack Development</option>
+    <option>Blockchain / Smart Contracts</option>
+    <option>Game Development</option>
+    <option>Web Design</option>
+    <option>AI Video</option>
+    <option>Other</option>
+  </select>
+
+  <!-- Budget -->
+  <label for="budget">Estimated Budget</label>
+  <select id="budget" name="budget">
+    <option value="">Select budget range</option>
+    <option>Under $1,000</option>
+    <option>$1,000 – $5,000</option>
+    <option>$5,000 – $10,000</option>
+    <option>$10,000+</option>
+  </select>
+
+  <!-- Timeline -->
+  <label for="timeline">Expected Timeline</label>
+  <select id="timeline" name="timeline">
+    <option value="">Select timeline</option>
+    <option>ASAP (within 1 month)</option>
+    <option>1 – 3 months</option>
+    <option>3 – 6 months</option>
+    <option>6+ months</option>
+  </select>
+
+  <!-- Project details -->
+  <label for="msg">Project Details</label>
+  <textarea id="msg" name="message" placeholder="Tell us about your goals, timeline and budget…" required></textarea>
+
+  <!-- Form actions -->
+  <div class="form-actions">
+    <button class="btn" type="submit">Request Proposal</button>
+    <span id="formStatus" class="pill" style="display:none"></span>
+  </div>
+</form>
+
 
         <div class="contact-card">
           <h3 style="margin-top:6px">Contact</h3>
-          <div class="contact-row">📞 <a href="tel:+919000000000">+91-90000-00000</a></div>
-          <div class="contact-row">✉️ <a href="mailto:hello@cloudora.studio">hello@cloudora.studio</a></div>
+          <div class="contact-row">📞 <a href="tel:+919335655896">+91-93356-55896</a></div>
+          <div class="contact-row">✉️ <a href="mailto:Cloudoraserv@gmail.com">Cloudoraserv@gmail.com</a></div>
           <div class="contact-row">🌍 Serving clients in India, US, EU & MEA</div>
-          <div class="contact-row">🕒 Mon–Sat • 9:30 AM – 7:00 PM IST</div>
+          <div class="contact-row">🕒 Mon–fri • 9:30 AM – 7:00 PM IST</div>
         </div>
       </div>
     </div>
@@ -527,6 +566,6 @@
   </div>
 
   <!-- WhatsApp CTA -->
-  <a href="https://wa.me/919000000000" class="btn whatsapp" aria-label="WhatsApp us">WhatsApp</a>
+  <a href="https://wa.me/919335655896" class="btn whatsapp" aria-label="WhatsApp us">WhatsApp</a>
 </body>
   </html>
