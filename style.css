@@ -425,8 +425,7 @@ section{padding:34px 0}
   perspective: 1200px;
   margin: 40px auto;
   position: relative;
-  z-index: 1;
-  overflow: visible;
+   overflow: visible;
 }
 
 .portfolio-slider {
