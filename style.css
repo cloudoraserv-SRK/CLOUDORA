@@ -954,3 +954,78 @@ footer {
   opacity: 1;
   transform: translateY(0);
 }
+
+
+.trusted-by {
+  padding: 4rem 0;
+  text-align: center;
+}
+.logo-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+.logo-row img {
+  max-height: 60px;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+.logo-row img:hover {
+  opacity: 1;
+}
+
+.testimonials {
+  padding: 4rem 0;
+  background: #111;
+  border-top: 1px solid #222;
+}
+.testimonial-card {
+  max-width: 600px;
+  margin: 2rem auto;
+  font-style: italic;
+  color: #ccc;
+}
+.testimonial-card span {
+  display: block;
+  margin-top: 1rem;
+  font-weight: 600;
+  color: #4caf50;
+}
+
+
+.locale-switcher {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+.locale-switcher select {
+  background: #222;
+  color: #fff;
+  border: 1px solid #444;
+  padding: 0.3rem;
+  border-radius: 0.3rem;
+}
+
+.cookie-banner {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #222;
+  color: #fff;
+  padding: 1rem;
+  text-align: center;
+  z-index: 999;
+}
+.cookie-banner button {
+  margin-left: 1rem;
+  background: #4caf50;
+  border: none;
+  padding: 0.5rem 1rem;
+  color: #000;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
