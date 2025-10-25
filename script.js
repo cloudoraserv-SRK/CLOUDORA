@@ -152,7 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem("cloudoraCurrency", selectedCurrency);
     updatePrices(selectedCurrency);
   });
-});
 
   // --- Footer Year ---
   const yearSpan = document.getElementById('year');
