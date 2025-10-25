@@ -1038,3 +1038,13 @@ footer {
   gap: 0.5rem;
   font-size: 0.9rem;
 }
+
+.goog-logo-link,
+.goog-te-gadget span {
+  display: none !important;
+}
+
+#google_translate_element {
+  font-size: 0 !important;
+}
+
