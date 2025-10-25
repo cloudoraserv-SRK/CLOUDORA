@@ -10,8 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
             hamburger.setAttribute('aria-expanded', !isExpanded);
             mobileMenu.setAttribute('aria-modal', !isExpanded);
-            document.body.style.overflow = isExpanded ? 'auto' : 'hidden';
-        });
+           });
 
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
@@ -46,25 +45,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Scroll Reveal Animation with Intersection Observer ---
-    const revealElements = document.querySelectorAll('[data-reveal]');
+ const revealEls = document.querySelectorAll("[data-reveal]");
 
-    if ('IntersectionObserver' in window) {
-        const observerOptions = {
-            threshold: 0.1, // Element is revealed when 10% visible
-        };
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("revealed");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
 
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('revealed');
-                    observer.unobserve(entry.target); // Stop observing once revealed
-                }
-            });
-        }, observerOptions);
+  revealEls.forEach(el => observer.observe(el));
+});
 
-        revealElements.forEach(el => {
-            observer.observe(el);
-        });
     } else {
         // Fallback for older browsers
         revealElements.forEach(el => {
