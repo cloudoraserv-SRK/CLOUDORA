@@ -140,21 +140,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const savedCurrency = localStorage.getItem("cloudoraCurrency");
-  if (savedCurrency) {
-    currencySelect.value = savedCurrency;
-    updatePrices(savedCurrency);
-  } else {
-    const localeCurrency = new Intl.NumberFormat().resolvedOptions().currency || 'USD';
-    currencySelect.value = localeCurrency;
-    localStorage.setItem("cloudoraCurrency", localeCurrency);
-    updatePrices(localeCurrency);
-  }
+  const localeCurrency = new Intl.NumberFormat().resolvedOptions().currency || 'USD';
+
+  const initialCurrency = savedCurrency || localeCurrency;
+  currencySelect.value = initialCurrency;
+  localStorage.setItem("cloudoraCurrency", initialCurrency);
+  updatePrices(initialCurrency);
 
   currencySelect.addEventListener("change", function () {
     const selectedCurrency = this.value;
     localStorage.setItem("cloudoraCurrency", selectedCurrency);
     updatePrices(selectedCurrency);
   });
+});
 
   // --- Footer Year ---
   const yearSpan = document.getElementById('year');
