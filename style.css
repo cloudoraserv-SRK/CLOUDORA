@@ -1026,3 +1026,8 @@ footer {
   cursor: pointer;
 }
 
+[data-reveal] {
+  opacity: 1 !important;
+  transform: none !important;
+  display: block !important;
+}
