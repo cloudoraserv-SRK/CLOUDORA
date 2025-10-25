@@ -11,7 +11,29 @@
     <link rel="stylesheet" href="style.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script defer src="script.js"></script>
+    <!-- Open Graph -->
+<meta property="og:title" content="Cloudora — Digital Innovation Studio" />
+<meta property="og:description" content="Global services in marketing, blockchain, apps, video, and design." />
+<meta property="og:image" content="https://cloudoraserv.cloud/assets/og-image.jpg" />
+<meta property="og:url" content="https://cloudoraserv.cloud" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<!-- JSON-LD Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Cloudora",
+  "url": "https://cloudoraserv.cloud",
+  "logo": "https://cloudoraserv.cloud/assets/logo.png",
+  "sameAs": [
+    "https://www.linkedin.com/company/cloudora",
+    "https://www.instagram.com/cloudora"
+  ]
+}
+</script>
 </head>
+    
 <body>
     <div class="aura" aria-hidden="true"></div>
     <div class="stars" aria-hidden="true"></div>
@@ -44,7 +66,31 @@
             <a href="#portfolio">Our Works</a>
             <a href="#contact">Contact</a>
         </div>
-    </header>
+    <div class="locale-switcher">
+  <select id="languageSelect">
+    <option value="en">English</option>
+    <option value="hi">हिन्दी</option>
+    <option value="es">Español</option>
+    <option value="fr">Français</option>
+    <option value="de">Deutsch</option>
+    <option value="zh">中文</option>
+    <option value="ar">العربية</option>
+    <option value="pt">Português</option>
+    <option value="ja">日本語</option>
+  </select>
+
+  <select id="currencySelect">
+    <option value="INR">₹ INR</option>
+    <option value="USD">$ USD</option>
+    <option value="EUR">€ EUR</option>
+    <option value="GBP">£ GBP</option>
+    <option value="CAD">$ CAD</option>
+    <option value="AUD">$ AUD</option>
+    <option value="JPY">¥ JPY</option>
+    <option value="CNY">¥ CNY</option>
+    <option value="AED">د.إ AED</option>
+  </select>
+</div>
 
 <section class="hero" id="hero">
   <div class="hero-content">
@@ -324,6 +370,18 @@
             </div>
         </div>
     </section>
+
+<section class="trusted-by" data-reveal>
+  <div class="container">
+    <h2>Trusted By</h2>
+    <div class="logo-row">
+      <img src="assets/client1.png" alt="Client 1" />
+      <img src="assets/client2.png" alt="Client 2" />
+      <img src="assets/client3.png" alt="Client 3" />
+      <!-- Add more logos -->
+    </div>
+  </div>
+</section>
     
     <section id="why">
         <div class="container">
@@ -382,6 +440,18 @@
         </div>
     </section>
 
+    <section class="testimonials" data-reveal>
+  <div class="container">
+    <h2>Client Testimonials</h2>
+    <div class="testimonial-card">
+      <p>"Cloudora helped us scale our ad campaigns 3x in 2 months. Highly recommended!"</p>
+      <span>— Marketing Lead, Fintech Startup</span>
+    </div>
+    <!-- Add more testimonials -->
+  </div>
+</section>
+                
+    
     <section id="hiring" data-reveal>
         <div class="container">
             <div class="section-head"><h2>🚀 We’re Hiring Remote & Field Teams</h2></div>
@@ -522,6 +592,7 @@
                     </div>
                 </form>
 
+
                 <div class="contact-card">
                     <h3 style="margin-top:6px">Contact</h3>
                     <div class="contact-row">📞 <a href="tel:+919532153763">+91-953 215 3763</a></div>
@@ -585,5 +656,22 @@
     </div>
 
     <a href="https://wa.me/919532153763" class="btn whatsapp" aria-label="WhatsApp us">WhatsApp</a>
+    <div id="cookieConsent" class="cookie-banner">
+  <p>We use cookies to improve your experience. By using our site, you agree to our Privacy Policy.</p>
+  <button onclick="document.getElementById('cookieConsent').style.display='none'">Accept</button>
+</div>
+    <!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/68fc219a511129194ce142ca/1j8ce6h9c';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
 </body>
 </html>
