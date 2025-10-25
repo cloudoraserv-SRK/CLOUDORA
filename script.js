@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
   revealEls.forEach(el => observer.observe(el));
 });
 
-    } else {
+ else {
         // Fallback for older browsers
         revealElements.forEach(el => {
             el.classList.add('revealed');
