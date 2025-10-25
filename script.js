@@ -1,194 +1,145 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // --- Hamburger Menu Logic ---
+  const hamburger = document.querySelector('.hamburger');
+  const mobileMenu = document.querySelector('.mobile');
+  const navLinks = document.querySelectorAll('.navlinks a, .mobile a');
 
-    // --- Hamburger Menu Logic ---
-    const hamburger = document.querySelector('.hamburger');
-    const mobileMenu = document.querySelector('.mobile');
-    const navLinks = document.querySelectorAll('.navlinks a, .mobile a');
-
-    if (hamburger && mobileMenu) {
-        hamburger.addEventListener('click', () => {
-            const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
-            hamburger.setAttribute('aria-expanded', !isExpanded);
-            mobileMenu.setAttribute('aria-modal', !isExpanded);
-           });
-
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                hamburger.setAttribute('aria-expanded', 'false');
-                mobileMenu.setAttribute('aria-modal', 'false');
-                document.body.style.overflow = 'auto';
-            });
-        });
-    }
-
-    // --- Services Scroller Logic ---
-    const scroller = document.getElementById('serviceScroller');
-    const prevBtn = document.getElementById('prev');
-    const nextBtn = document.getElementById('next');
-
-    if (scroller && prevBtn && nextBtn) {
-        const scrollAmount = 350; // Adjust as needed
-
-        prevBtn.addEventListener('click', () => {
-            scroller.scrollBy({
-                left: -scrollAmount,
-                behavior: 'smooth'
-            });
-        });
-
-        nextBtn.addEventListener('click', () => {
-            scroller.scrollBy({
-                left: scrollAmount,
-                behavior: 'smooth'
-            });
-        });
-    }
-
-    // --- Scroll Reveal Animation with Intersection Observer ---
- const revealEls = document.querySelectorAll("[data-reveal]");
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("revealed");
-        observer.unobserve(entry.target);
-      }
+  if (hamburger && mobileMenu) {
+    hamburger.addEventListener('click', () => {
+      const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
+      hamburger.setAttribute('aria-expanded', !isExpanded);
+      mobileMenu.setAttribute('aria-modal', !isExpanded);
     });
-  }, { threshold: 0.1 });
 
-  revealEls.forEach(el => observer.observe(el));
-});
-
- else {
-        // Fallback for older browsers
-        revealElements.forEach(el => {
-            el.classList.add('revealed');
-        });
-    }
-
-    // --- Legal Modals Logic ---
-    const privacyModal = document.getElementById('privacyModal');
-    const termsModal = document.getElementById('termsModal');
-    const openPrivacyBtn = document.getElementById('openPrivacy');
-    const openTermsBtn = document.getElementById('openTerms');
-    const closeButtons = document.querySelectorAll('[data-close]');
-
-    const openModal = (modal) => {
-        modal.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
-    };
-
-    const closeModal = (modal) => {
-        modal.setAttribute('aria-hidden', 'true');
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.setAttribute('aria-expanded', 'false');
+        mobileMenu.setAttribute('aria-modal', 'false');
         document.body.style.overflow = 'auto';
-    };
-
-    if (openPrivacyBtn) {
-        openPrivacyBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            openModal(privacyModal);
-        });
-    }
-
-    if (openTermsBtn) {
-        openTermsBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            openModal(termsModal);
-        });
-    }
-
-    closeButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const parentModal = btn.closest('.modal');
-            if (parentModal) {
-                closeModal(parentModal);
-            }
-        });
+      });
     });
+  }
 
-    // Close modals by clicking outside
-    [privacyModal, termsModal].forEach(modal => {
-        if (modal) {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    closeModal(modal);
-                }
-            });
+  // --- Services Scroller Logic ---
+  const scroller = document.getElementById('serviceScroller');
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
+
+  if (scroller && prevBtn && nextBtn) {
+    const scrollAmount = 350;
+    prevBtn.addEventListener('click', () => {
+      scroller.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    });
+    nextBtn.addEventListener('click', () => {
+      scroller.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    });
+  }
+
+  // --- Scroll Reveal Animation ---
+  const revealEls = document.querySelectorAll("[data-reveal]");
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("revealed");
+          observer.unobserve(entry.target);
         }
+      });
+    }, { threshold: 0.1 });
+
+    revealEls.forEach(el => observer.observe(el));
+  } else {
+    revealEls.forEach(el => el.classList.add("revealed"));
+  }
+
+  // --- Legal Modals Logic ---
+  const privacyModal = document.getElementById('privacyModal');
+  const termsModal = document.getElementById('termsModal');
+  const openPrivacyBtn = document.getElementById('openPrivacy');
+  const openTermsBtn = document.getElementById('openTerms');
+  const closeButtons = document.querySelectorAll('[data-close]');
+
+  const openModal = (modal) => {
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeModal = (modal) => {
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = 'auto';
+  };
+
+  if (openPrivacyBtn) {
+    openPrivacyBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal(privacyModal);
     });
+  }
 
-    // --- Job Filter Logic ---
-    const filterButtons = document.querySelectorAll('.job-filters .filter-btn');
-    const jobCards = document.querySelectorAll('.job-card');
-
-    filterButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            // Remove active class from all buttons
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            // Add active class to the clicked button
-            button.classList.add('active');
-
-            const filter = button.getAttribute('data-filter');
-
-            jobCards.forEach(card => {
-                if (filter === 'all' || card.classList.contains(filter)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        });
+  if (openTermsBtn) {
+    openTermsBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal(termsModal);
     });
-    
-    // Set initial filter
-    const initialFilter = document.querySelector('.job-filters .active');
-    if (initialFilter) {
-      initialFilter.click();
-    }
+  }
 
-    // --- Set current year in footer ---
-    const yearSpan = document.getElementById('year');
-    if (yearSpan) {
-        yearSpan.textContent = new Date().getFullYear();
-    }
-});
-
-document.querySelectorAll('.locale-switcher select').forEach(select => {
-  select.addEventListener('blur', () => {
-    document.body.style.overflowY = 'auto';
+  closeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const parentModal = btn.closest('.modal');
+      if (parentModal) closeModal(parentModal);
+    });
   });
-});
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
+  [privacyModal, termsModal].forEach(modal => {
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal(modal);
+      });
+    }
+  });
+
+  // --- Job Filter Logic ---
+  const filterButtons = document.querySelectorAll('.job-filters .filter-btn');
+  const jobCards = document.querySelectorAll('.job-card');
+
+  filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+
+      const filter = button.getAttribute('data-filter');
+      jobCards.forEach(card => {
+        card.style.display = (filter === 'all' || card.classList.contains(filter)) ? 'block' : 'none';
+      });
+    });
+  });
+
+  const initialFilter = document.querySelector('.job-filters .active');
+  if (initialFilter) initialFilter.click();
+
+  // --- Set current year in footer ---
+  const yearSpan = document.getElementById('year');
+  if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+  // --- Language & Currency Switcher ---
   const languageSelect = document.getElementById("languageSelect");
   const currencySelect = document.getElementById("currencySelect");
 
-  // Load saved preferences
-  const savedLang = localStorage.getItem("cloudoraLang");
-  const savedCurrency = localStorage.getItem("cloudoraCurrency");
+  if (languageSelect && currencySelect) {
+    const savedLang = localStorage.getItem("cloudoraLang");
+    const savedCurrency = localStorage.getItem("cloudoraCurrency");
 
-  if (savedLang) languageSelect.value = savedLang;
-  if (savedCurrency) currencySelect.value = savedCurrency;
+    if (savedLang) languageSelect.value = savedLang;
+    if (savedCurrency) currencySelect.value = savedCurrency;
 
-  // Handle language change
-  languageSelect.addEventListener("change", function () {
-    const selectedLang = this.value;
-    localStorage.setItem("cloudoraLang", selectedLang);
+    languageSelect.addEventListener("change", function () {
+      localStorage.setItem("cloudoraLang", this.value);
+      alert("Language switched to: " + this.value);
+    });
 
-    // Placeholder: You can load translated content here
-    alert("Language switched to: " + selectedLang);
-    // Optionally reload or fetch translated content
-  });
-
-  // Handle currency change
-  currencySelect.addEventListener("change", function () {
-    const selectedCurrency = this.value;
-    localStorage.setItem("cloudoraCurrency", selectedCurrency);
-
-    // Placeholder: You can update pricing display here
-    alert("Currency switched to: " + selectedCurrency);
-    // Optionally fetch exchange rates and update prices
-  });
+    currencySelect.addEventListener("change", function () {
+      localStorage.setItem("cloudoraCurrency", this.value);
+      alert("Currency switched to: " + this.value);
+    });
+  }
 });
-</script>
