@@ -117,10 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const initialFilter = document.querySelector('.job-filters .active');
   if (initialFilter) initialFilter.click();
 
-  // --- Set current year in footer ---
-  const yearSpan = document.getElementById('year');
-  if (yearSpan) yearSpan.textContent = new Date().getFullYear();
-
   // --- Language & Currency Switcher ---
   const languageSelect = document.getElementById("languageSelect");
   const currencySelect = document.getElementById("currencySelect");
@@ -129,17 +125,45 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedLang = localStorage.getItem("cloudoraLang");
     const savedCurrency = localStorage.getItem("cloudoraCurrency");
 
-    if (savedLang) languageSelect.value = savedLang;
+    if (savedLang) {
+      languageSelect.value = savedLang;
+      loadLanguage(savedLang);
+    }
     if (savedCurrency) currencySelect.value = savedCurrency;
 
     languageSelect.addEventListener("change", function () {
-      localStorage.setItem("cloudoraLang", this.value);
-      alert("Language switched to: " + this.value);
+      const selectedLang = this.value;
+      localStorage.setItem("cloudoraLang", selectedLang);
+      loadLanguage(selectedLang);
     });
 
     currencySelect.addEventListener("change", function () {
-      localStorage.setItem("cloudoraCurrency", this.value);
-      alert("Currency switched to: " + this.value);
+      const selectedCurrency = this.value;
+      localStorage.setItem("cloudoraCurrency", selectedCurrency);
+      alert("Currency switched to: " + selectedCurrency);
     });
   }
 });
+  // --- Load Translations ---
+  function loadLanguage(langCode) {
+    fetch(`lang/${langCode}.json`)
+      .then(res => res.json())
+      .then(data => {
+        for (const key in data) {
+          const el = document.getElementById(key);
+          if (el) el.textContent = data[key];
+        }
+      });
+  }
+fetch('https://api.exchangerate-api.com/v4/latest/INR')
+  .then(res => res.json())
+  .then(data => {
+    const rate = data.rates[selectedCurrency];
+    document.querySelectorAll('.price').forEach(el => {
+      const basePrice = parseFloat(el.getAttribute('data-inr'));
+      el.textContent = (basePrice * rate).toFixed(2) + ' ' + selectedCurrency;
+    });
+  });
+  // --- Set current year in footer ---
+  const yearSpan = document.getElementById('year');
+  if (yearSpan) yearSpan.textContent = new Date().getFullYear();
