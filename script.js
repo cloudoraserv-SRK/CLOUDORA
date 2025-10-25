@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // --- Hamburger Menu Logic ---
+  // --- Hamburger Menu ---
   const hamburger = document.querySelector('.hamburger');
   const mobileMenu = document.querySelector('.mobile');
   const navLinks = document.querySelectorAll('.navlinks a, .mobile a');
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- Services Scroller Logic ---
+  // --- Services Slider ---
   const scroller = document.getElementById('serviceScroller');
   const prevBtn = document.getElementById('prev');
   const nextBtn = document.getElementById('next');
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- Scroll Reveal Animation ---
+  // --- Scroll Reveal ---
   const revealEls = document.querySelectorAll("[data-reveal]");
   if ("IntersectionObserver" in window) {
     const observer = new IntersectionObserver((entries) => {
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     revealEls.forEach(el => el.classList.add("revealed"));
   }
 
-  // --- Legal Modals Logic ---
+  // --- Legal Modals ---
   const privacyModal = document.getElementById('privacyModal');
   const termsModal = document.getElementById('termsModal');
   const openPrivacyBtn = document.getElementById('openPrivacy');
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // --- Job Filter Logic ---
+  // --- Job Filter ---
   const filterButtons = document.querySelectorAll('.job-filters .filter-btn');
   const jobCards = document.querySelectorAll('.job-card');
 
@@ -117,53 +117,46 @@ document.addEventListener('DOMContentLoaded', () => {
   const initialFilter = document.querySelector('.job-filters .active');
   if (initialFilter) initialFilter.click();
 
-  // --- Language & Currency Switcher ---
-  const languageSelect = document.getElementById("languageSelect");
+  // --- Currency Switcher ---
   const currencySelect = document.getElementById("currencySelect");
 
-  if (languageSelect && currencySelect) {
-    const savedLang = localStorage.getItem("cloudoraLang");
-    const savedCurrency = localStorage.getItem("cloudoraCurrency");
-
-    if (savedLang) {
-      languageSelect.value = savedLang;
-      loadLanguage(savedLang);
-    }
-    if (savedCurrency) currencySelect.value = savedCurrency;
-
-    languageSelect.addEventListener("change", function () {
-      const selectedLang = this.value;
-      localStorage.setItem("cloudoraLang", selectedLang);
-      loadLanguage(selectedLang);
-    });
-
-    currencySelect.addEventListener("change", function () {
-      const selectedCurrency = this.value;
-      localStorage.setItem("cloudoraCurrency", selectedCurrency);
-      alert("Currency switched to: " + selectedCurrency);
-    });
-  }
-});
-  // --- Load Translations ---
-  function loadLanguage(langCode) {
-    fetch(`lang/${langCode}.json`)
+  function updatePrices(selectedCurrency) {
+    fetch(`https://api.exchangerate-api.com/v4/latest/INR`)
       .then(res => res.json())
       .then(data => {
-        for (const key in data) {
-          const el = document.getElementById(key);
-          if (el) el.textContent = data[key];
-        }
+        const rate = data.rates[selectedCurrency];
+        if (!rate) return;
+
+        document.querySelectorAll('.new-price[data-inr]').forEach(el => {
+          const basePrice = parseFloat(el.getAttribute('data-inr'));
+          const converted = (basePrice * rate).toFixed(2);
+          const formatted = new Intl.NumberFormat(undefined, {
+            style: 'currency',
+            currency: selectedCurrency
+          }).format(converted);
+          el.textContent = formatted;
+        });
       });
   }
-fetch('https://api.exchangerate-api.com/v4/latest/INR')
-  .then(res => res.json())
-  .then(data => {
-    const rate = data.rates[selectedCurrency];
-    document.querySelectorAll('.price').forEach(el => {
-      const basePrice = parseFloat(el.getAttribute('data-inr'));
-      el.textContent = (basePrice * rate).toFixed(2) + ' ' + selectedCurrency;
-    });
+
+  const savedCurrency = localStorage.getItem("cloudoraCurrency");
+  if (savedCurrency) {
+    currencySelect.value = savedCurrency;
+    updatePrices(savedCurrency);
+  } else {
+    const localeCurrency = new Intl.NumberFormat().resolvedOptions().currency || 'USD';
+    currencySelect.value = localeCurrency;
+    localStorage.setItem("cloudoraCurrency", localeCurrency);
+    updatePrices(localeCurrency);
+  }
+
+  currencySelect.addEventListener("change", function () {
+    const selectedCurrency = this.value;
+    localStorage.setItem("cloudoraCurrency", selectedCurrency);
+    updatePrices(selectedCurrency);
   });
-  // --- Set current year in footer ---
+
+  // --- Footer Year ---
   const yearSpan = document.getElementById('year');
   if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+});
