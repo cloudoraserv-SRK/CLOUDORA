@@ -158,3 +158,43 @@ document.addEventListener('DOMContentLoaded', () => {
         yearSpan.textContent = new Date().getFullYear();
     }
 });
+
+document.querySelectorAll('.locale-switcher select').forEach(select => {
+  select.addEventListener('blur', () => {
+    document.body.style.overflowY = 'auto';
+  });
+});
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const languageSelect = document.getElementById("languageSelect");
+  const currencySelect = document.getElementById("currencySelect");
+
+  // Load saved preferences
+  const savedLang = localStorage.getItem("cloudoraLang");
+  const savedCurrency = localStorage.getItem("cloudoraCurrency");
+
+  if (savedLang) languageSelect.value = savedLang;
+  if (savedCurrency) currencySelect.value = savedCurrency;
+
+  // Handle language change
+  languageSelect.addEventListener("change", function () {
+    const selectedLang = this.value;
+    localStorage.setItem("cloudoraLang", selectedLang);
+
+    // Placeholder: You can load translated content here
+    alert("Language switched to: " + selectedLang);
+    // Optionally reload or fetch translated content
+  });
+
+  // Handle currency change
+  currencySelect.addEventListener("change", function () {
+    const selectedCurrency = this.value;
+    localStorage.setItem("cloudoraCurrency", selectedCurrency);
+
+    // Placeholder: You can update pricing display here
+    alert("Currency switched to: " + selectedCurrency);
+    // Optionally fetch exchange rates and update prices
+  });
+});
+</script>
