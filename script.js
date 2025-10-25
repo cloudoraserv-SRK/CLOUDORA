@@ -157,3 +157,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const yearSpan = document.getElementById('year');
   if (yearSpan) yearSpan.textContent = new Date().getFullYear();
 });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const toggle = document.getElementById('themeToggle');
+  const root = document.documentElement;
+
+  // Load saved theme
+  const savedTheme = localStorage.getItem('cloudoraTheme') || 'dark';
+  root.setAttribute('data-theme', savedTheme);
+  toggle.checked = savedTheme === 'light';
+
+  toggle.addEventListener('change', () => {
+    const newTheme = toggle.checked ? 'light' : 'dark';
+    root.setAttribute('data-theme', newTheme);
+    localStorage.setItem('cloudoraTheme', newTheme);
+  });
+});
