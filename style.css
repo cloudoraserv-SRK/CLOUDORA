@@ -6,8 +6,49 @@
   --color-accent: #22c55e;
   --color-accent-dark: #16a34a;
   --bg-gradient: radial-gradient(circle at top, #111827 0%, #030712 100%);
-  --font-heading: 'Poppins', sans-serif;
+ --font-heading: 'Poppins', sans-serif;
   --font-body: 'Inter', sans-serif;
+
+  /* Dark Theme */
+  --color-dark: #0f0f11;
+  --color-light: #f4f4f5;
+  --color-secondary: #a1a1aa;
+  --color-accent: #4caf50;
+  --color-accent-dark: #388e3c;
+  --bg-gradient: radial-gradient(circle at top, #1a1a2e, #0f0f11);
+}
+
+[data-theme="light"] {
+  --color-dark: #ffffff;
+  --color-light: #09090b;
+  --color-secondary: #555;
+  --color-accent: #4caf50;
+  --color-accent-dark: #388e3c;
+  --bg-gradient: radial-gradient(circle at top, #e0e0e0, #ffffff);
+}
+
+/* Utility Classes */
+.bg-dark { background-color: var(--color-dark); color: var(--color-light); }
+.bg-light { background-color: var(--color-light); color: var(--color-dark); }
+.bg-accent { background-color: var(--color-accent); color: var(--color-dark); }
+.text-accent { color: var(--color-accent); }
+.text-muted { color: var(--color-secondary); }
+.shadow-deep { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); }
+
+/* Theme Switcher */
+.theme-switch {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  font-size: 1.2rem;
+  color: var(--color-light);
+}
+.theme-switch input {
+  display: none;
+}
+.theme-switch span {
+  cursor: pointer;
 }
 
 /* Base styles */
@@ -20,10 +61,24 @@
 }
 
 html, body {
-  overflow-x: hidden;
-  overflow-y: auto;
-  height: auto;
+  font-family: var(--font-body);
+  background: var(--color-dark);
+  color: var(--color-light);
+  transition: background 0.3s ease, color 0.3s ease;
 }
+p {
+  color: var(--color-secondary);
+  line-height: 1.6;
+}
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--color-accent-dark);
+}
+
+
 /* Aura and stars background effect */
 .aura, .stars {
   position: fixed;
@@ -65,44 +120,21 @@ html, body {
 }
 
 
-/* Typography */
+/* Headings */
 h1, h2, h3, h4 {
   font-family: var(--font-heading);
   font-weight: 700;
   line-height: 1.2;
   margin-bottom: 0.5em;
-}
-
-h1 {
-  font-size: clamp(2rem, 5vw, 4.5rem);
-}
-
-h2 {
-  font-size: clamp(1.8rem, 4vw, 3rem);
-}
-
-h3 {
-  font-size: clamp(1.4rem, 3vw, 2rem);
-}
-
-p {
-  color: var(--color-secondary);
-  line-height: 1.6;
-}
-
-a {
-  color: var(--color-accent);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-a:hover {
   color: var(--color-light);
 }
+h1 { font-size: clamp(2rem, 5vw, 4.5rem); }
+h2 { font-size: clamp(1.8rem, 4vw, 3rem); }
+h3 { font-size: clamp(1.4rem, 3vw, 2rem); }
 
 /* Buttons and utility classes */
 .btn {
-  display: inline-block;
+  display: var(--color-accent);
   padding: 0.75rem 1.5rem;
   border-radius: 9999px;
   background-color: var(--color-accent);
@@ -306,10 +338,13 @@ section {
   text-align: center;
   margin-bottom: 3rem;
 }
-
+.section-head h2 {
+  color: var(--color-light);
+}
 .section-head .sub-head {
   max-width: 600px;
   margin: 0 auto;
+  color: var(--color-secondary);
 }
 
 /* Hero Section */
@@ -558,17 +593,30 @@ section {
   display: flex;
   flex-direction: column;
 }
-
+.card .body {
+  padding: 1.5rem;
+}
+.card .body h3 {
+  margin: 0 0 0.5rem;
+  color: var(--color-light);
+}
+.card .body p {
+  color: var(--color-secondary);
+}
+.card .price {
+  color: var(--color-light);
+}
+.card .new-price {
+  color: var(--color-accent);
+}
 .card .img {
   position: relative;
 }
-
 .card .img img {
   width: 100%;
   height: 200px;
   object-fit: cover;
 }
-
 .card .badge {
   position: absolute;
   top: 1rem;
@@ -814,6 +862,8 @@ footer {
   padding: 2rem 0;
   border-top: 1px solid #222;
   margin-top: 4rem;
+   text-align: center;
+  color: var(--color-secondary);
 }
 
 .foot {
@@ -884,6 +934,7 @@ footer {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.8);
+  color: var(--color-light);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1018,7 +1069,8 @@ footer {
 }
 .cookie-banner button {
   margin-left: 1rem;
-  background: #4caf50;
+  background: var(--color-accent);
+  color: var(--color-dark);
   border: none;
   padding: 0.5rem 1rem;
   color: #000;
