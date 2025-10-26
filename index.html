@@ -392,67 +392,92 @@
 
 <section id="portfolio" class="my-projects" data-reveal>
   <div class="container">
-    <h2>What I’ve Built</h2>
+    <h2>What We’ve Built</h2>
     <p class="sub-head">From blockchain ecosystems to client platforms and internal tools — here’s a glimpse of my work.</p>
 
-    <div class="grid-3">
+    <!-- Filter Buttons -->
+    <div class="job-filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="web3">Web3</button>
+      <button class="filter-btn" data-filter="saas">SaaS</button>
+      <button class="filter-btn" data-filter="client">Client Project</button>
+      <button class="filter-btn" data-filter="internal">Internal Tool</button>
+    </div>
+
+    <!-- Project Grid -->
+    <div class="grid-3 project-grid">
       <!-- Cloudora -->
-      <div class="card">
+      <div class="card" data-category="client">
+        <div class="img"><img src="assets/logos/cloudora.svg" alt="Cloudora logo" /></div>
         <div class="body">
           <h3><a href="https://cloudoraserv.cloud" target="_blank">Cloudora</a></h3>
           <p>My flagship IT & marketing platform offering global hosting, branding, and conversion-optimized solutions.</p>
-          <span class="pill">Full-stack</span> <span class="pill">Branding</span> <span class="pill">Client Platform</span>
+          <div class="pill">Full-stack</div> <div class="pill">Branding</div> <div class="pill">Client Platform</div>
         </div>
       </div>
 
       <!-- BHIX -->
-      <div class="card">
+      <div class="card" data-category="web3">
+        <div class="img"><img src="assets/logos/bhix.svg" alt="BHIX logo" /></div>
         <div class="body">
           <h3><a href="https://bhix.cloud" target="_blank">BHIX</a></h3>
           <p>Beggar Index Token ecosystem with smart contracts for staking, airdrops, rewards, and Web3 integration.</p>
-          <span class="pill">Web3</span> <span class="pill">Smart Contracts</span> <span class="pill">Tokenomics</span>
+          <div class="pill">Web3</div> <div class="pill">Smart Contracts</div> <div class="pill">Tokenomics</div>
         </div>
       </div>
 
-      <!-- Cloudora Email Blaster -->
-      <div class="card">
+      <!-- Email Blaster -->
+      <div class="card" data-category="saas internal">
+        <div class="img"><img src="assets/logos/emailblaster.svg" alt="Email Blaster logo" /></div>
         <div class="body">
           <h3>Cloudora_Email_blaster_v1.0.0</h3>
           <p>Internal SaaS tool for bulk email campaigns, lead nurturing, and client onboarding automation.</p>
-          <span class="pill">SaaS</span> <span class="pill">Email Automation</span> <span class="pill">Internal Tool</span>
+          <div class="pill">SaaS</div> <div class="pill">Email Automation</div> <div class="pill">Internal Tool</div>
         </div>
       </div>
 
-      <!-- JFC Dance Academy -->
-      <div class="card">
+      <!-- JFC -->
+      <div class="card" data-category="client">
+        <div class="img"><img src="assets/logos/jfc.svg" alt="JFC logo" /></div>
         <div class="body">
           <h3><a href="https://bhix.cloud/JFC/index.html" target="_blank">JFC Dance Academy</a></h3>
           <p>Website for a local dance academy, built with responsive design and elegant presentation.</p>
-          <span class="pill">Client Site</span> <span class="pill">Design</span>
+          <div class="pill">Client Site</div> <div class="pill">Design</div>
         </div>
       </div>
 
-      <!-- SKNKS Dance School -->
-      <div class="card">
+      <!-- SKNKS -->
+      <div class="card" data-category="client">
+        <div class="img"><img src="assets/logos/sknks.svg" alt="SKNKS logo" /></div>
         <div class="body">
           <h3><a href="https://shaguftakathak-netizen.github.io/SKNKS/" target="_blank">SKNKS Dance School</a></h3>
           <p>Simple, clean website for a friend’s Kathak dance school, showcasing classes and contact info.</p>
-          <span class="pill">Friend Project</span> <span class="pill">Static Site</span>
+          <div class="pill">Friend Project</div> <div class="pill">Static Site</div>
         </div>
       </div>
 
       <!-- BP Consultancy -->
-      <div class="card">
+      <div class="card" data-category="client">
+        <div class="img"><img src="assets/logos/bp.svg" alt="BP Consultancy logo" /></div>
         <div class="body">
-          <h3><a href="https://bp-plc.co" target="_blank">BP Consultancy</a></h3>
+          <h3><a href="https://bp-plc.com" target="_blank">BP Consultancy</a></h3>
           <p>Professional website for a friend’s consultancy firm, focused on trust, clarity, and global reach.</p>
-          <span class="pill">Consulting</span> <span class="pill">Client Site</span>
+          <div class="pill">Consulting</div> <div class="pill">Client Site</div>
+        </div>
+      </div>
+
+      <!-- Coming Soon -->
+      <div class="card" data-category="internal">
+        <div class="img"><img src="assets/logos/whatsapp.svg" alt="WhatsApp Tools" /></div>
+        <div class="body">
+          <h3>Coming Soon…</h3>
+          <p>WhatsApp automation tools for scraping, filtering, and bulk messaging — launching after BHIX.</p>
+          <div class="pill">Future Tools</div>
         </div>
       </div>
     </div>
   </div>
-</section>
-    
+</section>    
     <section id="why">
         <div class="container">
             <div class="section-head" data-reveal>
