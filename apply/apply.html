@@ -43,7 +43,13 @@
             <a href="../index.html#contact">Contact</a>
         </div>
     </header>
-
+<section class="hero">
+  <div class="hero-content">
+    <h1 class="title">🚀 Join Cloudora</h1>
+    <p class="subtitle">We’re hiring across Telecalling, Sales, Support, and Tech. Remote-first. Growth-focused. Inclusive.</p>
+    <p class="subtitle">Submit your application, get interviewed, and start working with us within 24–48 hours.</p>
+  </div>
+</section>
     <section class="hero">
         <div class="hero-content">
             <h1 class="title">Apply Now</h1>
@@ -72,6 +78,39 @@
         </div>
     </div>
 </section>
+
+    <section class="role-descriptions">
+  <h2>💼 Role Details</h2>
+  <div class="role-grid">
+    <div class="role-card">
+      <h3>Telecalling</h3>
+      <p>Chat and voice support, lead conversion, client follow-ups. Language flexibility preferred.</p>
+    </div>
+    <div class="role-card">
+      <h3>Sales</h3>
+      <p>Field and online sales, product pitching, lead nurturing. Incentive-based performance tracking.</p>
+    </div>
+    <div class="role-card">
+      <h3>Support</h3>
+      <p>Handle post-sale queries via chat, email, or phone. Upsell new products and ensure client satisfaction.</p>
+    </div>
+    <div class="role-card">
+      <h3>Technical</h3>
+      <p>Project-based work in development, design, automation, and emerging tech. Flexible task pool system.</p>
+    </div>
+  </div>
+</section>
+    
+    <section class="hiring-process">
+  <h2>📋 How Hiring Works</h2>
+  <ol>
+    <li>Submit your application with resume and preferences</li>
+    <li>We review and segment candidates</li>
+    <li>Interview + lead/task assignment</li>
+    <li>Trial task or onboarding</li>
+    <li>Role confirmation + access to Cloudora systems</li>
+  </ol>
+</section>
     
     <section class="apply-section">
         <div class="container apply-grid">
@@ -96,25 +135,54 @@
                 <label for="vacancy">Vacancy Applying For</label>
                 <select id="vacancy" name="vacancy" required>
                     <option value="">-- Select Vacancy --</option>
+
+                    <optgroup label="Telecalling">
+                      <option>Voice Support Executive</option>
+                      <option>Lead Conversion Specialist</option>
+                    </optgroup>
+
                     <optgroup label="Sales & Marketing">
                         <option>Field Sales Executive</option>
+                        <option>Online Sales Executive</option>
                         <option>Sales Manager</option>
-                        <option>Digital Marketing Specialist</option>
                     </optgroup>
-                    <optgroup label="Customer Support & Calling">
-                        <option>Cold Calling Executive</option>
+                    <optgroup label="Customer Support">
+                        <option>Email Support Associate </option>
                         <option>Lead Nurturing Executive</option>
-                        <option>Support Associate (Chat/Email/Phone)</option>
+                        <option>Chat Support Associate</option>
                     </optgroup>
                     <optgroup label="Development & Tech">
-                        <option>Frontend Developer (React/Next.js)</option>
-                        <option>Backend Developer (Node.js)</option>
+                        <option>Frontend Developer</option>
+                        <option>Backend Developer</option>
                         <option>Flutter Developer</option>
                         <option>Blockchain Engineer (Solidity)</option>
                         <option>Unity/Unreal Game Developer</option>
+                        <option>Full Stack Developer</option>
+                        <option>Mobile App Developer</option>
+                        <option>AI/ML Engineer</option>
+                        <option>UI/UX Designer</option>
                     </optgroup>
                 </select>
 
+                <label for="preferredLanguage">Preferred Language(s)</label>
+<input type="text" id="preferredLanguage" name="preferredLanguage" placeholder="e.g. Hindi, English, Bengali">
+
+<label for="workMode">Preferred Work Mode</label>
+<select id="workMode" name="workMode">
+  <option value="">-- Select --</option>
+  <option>Remote</option>
+  <option>On-site</option>
+  <option>Hybrid</option>
+</select>
+
+<label for="availability">Availability</label>
+<select id="availability" name="availability">
+  <option value="">-- Select --</option>
+  <option>Full-time</option>
+  <option>Part-time</option>
+  <option>Freelance / Project-based</option>
+</select>
+                
                 <label for="skills">Specialty / Skills</label>
                 <input type="text" id="skills" name="skills" placeholder="e.g. SEO, React, Sales, Customer Success">
 
