@@ -158,6 +158,131 @@ body {
     font-size: 0.95rem;
     line-height: 1.6;
 }
+
+/* Shared Section Styling */
+.faq-section,
+.commission-calculator,
+.payment-policy {
+  padding: 60px 20px;
+  background-color: #f9f9fb;
+  text-align: center;
+}
+
+.section-head {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 40px;
+  color: #1a202c;
+}
+
+/* FAQ Grid */
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.faq-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 25px 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  text-align: left;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.faq-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.faq-card h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #2d3748;
+}
+
+.faq-card p {
+  font-size: 0.95rem;
+  color: #4a5568;
+  line-height: 1.6;
+}
+
+/* Commission Calculator */
+.commission-calculator form {
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.commission-calculator label {
+  display: block;
+  margin-top: 20px;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.commission-calculator input,
+.commission-calculator select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 8px;
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #fff;
+}
+
+.commission-calculator button {
+  margin-top: 25px;
+  padding: 12px 20px;
+  background-color: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.commission-calculator button:hover {
+  background-color: #4338ca;
+}
+
+#commissionResult {
+  font-size: 1.1rem;
+  color: #1a202c;
+}
+
+/* Payment Policy List */
+.payment-policy ul {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: left;
+  padding-left: 20px;
+  font-size: 1rem;
+  color: #2d3748;
+  line-height: 1.8;
+}
+
+.payment-policy ul li {
+  margin-bottom: 15px;
+  position: relative;
+  padding-left: 1.2em;
+}
+
+.payment-policy ul li::before {
+  content: "✔";
+  position: absolute;
+  left: 0;
+  color: #38a169;
+  font-weight: bold;
+}
+
 /* Application Form Section */
 .apply-section {
     padding: 2rem 0 6rem;
