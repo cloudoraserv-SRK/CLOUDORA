@@ -23,8 +23,36 @@ body {
 
 /* Adjustments for this specific page */
 .site-header {
-    background: rgba(9, 9, 11, 0.8); /* Semi-transparent background for header */
-    backdrop-filter: blur(10px);
+  background: rgba(15, 15, 17, 0.9);
+  backdrop-filter: blur(12px);
+  padding: 1rem 2rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.navlinks a {
+  color: var(--color-light);
+  margin: 0 1rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.navlinks a:hover {
+  color: var(--color-accent);
+}
+
+.cta-btn {
+  background-color: var(--color-accent);
+  color: #fff;
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cta-btn:hover {
+  background-color: var(--color-accent-hover);
 }
 
 .hero {
@@ -332,14 +360,26 @@ body {
 }
 
 .apply-form {
-    flex: 1 1 70%;
-    background: #111;
-    border: 1px solid #222;
-    border-radius: 1rem;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  padding: 2.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.form-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.form-subtitle {
+  font-size: 1rem;
+  color: var(--color-secondary);
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
 .apply-form h2 {
