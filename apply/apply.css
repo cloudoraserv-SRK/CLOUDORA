@@ -23,15 +23,35 @@ body {
 
 /* Adjustments for this specific page */
 .site-header {
-  background: rgba(15, 15, 17, 0.9);
+  background: rgba(15, 15, 17, 0.95);
   backdrop-filter: blur(12px);
   padding: 1rem 2rem;
   border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.navlinks {
+  display: flex;
+  gap: 1.5rem;
 }
 
 .navlinks a {
   color: var(--color-light);
-  margin: 0 1rem;
   font-weight: 500;
   transition: color 0.3s ease;
 }
@@ -55,6 +75,52 @@ body {
   background-color: var(--color-accent-hover);
 }
 
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 24px;
+  height: 2px;
+  background: var(--color-light);
+}
+
+/* Mobile Nav */
+.mobile-nav {
+  display: none;
+  flex-direction: column;
+  background: #111;
+  padding: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.mobile-nav a {
+  color: var(--color-light);
+  padding: 0.5rem 0;
+  text-decoration: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navlinks {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .mobile-nav.active {
+    display: flex;
+  }
+}
+
 .hero {
     padding-top: 10rem;
     padding-bottom: 4rem;
@@ -71,6 +137,49 @@ body {
     margin: 0 auto;
 }
 
+.cta-banner {
+  background: linear-gradient(135deg, #7f5af0, #2cb67d);
+  color: #fff;
+  padding: 4rem 2rem;
+  text-align: center;
+  animation: fadeInUp 1s ease-out;
+}
+
+.cta-content h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.cta-content p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.cta-content .btn {
+  background: #fff;
+  color: #1a202c;
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+.cta-content .btn:hover {
+  transform: scale(1.05);
+}
+
+/* Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 /* Role Descriptions Section */
 .role-descriptions {
   background-color: #f9f9fb;
