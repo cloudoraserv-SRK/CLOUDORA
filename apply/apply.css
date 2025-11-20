@@ -30,6 +30,95 @@ body {
     margin: 0 auto;
 }
 
+/* Role Descriptions Section */
+.role-descriptions {
+  background-color: #f9f9fb;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.role-descriptions h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #222;
+}
+
+/* Role Grid Layout */
+.role-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Individual Role Card */
+.role-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 25px 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.role-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.role-card h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #1a202c;
+}
+
+.role-card p {
+  font-size: 0.95rem;
+  color: #4a5568;
+  line-height: 1.6;
+}
+
+/* Hiring Process Section */
+.hiring-process {
+  background-color: #ffffff;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.hiring-process h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #222;
+}
+
+.hiring-process ol {
+  max-width: 800px;
+  margin: 0 auto;
+  padding-left: 20px;
+  text-align: left;
+  font-size: 1rem;
+  color: #2d3748;
+  line-height: 1.8;
+}
+
+.hiring-process ol li {
+  margin-bottom: 15px;
+  position: relative;
+  padding-left: 1.2em;
+}
+
+.hiring-process ol li::before {
+  content: "✔";
+  position: absolute;
+  left: 0;
+  color: #38a169;
+  font-weight: bold;
+}
+
 /* --- New Benefits Section --- */
 .benefits-section {
     padding: 4rem 0;
