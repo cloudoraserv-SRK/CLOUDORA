@@ -72,3 +72,36 @@ const hamburger = document.getElementById('hamburger');
     mobileNav.classList.toggle('active');
   });
 
+
+
+// Make resume link required only for Tech roles
+ 
+  const vacancySelect = document.getElementById('vacancy');
+  const resumeField = document.getElementById('resumeLink');
+  const resumeHelp = document.getElementById('resumeHelp');
+  const jobForm = document.getElementById('jobForm');
+
+  vacancySelect.addEventListener('change', function() {
+    const selected = vacancySelect.value;
+    if (
+      selected.includes('Developer') ||
+      selected.includes('Engineer') ||
+      selected.includes('Designer') ||
+      selected.includes('Tech')
+    ) {
+      resumeField.required = true;
+      resumeHelp.style.display = 'block';
+    } else {
+      resumeField.required = false;
+      resumeHelp.style.display = 'none';
+    }
+  });
+
+  jobForm.addEventListener('submit', function(e) {
+    if (resumeField.required && !resumeField.value) {
+      e.preventDefault();
+      resumeHelp.style.display = 'block';
+      resumeField.focus();
+    }
+  });
+
