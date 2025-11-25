@@ -1,12 +1,5 @@
-/* Import fonts and use custom properties from the main stylesheet */
+/* Import fonts and base variables */
 @import url("../style.css");
-
-/* Reset the body styles from the main stylesheet for this page, except for the background */
-body {
-    background: var(--color-dark);
-    font-family: var(--font-body);
-    color: var(--color-light);
-}
 
 :root {
   --color-bg: #0f0f11;
@@ -20,8 +13,16 @@ body {
   --font-heading: 'Poppins', sans-serif;
 }
 
+/* Global Reset */
+body {
+  background: var(--color-bg);
+  font-family: var(--font-body);
+  color: var(--color-light);
+  margin: 0;
+  padding: 0;
+}
 
-/* Adjustments for this specific page */
+/* Header */
 .site-header {
   background: rgba(15, 15, 17, 0.95);
   backdrop-filter: blur(12px);
@@ -75,70 +76,29 @@ body {
   background-color: var(--color-accent-hover);
 }
 
-/* Hamburger */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  gap: 4px;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.hamburger span {
-  width: 24px;
-  height: 2px;
-  background: var(--color-light);
-}
-
-/* Mobile Nav */
-.mobile-nav {
-  display: none;
-  flex-direction: column;
-  background: #111;
-  padding: 1rem;
-  border-top: 1px solid var(--color-border);
-}
-
-.mobile-nav a {
-  color: var(--color-light);
-  padding: 0.5rem 0;
-  text-decoration: none;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .navlinks {
-    display: none;
-  }
-
-  .hamburger {
-    display: flex;
-  }
-
-  .mobile-nav.active {
-    display: flex;
-  }
-}
-
+/* Hero Section */
 .hero {
-    padding-top: 10rem;
-    padding-bottom: 4rem;
-    text-align: center;
+  padding-top: 8rem;
+  padding-bottom: 4rem;
+  text-align: center;
 }
 
 .hero h1 {
-    font-size: clamp(2rem, 5vw, 4.5rem);
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 5vw, 4.5rem);
+  color: var(--color-light);
 }
 
 .hero p {
-    font-size: 1.2rem;
-    max-width: 700px;
-    margin: 0 auto;
+  font-size: 1.2rem;
+  max-width: 700px;
+  margin: 1rem auto;
+  color: var(--color-secondary);
 }
 
+/* CTA Banner */
 .cta-banner {
-  background: linear-gradient(135deg, #7f5af0, #2cb67d);
+  background: linear-gradient(135deg, var(--color-accent), #2cb67d);
   color: #fff;
   padding: 4rem 2rem;
   text-align: center;
@@ -148,6 +108,7 @@ body {
 .cta-content h2 {
   font-size: 2rem;
   margin-bottom: 1rem;
+  font-family: var(--font-heading);
 }
 
 .cta-content p {
@@ -169,20 +130,9 @@ body {
   transform: scale(1.05);
 }
 
-/* Animation */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-/* Role Descriptions Section */
+/* Role Descriptions */
 .role-descriptions {
-  background-color: #f9f9fb;
+  background-color: var(--color-surface);
   padding: 60px 20px;
   text-align: center;
 }
@@ -191,320 +141,55 @@ body {
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 30px;
-  color: #222;
-}
-
-/* Role Grid Layout */
-.role-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 30px;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-/* Individual Role Card */
-.role-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 25px 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.role-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-}
-
-.role-card h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 10px;
-  color: #1a202c;
-}
-
-.role-card p {
-  font-size: 0.95rem;
-  color: #4a5568;
-  line-height: 1.6;
-}
-
-/* Hiring Process Section */
-.hiring-process {
-  background-color: #ffffff;
-  padding: 60px 20px;
-  text-align: center;
-}
-
-.hiring-process h2 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 30px;
-  color: #222;
-}
-
-.hiring-process ol {
-  max-width: 800px;
-  margin: 0 auto;
-  padding-left: 20px;
-  text-align: left;
-  font-size: 1rem;
-  color: #2d3748;
-  line-height: 1.8;
-}
-
-.hiring-process ol li {
-  margin-bottom: 15px;
-  position: relative;
-  padding-left: 1.2em;
-}
-
-.hiring-process ol li::before {
-  content: "✔";
-  position: absolute;
-  left: 0;
-  color: #38a169;
-  font-weight: bold;
-}
-
-/* --- New Benefits Section --- */
-/* Benefit Cards */
-.benefits-section {
-  padding: 5rem 1.5rem;
-  background: var(--color-surface);
-}
-
-.benefits-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.benefit-card {
-  background: #18181b;
-  border: 1px solid var(--color-border);
-  border-radius: 1rem;
-  padding: 2rem;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.benefit-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-}
-
-.benefit-card h3 {
-  font-size: 1.25rem;
-  color: var(--color-accent);
-  margin-bottom: 0.75rem;
-}
-
-.benefit-card p {
-  color: var(--color-secondary);
-  font-size: 0.95rem;
-  line-height: 1.6;
-}
-
-
-
-/* Shared Section Styling */
-.faq-section,
-.commission-calculator,
-.payment-policy {
-  padding: 60px 20px;
-  background-color: #f9f9fb;
-  text-align: center;
-}
-
-.section-head {
-  font-family: var(--font-heading);
-  font-size: 2.2rem;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 2rem;
-  color: #f0f0f5;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-}
-
-.section-subtitle {
-  font-size: 1.1rem;
-  color: var(--color-secondary);
-  text-align: center;
-  margin-bottom: 3rem;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-
-/* FAQ Grid */
-.faq-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 30px;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-.faq-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 25px 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  text-align: left;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.faq-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-}
-
-.faq-card h4 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 10px;
-  color: #2d3748;
-}
-
-.faq-card p {
-  font-size: 0.95rem;
-  color: #4a5568;
-  line-height: 1.6;
-}
-
-/* Commission Calculator */
-.commission-calculator form {
-  max-width: 500px;
-  margin: 0 auto;
-  text-align: left;
-}
-
-.commission-calculator label {
-  display: block;
-  margin-top: 20px;
-  font-weight: 600;
-  color: #2d3748;
-}
-
-.commission-calculator input,
-.commission-calculator select {
-  width: 100%;
-  padding: 10px 12px;
-  margin-top: 8px;
-  border: 1px solid #cbd5e0;
-  border-radius: 8px;
-  font-size: 1rem;
-  background-color: #fff;
-}
-
-.commission-calculator button {
-  margin-top: 25px;
-  padding: 12px 20px;
-  background-color: #4f46e5;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.commission-calculator button:hover {
-  background-color: #4338ca;
-}
-
-#commissionResult {
-  font-size: 1.1rem;
-  color: #1a202c;
-}
-
-/* Payment Policy List */
-.payment-policy ul {
-  max-width: 800px;
-  margin: 0 auto;
-  text-align: left;
-  padding-left: 20px;
-  font-size: 1rem;
-  color: #2d3748;
-  line-height: 1.8;
-}
-
-.payment-policy ul li {
-  margin-bottom: 15px;
-  position: relative;
-  padding-left: 1.2em;
-}
-
-.payment-policy ul li::before {
-  content: "✔";
-  position: absolute;
-  left: 0;
-  color: #38a169;
-  font-weight: bold;
+  color: var(--color-light);
 }
 
 /* Application Form Section */
-/* Apply Section Background */
 .apply-section {
   padding: 3rem 1rem;
-  background: linear-gradient(135deg, #4a3aff, #6a5cff, #9a7dff);
+  background: var(--color-bg);
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Form Card */
 .apply-form {
   max-width: 850px;
   width: 100%;
-  background: #fff;
+  background: var(--color-surface);
   padding: 2.5rem;
   border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
   animation: fadeInUp 0.6s ease;
 }
 
-@keyframes fadeInUp {
-  from { transform: translateY(30px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-/* Headings */
 .apply-form h2 {
   text-align: center;
-  color: #4a3aff;
+  color: var(--color-accent);
   margin-bottom: 1rem;
   font-size: 2rem;
+  font-family: var(--font-heading);
 }
 
 .form-subtitle {
   text-align: center;
   font-size: 1.1rem;
   margin-bottom: 2rem;
-  color: #666;
+  color: var(--color-secondary);
 }
 
-/* Section Titles */
 .form-section h3 {
-  color: #4a3aff;
+  color: var(--color-accent);
   margin-bottom: 0.8rem;
   font-size: 1.2rem;
 }
 
-/* Labels & Inputs */
 .apply-form label {
   display: block;
   margin: 0.5rem 0 0.2rem;
   font-weight: 600;
-  color: #333;
+  color: var(--color-light);
 }
 
 .apply-form input,
@@ -512,23 +197,23 @@ body {
 .apply-form textarea {
   width: 100%;
   padding: 12px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   font-size: 15px;
   transition: all 0.3s ease;
-  background: #fafafa;
+  background: #111;
+  color: var(--color-light);
 }
 
 .apply-form input:focus,
 .apply-form select:focus,
 .apply-form textarea:focus {
-  border-color: #4a3aff;
-  background: #fff;
-  box-shadow: 0 0 6px rgba(74,58,255,0.3);
+  border-color: var(--color-accent);
+  background: #1a1a1d;
+  box-shadow: 0 0 6px rgba(127,90,240,0.5);
   outline: none;
 }
 
-/* Two Column Layout */
 .two-col {
   display: flex;
   gap: 1rem;
@@ -538,9 +223,9 @@ body {
   flex: 1;
 }
 
-/* Submit Button */
+/* Buttons */
 .btn {
-  background: #4a3aff;
+  background: var(--color-accent);
   color: #fff;
   padding: 14px 22px;
   border: none;
@@ -552,7 +237,7 @@ body {
 }
 
 .btn:hover {
-  background: #3729cc;
+  background: var(--color-accent-hover);
   transform: translateY(-2px);
 }
 
@@ -560,11 +245,11 @@ body {
 .agreement {
   margin: 1.5rem 0;
   font-size: 14px;
-  color: #444;
+  color: var(--color-secondary);
 }
 
 .agreement a {
-  color: #4a3aff;
+  color: var(--color-accent);
   text-decoration: underline;
 }
 
@@ -579,7 +264,7 @@ body {
   color: #fff;
   font-weight: 600;
   border-radius: 50px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   text-decoration: none;
   transition: background 0.3s ease, transform 0.2s ease;
 }
@@ -588,7 +273,14 @@ body {
   background: #1ebe5d;
   transform: scale(1.05);
 }
-    /* Responsive Typography */
+
+/* Animation */
+@keyframes fadeInUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsive Typography */
 h1, h2, h3, h4 {
   font-family: var(--font-heading);
   line-height: 1.3;
@@ -602,91 +294,219 @@ h1, h2, h3, h4 {
   .benefit-card {
     padding: 1.5rem;
   }
-}
 
-/* Image Collage */
-.collage-wrap {
-    flex: 1 1 30%;
-    display: none;
-    align-items: center;
-    justify-content: center;
-}
-
-@media (min-width: 1024px) {
-    .collage-wrap {
-        display: flex;
-    }
-}
-
-.collage {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    gap: 1.5rem;
-    padding: 2rem;
-    background: #111;
-    border-radius: 1rem;
-    border: 1px solid #222;
-}
-
-.image-box {
-    border-radius: 0.75rem;
-    overflow: hidden;
-    aspect-ratio: 1/1;
-    position: relative;
-}
-
-.image-box img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.3s ease;
-}
-
-.image-box img:hover {
-    transform: scale(1.05);
-}
-
-/* Footer specific styles */
-footer {
-    margin-top: 4rem;
-}
-
-.foot {
+  .two-col {
     flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
+  }
 }
 
-@media (min-width: 768px) {
-    .foot {
-        flex-direction: row;
-        justify-content: space-between;
-    }
-    .foot-left {
-        align-items: flex-start;
-    }
+
+/* Role Grid Layout */
+.role-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-.contact-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    text-align: center;
-    margin-top: 1rem;
+/* Individual Role Card */
+.role-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 25px 20px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-@media (min-width: 768px) {
-    .contact-info {
-        text-align: left;
-    }
+.role-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
 }
 
-.contact-info a {
-    color: var(--color-secondary);
+.role-card h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--color-accent);
 }
 
-.contact-info a:hover {
-    color: var(--color-light);
+.role-card p {
+  font-size: 0.95rem;
+  color: var(--color-secondary);
+  line-height: 1.6;
 }
+
+/* Hiring Process Section */
+.hiring-process {
+  background-color: var(--color-surface);
+  padding: 60px 20px;
+  text-align: center;
+  border-radius: 12px;
+}
+
+.hiring-process h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: var(--color-light);
+}
+
+.hiring-process ol {
+  max-width: 800px;
+  margin: 0 auto;
+  padding-left: 20px;
+  text-align: left;
+  font-size: 1rem;
+  color: var(--color-secondary);
+  line-height: 1.8;
+}
+
+.hiring-process ol li {
+  margin-bottom: 15px;
+  position: relative;
+  padding-left: 1.5em;
+}
+
+.hiring-process ol li::before {
+  content: "✔";
+  position: absolute;
+  left: 0;
+  color: #2cb67d;
+  font-weight: bold;
+}
+
+/* Benefits Section */
+.benefits-section {
+  padding: 5rem 1.5rem;
+  background: var(--color-bg);
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.benefit-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  padding: 2rem;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.benefit-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+}
+
+.benefit-card h3 {
+  font-size: 1.25rem;
+  color: var(--color-accent);
+  margin-bottom: 0.75rem;
+}
+
+.benefit-card p {
+  color: var(--color-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Shared Section Styling */
+.faq-section,
+.commission-calculator,
+.payment-policy {
+  padding: 60px 20px;
+  background-color: var(--color-surface);
+  text-align: center;
+  border-radius: 12px;
+}
+
+.section-head {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--color-accent);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  color: var(--color-secondary);
+  text-align: center;
+  margin-bottom: 3rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* FAQ Grid */
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.faq-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 25px 20px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  text-align: left;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.faq-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.faq-card h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--color-accent);
+}
+
+.faq-card p {
+  font-size: 0.95rem;
+  color: var(--color-secondary);
+  line-height: 1.6;
+}
+
+/* Payment Policy List */
+.payment-policy ul {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: left;
+  padding-left: 20px;
+  font-size: 1rem;
+  color: var(--color-secondary);
+  line-height: 1.8;
+}
+
+.payment-policy ul li {
+  margin-bottom: 15px;
+  position: relative;
+  padding-left: 1.5em;
+}
+
+.payment-policy ul li::before {
+  content: "✔";
+  position: absolute;
+  left: 0;
+  color: #2cb67d;
+  font-weight: bold;
+}
+
+
