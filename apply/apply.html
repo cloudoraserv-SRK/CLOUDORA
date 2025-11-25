@@ -223,121 +223,149 @@
 
       <h2>Application Form</h2>
 
-      <label for="name">Full Name</label>
-      <input type="text" id="name" name="name" required>
-
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" required>
-
-      <label for="phone">Mobile Number</label>
-      <input type="tel" id="phone" name="phone" placeholder="+91 9876543210" required>
-
-      <label for="country">Country</label>
-      <input type="text" id="country" name="country" required>
-
-      <label for="city">City</label>
-      <input type="text" id="city" name="city" required>
-
-      <label for="vacancy">Vacancy Applying For</label>
-      <select id="vacancy" name="vacancy" required>
-        <option value="">-- Select Vacancy --</option>
-
-        <optgroup label="Telecalling">
-          <option>Voice Support Executive</option>
-          <option>Lead Conversion Specialist</option>
-        </optgroup>
-
-        <optgroup label="Sales & Marketing">
-          <option>Field Sales Executive</option>
-          <option>Online Sales Executive</option>
-          <option>Sales Manager</option>
-        </optgroup>
-
-        <optgroup label="Customer Support">
-          <option>Email Support Associate</option>
-          <option>Lead Nurturing Executive</option>
-          <option>Chat Support Associate</option>
-        </optgroup>
-
-        <optgroup label="Development & Tech">
-          <option>Frontend Developer</option>
-          <option>Backend Developer</option>
-          <option>Flutter Developer</option>
-          <option>Blockchain Engineer (Solidity)</option>
-          <option>Unity/Unreal Game Developer</option>
-          <option>Full Stack Developer</option>
-          <option>Mobile App Developer</option>
-          <option>AI/ML Engineer</option>
-          <option>UI/UX Designer</option>
-        </optgroup>
-      </select>
-
-      <label for="preferredLanguage">Preferred Language(s)</label>
-      <input type="text" id="preferredLanguage" name="preferredLanguage" placeholder="e.g. Hindi, English, Bengali">
-
-      <label for="workMode">Preferred Work Mode</label>
-      <select id="workMode" name="workMode">
-        <option value="">-- Select --</option>
-        <option>Remote</option>
-        <option>On-site</option>
-        <option>Hybrid</option>
-      </select>
-
-      <label for="availability">Availability</label>
-      <select id="availability" name="availability">
-        <option value="">-- Select --</option>
-        <option>Full-time</option>
-        <option>Part-time</option>
-        <option>Freelance / Project-based</option>
-      </select>
-
-      <label for="skills">Specialty / Skills</label>
-      <input type="text" id="skills" name="skills" placeholder="e.g. SEO, React, Sales, Customer Success">
-
-      <label for="experience">Experience</label>
-      <select id="experience" name="experience" required>
-        <option value="">-- Select Experience --</option>
-        <option>Fresher</option>
-        <option>0-1 Years</option>
-        <option>1-3 Years</option>
-        <option>3-5 Years</option>
-        <option>5+ Years</option>
-      </select>
-
-      <!-- Resume Link (conditional requirement) -->
-     <label for="resumeLink">Resume / Portfolio Link</label>
-      <input type="url" id="resumeLink" name="resumeLink" placeholder="Paste Google Drive, Dropbox, or portfolio link">
-      <small id="resumeHelp" style="color:red; display:none;">
-        Resume link is required for technical roles.
-      </small>
-
-      <label for="linkedin">LinkedIn Profile</label>
-      <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/username">
-
-      <label for="github">GitHub / Portfolio Website</label>
-      <input type="url" id="github" name="github" placeholder="https://github.com/username">
-
-      <label for="message">Cover Letter / Message</label>
-      <textarea id="message" name="message" rows="5" placeholder="Tell us why you’re a great fit"></textarea>
-
-      <div class="form-actions">
-        <button type="submit" class="btn">Submit Application</button>
-        <span id="formStatus" class="pill" style="display:none"></span>
-      </div>
-<!-- Agreement Checkbox -->
-<div class="agreement">
-  <input type="checkbox" id="agree" name="agree" required>
-  <label for="agree">
-    I have read and agree to the 
-    <a href="./policy/privacy.html" target="_blank">Privacy Policy</a> and 
-    <a href="./policy/terms.html" target="_blank">Terms & Conditions</a>.
-  </label>
-</div>
-    </form>
-  </div>
-</section>
+              <!-- Personal Information -->
+        <div class="form-section">
+          <h3>👤 Personal Information</h3>
+          <div class="two-col">
+            <div>
+              <label for="name">Full Name</label>
+              <input type="text" id="name" name="name" required>
             </div>
-    </section>
+            <div>
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div>
+              <label for="phone">Mobile Number</label>
+              <input type="tel" id="phone" name="phone" placeholder="+91 9876543210" required>
+            </div>
+            <div>
+              <label for="country">Country</label>
+              <input type="text" id="country" name="country" required>
+            </div>
+          </div>
+
+          <label for="city">City</label>
+          <input type="text" id="city" name="city" required>
+        </div>
+
+        <!-- Role Preferences -->
+        <div class="form-section">
+          <h3>💼 Role Preferences</h3>
+          <label for="vacancy">Vacancy Applying For</label>
+          <select id="vacancy" name="vacancy" required>
+            <option value="">-- Select Vacancy --</option>
+            <optgroup label="Telecalling">
+              <option>Voice Support Executive</option>
+              <option>Lead Conversion Specialist</option>
+            </optgroup>
+            <optgroup label="Sales & Marketing">
+              <option>Field Sales Executive</option>
+              <option>Online Sales Executive</option>
+              <option>Sales Manager</option>
+            </optgroup>
+            <optgroup label="Customer Support">
+              <option>Email Support Associate</option>
+              <option>Lead Nurturing Executive</option>
+              <option>Chat Support Associate</option>
+            </optgroup>
+            <optgroup label="Development & Tech">
+              <option>Frontend Developer</option>
+              <option>Backend Developer</option>
+              <option>Flutter Developer</option>
+              <option>Blockchain Engineer (Solidity)</option>
+              <option>Unity/Unreal Game Developer</option>
+              <option>Full Stack Developer</option>
+              <option>Mobile App Developer</option>
+              <option>AI/ML Engineer</option>
+              <option>UI/UX Designer</option>
+            </optgroup>
+          </select>
+
+          <label for="preferredLanguage">Preferred Language(s)</label>
+          <input type="text" id="preferredLanguage" name="preferredLanguage" placeholder="e.g. Hindi, English, Bengali">
+
+          <div class="two-col">
+            <div>
+              <label for="workMode">Preferred Work Mode</label>
+              <select id="workMode" name="workMode">
+                <option value="">-- Select --</option>
+                <option>Remote</option>
+                <option>On-site</option>
+                <option>Hybrid</option>
+              </select>
+            </div>
+            <div>
+              <label for="availability">Availability</label>
+              <select id="availability" name="availability">
+                <option value="">-- Select --</option>
+                <option>Full-time</option>
+                <option>Part-time</option>
+                <option>Freelance / Project-based</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skills & Experience -->
+        <div class="form-section">
+          <h3>📈 Skills & Experience</h3>
+          <label for="skills">Specialty / Skills</label>
+          <input type="text" id="skills" name="skills" placeholder="e.g. SEO, React, Sales, Customer Success">
+
+          <label for="experience">Experience</label>
+          <select id="experience" name="experience" required>
+            <option value="">-- Select Experience --</option>
+            <option>Fresher</option>
+            <option>0-1 Years</option>
+            <option>1-3 Years</option>
+            <option>3-5 Years</option>
+            <option>5+ Years</option>
+          </select>
+
+          <label for="resumeLink">Resume / Portfolio Link</label>
+          <input type="url" id="resumeLink" name="resumeLink" placeholder="Paste Google Drive, Dropbox, or portfolio link">
+          <small id="resumeHelp" style="color:red; display:none;">Resume link is required for technical roles.</small>
+        </div>
+
+        <!-- Profiles -->
+        <div class="form-section">
+          <h3>🌐 Profiles</h3>
+          <label for="linkedin">LinkedIn Profile</label>
+          <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/username">
+
+          <label for="github">GitHub / Portfolio Website</label>
+          <input type="url" id="github" name="github" placeholder="https://github.com/username">
+        </div>
+
+        <!-- Cover Letter -->
+        <div class="form-section">
+          <h3>📝 Cover Letter</h3>
+          <label for="message">Cover Letter / Message</label>
+          <textarea id="message" name="message" rows="5" placeholder="Tell us why you’re a great fit"></textarea>
+        </div>
+
+        <!-- Agreement -->
+        <div class="agreement">
+          <input type="checkbox" id="agree" name="agree" required>
+          <label for="agree">
+            I have read and agree to the 
+            <a href="./policy/privacy.html" target="_blank">Privacy Policy</a> and 
+            <a href="./policy/terms.html" target="_blank">Terms & Conditions</a>.
+          </label>
+        </div>
+
+        <!-- Submit -->
+        <div class="form-actions">
+          <button type="submit" class="btn">Submit Application</button>
+          <span id="formStatus" class="pill" style="display:none"></span>
+        </div>
+      </form>
+    </div>
+  </section>
 
     <footer>
         <div class="container foot">
