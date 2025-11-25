@@ -451,46 +451,60 @@ body {
 }
 
 /* Application Form Section */
+/* Apply Section Background */
 .apply-section {
-  padding: 2rem;
-  background: #fff;
+  padding: 3rem 1rem;
+  background: linear-gradient(135deg, #4a3aff, #6a5cff, #9a7dff);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* Form Card */
 .apply-form {
-  max-width: 800px;
-  margin: auto;
+  max-width: 850px;
+  width: 100%;
   background: #fff;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  animation: fadeInUp 0.6s ease;
 }
 
+@keyframes fadeInUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Headings */
 .apply-form h2 {
   text-align: center;
   color: #4a3aff;
   margin-bottom: 1rem;
+  font-size: 2rem;
 }
 
 .form-subtitle {
   text-align: center;
-  font-size: 1rem;
-  margin-bottom: 1.5rem;
-  color: #555;
-}
-
-.form-section {
+  font-size: 1.1rem;
   margin-bottom: 2rem;
+  color: #666;
 }
 
+/* Section Titles */
 .form-section h3 {
   color: #4a3aff;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.8rem;
+  font-size: 1.2rem;
 }
 
+/* Labels & Inputs */
 .apply-form label {
   display: block;
   margin: 0.5rem 0 0.2rem;
-  font-weight: 500;
+  font-weight: 600;
+  color: #333;
 }
 
 .apply-form input,
@@ -498,19 +512,23 @@ body {
 .apply-form textarea {
   width: 100%;
   padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-  transition: border-color 0.3s ease;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  background: #fafafa;
 }
 
 .apply-form input:focus,
 .apply-form select:focus,
 .apply-form textarea:focus {
   border-color: #4a3aff;
+  background: #fff;
+  box-shadow: 0 0 6px rgba(74,58,255,0.3);
   outline: none;
 }
 
+/* Two Column Layout */
 .two-col {
   display: flex;
   gap: 1rem;
@@ -520,26 +538,56 @@ body {
   flex: 1;
 }
 
+/* Submit Button */
 .btn {
   background: #4a3aff;
   color: #fff;
-  padding: 12px 20px;
+  padding: 14px 22px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, transform 0.2s ease;
   width: 100%;
 }
 
 .btn:hover {
   background: #3729cc;
+  transform: translateY(-2px);
 }
 
+/* Agreement Checkbox */
 .agreement {
-  margin: 1rem 0;
-  font-size:
+  margin: 1.5rem 0;
+  font-size: 14px;
+  color: #444;
+}
 
+.agreement a {
+  color: #4a3aff;
+  text-decoration: underline;
+}
+
+/* WhatsApp Floating Button */
+.btn.whatsapp {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: auto;
+  padding: 12px 18px;
+  background: #25D366;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 50px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  text-decoration: none;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn.whatsapp:hover {
+  background: #1ebe5d;
+  transform: scale(1.05);
+}
     /* Responsive Typography */
 h1, h2, h3, h4 {
   font-family: var(--font-heading);
