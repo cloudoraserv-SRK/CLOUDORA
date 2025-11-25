@@ -46,11 +46,30 @@ body {
   text-decoration: none;
 }
 
+/* Desktop Nav */
 .navlinks {
   display: flex;
   gap: 1.5rem;
 }
 
+@media (max-width: 768px) {
+  .navlinks {
+    display: none; /* hide desktop nav on mobile */
+  }
+}
+
+/* Mobile Nav */
+.mobile-nav {
+  display: none;
+  flex-direction: column;
+  background: var(--color-surface);
+  padding: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.mobile-nav.active {
+  display: flex; /* only show when toggled */
+}
 .navlinks a {
   color: var(--color-light);
   font-weight: 500;
