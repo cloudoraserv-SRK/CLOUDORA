@@ -1,0 +1,48 @@
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f9f9fb;
+  color: #333;
+  line-height: 1.6;
+}
+
+.legal-header {
+  background: #4a3aff;
+  color: #fff;
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.legal-header h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.legal-header p {
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+}
+
+.legal-content {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.legal-content h2 {
+  color: #4a3aff;
+  margin-top: 1.5rem;
+}
+
+.legal-content p, .legal-content ul {
+  margin: 0.5rem 0 1rem;
+}
+
+.legal-footer {
+  background: #222;
+  color: #fff;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 2rem;
+}
