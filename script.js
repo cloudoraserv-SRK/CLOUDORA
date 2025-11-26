@@ -120,45 +120,33 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Currency Switcher ---
   const currencySelect = document.getElementById("currencySelect");
 
-  function updatePrices(selectedCurrency) {
+ function updatePrices(selectedCurrency) {
   fetch(`https://api.exchangerate-api.com/v4/latest/INR`)
     .then(res => res.json())
     .then(data => {
       const rate = data.rates[selectedCurrency];
       if (!rate) return;
 
-      // Update price tags
-      document.querySelectorAll('.new-price[data-inr]').forEach(el => {
+      document.querySelectorAll('[data-inr]').forEach(el => {
         const basePrice = parseFloat(el.getAttribute('data-inr'));
-        const converted = (basePrice * rate).toFixed(2);
-        const formatted = new Intl.NumberFormat(undefined, {
-          style: 'currency',
-          currency: selectedCurrency
-        }).format(converted);
-        el.textContent = formatted;
-      });
+        if (isNaN(basePrice)) return;
 
-      // Update budget dropdown options
-      document.querySelectorAll('#budget option[data-inr]').forEach(opt => {
-        const basePrice = parseFloat(opt.getAttribute('data-inr'));
         const converted = (basePrice * rate).toFixed(0);
         const formatted = new Intl.NumberFormat(undefined, {
           style: 'currency',
           currency: selectedCurrency
         }).format(converted);
 
-        if (basePrice === 1000) {
-          opt.textContent = `${formatted} – ${new Intl.NumberFormat(undefined, {
-            style: 'currency',
-            currency: selectedCurrency
-          }).format((5000 * rate).toFixed(0))}`;
-        } else if (basePrice === 5000) {
-          opt.textContent = `${formatted} – ${new Intl.NumberFormat(undefined, {
-            style: 'currency',
-            currency: selectedCurrency
-          }).format((10000 * rate).toFixed(0))}`;
-        } else if (basePrice === 10000) {
-          opt.textContent = `${formatted}+`;
+        if (el.tagName.toLowerCase() === 'option' && el.parentElement.id === 'budget') {
+          if (basePrice === 1000) {
+            el.textContent = `${formatted} – ${new Intl.NumberFormat(undefined, { style: 'currency', currency: selectedCurrency }).format((5000 * rate).toFixed(0))}`;
+          } else if (basePrice === 5000) {
+            el.textContent = `${formatted} – ${new Intl.NumberFormat(undefined, { style: 'currency', currency: selectedCurrency }).format((10000 * rate).toFixed(0))}`;
+          } else if (basePrice === 10000) {
+            el.textContent = `${formatted}+`;
+          }
+        } else {
+          el.textContent = formatted;
         }
       });
     });
@@ -232,3 +220,31 @@ document.getElementById("contactForm").addEventListener("submit", async function
     this.reset();
   }
 });
+
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    includedLanguages: 'en,hi,fr,es,de,zh-CN,ar,ja,ru,pt,bn,ta,mr',
+    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+  }, 'google_translate_element');
+}
+
+function autoTranslateByBrowserLang() {
+  const langMap = { hi:'hi', fr:'fr', es:'es', de:'de', zh:'zh-CN', ar:'ar', ja:'ja', ru:'ru', pt:'pt', bn:'bn', ta:'ta', mr:'mr' };
+  const browserLang = navigator.language.slice(0, 2);
+  const targetLang = langMap[browserLang];
+
+  const tryTranslate = () => {
+    const select = document.querySelector('.goog-te-combo');
+    if (select && targetLang) {
+      select.value = targetLang;
+      select.dispatchEvent(new Event('change'));
+      localStorage.setItem("cloudoraLang", targetLang); // save preference
+    } else {
+      setTimeout(tryTranslate, 500);
+    }
+  };
+  tryTranslate();
+}
+
+window.addEventListener('load', autoTranslateByBrowserLang);
