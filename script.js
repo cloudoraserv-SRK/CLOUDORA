@@ -179,8 +179,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   // Supabase
-const supabaseUrl = "https://YOUR_PROJECT_URL.supabase.co";
-const supabaseKey = "YOUR_ANON_KEY";
+const supabaseUrl = "https://rfilnqigcadeawytwqmz.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJmaWxucWlnY2FkZWF3eXR3cW16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxMzE2NTIsImV4cCI6MjA3OTcwNzY1Mn0.1wtcjczrzhv2YsE7hGQL11imPxmFVS4sjxlJGvIZ26o";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 document.getElementById("contactForm").addEventListener("submit", async function(e) {
