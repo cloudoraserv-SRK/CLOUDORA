@@ -605,3 +605,15 @@ h1, h2, h3, h4 {
 .mobile-nav .tools select {
   width: 100%;
 }
+
+/* Spinner animation */
+#formStatus.loading::after {
+  content: "⏳";
+  margin-left: 8px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
