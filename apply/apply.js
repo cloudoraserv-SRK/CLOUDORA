@@ -149,25 +149,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // --- 2. Submit to Supabase ---
-        const { error } = await supabase
-          .from("application")
-          .insert([
-            {
-              form_type: "final",
-              full_name: formData.get("name"),
-              email: formData.get("email"),
-              phone: formData.get("phone"),
-              country: formData.get("country"),
-              city: formData.get("city"),
-              role_category: formData.get("vacancy"),
-              preferred_language: formData.get("preferredLanguage"),
-              work_mode: formData.get("workMode"),
-              availability: formData.get("availability"),
-              work_country: formData.get("workCountry"),
-              shift: formData.get("shift"),
-              status: "submitted"
-            }
-          ]);
+        const { data: leadData, error: leadError } = await supabase
+  .from("lead")
+  .insert([
+    {
+      full_name: formData.get("name"),
+      email: formData.get("email"),
+      phone: formData.get("phone"),
+      country: formData.get("country"),
+      city: formData.get("city"),
+      linkedin: formData.get("linkedin"),
+      github: formData.get("github")
+    }
+  ])
+  .select(); // returns inserted row(s)
+
+        const { error: appError } = await supabase
+  .from("application")
+  .insert([
+    {
+      lead_id: leadData[0].id, // foreign key reference
+      form_type: "final",
+      role_category: formData.get("vacancy"),
+      engagement_type: formData.get("availability"),
+      country: formData.get("country"),
+      timezone: formData.get("shift"),
+      preferred_schedule: formData.get("workMode"),
+      notes: formData.get("message"),
+      status: "submitted"
+    }
+  ]);
+        
 
         statusEl.classList.remove("loading");
 
