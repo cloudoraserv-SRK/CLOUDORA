@@ -121,23 +121,48 @@ document.addEventListener('DOMContentLoaded', () => {
   const currencySelect = document.getElementById("currencySelect");
 
   function updatePrices(selectedCurrency) {
-    fetch(`https://api.exchangerate-api.com/v4/latest/INR`)
-      .then(res => res.json())
-      .then(data => {
-        const rate = data.rates[selectedCurrency];
-        if (!rate) return;
+  fetch(`https://api.exchangerate-api.com/v4/latest/INR`)
+    .then(res => res.json())
+    .then(data => {
+      const rate = data.rates[selectedCurrency];
+      if (!rate) return;
 
-        document.querySelectorAll('.new-price[data-inr]').forEach(el => {
-          const basePrice = parseFloat(el.getAttribute('data-inr'));
-          const converted = (basePrice * rate).toFixed(2);
-          const formatted = new Intl.NumberFormat(undefined, {
+      // Update price tags
+      document.querySelectorAll('.new-price[data-inr]').forEach(el => {
+        const basePrice = parseFloat(el.getAttribute('data-inr'));
+        const converted = (basePrice * rate).toFixed(2);
+        const formatted = new Intl.NumberFormat(undefined, {
+          style: 'currency',
+          currency: selectedCurrency
+        }).format(converted);
+        el.textContent = formatted;
+      });
+
+      // Update budget dropdown options
+      document.querySelectorAll('#budget option[data-inr]').forEach(opt => {
+        const basePrice = parseFloat(opt.getAttribute('data-inr'));
+        const converted = (basePrice * rate).toFixed(0);
+        const formatted = new Intl.NumberFormat(undefined, {
+          style: 'currency',
+          currency: selectedCurrency
+        }).format(converted);
+
+        if (basePrice === 1000) {
+          opt.textContent = `${formatted} – ${new Intl.NumberFormat(undefined, {
             style: 'currency',
             currency: selectedCurrency
-          }).format(converted);
-          el.textContent = formatted;
-        });
+          }).format((5000 * rate).toFixed(0))}`;
+        } else if (basePrice === 5000) {
+          opt.textContent = `${formatted} – ${new Intl.NumberFormat(undefined, {
+            style: 'currency',
+            currency: selectedCurrency
+          }).format((10000 * rate).toFixed(0))}`;
+        } else if (basePrice === 10000) {
+          opt.textContent = `${formatted}+`;
+        }
       });
-  }
+    });
+}
 
   const savedCurrency = localStorage.getItem("cloudoraCurrency");
   const localeCurrency = new Intl.NumberFormat().resolvedOptions().currency || 'USD';
