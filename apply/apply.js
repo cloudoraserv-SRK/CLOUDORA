@@ -128,33 +128,31 @@ document.addEventListener('DOMContentLoaded', () => {
   const statusEl = document.getElementById("formStatus");
 
   if (jobForm) {
-    jobForm.addEventListener("submit", async function(e) {
-      e.preventDefault();
-      statusEl.style.display = "inline-block";
-      statusEl.textContent = "Submitting...";
-      statusEl.classList.add("loading");
+   jobForm.addEventListener("submit", async function(e) {
+  e.preventDefault();
+  statusEl.style.display = "inline-block";
+  statusEl.textContent = "Submitting...";
+  statusEl.classList.add("loading");
 
+  const formData = new FormData(this);
 
-      const formData = new FormData(this);
+  try {
+    // --- 1. Submit to Formspree ---
+    const response = await fetch("https://formspree.io/f/xeowpzqo", {
+      method: "POST",
+      body: formData,
+      headers: { 'Accept': 'application/json' }
+    });
 
-      try {
-        // --- 1. Submit to Formspree ---
-        const response = await fetch("https://formspree.io/f/xeowpzqo", {
-          method: "POST",
-          body: formData,
-          headers: { 'Accept': 'application/json' }
-        });
+    if (!response.ok) {
+      console.warn("Formspree submission failed");
+    }
 
-
-        if (!response.ok) {
-          console.warn("Formspree submission failed");
-        }
-
-        // --- 2. Submit to Supabase ---
-        const { error } = await supabase.from("application")insert([{ ... }]);
-
-           statusEl.classList.remove("loading");
-        
+    // --- 2. Submit to Supabase ---
+    const { error } = await supabase
+      .from("application")
+      .insert([
+        {
           form_type: "final",
           full_name: formData.get("name"),
           email: formData.get("email"),
@@ -168,13 +166,16 @@ document.addEventListener('DOMContentLoaded', () => {
           work_country: formData.get("workCountry"),
           shift: formData.get("shift"),
           status: "submitted"
-        }]);
+        }
+      ]);
 
-       if (error) {
+    statusEl.classList.remove("loading");
+
+    if (error) {
       statusEl.textContent = "❌ Something went wrong saving your application.";
       statusEl.style.backgroundColor = "#dc2626";
     } else {
-      statusEl.textContent = "✅ Thank you! your application has been submitted and now you will be redirected to agreement page. Redirecting...";
+      statusEl.textContent = "✅ Thank you! Your application has been submitted. Redirecting...";
       statusEl.style.backgroundColor = "#16a34a";
       this.reset();
       setTimeout(() => {
@@ -188,8 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
     statusEl.style.backgroundColor = "#dc2626";
   }
 });
-
-});
+    
 // --- Google Translate ---
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({
