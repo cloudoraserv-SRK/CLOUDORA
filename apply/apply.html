@@ -218,7 +218,7 @@
     
 <section id="apply" class="apply-section">
   <div class="container apply-grid">
-    <form class="apply-form" id="jobForm" action="https://formspree.io/f/xeowpzqo" method="POST">
+    <form class="apply-form" id="jobForm">
       <p class="form-subtitle">Remote-first roles. Unlimited earning potential. Let’s build the future together.</p>
 
       <h2>Application Form</h2>
@@ -244,9 +244,17 @@
             </div>
             <div>
               <label for="country">Country</label>
-              <input type="text" id="country" name="country" required>
-            </div>
+            <select id="country" name="country" required>
+              <option value="">-- Select Country --</option>
+              <option>India</option>
+              <option>USA</option>
+              <option>UK</option>
+              <option>Germany</option>
+              <option>UAE</option>
+              <option>Other</option>
+            </select>
           </div>
+        </div>
 
           <label for="city">City</label>
           <input type="text" id="city" name="city" required>
@@ -331,6 +339,27 @@
           <small id="resumeHelp" style="color:red; display:none;">Resume link is required for technical roles.</small>
         </div>
 
+        <!-- New Fields -->
+        <label for="workCountry">Interested Work Country</label>
+        <select id="workCountry" name="workCountry">
+          <option value="">-- Select Country --</option>
+          <option>India</option>
+          <option>USA</option>
+          <option>UK</option>
+          <option>Germany</option>
+          <option>UAE</option>
+          <option>Other</option>
+        </select>
+
+        <label for="shift">Preferred Work Time Frame</label>
+        <select id="shift" name="shift">
+          <option value="">-- Select Shift --</option>
+          <option>Morning Shift</option>
+          <option>Day Shift</option>
+          <option>Night Shift</option>
+        </select>
+      </div>
+    
         <!-- Profiles -->
         <div class="form-section">
           <h3>🌐 Profiles</h3>
