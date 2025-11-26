@@ -252,6 +252,53 @@ body {
   text-decoration: underline;
 }
 
+/* Form Sections */
+.form-section {
+  margin-bottom: 2rem; /* spacing between sections */
+}
+
+/* Two-column layout */
+.two-col {
+  display: flex;
+  gap: 1rem;            /* space between columns */
+  margin-bottom: 1rem;  /* space below each row */
+}
+
+.two-col > div {
+  flex: 1;              /* equal width for each column */
+}
+
+/* Responsive stacking for mobile */
+@media (max-width: 768px) {
+  .two-col {
+    flex-direction: column;
+  }
+}
+
+/* Ensure labels and inputs align nicely */
+.apply-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--color-light);
+}
+
+.apply-form input,
+.apply-form select,
+.apply-form textarea {
+  margin-bottom: 1rem; /* consistent spacing below fields */
+}
+
+/* Extra polish for small screens */
+@media (max-width: 480px) {
+  .apply-form {
+    padding: 1.5rem;
+  }
+  .apply-form h2 {
+    font-size: 1.8rem;
+  }
+}
+
 /* WhatsApp Floating Button */
 .btn.whatsapp {
   position: fixed;
@@ -509,3 +556,52 @@ h1, h2, h3, h4 {
 }
 
 
+
+/* Tools container (currency + language) */
+.tools {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: auto; /* push to right side in desktop nav */
+}
+
+.tools label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #fff;
+}
+
+.tools select {
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-family: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+#google_translate_element {
+  font-size: 0.9rem;
+}
+
+/* Desktop nav positioning */
+.site-header .tools {
+  margin-left: 2rem;
+}
+
+/* Mobile nav styling */
+.mobile-nav .tools {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-top: 1px solid #333;
+}
+
+.mobile-nav .tools label {
+  color: #fff;
+}
+
+.mobile-nav .tools select {
+  width: 100%;
+}
