@@ -132,6 +132,8 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       statusEl.style.display = "inline-block";
       statusEl.textContent = "Submitting...";
+      statusEl.classList.add("loading");
+
 
       const formData = new FormData(this);
 
@@ -149,7 +151,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // --- 2. Submit to Supabase ---
-        const { error } = await supabase.from("application").insert([{
+        const { error } = await supabase.from("application")insert([{ ... }]);
+
+           statusEl.classList.remove("loading");
+        
           form_type: "final",
           full_name: formData.get("name"),
           email: formData.get("email"),
@@ -165,23 +170,25 @@ document.addEventListener('DOMContentLoaded', () => {
           status: "submitted"
         }]);
 
-        if (error) {
-          console.error("Supabase error:", error);
-          statusEl.textContent = "Error saving to database: " + error.message;
-          statusEl.style.backgroundColor = "#dc2626";
-        } else {
-          statusEl.textContent = "✅ Application submitted successfully!";
-          statusEl.style.backgroundColor = "#16a34a";
-          this.reset();
-        }
+       if (error) {
+      statusEl.textContent = "❌ Something went wrong saving your application.";
+      statusEl.style.backgroundColor = "#dc2626";
+    } else {
+      statusEl.textContent = "✅ Thank you! your application has been submitted and now you will be redirected to agreement page. Redirecting...";
+      statusEl.style.backgroundColor = "#16a34a";
+      this.reset();
+      setTimeout(() => {
+        window.location.href = "/policy/7day-trial.html";
+      }, 2000);
+    }
 
-      } catch (err) {
-        console.error("Submission error:", err);
-        statusEl.textContent = "Error: " + err.message;
-        statusEl.style.backgroundColor = "#dc2626";
-      }
-    });
+  } catch (err) {
+    statusEl.classList.remove("loading");
+    statusEl.textContent = "❌ Error: " + err.message;
+    statusEl.style.backgroundColor = "#dc2626";
   }
+});
+
 });
 // --- Google Translate ---
 function googleTranslateElementInit() {
