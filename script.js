@@ -1,3 +1,5 @@
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
 document.addEventListener('DOMContentLoaded', () => {
   // --- Hamburger Menu ---
   const hamburger = document.querySelector('.hamburger');
@@ -173,4 +175,37 @@ document.addEventListener('DOMContentLoaded', () => {
     root.setAttribute('data-theme', newTheme);
     localStorage.setItem('cloudoraTheme', newTheme);
   });
+});
+
+
+  // Supabase
+const supabaseUrl = "https://YOUR_PROJECT_URL.supabase.co";
+const supabaseKey = "YOUR_ANON_KEY";
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+document.getElementById("contactForm").addEventListener("submit", async function(e) {
+  e.preventDefault(); // stop page reload
+
+  const formData = new FormData(this);
+
+  // Insert into Supabase "lead" table
+  const { error } = await supabase.from("lead").insert([{
+    name: formData.get("name"),
+    email: formData.get("email"),
+    phone: formData.get("phone"),
+    sourceref: formData.get("company"),
+    country: formData.get("address"),
+    productinterest: formData.get("service"),
+    status: "new",
+    source: "website"
+  }]);
+
+  if (error) {
+    document.getElementById("formStatus").style.display = "inline-block";
+    document.getElementById("formStatus").textContent = "Error: " + error.message;
+  } else {
+    document.getElementById("formStatus").style.display = "inline-block";
+    document.getElementById("formStatus").textContent = "Thanks! Your enquiry was saved.";
+    this.reset();
+  }
 });
