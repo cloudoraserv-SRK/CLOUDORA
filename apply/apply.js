@@ -137,58 +137,57 @@ document.addEventListener('DOMContentLoaded', () => {
   const formData = new FormData(this);
 
   try {
-    // --- 1. Submit to Formspree ---
-    const response = await fetch("https://formspree.io/f/xeowpzqo", {
-      method: "POST",
-      body: formData,
-      headers: { 'Accept': 'application/json' }
-    });
+  // --- 1. Submit to Formspree ---
+  const response = await fetch("https://formspree.io/f/xeowpzqo", {
+    method: "POST",
+    body: formData,
+    headers: { 'Accept': 'application/json' }
+  });
 
-    if (!response.ok) {
-      console.warn("Formspree submission failed");
-    }
-
-    // --- 2. Submit to Supabase ---
-    const { error } = await supabase
-      .from("application")
-      .insert([
-        {
-          form_type: "final",
-          full_name: formData.get("name"),
-          email: formData.get("email"),
-          phone: formData.get("phone"),
-          country: formData.get("country"),
-          city: formData.get("city"),
-          role_category: formData.get("vacancy"),
-          preferred_language: formData.get("preferredLanguage"),
-          work_mode: formData.get("workMode"),
-          availability: formData.get("availability"),
-          work_country: formData.get("workCountry"),
-          shift: formData.get("shift"),
-          status: "submitted"
-        }
-      ]);
-
-    statusEl.classList.remove("loading");
-
-    if (error) {
-      statusEl.textContent = "❌ Something went wrong saving your application.";
-      statusEl.style.backgroundColor = "#dc2626";
-    } else {
-      statusEl.textContent = "✅ Thank you! Your application has been submitted. Redirecting...";
-      statusEl.style.backgroundColor = "#16a34a";
-      this.reset();
-      setTimeout(() => {
-        window.location.href = "/policy/7day-trial.html";
-      }, 2000);
-    }
-
-  } catch (err) {
-    statusEl.classList.remove("loading");
-    statusEl.textContent = "❌ Error: " + err.message;
-    statusEl.style.backgroundColor = "#dc2626";
+  if (!response.ok) {
+    console.warn("Formspree submission failed");
   }
-});
+
+  // --- 2. Submit to Supabase ---
+  const { error } = await supabase
+    .from("application")
+    .insert([
+      {
+        form_type: "final",
+        full_name: formData.get("name"),
+        email: formData.get("email"),
+        phone: formData.get("phone"),
+        country: formData.get("country"),
+        city: formData.get("city"),
+        role_category: formData.get("vacancy"),
+        preferred_language: formData.get("preferredLanguage"),
+        work_mode: formData.get("workMode"),
+        availability: formData.get("availability"),
+        work_country: formData.get("workCountry"),
+        shift: formData.get("shift"),
+        status: "submitted"
+      }
+    ]);
+
+  statusEl.classList.remove("loading");
+
+  if (error) {
+    statusEl.textContent = "❌ Something went wrong saving your application.";
+    statusEl.style.backgroundColor = "#dc2626";
+  } else {
+    statusEl.textContent = "✅ Thank you! Your application has been submitted. Redirecting...";
+    statusEl.style.backgroundColor = "#16a34a";
+    this.reset();
+    setTimeout(() => {
+      window.location.href = "/policy/7day-trial.html";
+    }, 2000);
+  }
+
+} catch (err) {
+  statusEl.classList.remove("loading");
+  statusEl.textContent = "❌ Error: " + err.message;
+  statusEl.style.backgroundColor = "#dc2626";
+}
     
 // --- Google Translate ---
 function googleTranslateElementInit() {
