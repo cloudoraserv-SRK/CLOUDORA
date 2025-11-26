@@ -1,3 +1,7 @@
+const supabaseUrl = "https://rfilnqigcadeawytwqmz.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJmaWxucWlnY2FkZWF3eXR3cW16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxMzE2NTIsImV4cCI6MjA3OTcwNzY1Mn0.1wtcjczrzhv2YsE7hGQL11imPxmFVS4sjxlJGvIZ26o";
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
 // --- DOM Ready ---
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -119,10 +123,6 @@ if (vacancySelect && resumeField && resumeHelp) {
 }
 
 // --- Supabase Integration ---
-const supabaseUrl = "https://rfilnqigcadeawytwqmz.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJmaWxucWlnY2FkZWF3eXR3cW16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxMzE2NTIsImV4cCI6MjA3OTcwNzY1Mn0.1wtcjczrzhv2YsE7hGQL11imPxmFVS4sjxlJGvIZ26o";
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-
 document.addEventListener('DOMContentLoaded', () => {
   const jobForm = document.getElementById("jobForm");
   const statusEl = document.getElementById("formStatus");
