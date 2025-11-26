@@ -137,11 +137,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       try {
         // --- 1. Submit to Formspree ---
-        const response = await fetch(jobForm.action, {
+        const response = await fetch("https://formspree.io/f/xeowpzqo", {
           method: "POST",
           body: formData,
           headers: { 'Accept': 'application/json' }
         });
+
 
         if (!response.ok) {
           console.warn("Formspree submission failed");
