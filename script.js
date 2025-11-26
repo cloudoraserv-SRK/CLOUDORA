@@ -1,5 +1,3 @@
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-
 document.addEventListener('DOMContentLoaded', () => {
   // --- Hamburger Menu ---
   const hamburger = document.querySelector('.hamburger');
