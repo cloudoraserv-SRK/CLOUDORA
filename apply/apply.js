@@ -183,14 +183,14 @@ document.addEventListener('DOMContentLoaded', () => {
           }, 2000);
         }
 
-      } catch (err) {
+            } catch (err) {
         statusEl.classList.remove("loading");
         statusEl.textContent = "❌ Error: " + err.message;
         statusEl.style.backgroundColor = "#dc2626";
       }
-    }); // <-- closes jobForm.addEventListener
-  } // <-- closes if (jobForm)
-}); // <-- closes DOMContentLoaded
+    }); // closes jobForm.addEventListener
+  }     // closes if (jobForm)
+});     // closes DOMContentLoaded
 
 // --- Google Translate ---
 function googleTranslateElementInit() {
