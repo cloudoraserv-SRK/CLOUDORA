@@ -1,86 +1,98 @@
+// --- DOM Ready ---
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- Hamburger Menu Logic ---
-    const hamburger = document.querySelector('.hamburger');
-    const mobileMenu = document.querySelector('.mobile');
-    const navLinks = document.querySelectorAll('.navlinks a, .mobile a');
+  // --- Hamburger Menu Logic ---
+  const hamburger = document.querySelector('.hamburger');
+  const mobileMenu = document.querySelector('.mobile');
+  const navLinks = document.querySelectorAll('.navlinks a, .mobile a');
 
-    if (hamburger && mobileMenu) {
-        hamburger.addEventListener('click', () => {
-            const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
-            hamburger.setAttribute('aria-expanded', !isExpanded);
-            mobileMenu.setAttribute('aria-modal', !isExpanded);
-            document.body.style.overflow = isExpanded ? 'auto' : 'hidden';
-        });
+  if (hamburger && mobileMenu) {
+    hamburger.addEventListener('click', () => {
+      const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
+      hamburger.setAttribute('aria-expanded', !isExpanded);
+      mobileMenu.setAttribute('aria-modal', !isExpanded);
+      document.body.style.overflow = isExpanded ? 'auto' : 'hidden';
+    });
 
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                hamburger.setAttribute('aria-expanded', 'false');
-                mobileMenu.setAttribute('aria-modal', 'false');
-                document.body.style.overflow = 'auto';
-            });
-        });
-    }
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.setAttribute('aria-expanded', 'false');
+        mobileMenu.setAttribute('aria-modal', 'false');
+        document.body.style.overflow = 'auto';
+      });
+    });
+  }
 
-    // --- Form Submission Logic ---
-    const form = document.getElementById('jobForm');
-    const formStatus = document.getElementById('formStatus');
+  // --- Footer Year ---
+  const yearSpan = document.getElementById('year');
+  if (yearSpan) {
+    yearSpan.textContent = new Date().getFullYear();
+  }
 
-    if (form) {
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            formStatus.style.display = 'block';
-            formStatus.textContent = 'Submitting...';
-            
-            const formData = new FormData(form);
+  // --- Currency Switcher ---
+  const currencySelect = document.getElementById("currencySelect");
 
-            try {
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
+  function updatePrices(selectedCurrency) {
+    fetch(`https://api.exchangerate-api.com/v4/latest/INR`)
+      .then(res => res.json())
+      .then(data => {
+        const rate = data.rates[selectedCurrency];
+        if (!rate) return;
 
-                if (response.ok) {
-                    formStatus.textContent = 'Application Submitted!';
-                    formStatus.style.backgroundColor = '#16a34a';
-                    form.reset();
-                } else {
-                    formStatus.textContent = 'Submission Failed. Please try again.';
-                    formStatus.style.backgroundColor = '#dc2626';
-                }
-            } catch (error) {
-                formStatus.textContent = 'Error: ' + error.message;
-                formStatus.style.backgroundColor = '#dc2626';
+        document.querySelectorAll('[data-inr]').forEach(el => {
+          const basePrice = parseFloat(el.getAttribute('data-inr'));
+          if (isNaN(basePrice)) return;
+
+          const converted = (basePrice * rate).toFixed(0);
+          const formatted = new Intl.NumberFormat(undefined, {
+            style: 'currency',
+            currency: selectedCurrency
+          }).format(converted);
+
+          if (el.tagName.toLowerCase() === 'option' && el.parentElement.id === 'budget') {
+            if (basePrice === 1000) {
+              el.textContent = `${formatted} – ${new Intl.NumberFormat(undefined, { style: 'currency', currency: selectedCurrency }).format((5000 * rate).toFixed(0))}`;
+            } else if (basePrice === 5000) {
+              el.textContent = `${formatted} – ${new Intl.NumberFormat(undefined, { style: 'currency', currency: selectedCurrency }).format((10000 * rate).toFixed(0))}`;
+            } else if (basePrice === 10000) {
+              el.textContent = `${formatted}+`;
             }
+          } else {
+            el.textContent = formatted;
+          }
         });
-    }
+      });
+  }
 
-    // --- Set current year in footer ---
-    const yearSpan = document.getElementById('year');
-    if (yearSpan) {
-        yearSpan.textContent = new Date().getFullYear();
-    }
+  const savedCurrency = localStorage.getItem("cloudoraCurrency") || "INR";
+  if (currencySelect) {
+    currencySelect.value = savedCurrency;
+    updatePrices(savedCurrency);
+
+    currencySelect.addEventListener("change", function () {
+      const selectedCurrency = this.value;
+      localStorage.setItem("cloudoraCurrency", selectedCurrency);
+      updatePrices(selectedCurrency);
+    });
+  }
 });
 
-const hamburger = document.getElementById('hamburger');
-  const mobileNav = document.getElementById('mobileNav');
-
-  hamburger.addEventListener('click', () => {
+// --- Mobile Nav Toggle ---
+const hamburgerBtn = document.getElementById('hamburger');
+const mobileNav = document.getElementById('mobileNav');
+if (hamburgerBtn && mobileNav) {
+  hamburgerBtn.addEventListener('click', () => {
     mobileNav.classList.toggle('active');
   });
+}
 
+// --- Resume Requirement Logic ---
+const vacancySelect = document.getElementById('vacancy');
+const resumeField = document.getElementById('resumeLink');
+const resumeHelp = document.getElementById('resumeHelp');
+const jobForm = document.getElementById('jobForm');
 
-
-// Make resume link required only for Tech roles
- 
-  const vacancySelect = document.getElementById('vacancy');
-  const resumeField = document.getElementById('resumeLink');
-  const resumeHelp = document.getElementById('resumeHelp');
-  const jobForm = document.getElementById('jobForm');
-
+if (vacancySelect && resumeField && resumeHelp) {
   vacancySelect.addEventListener('change', function() {
     const selected = vacancySelect.value;
     if (
@@ -104,4 +116,97 @@ const hamburger = document.getElementById('hamburger');
       resumeField.focus();
     }
   });
+}
 
+// --- Supabase Integration ---
+const supabaseUrl = "https://rfilnqigcadeawytwqmz.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJmaWxucWlnY2FkZWF3eXR3cW16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxMzE2NTIsImV4cCI6MjA3OTcwNzY1Mn0.1wtcjczrzhv2YsE7hGQL11imPxmFVS4sjxlJGvIZ26o";
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+document.addEventListener('DOMContentLoaded', () => {
+  const jobForm = document.getElementById("jobForm");
+  const statusEl = document.getElementById("formStatus");
+
+  if (jobForm) {
+    jobForm.addEventListener("submit", async function(e) {
+      e.preventDefault();
+      statusEl.style.display = "inline-block";
+      statusEl.textContent = "Submitting...";
+
+      const formData = new FormData(this);
+
+      try {
+        // --- 1. Submit to Formspree ---
+        const response = await fetch(jobForm.action, {
+          method: "POST",
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (!response.ok) {
+          console.warn("Formspree submission failed");
+        }
+
+        // --- 2. Submit to Supabase ---
+        const { error } = await supabase.from("application").insert([{
+          form_type: "final",
+          full_name: formData.get("name"),
+          email: formData.get("email"),
+          phone: formData.get("phone"),
+          country: formData.get("country"),
+          city: formData.get("city"),
+          role_category: formData.get("vacancy"),
+          preferred_language: formData.get("preferredLanguage"),
+          work_mode: formData.get("workMode"),
+          availability: formData.get("availability"),
+          work_country: formData.get("workCountry"),
+          shift: formData.get("shift"),
+          status: "submitted"
+        }]);
+
+        if (error) {
+          console.error("Supabase error:", error);
+          statusEl.textContent = "Error saving to database: " + error.message;
+          statusEl.style.backgroundColor = "#dc2626";
+        } else {
+          statusEl.textContent = "✅ Application submitted successfully!";
+          statusEl.style.backgroundColor = "#16a34a";
+          this.reset();
+        }
+
+      } catch (err) {
+        console.error("Submission error:", err);
+        statusEl.textContent = "Error: " + err.message;
+        statusEl.style.backgroundColor = "#dc2626";
+      }
+    });
+  }
+});
+// --- Google Translate ---
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    includedLanguages: 'en,hi,fr,es,de,zh-CN,ar,ja,ru,pt,bn,ta,mr',
+    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+  }, 'google_translate_element');
+}
+
+function autoTranslateByBrowserLang() {
+  const langMap = { hi:'hi', fr:'fr', es:'es', de:'de', zh:'zh-CN', ar:'ar', ja:'ja', ru:'ru', pt:'pt', bn:'bn', ta:'ta', mr:'mr' };
+  const browserLang = navigator.language.slice(0, 2);
+  const targetLang = langMap[browserLang];
+
+  const tryTranslate = () => {
+    const select = document.querySelector('.goog-te-combo');
+    if (select && targetLang) {
+      select.value = targetLang;
+      select.dispatchEvent(new Event('change'));
+      localStorage.setItem("cloudoraLang", targetLang);
+    } else {
+      setTimeout(tryTranslate, 500);
+    }
+  };
+  tryTranslate();
+}
+
+window.addEventListener('load', autoTranslateByBrowserLang);
