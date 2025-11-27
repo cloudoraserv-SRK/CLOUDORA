@@ -137,93 +137,92 @@ document.addEventListener('DOMContentLoaded', () => {
       const formData = new FormData(this);
 
       try {
-       // --- 1. Submit to Formspree ---
-const response = await fetch("https://formspree.io/f/xnnykrzo", {
-  method: "POST",
-  body: formData,
-  headers: { 'Accept': 'application/json' }
-});
-console.log("Formspree response:", response.status, response.statusText);
-if (!response.ok) {
-  console.warn("Formspree submission failed");
-}
+        // --- 1. Submit to Formspree ---
+        const response = await fetch("https://formspree.io/f/xnnykrzo", {
+          method: "POST",
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+        console.log("Formspree response:", response.status, response.statusText);
+        if (!response.ok) {
+          console.warn("Formspree submission failed");
+        }
 
-// --- 2. Submit to Supabase ---
+        // --- 2. Submit to Supabase ---
+        const { data: leadData, error: leadError } = await supabase
+          .from("lead")
+          .insert([{
+            full_name: formData.get("name"),
+            email: formData.get("email"),
+            phone: formData.get("phone"),
+            country: formData.get("country"),
+            city: formData.get("city"),
+            linkedin: formData.get("linkedin"),
+            github: formData.get("github")
+          }])
+          .select();
 
-// Insert into LEAD
-const { data: leadData, error: leadError } = await supabase
-  .from("lead")
-  .insert([{
-    full_name: formData.get("name"),
-    email: formData.get("email"),
-    phone: formData.get("phone"),
-    country: formData.get("country"),
-    city: formData.get("city"),
-    linkedin: formData.get("linkedin"),
-    github: formData.get("github")
-  }])
-  .select();
+        if (leadError) {
+          statusEl.classList.remove("loading");
+          statusEl.textContent = "❌ Lead insert failed: " + leadError.message;
+          statusEl.style.backgroundColor = "#dc2626";
+          return;
+        }
 
-if (leadError) {
-  statusEl.classList.remove("loading");
-  statusEl.textContent = "❌ Lead insert failed: " + leadError.message;
-  statusEl.style.backgroundColor = "#dc2626";
-  return;
-}
+        const leadId = leadData?.[0]?.id;
+        if (!leadId) {
+          statusEl.classList.remove("loading");
+          statusEl.textContent = "❌ Lead ID missing after insert.";
+          statusEl.style.backgroundColor = "#dc2626";
+          return;
+        }
 
-const leadId = leadData?.[0]?.id;
-if (!leadId) {
-  statusEl.classList.remove("loading");
-  statusEl.textContent = "❌ Lead ID missing after insert.";
-  statusEl.style.backgroundColor = "#dc2626";
-  return;
-}
+        const { error: appError } = await supabase
+          .from("application")
+          .insert([{
+            lead_id: leadId,
+            form_type: "final",
+            role_category: formData.get("vacancy"),
+            preferred_language: formData.get("preferredLanguage"),
+            work_mode: formData.get("workMode"),
+            engagement_type: formData.get("availability"),
+            country: formData.get("country"),
+            work_country: formData.get("workCountry"),
+            timezone: formData.get("shift"),
+            preferred_schedule: formData.get("workMode"),
+            skills: formData.get("skills"),
+            experience: formData.get("experience"),
+            resume_url: formData.get("resumeLink"),
+            portfolio_url: formData.get("github"),
+            notes: formData.get("message"),
+            status: "submitted"
+          }]);
 
-// Insert into APPLICATION
-const { error: appError } = await supabase
-  .from("application")
-  .insert([{
-    lead_id: leadId,
-    form_type: "final",
-    role_category: formData.get("vacancy"),
-    preferred_language: formData.get("preferredLanguage"),
-    work_mode: formData.get("workMode"),
-    engagement_type: formData.get("availability"),
-    country: formData.get("country"),
-    work_country: formData.get("workCountry"),
-    timezone: formData.get("shift"),
-    preferred_schedule: formData.get("workMode"),
-    skills: formData.get("skills"),
-    experience: formData.get("experience"),
-    resume_url: formData.get("resumeLink"),
-    portfolio_url: formData.get("github"),
-    notes: formData.get("message"),
-    status: "submitted"
-  }]);
+        statusEl.classList.remove("loading");
 
-statusEl.classList.remove("loading");
+        if (appError) {
+          statusEl.textContent = "❌ Application insert failed: " + appError.message;
+          statusEl.style.backgroundColor = "#dc2626";
+        } else if (!response.ok) {
+          statusEl.textContent = "❌ Formspree submission failed.";
+          statusEl.style.backgroundColor = "#dc2626";
+        } else {
+          statusEl.textContent = "✅ Thank you! Your application has been submitted. Redirecting...";
+          statusEl.style.backgroundColor = "#16a34a";
+          jobForm.reset();
+          setTimeout(() => {
+            window.location.href = "/policy/7day-trial.html";
+          }, 2000);
+        }
 
-if (leadError) {
-  statusEl.textContent = "❌ Lead insert failed: " + leadError.message;
-  statusEl.style.backgroundColor = "#dc2626";
-} else if (appError) {
-  statusEl.textContent = "❌ Application insert failed: " + appError.message;
-  statusEl.style.backgroundColor = "#dc2626";
-} else if (!response.ok) {
-  statusEl.textContent = "❌ Formspree submission failed.";
-  statusEl.style.backgroundColor = "#dc2626";
-} else {
-  statusEl.textContent = "✅ Thank you! Your application has been submitted. Redirecting...";
-  statusEl.style.backgroundColor = "#16a34a";
-  jobForm.reset();
-  setTimeout(() => {
-    window.location.href = "/policy/7day-trial.html";
-  }, 2000);
-}
-        }); // closes jobForm.addEventListener
+      } catch (err) {
+        statusEl.classList.remove("loading");
+        statusEl.textContent = "❌ Error: " + err.message;
+        statusEl.style.backgroundColor = "#dc2626";
+      }
+    }); // closes jobForm.addEventListener
   } // closes if (jobForm)
 }); // closes DOMContentLoaded
-
         
 // --- Google Translate ---
 function googleTranslateElementInit() {
