@@ -220,6 +220,10 @@ if (leadError) {
     window.location.href = "/policy/7day-trial.html";
   }, 2000);
 }
+        }); // closes jobForm.addEventListener
+  } // closes if (jobForm)
+}); // closes DOMContentLoaded
+
         
 // --- Google Translate ---
 function googleTranslateElementInit() {
