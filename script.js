@@ -200,16 +200,16 @@ document.getElementById("contactForm").addEventListener("submit", async function
   const formData = new FormData(this);
 
   // Insert into Supabase "lead" table
-  const { error } = await supabase.from("lead").insert([{
-    name: formData.get("name"),
-    email: formData.get("email"),
-    phone: formData.get("phone"),
-    sourceref: formData.get("company"),
-    country: formData.get("address"),
-    productinterest: formData.get("service"),
-    status: "new",
-    source: "website"
-  }]);
+const { error } = await supabase.from("lead").insert([{
+  name: formData.get("name"),            // matches lead.name
+  email: formData.get("email"),          // matches lead.email
+  phone: formData.get("phone"),          // matches lead.phone
+  sourceref: formData.get("company"),    // matches lead.sourceref
+  country: formData.get("country"),      // use a country field, not full address
+  productinterest: formData.get("service"), // matches lead.productinterest
+  status: "new",
+  source: "website"
+}]);
 
   if (error) {
     document.getElementById("formStatus").style.display = "inline-block";
