@@ -205,7 +205,7 @@ if (jobForm) {
         statusEl.style.backgroundColor = "#16a34a";
         jobForm.reset();
         setTimeout(() => {
-          window.location.href = "/policy/7day-trial.html";
+          window.location.href = "./policy/privacy.html";
         }, 2000);
       }
 
