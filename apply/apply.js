@@ -165,7 +165,17 @@ const { data: leadData, error: leadError } = await supabase
   .select();
 
 if (leadError) {
-  console.error("Lead insert failed:", leadError.message);
+  statusEl.classList.remove("loading");
+  statusEl.textContent = "❌ Lead insert failed: " + leadError.message;
+  statusEl.style.backgroundColor = "#dc2626";
+  return;
+}
+
+const leadId = leadData?.[0]?.id;
+if (!leadId) {
+  statusEl.classList.remove("loading");
+  statusEl.textContent = "❌ Lead ID missing after insert.";
+  statusEl.style.backgroundColor = "#dc2626";
   return;
 }
 
@@ -173,7 +183,7 @@ if (leadError) {
 const { error: appError } = await supabase
   .from("application")
   .insert([{
-    lead_id: leadData[0].id,
+    lead_id: leadId,
     form_type: "final",
     role_category: formData.get("vacancy"),
     preferred_language: formData.get("preferredLanguage"),
@@ -191,34 +201,20 @@ const { error: appError } = await supabase
     status: "submitted"
   }]);
 
+statusEl.classList.remove("loading");
+
 if (appError) {
-  console.error("Application insert failed:", appError.message);
+  statusEl.textContent = "❌ Application insert failed: " + appError.message;
+  statusEl.style.backgroundColor = "#dc2626";
+} else {
+  statusEl.textContent = "✅ Thank you! Your application has been submitted. Redirecting...";
+  statusEl.style.backgroundColor = "#16a34a";
+  jobForm.reset();
+  setTimeout(() => {
+    window.location.href = "/policy/7day-trial.html";
+  }, 2000);
 }
         
-
-        statusEl.classList.remove("loading");
-
-        if (error) {
-          statusEl.textContent = "❌ Something went wrong saving your application.";
-          statusEl.style.backgroundColor = "#dc2626";
-        } else {
-          statusEl.textContent = "✅ Thank you! Your application has been submitted. Redirecting...";
-          statusEl.style.backgroundColor = "#16a34a";
-          this.reset();
-          setTimeout(() => {
-            window.location.href = "/policy/7day-trial.html";
-          }, 2000);
-        }
-
-            } catch (err) {
-        statusEl.classList.remove("loading");
-        statusEl.textContent = "❌ Error: " + err.message;
-        statusEl.style.backgroundColor = "#dc2626";
-      }
-    }); // closes jobForm.addEventListener
-  }     // closes if (jobForm)
-});     // closes DOMContentLoaded
-
 // --- Google Translate ---
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({
