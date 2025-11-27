@@ -137,19 +137,21 @@ document.addEventListener('DOMContentLoaded', () => {
       const formData = new FormData(this);
 
       try {
-        // --- 1. Submit to Formspree ---
-        const response = await fetch("https://formspree.io/f/xeowpzqo", {
-          method: "POST",
-          body: formData,
-          headers: { 'Accept': 'application/json' }
-        });
+       // --- 1. Submit to Formspree ---
+const response = await fetch("https://formspree.io/f/xeowpzqo", {
+  method: "POST",
+  body: formData,
+  headers: { 'Accept': 'application/json' }
+});
 
-        if (!response.ok) {
-          console.warn("Formspree submission failed");
-        }
+if (!response.ok) {
+  console.warn("Formspree submission failed");
+}
 
-        // --- 2. Submit to Supabase ---
-       const { data: leadData, error: leadError } = await supabase
+// --- 2. Submit to Supabase ---
+
+// Insert into LEAD
+const { data: leadData, error: leadError } = await supabase
   .from("lead")
   .insert([{
     full_name: formData.get("name"),
@@ -162,19 +164,36 @@ document.addEventListener('DOMContentLoaded', () => {
   }])
   .select();
 
+if (leadError) {
+  console.error("Lead insert failed:", leadError.message);
+  return;
+}
+
+// Insert into APPLICATION
 const { error: appError } = await supabase
   .from("application")
   .insert([{
     lead_id: leadData[0].id,
     form_type: "final",
     role_category: formData.get("vacancy"),
+    preferred_language: formData.get("preferredLanguage"),
+    work_mode: formData.get("workMode"),
     engagement_type: formData.get("availability"),
     country: formData.get("country"),
+    work_country: formData.get("workCountry"),
     timezone: formData.get("shift"),
     preferred_schedule: formData.get("workMode"),
+    skills: formData.get("skills"),
+    experience: formData.get("experience"),
+    resume_url: formData.get("resumeLink"),
+    portfolio_url: formData.get("github"),
     notes: formData.get("message"),
     status: "submitted"
   }]);
+
+if (appError) {
+  console.error("Application insert failed:", appError.message);
+}
         
 
         statusEl.classList.remove("loading");
