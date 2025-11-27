@@ -143,7 +143,7 @@ const response = await fetch("https://formspree.io/f/xnnykrzo", {
   body: formData,
   headers: { 'Accept': 'application/json' }
 });
-
+console.log("Formspree response:", response.status, response.statusText);
 if (!response.ok) {
   console.warn("Formspree submission failed");
 }
