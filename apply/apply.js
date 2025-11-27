@@ -203,8 +203,14 @@ const { error: appError } = await supabase
 
 statusEl.classList.remove("loading");
 
-if (appError) {
+if (leadError) {
+  statusEl.textContent = "❌ Lead insert failed: " + leadError.message;
+  statusEl.style.backgroundColor = "#dc2626";
+} else if (appError) {
   statusEl.textContent = "❌ Application insert failed: " + appError.message;
+  statusEl.style.backgroundColor = "#dc2626";
+} else if (!response.ok) {
+  statusEl.textContent = "❌ Formspree submission failed.";
   statusEl.style.backgroundColor = "#dc2626";
 } else {
   statusEl.textContent = "✅ Thank you! Your application has been submitted. Redirecting...";
