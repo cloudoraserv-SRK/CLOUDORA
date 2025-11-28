@@ -1,0 +1,52 @@
+<section id="agreement">
+  <div class="container">
+    <h2>Cloudora 7-Day Trial Agreement</h2>
+    <div class="terms-box">
+      <p>
+        Please read the following Terms & Conditions carefully before joining Cloudora’s 7-day trial program.
+        <br><br>
+        • Job roles, incentives, salary, commission, and referral details will be explained. <br>
+        • By agreeing, you confirm your willingness to participate in the trial. <br>
+        • Your agreement will be recorded in our system. <br>
+      </p>
+    </div>
+
+    <form id="agreementForm">
+      <label>
+        <input type="checkbox" id="agreeCheck" required>
+        I have read and agree to the Terms & Conditions
+      </label>
+      <br><br>
+      <button type="submit" class="btn">Proceed to Application</button>
+      <span id="agreementStatus" class="pill" style="display:none"></span>
+    </form>
+  </div>
+</section>
+
+<script>
+  const agreementForm = document.getElementById("agreementForm");
+  const statusEl = document.getElementById("agreementStatus");
+
+  agreementForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // Insert into Supabase agreement table
+    const { data, error } = await supabase
+      .from("agreement")
+      .insert([{ 
+        lead_id: null, // will be linked after application form submission
+        agreed: true,
+        terms_version: "v1.0"
+      }]);
+
+    if (error) {
+      statusEl.style.display = "inline-block";
+      statusEl.textContent = "❌ Agreement failed: " + error.message;
+      statusEl.style.backgroundColor = "#dc2626";
+      return;
+    }
+
+    // Redirect to application form
+    window.location.href = "/application-form.html";
+  });
+</script>
