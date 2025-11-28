@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cloudora Trial Application</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <section class="container">
+    <h2>Cloudora 7-Day Trial Application</h2>
+    <form id="applicationForm">
+
+      <!-- Personal Information -->
+      <h3>👤 Personal Information</h3>
+      <label>First Name</label>
+      <input type="text" name="firstName" required>
+
+      <label>Last Name</label>
+      <input type="text" name="lastName" required>
+
+      <label>Sex</label>
+      <select name="sex" required>
+        <option value="">-- Select --</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+      </select>
+
+      <label>Mobile Number</label>
+      <input type="tel" name="mobile" placeholder="+91 9876543210" required>
+
+      <label>Alternate Number</label>
+      <input type="tel" name="altMobile">
+
+      <label>Email ID</label>
+      <input type="email" name="email" required>
+
+      <label>Address</label>
+      <textarea name="address" required></textarea>
+
+      <!-- Identity Proof -->
+      <h3>🪪 Identity Proof</h3>
+      <label>Address Proof (Mandatory)</label>
+      <select name="addressProof" required>
+        <option value="">-- Select Document --</option>
+        <option>Voter Card</option>
+        <option>Driving Licence</option>
+        <option>Aadhaar Card</option>
+        <option>Passport</option>
+      </select>
+
+      <label>Document Number</label>
+      <input type="text" name="docNumber" required>
+
+      <label>PAN Card Number (Optional)</label>
+      <input type="text" name="panNumber">
+
+      <label>Upload Photo</label>
+      <input type="file" name="photo" accept="image/*">
+
+      <!-- Job Role -->
+      <h3>💼 Job Role</h3>
+      <select name="jobRole" required>
+        <option value="">-- Select Role --</option>
+        <optgroup label="Voice Support">
+          <option>Lead Generation (Outbound)</option>
+          <option>Lead Conversion (Outbound)</option>
+          <option>Voice Support (Inbound)</option>
+        </optgroup>
+        <optgroup label="Chat Support">
+          <option>Email Support</option>
+          <option>Live Web Support</option>
+        </optgroup>
+        <optgroup label="Technical">
+          <option>Frontend Developer</option>
+          <option>Backend Developer</option>
+          <option>Full Stack Developer</option>
+          <option>Mobile App Developer</option>
+          <option>Blockchain Engineer</option>
+          <option>Game Developer</option>
+          <option>AI/ML Engineer</option>
+          <option>UI/UX Designer</option>
+        </optgroup>
+        <optgroup label="Field Staff">
+          <option>Sales Executive</option>
+          <option>Sales Manager</option>
+          <option>Delivery Staff</option>
+          <option>Lead Generator</option>
+        </optgroup>
+      </select>
+
+      <!-- Work & Experience -->
+      <h3>📈 Work & Experience</h3>
+      <label>Work Samples (Links)</label>
+      <input type="url" name="workLinks">
+
+      <label>Experience (Years)</label>
+      <input type="number" name="experience">
+
+      <label>Last Drawn Salary</label>
+      <input type="number" name="lastSalary">
+
+      <label>Last Company Name</label>
+      <input type="text" name="lastCompany">
+
+      <label>Expected Salary</label>
+      <input type="number" name="expectedSalary">
+
+      <!-- Work Preferences -->
+      <h3>🌍 Work Preferences</h3>
+      <label>Preferred Country</label>
+      <select name="country" required>
+        <option value="">-- Select Country --</option>
+        <option>India</option>
+        <option>USA</option>
+        <option>UK</option>
+        <option>Germany</option>
+        <option>UAE</option>
+        <option>Other</option>
+      </select>
+
+      <label>Work Type</label>
+      <select name="workType" required>
+        <option value="">-- Select Type --</option>
+        <option>Full-time</option>
+        <option>Part-time</option>
+      </select>
+
+      <label>Work Timing Slot</label>
+      <select name="workSlot" required>
+        <option value="">-- Select Slot --</option>
+        <option>1 Hour</option>
+        <option>2 Hours</option>
+        <option>4 Hours</option>
+        <option>6 Hours</option>
+        <option>8 Hours</option>
+      </select>
+
+      <label>Preferred Language</label>
+      <select name="language" required>
+        <option value="">-- Select Language --</option>
+        <option>English</option>
+        <option>Hindi</option>
+        <option>Other</option>
+      </select>
+
+      <button type="submit" class="btn">Submit Application</button>
+      <span id="formStatus" class="pill" style="display:none"></span>
+    </form>
+  </section>
+  <script src="app.js"></script>
+</body>
+</html>
