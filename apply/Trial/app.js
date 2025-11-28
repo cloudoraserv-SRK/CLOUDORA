@@ -14,7 +14,7 @@ form.addEventListener("submit", async (e) => {
 
   const formData = new FormData(form);
 
-  // Insert into lead
+  // Step 1: Insert into lead table
   const { data: leadData, error: leadError } = await supabase
     .from("lead")
     .insert([{
@@ -23,6 +23,9 @@ form.addEventListener("submit", async (e) => {
       phone: formData.get("mobile"),
       country: formData.get("country"),
       city: formData.get("address"),
+      // optional fields
+      alt_phone: formData.get("altMobile"),
+      sex: formData.get("sex")
     }])
     .select();
 
@@ -34,7 +37,7 @@ form.addEventListener("submit", async (e) => {
 
   const leadId = leadData?.[0]?.id;
 
-  // Insert into application
+  // Step 2: Insert into application table
   const { error: appError } = await supabase
     .from("application")
     .insert([{
@@ -45,7 +48,36 @@ form.addEventListener("submit", async (e) => {
       engagement_type: formData.get("workType"),
       country: formData.get("country"),
       timezone: formData.get("workSlot"),
+      preferred_schedule: formData.get("workSlot"),
+      skills: formData.get("workLinks"),
       experience: formData.get("experience"),
       notes: "Expected Salary: " + formData.get("expectedSalary") +
-             ", Last Salary: " + formData.get("lastSalary")
-      
+             ", Last Salary: " + formData.get("lastSalary") +
+             ", Last Company: " + formData.get("lastCompany"),
+      status: "submitted"
+    }]);
+
+  if (appError) {
+    statusEl.textContent = "❌ Application insert failed: " + appError.message;
+    statusEl.style.backgroundColor = "#dc2626";
+    return;
+  }
+
+  // Step 3: Handle document proof + photo upload (optional)
+  // Example: upload photo to Supabase storage
+  const photoFile = formData.get("photo");
+  if (photoFile && photoFile.size > 0) {
+    const { data: photoData, error: photoError } = await supabase.storage
+      .from("photos")
+      .upload(`employee-${leadId}/${photoFile.name}`, photoFile);
+
+    if (!photoError) {
+      await supabase.from("application").update({
+        portfolio_url: photoData.path
+      }).eq("lead_id", leadId);
+    }
+  }
+
+  statusEl.textContent = "✅ Application submitted successfully!";
+  statusEl.style.backgroundColor = "#10b981";
+});
