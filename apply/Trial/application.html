@@ -58,17 +58,33 @@
       <label>Upload Photo</label>
       <input type="file" name="photo" accept="image/*">
 
-      <!-- Job Role -->
-      <h3>💼 Job Role</h3>
+      <!-- Department & Role Selection -->
+      <h3>🏢 Department & Role</h3>
+      <label>Choose Department</label>
+      <select name="department" required>
+        <option value="">-- Select Department --</option>
+        <option>Telecaller</option>
+        <option>Sales</option>
+        <option>Technical</option>
+        <option>Support</option>
+        <option>Field Staff</option>
+      </select>
+
+      <label>Choose Role</label>
       <select name="jobRole" required>
-        <option value="">-- Select Role --</option>
-        <optgroup label="Voice Support">
+        <optgroup label="Telecaller">
+          <option>Voice Support (Inbound)</option>
           <option>Lead Generation (Outbound)</option>
           <option>Lead Conversion (Outbound)</option>
-          <option>Voice Support (Inbound)</option>
         </optgroup>
-        <optgroup label="Chat Support">
+        <optgroup label="Sales">
+          <option>Sales Executive</option>
+          <option>Sales Manager</option>
+          <option>Lead Generator</option>
+        </optgroup>
+        <optgroup label="Support">
           <option>Email Support</option>
+          <option>Chat Support</option>
           <option>Live Web Support</option>
         </optgroup>
         <optgroup label="Technical">
@@ -82,29 +98,11 @@
           <option>UI/UX Designer</option>
         </optgroup>
         <optgroup label="Field Staff">
+          <option>Delivery Staff</option>
           <option>Sales Executive</option>
           <option>Sales Manager</option>
-          <option>Delivery Staff</option>
-          <option>Lead Generator</option>
         </optgroup>
       </select>
-
-      <!-- Work & Experience -->
-      <h3>📈 Work & Experience</h3>
-      <label>Work Samples (Links)</label>
-      <input type="url" name="workLinks">
-
-      <label>Experience (Years)</label>
-      <input type="number" name="experience">
-
-      <label>Last Drawn Salary</label>
-      <input type="number" name="lastSalary">
-
-      <label>Last Company Name</label>
-      <input type="text" name="lastCompany">
-
-      <label>Expected Salary</label>
-      <input type="number" name="expectedSalary">
 
       <!-- Work Preferences -->
       <h3>🌍 Work Preferences</h3>
@@ -122,27 +120,61 @@
       <label>Work Type</label>
       <select name="workType" required>
         <option value="">-- Select Type --</option>
-        <option>Full-time</option>
-        <option>Part-time</option>
+        <option>Full-time (8 hours)</option>
+        <option>Part-time (1 hour)</option>
+        <option>Part-time (2 hours)</option>
+        <option>Part-time (4 hours)</option>
+        <option>Part-time (6 hours)</option>
       </select>
 
-      <label>Work Timing Slot</label>
+      <label>Preferred Work Slot</label>
       <select name="workSlot" required>
         <option value="">-- Select Slot --</option>
-        <option>1 Hour</option>
-        <option>2 Hours</option>
-        <option>4 Hours</option>
-        <option>6 Hours</option>
-        <option>8 Hours</option>
+        <option>Morning</option>
+        <option>Afternoon</option>
+        <option>Evening</option>
+        <option>Night</option>
       </select>
 
-      <label>Preferred Language</label>
+      <label>Preferred Language of Communication</label>
       <select name="language" required>
         <option value="">-- Select Language --</option>
         <option>English</option>
         <option>Hindi</option>
         <option>Other</option>
       </select>
+
+      <!-- Work Style & Experience -->
+      <h3>🧑‍💻 Work Style & Experience</h3>
+      <label>Work Samples (Links)</label>
+      <input type="url" name="workLinks">
+
+      <label>Experience (Years)</label>
+      <input type="number" name="experience">
+
+      <label>Last Company Name</label>
+      <input type="text" name="lastCompany">
+
+      <label>Last Drawn Salary</label>
+      <input type="number" name="lastSalary">
+
+      <label>Expected Salary</label>
+      <input type="number" name="expectedSalary">
+
+      <label>How do you prefer to work?</label>
+      <select name="workStyle" required>
+        <option value="">-- Select Style --</option>
+        <option>Independent</option>
+        <option>Team Collaboration</option>
+        <option>Flexible / Adaptive</option>
+        <option>Structured / Process-driven</option>
+      </select>
+
+      <label>How do you handle deadlines?</label>
+      <textarea name="deadlineApproach" placeholder="Describe your approach..."></textarea>
+
+      <label>Motivation to join Cloudora</label>
+      <textarea name="motivation" placeholder="Why do you want to join?"></textarea>
 
       <button type="submit" class="btn">Submit Application</button>
       <span id="formStatus" class="pill" style="display:none"></span>
