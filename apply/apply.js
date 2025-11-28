@@ -136,7 +136,7 @@ if (jobForm) {
 
     try {
       // --- 1. Submit to Formspree ---
-      const response = await fetch("https://formspree.io/f/xnnykrzo", {
+      const response = await fetch("https://formspree.io/f/mrbwawkz", {
         method: "POST",
         body: formData,
         headers: { 'Accept': 'application/json' }
