@@ -96,19 +96,20 @@ if (hamburgerBtn && mobileNav) {
   });
 }
 
-  // --- Resume Requirement Logic ---
+// --- Vacancy logic ---
   if (vacancySelect && resumeField && resumeHelp) {
-    vacancySelect.addEventListener('change', () => {
+    vacancySelect.addEventListener("change", () => {
       const selected = vacancySelect.value;
       if (/Developer|Engineer|Designer|Tech/i.test(selected)) {
         resumeField.required = true;
-        resumeHelp.style.display = 'block';
+        resumeHelp.style.display = "block";
       } else {
         resumeField.required = false;
-        resumeHelp.style.display = 'none';
+        resumeHelp.style.display = "none";
       }
     });
   }
+
 
    // --- Job Form Submission ---
   if (jobForm) {
