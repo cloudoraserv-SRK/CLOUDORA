@@ -1,6 +1,6 @@
 // routefolder/supabase/supabase.js
 
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
 // ✅ Supabase project credentials
 const supabaseUrl = "https://rfilnqigcadeawytwqmz.supabase.co";
