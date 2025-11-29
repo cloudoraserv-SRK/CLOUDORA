@@ -1,28 +1,24 @@
 // main.js
 // Single JS file with Supabase integration for the Cloudora form
 
-// ---------- Supabase config (from you) ----------
+// ---------- Supabase config ----------
 const SUPABASE_URL = "https://rfilnqigcadeawytwqmz.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJmaWxucWlnY2FkZWF3eXR3cW16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxMzE2NTIsImV4cCI6MjA3OTcwNzY1Mn0.1wtcjczrzhv2YsE7hGQL11imPxmFVS4sjxlJGvIZ26o";
-// Change bucket name if you use a different one in Supabase Storage
 const UPLOAD_BUCKET = "applicant-uploads";
 
-// Load Supabase client (cdn ESM is not used here to keep simple — use the hosted lib)
+// ---------- Load Supabase client ----------
 (async () => {
-  // Dynamically load supabase-js from jsdelivr as non-module to keep compatibility
   if (!window.supabase) {
     const s = document.createElement("script");
     s.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js";
     document.head.appendChild(s);
-    await new Promise((res) => (s.onload = res));
+    await new Promise(res => (s.onload = res));
   }
-
   window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-  initForm(); // start after supabase is loaded
+  initForm();
 })();
 
-/* ---------- Utilities ---------- */
+// ---------- Utilities ----------
 const $ = (id) => document.getElementById(id);
 const show = (el) => el && el.classList.remove("hidden");
 const hide = (el) => el && el.classList.add("hidden");
@@ -32,7 +28,7 @@ const showErr = (id, cond) => {
   el.classList[cond ? "add" : "remove"]("show");
 };
 
-/* ---------- Validation ---------- */
+// ---------- Validation ----------
 const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((v || "").trim());
 const isIntlPhone = (v) => /^\+?\d{6,15}$/.test((v || "").trim());
 const isPincode = (v) => /^\d{6}$/.test((v || "").trim());
@@ -41,7 +37,7 @@ const validImageTypes = ["image/jpeg", "image/png"];
 const validDocTypes = ["image/jpeg", "image/png", "application/pdf"];
 const isValidFile = (file, types) => file && types.includes(file.type) && file.size <= maxSize;
 
-/* ---------- USA Slots builder ---------- */
+// ---------- USA Slots builder ----------
 function buildUsaSlots() {
   const wrap = $("usaSlots");
   if (!wrap) return;
@@ -66,7 +62,21 @@ function buildUsaSlots() {
   wrap.appendChild(container);
 }
 
-/* ---------- Populate roles based on departments ---------- */
+// ---------- Role mapping ----------
+const ROLE_MAP = {
+  tele_lead_domestic: ["Tele Lead - Domestic"],
+  tele_lead_international: ["Tele Lead - International"],
+  tele_sales_domestic: ["Sales - Domestic"],
+  tele_sales_international: ["Sales - International"],
+  chat_support: ["Chat Support"],
+  tele_support_domestic: ["Tele Support - Domestic"],
+  tele_support_international: ["Tele Support - International"],
+  developer: ["Frontend Developer", "Backend Developer", "Full-stack Developer"],
+  content_creatives: ["Content Creator", "Video Editor", "Graphic Designer"],
+  marketing_outreach: ["Marketing Executive", "SEO Specialist"]
+};
+
+// ---------- Populate roles based on departments ----------
 function populateRoles() {
   const depSel = $("departments");
   const roleSel = $("roles");
@@ -85,7 +95,7 @@ function populateRoles() {
   });
 }
 
-/* ---------- Toggle other fields ---------- */
+// ---------- Toggle other fields ----------
 function attachToggles() {
   const addrProofType = $("addrProofType");
   if (addrProofType) {
@@ -107,7 +117,7 @@ function attachToggles() {
   }
 }
 
-/* ---------- Employment & USA slot logic ---------- */
+// ---------- Employment & USA slot logic ----------
 function toggleUsaSlots() {
   const emp = $("employmentType")?.value;
   const pref = $("prefCountry")?.value;
@@ -122,32 +132,25 @@ function toggleUsaSlots() {
   }
 }
 
-// ---------- Role mapping ----------
-const ROLE_MAP = {
-  tele_lead_domestic: ["Tele Lead - Domestic"],
-  tele_lead_international: ["Tele Lead - International"],
-  tele_sales_domestic: ["Sales - Domestic"],
-  tele_sales_international: ["Sales - International"],
-  chat_support: ["Chat Support"],
-  tele_support_domestic: ["Tele Support - Domestic"],
-  tele_support_international: ["Tele Support - International"],
-  developer: ["Frontend Developer", "Backend Developer", "Full-stack Developer"],
-  content_creatives: ["Content Creator", "Video Editor", "Graphic Designer"],
-  marketing_outreach: ["Marketing Executive", "SEO Specialist"]
-};
-
 // ---------- Collect form data ----------
-function collectData() {
+function collectData(includeFiles = true) {
   const departments = Array.from($("departments")?.selectedOptions || []).map(o => o.value);
   const roles = Array.from($("roles")?.selectedOptions || []).map(o => o.value);
   const languages = Array.from(document.querySelectorAll('input[name="lang"]:checked')).map(i => i.value);
-  const usaSlots = Array.from($("usaSlots").querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
+  const usaSlots = Array.from($("usaSlots")?.querySelectorAll('input[type="checkbox"]:checked') || []).map(cb => cb.value);
 
   return {
     fullName: $("fullName")?.value?.trim(),
     email: $("email")?.value?.trim(),
     mobileNumber: $("mobileNumber")?.value?.trim(),
+    altMobile: $("altMobile")?.value?.trim(),
+    addrStreet: $("addrStreet")?.value?.trim(),
+    addrCity: $("addrCity")?.value?.trim(),
+    addrPincode: $("addrPincode")?.value?.trim(),
+    addrState: $("addrState")?.value?.trim(),
     addrCountry: $("addrCountry")?.value,
+    addrProofType: $("addrProofType")?.value,
+    addrProofOther: $("addrProofOther")?.value?.trim(),
     employmentType: $("employmentType")?.value,
     prefCountry: $("prefCountry")?.value,
     departments,
@@ -159,23 +162,20 @@ function collectData() {
     hearAbout: $("hearAbout")?.value,
     hearOther: $("hearOther")?.value?.trim(),
     agree: !!$("agree")?.checked,
-    files: {
-      photo: $("photoUpload")?.files[0] || null,
+    files: includeFiles ? {
+      photoUpload: $("photoUpload")?.files[0] || null,
       docFront: $("docFront")?.files[0] || null,
       docBack: $("docBack")?.files[0] || null
-    }
+    } : undefined
   };
 }
 
-/* ---------- Upload file to Supabase Storage ---------- */
+// ---------- Upload file to Supabase ----------
 async function uploadFileToSupabase(file, pathInBucket) {
   if (!file) return null;
   try {
     const { data, error } = await window.supabaseClient.storage.from(UPLOAD_BUCKET).upload(pathInBucket, file, { cacheControl: "3600", upsert: true });
-    if (error) {
-      console.error("Upload error", error);
-      return null;
-    }
+    if (error) throw error;
     const { data: urlData } = window.supabaseClient.storage.from(UPLOAD_BUCKET).getPublicUrl(pathInBucket);
     return urlData?.publicUrl || null;
   } catch (err) {
@@ -184,7 +184,7 @@ async function uploadFileToSupabase(file, pathInBucket) {
   }
 }
 
-/* ---------- Submit to Supabase (lead -> application -> agreement) ---------- */
+// ---------- Submit to Supabase ----------
 async function submitToSupabase(payload, statusElId = "formStatus") {
   const statusEl = $(statusElId);
   if (statusEl) {
@@ -192,9 +192,7 @@ async function submitToSupabase(payload, statusElId = "formStatus") {
     statusEl.textContent = "Saving...";
     statusEl.style.backgroundColor = "";
   }
-
   try {
-    // --- lead insert
     const addressCombined = [payload.addrStreet, payload.addrCity, payload.addrState, payload.addrPincode].filter(Boolean).join(", ");
     const leadRow = {
       full_name: payload.fullName || null,
@@ -215,22 +213,9 @@ async function submitToSupabase(payload, statusElId = "formStatus") {
     // --- upload files
     const uploads = {};
     const ts = Date.now();
-
-    if (payload.files?.photoUpload) {
-      const ext = payload.files.photoUpload.name.split(".").pop();
-      const path = `leads/${leadId}/photo_${ts}.${ext}`;
-      uploads.photo_url = await uploadFileToSupabase(payload.files.photoUpload, path);
-    }
-    if (payload.files?.docFront) {
-      const ext = payload.files.docFront.name.split(".").pop();
-      const path = `leads/${leadId}/doc_front_${ts}.${ext}`;
-      uploads.doc_front_url = await uploadFileToSupabase(payload.files.docFront, path);
-    }
-    if (payload.files?.docBack) {
-      const ext = payload.files.docBack.name.split(".").pop();
-      const path = `leads/${leadId}/doc_back_${ts}.${ext}`;
-      uploads.doc_back_url = await uploadFileToSupabase(payload.files.docBack, path);
-    }
+    if (payload.files?.photoUpload) uploads.photo_url = await uploadFileToSupabase(payload.files.photoUpload, `leads/${leadId}/photo_${ts}.${payload.files.photoUpload.name.split(".").pop()}`);
+    if (payload.files?.docFront) uploads.doc_front_url = await uploadFileToSupabase(payload.files.docFront, `leads/${leadId}/doc_front_${ts}.${payload.files.docFront.name.split(".").pop()}`);
+    if (payload.files?.docBack) uploads.doc_back_url = await uploadFileToSupabase(payload.files.docBack, `leads/${leadId}/doc_back_${ts}.${payload.files.docBack.name.split(".").pop()}`);
 
     // --- application insert
     const applicationRow = {
@@ -251,7 +236,6 @@ async function submitToSupabase(payload, statusElId = "formStatus") {
       notes: payload.understandCloudora || payload.hearOther || null,
       status: "submitted"
     };
-
     const { error: appError } = await window.supabaseClient.from("application").insert([applicationRow]);
     if (appError) throw new Error("Application insert failed: " + appError.message);
 
@@ -282,41 +266,27 @@ async function submitToSupabase(payload, statusElId = "formStatus") {
   }
 }
 
-/* ---------- Validation & front-end submit ---------- */
+// ---------- Validation & front-end submit ----------
 function validateAndCollect() {
-  // hide previous errors
   document.querySelectorAll(".error").forEach(el => el.classList.remove("show"));
   $("successMsg").style.display = "none";
   $("formStatus").style.display = "none";
-
   let ok = true;
 
-  // name
   if (!($("fullName")?.value || "").trim()) { showErr("errFullName", true); ok = false; }
-
-  // email
   if (!isEmail($("email")?.value || "")) { showErr("errEmail", true); ok = false; }
-
-  // mobile
   const mobile = ($("mobileNumber")?.value || "").trim();
   if (!isIntlPhone(mobile)) { showErr("errMobileNumber", true); ok = false; }
-
-  // alternate
   const alt = ($("altMobile")?.value || "").trim();
   if (alt && !isIntlPhone(alt)) { showErr("errAltMobile", true); ok = false; }
-
-  // address
   if (!($("addrStreet")?.value || "").trim()) { showErr("errAddrStreet", true); ok = false; }
   if (!($("addrCity")?.value || "").trim()) { showErr("errAddrCity", true); ok = false; }
   if (!isPincode($("addrPincode")?.value || "")) { showErr("errAddrPincode", true); ok = false; }
   if (!($("addrState")?.value || "").trim()) { showErr("errAddrState", true); ok = false; }
   if (!($("addrCountry")?.value || "")) { showErr("errAddrCountry", true); ok = false; }
-
-  // proof
   if (!($("addrProofType")?.value || "")) { showErr("errAddrProofType", true); ok = false; }
   if (($("addrProofType")?.value || "") === "Other" && !($("addrProofOther")?.value || "").trim()) { showErr("errAddrProofType", true); ok = false; }
 
-  // files
   const photo = $("photoUpload")?.files[0];
   const front = $("docFront")?.files[0];
   const back = $("docBack")?.files[0];
@@ -324,49 +294,39 @@ function validateAndCollect() {
   if (!isValidFile(front, validDocTypes)) { showErr("errDocFront", true); ok = false; }
   if (!isValidFile(back, validDocTypes)) { showErr("errDocBack", true); ok = false; }
 
-  // employment
   const emp = $("employmentType")?.value;
   if (!emp) { showErr("errEmploymentType", true); ok = false; }
 
-  // departments
   const deps = Array.from($("departments")?.selectedOptions || []).map(o => o.value);
   if (deps.length === 0) { showErr("errDepartments", true); ok = false; }
   if (emp === "full" && deps.length !== 1) { showErr("errDepartments", true); ok = false; }
   if (emp === "part" && deps.length > 3) { showErr("errDepartments", true); ok = false; }
 
-  // roles
   const roles = Array.from($("roles")?.selectedOptions || []).map(o => o.value);
   if (roles.length === 0) { showErr("errRoles", true); ok = false; }
 
-  // USA slots check
   const usaVisible = !$("usaSlots")?.classList.contains("hidden");
   const usaSelectedSlots = Array.from($("usaSlots")?.querySelectorAll('input[type="checkbox"]:checked') || []).length;
-  if (usaVisible && emp === "part" && usaSelectedSlots === 0) {
-    alert("Select at least one USA slot for part-time USA preference.");
-    ok = false;
-  }
+  if (usaVisible && emp === "part" && usaSelectedSlots === 0) { alert("Select at least one USA slot for part-time USA preference."); ok = false; }
 
-  // languages
   const langChecked = document.querySelectorAll('input[name="lang"]:checked').length;
   if (langChecked === 0) { showErr("errLang", true); ok = false; }
   if ($("langOtherChk")?.checked && !($("langOther")?.value || "").trim()) { showErr("errLang", true); ok = false; }
 
-  // understand
   if ((($("understandCloudora")?.value || "").trim().length) < 20) { showErr("errUnderstand", true); ok = false; }
-
-  // agreement
   if (!($("agree")?.checked)) { showErr("errAgree", true); ok = false; }
 
   if (!ok) return null;
   return collectData(true);
 }
 
-/* ---------- Save / Load draft ---------- */
+// ---------- Save / Load draft ----------
 function saveDraftToLocal() {
   const data = collectData(false);
   localStorage.setItem("cloudoraDraft", JSON.stringify(data));
   alert("Draft saved locally on this device.");
 }
+
 function loadDraftFromLocal() {
   const raw = localStorage.getItem("cloudoraDraft");
   if (!raw) return;
@@ -385,91 +345,5 @@ function loadDraftFromLocal() {
     if (data.addrProofType) $("addrProofType").value = data.addrProofType;
     if (data.addrProofOther) $("addrProofOther").value = data.addrProofOther;
     if (data.employmentType) $("employmentType").value = data.employmentType;
-    // departments & roles
     if (Array.isArray(data.departments)) {
-      const depSel = $("departments");
-      Array.from(depSel.options).forEach(o => o.selected = data.departments.includes(o.value));
-      populateRoles();
-    }
-    if (Array.isArray(data.roles)) {
-      const roleSel = $("roles");
-      Array.from(roleSel.options).forEach(o => o.selected = data.roles.includes(o.value));
-    }
-    if (data.languages && Array.isArray(data.languages)) {
-      document.querySelectorAll('input[name="lang"]').forEach(i => i.checked = data.languages.includes(i.value));
-    }
-    if (data.langOther) $("langOther").value = data.langOther;
-    if (data.understandCloudora) $("understandCloudora").value = data.understandCloudora;
-    if (data.hearAbout) $("hearAbout").value = data.hearAbout;
-    if (data.hearOther) $("hearOther").value = data.hearOther;
-    if (data.agree) $("agree").checked = data.agree;
-    toggleUsaSlots();
-  } catch (err) {
-    console.warn("Failed to parse draft:", err);
-  }
-}
-
-/* ---------- Initialize listeners ---------- */
-function initForm() {
-  attachToggles();
-  const depSel = $("departments");
-  if (depSel) depSel.addEventListener("change", populateRoles);
-
-  const emp = $("employmentType");
-  if (emp) emp.addEventListener("change", function() {
-    // reset departments when switching
-    const depSel = $("departments");
-    if (depSel) Array.from(depSel.options).forEach(o => o.selected = false);
-    // multiple only for part
-    if (depSel) depSel.multiple = this.value !== "full";
-    populateRoles();
-    toggleUsaSlots();
-  });
-
-  const prefCountry = $("prefCountry");
-  if (prefCountry) prefCountry.addEventListener("change", toggleUsaSlots);
-
-  // Save draft
-  const saveDraftBtn = $("saveDraft");
-  if (saveDraftBtn) saveDraftBtn.addEventListener("click", saveDraftToLocal);
-
-  // Load draft on start
-  loadDraftFromLocal();
-
-  // Submit
-  const form = $("cloudoraForm");
-  if (form) {
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const payload = validateAndCollect();
-      if (!payload) return; // validation failed
-
-      // show status pill
-      const statusEl = $("formStatus");
-      if (statusEl) {
-        statusEl.style.display = "inline-block";
-        statusEl.textContent = "Submitting...";
-        statusEl.style.backgroundColor = "";
-      }
-
-      const res = await submitToSupabase(payload, "formStatus");
-      if (res.success) {
-        $("successMsg").style.display = "block";
-        form.reset();
-        // hide optional wraps
-        hide($("addrProofOtherWrap"));
-        hide($("langOtherWrap"));
-        hide($("hearOtherWrap"));
-        // optionally redirect or remove draft
-        localStorage.removeItem("cloudoraDraft");
-        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-      } else {
-        alert("Submission failed. See console for details.");
-      }
-    });
-  }
-
-  // initial UI
-  populateRoles();
-  toggleUsaSlots();
-}
+      const depSel = $("depart
