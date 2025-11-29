@@ -4,47 +4,7 @@
   <meta charset="UTF-8" />
   <title>Cloudora — Applicant Form</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root{
-      --bg:#0f1320; --card:#171b2b; --text:#e8ecf1; --muted:#a5b1c2;
-      --accent:#00A7FF; --ok:#17c964; --warn:#ff8a00; --error:#ff4d4f;
-      --border:#263046;
-    }
-    body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial;}
-    .container{max-width:1100px;margin:40px auto;padding:0 20px;}
-    h1{font-size:28px;margin:0 0 6px;}
-    p.sub{color:var(--muted);margin:0 0 24px;}
-    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;}
-    .card{grid-column:span 12;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;}
-    .row{display:grid;grid-template-columns:repeat(12,1fr);gap:12px;margin-bottom:14px;}
-    .field{grid-column:span 12;display:flex;flex-direction:column;}
-    .field.half{grid-column:span 6;}
-    .field.third{grid-column:span 4;}
-    .label{font-size:13px;margin-bottom:6px;}
-    .req{color:var(--warn);margin-left:6px;}
-    input[type="text"],input[type="email"],input[type="file"],select,textarea{
-      background:#0d1120;border:1px solid var(--border);border-radius:10px;color:var(--text);
-      padding:10px 12px;font-size:14px;outline:none;
-    }
-    input::placeholder,textarea::placeholder{color:#7b8797;}
-    .hint{font-size:12px;color:var(--muted);margin-top:4px;}
-    .error{font-size:12px;color:var(--error);margin-top:6px;display:none;}
-    .show{display:block;}
-    .inline{display:flex;gap:8px;align-items:center;}
-    .tag{background:#0b1630;border:1px solid var(--border);padding:4px 8px;border-radius:999px;font-size:12px;color:var(--muted);}
-    .section-title{font-size:16px;margin:10px 0 6px;color:#cfe5ff;}
-    .actions{display:flex;gap:12px;margin-top:18px;}
-    button{background:var(--accent);border:none;border-radius:10px;color:#041226;padding:10px 16px;font-weight:600;cursor:pointer;}
-    button.secondary{background:#101423;color:#cfe5ff;border:1px solid var(--border);}
-    .pill{background:#0b1630;border:1px dashed var(--border);padding:8px;border-radius:10px;color:var(--muted);font-size:12px;}
-    .divider{height:1px;background:var(--border);margin:16px 0;}
-    .flex{display:flex;gap:10px;flex-wrap:wrap;}
-    .small{font-size:12px;color:var(--muted);}
-    .hidden{display:none;}
-    .success{color:var(--ok);font-size:13px;margin-top:6px;display:none;}
-    .notice{background:#0b1630;border:1px solid var(--border);padding:10px;border-radius:10px;font-size:12px;color:#cfe5ff;}
-    @media (max-width:760px){ .field.half,.field.third{grid-column:span 12;} }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
@@ -69,11 +29,12 @@
           </div>
         </div>
 
-        <div class="field half">
-  <label class="label">Mobile number <span class="req">*</span></label>
-  <input type="text" id="mobileNumber" placeholder="+91 9876543210" inputmode="numeric" />
-  <div class="error" id="errMobileNumber">Enter a valid mobile number with country code.</div>
-</div>
+        <div class="row">
+          <div class="field half">
+            <label class="label">Mobile number <span class="req">*</span></label>
+            <input type="text" id="mobileNumber" placeholder="+91 9876543210" inputmode="numeric" />
+            <div class="error" id="errMobileNumber">Enter a valid mobile number with country code.</div>
+          </div>
           <div class="field third">
             <label class="label">Alternate number</label>
             <input type="text" id="altMobile" placeholder="+91 9XXXXXXXXX" inputmode="numeric" />
@@ -189,18 +150,18 @@
             <div class="error" id="errEmploymentType">Please select employment type.</div>
           </div>
           <div class="field half">
-            <label class="label">Preferred countries</label>
-            <select id="addrCountry">
-  <option value="">Select country</option>
-  <option>India</option>
-  <option>Canada</option>
-  <option>New Zealand</option>
-  <option>Japan</option>
-  <option>United States</option>
-  <option>United Kingdom</option>
-  <option>Europe</option>
-  <option>Other</option>
-</select>
+            <label class="label">Preferred country</label>
+            <select id="prefCountry">
+              <option value="">Select country</option>
+              <option>India</option>
+              <option>Canada</option>
+              <option>New Zealand</option>
+              <option>Japan</option>
+              <option>United States</option>
+              <option>United Kingdom</option>
+              <option>Europe</option>
+              <option>Other</option>
+            </select>
           </div>
         </div>
 
@@ -208,34 +169,31 @@
 
         <div class="row">
           <div class="field half">
-  <label class="label">Departments (select up to 3 for part-time; 1 for full-time) <span class="req">*</span></label>
-  <select id="departments" multiple size="12">
-    <optgroup label="Telecalling – Lead Generation">
-      <option value="tele_lead_domestic">📞 Tele Lead Generation Domestic</option>
-      <option value="tele_lead_international">🌍 Tele Lead Generation International</option>
-    </optgroup>
-    <optgroup label="Telecalling – Sales Conversion">
-      <option value="tele_sales_domestic">💼 Tele Sales Conversion Domestic</option>
-      <option value="tele_sales_international">🌐 Tele Sales Conversion International</option>
-    </optgroup>
-    <optgroup label="Support">
-      <option value="chat_support">💬 Chat Support (Email, Live Web, WhatsApp)</option>
-      <option value="tele_support_domestic">📞 Tele Support Domestic</option>
-      <option value="tele_support_international">🌍 Tele Support International</option>
-    </optgroup>
-    <optgroup label="Technical">
-      <option value="developer">🛠️ Technical Developer</option>
-    </optgroup>
-    <optgroup label="Content & Creatives">
-      <option value="content_creatives">✍️ Content & Creatives (Reels, Video, Editing, Blogging, Acting, Animation, Graphics, Logo Design, etc.)</option>
-    </optgroup>
-    <optgroup label="Marketing & Outreach">
-      <option value="marketing_outreach">📢 Marketing & Outreach (SEO, Campaigning, Ads, etc.)</option>
-    </optgroup>
-  </select>
-  <div class="hint">Hold Ctrl/Cmd to select multiple (part-time only).</div>
-  <div class="error" id="errDepartments">Please select departments (rules apply).</div>
-</div>
+            <label class="label">Departments (select up to 3 for part-time; 1 for full-time) <span class="req">*</span></label>
+            <select id="departments" multiple size="12">
+              <optgroup label="Telecalling – Lead Generation">
+                <option value="tele_lead_domestic">📞 Tele Lead Generation Domestic</option>
+                <option value="tele_lead_international">🌍 Tele Lead Generation International</option>
+              </optgroup>
+              <optgroup label="Telecalling – Sales Conversion">
+                <option value="tele_sales_domestic">💼 Tele Sales Conversion Domestic</option>
+                <option value="tele_sales_international">🌐 Tele Sales Conversion International</option>
+              </optgroup>
+              <optgroup label="Support">
+                <option value="chat_support">💬 Chat Support (Email, Live Web, WhatsApp)</option>
+                <option value="tele_support_domestic">📞 Tele Support Domestic</option>
+                <option value="tele_support_international">🌍 Tele Support International</option>
+              </optgroup>
+              <optgroup label="Technical">
+                <option value="developer">🛠️ Technical Developer</option>
+              </optgroup>
+              <optgroup label="Content & Creatives">
+                <option value="content_creatives">✍️ Content & Creatives</option>
+              </optgroup>
+              <optgroup label="Marketing & Outreach">
+                <option value="marketing_outreach">📢 Marketing & Outreach</option>
+              </optgroup>
+            </select>
             <div class="hint">Hold Ctrl/Cmd to select multiple (part-time only).</div>
             <div class="error" id="errDepartments">Please select departments (rules apply).</div>
           </div>
@@ -326,10 +284,11 @@
           <button type="button" class="secondary" id="saveDraft">Save draft</button>
         </div>
         <div class="success" id="successMsg">Your application was submitted. We’ll contact you shortly.</div>
+        <div id="formStatus" class="pill" style="display:none;margin-top:10px;"></div>
       </div>
     </form>
   </div>
 
-  <script src="app.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
