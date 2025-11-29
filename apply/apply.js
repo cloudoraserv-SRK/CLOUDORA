@@ -180,7 +180,6 @@ if (hamburgerBtn && mobileNav) {
       }
     });
   }
-});
 
 
 // --- Google Translate ---
