@@ -1,154 +1,144 @@
-// supabase.js
-// Unified Supabase handler for all forms (Customer, Applicant, Employee)
+// routefolder/supabase/supabase.js
 
-// ---------- Supabase Config ----------
-const SUPABASE_URL = "https://rfilnqigcadeawytwqmz.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJmaWxucWlnY2FkZWF3eXR3cW16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxMzE2NTIsImV4cCI6MjA3OTcwNzY1Mn0.1wtcjczrzhv2YsE7hGQL11imPxmFVS4sjxlJGvIZ26o";
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+import { createClient } from '@supabase/supabase-js'
 
-// ---------- Utilities ----------
-const generateUUID = () => {
-  // Polyfill for crypto.randomUUID
-  if (crypto && crypto.randomUUID) return crypto.randomUUID();
-  return 'xxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-    return v.toString(16);
-  });
-};
+// ✅ Initialize Supabase client
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-const showStatus = (elId, message, color) => {
-  const el = document.getElementById(elId);
-  if (!el) return;
-  el.style.display = "inline-block";
-  el.textContent = message;
-  if (color) el.style.backgroundColor = color;
-};
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
-// ---------- File Upload ----------
-async function uploadFile(file, folder = "uploads", uuid = null) {
-  if (!file) return null;
-  const fileId = uuid || generateUUID();
-  const ext = file.name.split('.').pop();
-  const filePath = `${folder}/${fileId}/${file.name.replace(/\s/g,'_')}_${Date.now()}.${ext}`;
-  const { data, error } = await supabase.storage.from('applicant-uploads').upload(filePath, file, { upsert: true });
-  if (error) throw error;
-  const { publicUrl } = supabase.storage.from('applicant-uploads').getPublicUrl(filePath);
-  return publicUrl;
+//
+// 🔑 AUTH HELPERS
+//
+export async function signUp(email, password, metadata = {}) {
+  return await supabase.auth.signUp({ email, password, options: { data: metadata } })
 }
 
-// ---------- Customer Enquiry Form ----------
-async function submitCustomerEnquiry(payload) {
-  try {
-    const { error } = await supabase.from("lead").insert([{
-      name: payload.name,
-      email: payload.email,
-      phone: payload.phone,
-      sourceref: payload.company || null,
-      country: payload.country || null,
-      productinterest: payload.service || null,
-      status: "new",
-      source: "website"
-    }]);
-    if (error) throw error;
-    return { success: true };
-  } catch(err) {
-    console.error(err);
-    return { success: false, error: err };
-  }
+export async function signIn(email, password) {
+  return await supabase.auth.signInWithPassword({ email, password })
 }
 
-// ---------- Applicant / Employee Application Form ----------
-async function submitApplicationForm(payload) {
-  try {
-    // Insert Lead
-    const { data: leadData, error: leadError } = await supabase.from("lead").insert([{
-      full_name: payload.fullName,
-      email: payload.email,
-      phone: payload.mobileNumber,
-      country: payload.addrCountry || null,
-      city: payload.addrCity || null,
-      address: [payload.addrStreet, payload.addrCity, payload.addrState, payload.addrPincode].filter(Boolean).join(", "),
-      source: payload.hearAbout || "website",
-      status: "new"
-    }]).select();
-    if (leadError) throw leadError;
-    const leadId = leadData?.[0]?.id;
-    if (!leadId) throw new Error("Lead ID not returned");
-
-    // Upload files
-    const uploads = {};
-    if (payload.files?.photo) uploads.photo_url = await uploadFile(payload.files.photo, `leads/${leadId}`);
-    if (payload.files?.docFront) uploads.doc_front_url = await uploadFile(payload.files.docFront, `leads/${leadId}`);
-    if (payload.files?.docBack) uploads.doc_back_url = await uploadFile(payload.files.docBack, `leads/${leadId}`);
-
-    // Insert Application
-    const { error: appError } = await supabase.from("application").insert([{
-      lead_id: leadId,
-      form_type: "final",
-      role_category: (payload.departments || []).join(", "),
-      preferred_language: (payload.languages || []).join(", "),
-      work_mode: payload.employmentType,
-      engagement_type: payload.employmentType,
-      country: payload.addrCountry,
-      work_country: payload.prefCountry,
-      preferred_schedule: (payload.usaSlots || []).join(", "),
-      skills: payload.skills || null,
-      experience: payload.experience || null,
-      resume_url: uploads.doc_front_url || null,
-      portfolio_url: null,
-      notes: payload.understandCloudora || payload.hearOther || null,
-      status: "submitted"
-    }]);
-    if (appError) throw appError;
-
-    // Agreement insert
-    if (payload.agree) {
-      const { error: agrErr } = await supabase.from("agreement").insert([{
-        lead_id: leadId,
-        agreed: true,
-        agreed_at: new Date().toISOString(),
-        terms_version: null
-      }]);
-      if (agrErr) console.warn("Agreement insert warning:", agrErr.message);
-    }
-
-    return { success: true, leadId, uploads };
-  } catch(err) {
-    console.error(err);
-    return { success: false, error: err };
-  }
+export async function signOut() {
+  return await supabase.auth.signOut()
 }
 
-// ---------- Final Employee Registration ----------
-async function submitEmployeeRegistration(payload) {
-  try {
-    const employeeId = payload.employeeId || generateUUID();
-    const password = payload.password || Math.random().toString(36).slice(-8); // simple temporary password
-    const { error } = await supabase.from("employee").insert([{
-      employee_id: employeeId,
-      full_name: payload.fullName,
-      email: payload.email,
-      phone: payload.mobileNumber,
-      department: payload.department,
-      role: payload.role,
-      username: payload.email,
-      password: password,  // store securely in real system
-      status: "active"
-    }]);
-    if (error) throw error;
-    return { success: true, employeeId, password };
-  } catch(err) {
-    console.error(err);
-    return { success: false, error: err };
-  }
+export async function getSession() {
+  return await supabase.auth.getSession()
 }
 
-// ---------- Expose globally ----------
-window.CRM = {
-  submitCustomerEnquiry,
-  submitApplicationForm,
-  submitEmployeeRegistration,
-  uploadFile,
-  generateUUID,
-  showStatus
-};
+//
+// 📊 LEAD + ENQUIRY HELPERS
+//
+export async function getLeads() {
+  return await supabase.from('lead').select('*').order('created_at', { ascending: false })
+}
+
+export async function insertLead(leadData) {
+  return await supabase.from('lead').insert([leadData])
+}
+
+export async function getEnquiries() {
+  return await supabase.from('view_enquiry_full').select('*')
+}
+
+export async function insertEnquiry(enquiryData) {
+  return await supabase.from('enquiry').insert([enquiryData])
+}
+
+//
+// 📝 APPLICATION HELPERS
+//
+export async function getApplications() {
+  return await supabase.from('view_application_full').select('*')
+}
+
+export async function insertApplication(appData) {
+  return await supabase.from('application').insert([appData])
+}
+
+//
+// 📄 AGREEMENT HELPERS
+//
+export async function insertAgreement(agreementData) {
+  return await supabase.from('agreement').insert([agreementData])
+}
+
+export async function getAgreements() {
+  return await supabase.from('agreement').select('*')
+}
+
+//
+// 💼 SALES HELPERS
+//
+export async function getSalesPipeline() {
+  return await supabase.from('view_sales_pipeline').select('*')
+}
+
+export async function insertSale(saleData) {
+  return await supabase.from('sales').insert([saleData])
+}
+
+//
+// 🛠 TECHNICAL HELPERS
+//
+export async function getTechnicalTasks() {
+  return await supabase.from('technical').select('*')
+}
+
+export async function insertTechnicalTask(taskData) {
+  return await supabase.from('technical').insert([taskData])
+}
+
+export async function insertDeliverable(deliverableData) {
+  return await supabase.from('deliverables').insert([deliverableData])
+}
+
+//
+// 🎧 SUPPORT HELPERS
+//
+export async function getSupportTickets() {
+  return await supabase.from('view_support_full').select('*')
+}
+
+export async function insertSupportTicket(ticketData) {
+  return await supabase.from('support').insert([ticketData])
+}
+
+//
+// 👥 ASSIGNMENT HELPERS
+//
+export async function assignLead(assignData) {
+  return await supabase.from('assignment').insert([assignData])
+}
+
+export async function getAssignments() {
+  return await supabase.from('assignment').select('*')
+}
+
+//
+// 📜 ACTIVITY LOGS
+//
+export async function logActivity(logData) {
+  return await supabase.from('activity_logs').insert([logData])
+}
+
+export async function getActivityLogs(entityType, entityId) {
+  return await supabase
+    .from('activity_logs')
+    .select('*')
+    .eq('entity_type', entityType)
+    .eq('entity_id', entityId)
+    .order('created_at', { ascending: false })
+}
+
+//
+// ⚙️ ROUTING RULES
+//
+export async function getRoutingRules() {
+  return await supabase.from('routing_rules').select('*')
+}
+
+export async function insertRoutingRule(ruleData) {
+  return await supabase.from('routing_rules').insert([ruleData])
+}
