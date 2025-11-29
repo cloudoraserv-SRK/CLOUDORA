@@ -122,20 +122,35 @@ document.addEventListener("DOMContentLoaded", () => {
             // --- 2️⃣ Resume / Portfolio Link ---
   const resumeUrl = resumeField?.value || null;
 
-        // --- 3️⃣ Insert Lead into Supabase ---
-  const { error: appError } = await insertApplication({
-  id: tempId,
+        // 1️⃣ Insert into lead
+const { error: leadError, data: leadData } = await insertLead({
   full_name: formData.get("name"),
   email: formData.get("email"),
   phone: formData.get("phone"),
   country: formData.get("country"),
-  city: formData.get("city"),
-  city: formData.get("city"),
-  resume_link: resumeUrl, // use the actual column name in your application table
-  status: "trial",
-   });
+});
+if (leadError) throw new Error("Supabase Lead insert failed: " + leadError.message);
 
+// Get the lead_id from the inserted lead
+const leadId = leadData[0].id;
+
+// 2️⃣ Insert into application
+const { error: appError } = await insertApplication({
+  lead_id: leadId,
+  city: formData.get("city"),
+  role_category: formData.get("vacancy"),
+  resume_url: resumeField?.value || null,
+  status: "trial",
+  skills: formData.get("skills"),
+  experience: formData.get("experience"),
+  availability: formData.get("availability"),
+  work_mode: formData.get("work_mode"),
+  engagement_type: formData.get("engagement_type"),
+  schedule: formData.get("schedule"),
+  notes: formData.get("notes"),
+});
 if (appError) throw new Error("Supabase Application insert failed: " + appError.message);
+        
         
         // --- 4️⃣ Create Trial Record ---
         const { error: trialError } = await insertTrial({
