@@ -72,7 +72,7 @@ export async function insertEnquiry(enquiryData) {
 
 // 📝 APPLICATION HELPERS
 // 📝 APPLICATION HELPERS
-export async function getApplications() {
+export async function getApplication() {
   return await supabase.from("view_application_full").select("*");
 }
 
