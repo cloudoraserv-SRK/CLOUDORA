@@ -189,37 +189,54 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-  // Supabase
+  // ---------- Supabase Config ----------
 const supabaseUrl = "https://rfilnqigcadeawytwqmz.supabase.co";
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJmaWxucWlnY2FkZWF3eXR3cW16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxMzE2NTIsImV4cCI6MjA3OTcwNzY1Mn0.1wtcjczrzhv2YsE7hGQL11imPxmFVS4sjxlJGvIZ26o";
 const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-document.getElementById("contactForm").addEventListener("submit", async function(e) {
-  e.preventDefault(); // stop page reload
+// ---------- Contact Form Submit ----------
+document.addEventListener('DOMContentLoaded', () => {
+  const contactForm = document.getElementById("contactForm");
+  const statusEl = document.getElementById("formStatus");
 
-  const formData = new FormData(this);
+  if (!contactForm) return;
 
-  // Insert into Supabase "lead" table
-const { error } = await supabase.from("lead").insert([{
-  name: formData.get("name"),            // matches lead.name
-  email: formData.get("email"),          // matches lead.email
-  phone: formData.get("phone"),          // matches lead.phone
-  sourceref: formData.get("company"),    // matches lead.sourceref
-  country: formData.get("country"),      // use a country field, not full address
-  productinterest: formData.get("service"), // matches lead.productinterest
-  status: "new",
-  source: "website"
-}]);
+  contactForm.addEventListener("submit", async function(e) {
+    e.preventDefault(); // prevent page reload
 
-  if (error) {
-    document.getElementById("formStatus").style.display = "inline-block";
-    document.getElementById("formStatus").textContent = "Error: " + error.message;
-  } else {
-    document.getElementById("formStatus").style.display = "inline-block";
-    document.getElementById("formStatus").textContent = "Thanks! Your enquiry was saved.";
-    this.reset();
-  }
+    // reset status
+    statusEl.style.display = "inline-block";
+    statusEl.textContent = "Submitting...";
+    statusEl.style.backgroundColor = "";
+    
+    const formData = new FormData(this);
+
+    try {
+      const { data, error } = await supabase.from("lead").insert([{
+        name: formData.get("name"),
+        email: formData.get("email"),
+        phone: formData.get("phone"),
+        sourceref: formData.get("company"),
+        country: formData.get("country"),
+        productinterest: formData.get("service"),
+        status: "new",
+        source: "website"
+      }]).select();
+
+      if (error) throw error;
+
+      statusEl.textContent = "✅ Thanks! Your enquiry was saved.";
+      statusEl.style.backgroundColor = "#16a34a";
+      contactForm.reset();
+
+    } catch (err) {
+      statusEl.textContent = "❌ Error: " + err.message;
+      statusEl.style.backgroundColor = "#dc2626";
+      console.error("Contact form submission error:", err);
+    }
+  });
 });
+
 
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({
