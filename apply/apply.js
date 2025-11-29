@@ -120,21 +120,21 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
             // --- 2️⃣ Resume / Portfolio Link ---
-      const resumeUrl = resumeField?.value || null;
-
-
+  const resumeUrl = resumeField?.value || null;
 
         // --- 3️⃣ Insert Lead into Supabase ---
-        const { error: appError } = await insertApplication({
+  const { error: appError } = await insertApplication({
   id: tempId,
   full_name: formData.get("name"),
   email: formData.get("email"),
   phone: formData.get("phone"),
   country: formData.get("country"),
   city: formData.get("city"),
-  resume_link: resumeField?.value || null,  // match actual column name
+  city: formData.get("city"),
+  resume_link: resumeUrl, // use the actual column name in your application table
   status: "trial",
-});
+   });
+
 if (appError) throw new Error("Supabase Application insert failed: " + appError.message);
         
         // --- 4️⃣ Create Trial Record ---
