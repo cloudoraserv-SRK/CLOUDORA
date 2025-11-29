@@ -96,12 +96,23 @@ if (hamburgerBtn && mobileNav) {
     mobileNav.classList.toggle('active');
   });
 }
-
+// --- Supabase --- //
+// ---------- Upload file to Supabase Storage ----------
+async function uploadFile(file, folder) {
+  if (!file) return null;
+  const ext = file.name.split('.').pop();
+  const path = `${folder}/${file.name.replace(/\s/g, "_")}_${Date.now()}.${ext}`;
+  const { data, error } = await supabase.storage.from(UPLOAD_BUCKET).upload(path, file, { upsert: true });
+  if (error) throw new Error("File upload failed: " + error.message);
+  const { publicUrl } = supabase.storage.from(UPLOAD_BUCKET).getPublicUrl(path);
+  return publicUrl;
+}
 const statusEl = document.getElementById("formStatus");
   const jobForm = document.getElementById('jobForm');
   const vacancySelect = document.getElementById('vacancy');
   const resumeField = document.getElementById('resumeLink');
   const resumeHelp = document.getElementById('resumeHelp');
+  const portfolioField = document.getElementById('portfolioLink');
 
   // --- Resume requirement logic ---
   if (vacancySelect && resumeField && resumeHelp) {
@@ -117,7 +128,7 @@ const statusEl = document.getElementById("formStatus");
     });
   }
 
-  // --- Form Submission (Formspree + Supabase + UUID) ---
+  // --- Form Submission (Formspree + Supabase + File Upload) ---
   if (jobForm) {
     jobForm.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -131,14 +142,27 @@ const statusEl = document.getElementById("formStatus");
       const appUUID = uuidv4();
 
       try {
-        // 1️⃣ Formspree Submission
+        // --- 1️⃣ Formspree Submission ---
         const fsResponse = await fetch("https://formspree.io/f/mrbwawkz", {
           method: "POST",
           body: formData,
           headers: { 'Accept': 'application/json' }
         });
 
-        // 2️⃣ Supabase Lead Insert with UUID
+        // --- 2️⃣ Upload Resume & Portfolio Files ---
+        let resumeUrl = null;
+        let portfolioUrl = null;
+        const resumeFile = resumeField.files[0];
+        const portfolioFile = portfolioField?.files[0];
+
+        if (resumeFile) {
+          resumeUrl = await uploadFile(resumeFile, `leads/${leadUUID}`);
+        }
+        if (portfolioFile) {
+          portfolioUrl = await uploadFile(portfolioFile, `leads/${leadUUID}`);
+        }
+
+        // --- 3️⃣ Supabase Lead Insert ---
         const { data: leadData, error: leadError } = await supabase.from("lead").insert([{
           id: leadUUID,
           full_name: formData.get("name"),
@@ -152,7 +176,7 @@ const statusEl = document.getElementById("formStatus");
 
         if (leadError) throw new Error("Supabase Lead insert failed: " + leadError.message);
 
-        // 3️⃣ Supabase Application Insert with UUID
+        // --- 4️⃣ Supabase Application Insert ---
         const { error: appError } = await supabase.from("application").insert([{
           id: appUUID,
           lead_id: leadUUID,
@@ -167,8 +191,8 @@ const statusEl = document.getElementById("formStatus");
           preferred_schedule: formData.get("workMode"),
           skills: formData.get("skills"),
           experience: formData.get("experience"),
-          resume_url: formData.get("resumeLink"),
-          portfolio_url: formData.get("github"),
+          resume_url: resumeUrl,
+          portfolio_url: portfolioUrl,
           notes: formData.get("message"),
           status: "submitted"
         }]);
@@ -193,25 +217,6 @@ const statusEl = document.getElementById("formStatus");
     });
   }
 });
-✅ Key Improvements:
-Each lead and application now has a UUID (id) instead of auto-increment.
-
-Formspree + Supabase submission remains fully integrated.
-
-Handles resume requirement dynamically.
-
-Proper status messages with success/error feedback.
-
-If you want, I can also integrate file uploads (resume, portfolio) into Supabase Storage like your previous Cloudora form, so resumes get uploaded and the public URL is stored.
-
-Do you want me to do that next?
-
-
-
-
-
-
-
 
 // --- Google Translate ---
 function googleTranslateElementInit() {
