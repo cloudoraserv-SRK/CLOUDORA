@@ -1,185 +1,318 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Cloudora Trial Application</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Cloudora — Applicant Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --bg:#0f1320; --card:#171b2b; --text:#e8ecf1; --muted:#a5b1c2;
+      --accent:#00A7FF; --ok:#17c964; --warn:#ff8a00; --error:#ff4d4f;
+      --border:#263046;
+    }
+    body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial;}
+    .container{max-width:1100px;margin:40px auto;padding:0 20px;}
+    h1{font-size:28px;margin:0 0 6px;}
+    p.sub{color:var(--muted);margin:0 0 24px;}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;}
+    .card{grid-column:span 12;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;}
+    .row{display:grid;grid-template-columns:repeat(12,1fr);gap:12px;margin-bottom:14px;}
+    .field{grid-column:span 12;display:flex;flex-direction:column;}
+    .field.half{grid-column:span 6;}
+    .field.third{grid-column:span 4;}
+    .label{font-size:13px;margin-bottom:6px;}
+    .req{color:var(--warn);margin-left:6px;}
+    input[type="text"],input[type="email"],input[type="file"],select,textarea{
+      background:#0d1120;border:1px solid var(--border);border-radius:10px;color:var(--text);
+      padding:10px 12px;font-size:14px;outline:none;
+    }
+    input::placeholder,textarea::placeholder{color:#7b8797;}
+    .hint{font-size:12px;color:var(--muted);margin-top:4px;}
+    .error{font-size:12px;color:var(--error);margin-top:6px;display:none;}
+    .show{display:block;}
+    .inline{display:flex;gap:8px;align-items:center;}
+    .tag{background:#0b1630;border:1px solid var(--border);padding:4px 8px;border-radius:999px;font-size:12px;color:var(--muted);}
+    .section-title{font-size:16px;margin:10px 0 6px;color:#cfe5ff;}
+    .actions{display:flex;gap:12px;margin-top:18px;}
+    button{background:var(--accent);border:none;border-radius:10px;color:#041226;padding:10px 16px;font-weight:600;cursor:pointer;}
+    button.secondary{background:#101423;color:#cfe5ff;border:1px solid var(--border);}
+    .pill{background:#0b1630;border:1px dashed var(--border);padding:8px;border-radius:10px;color:var(--muted);font-size:12px;}
+    .divider{height:1px;background:var(--border);margin:16px 0;}
+    .flex{display:flex;gap:10px;flex-wrap:wrap;}
+    .small{font-size:12px;color:var(--muted);}
+    .hidden{display:none;}
+    .success{color:var(--ok);font-size:13px;margin-top:6px;display:none;}
+    .notice{background:#0b1630;border:1px solid var(--border);padding:10px;border-radius:10px;font-size:12px;color:#cfe5ff;}
+    @media (max-width:760px){ .field.half,.field.third{grid-column:span 12;} }
+  </style>
 </head>
 <body>
-  <section class="container">
-    <h2>Cloudora 7-Day Trial Application</h2>
-    <form id="applicationForm">
+  <div class="container">
+    <h1>Cloudora — Applicant form</h1>
+    <p class="sub">Apply with confidence. Clear instructions, strong validation, and fair options for part-time and full-time roles.</p>
 
-      <!-- Personal Information -->
-      <h3>👤 Personal Information</h3>
-      <label>First Name</label>
-      <input type="text" name="firstName" required>
+    <form id="cloudoraForm" novalidate>
+      <!-- Contact information -->
+      <div class="card">
+        <div class="section-title">Contact information</div>
+        <div class="row">
+          <div class="field half">
+            <label class="label">Full name <span class="req">*</span></label>
+            <input type="text" id="fullName" placeholder="e.g., Priya Sharma" required />
+            <div class="error" id="errFullName">Please enter your full name.</div>
+          </div>
+          <div class="field half">
+            <label class="label">Email ID <span class="req">*</span></label>
+            <input type="email" id="email" placeholder="name@example.com" required />
+            <div class="hint">We’ll verify the format automatically.</div>
+            <div class="error" id="errEmail">Enter a valid email (e.g., name@domain.com).</div>
+          </div>
+        </div>
 
-      <label>Last Name</label>
-      <input type="text" name="lastName" required>
+        <div class="row">
+          <div class="field third">
+            <label class="label">Mobile number (part 1) <span class="req">*</span></label>
+            <input type="text" id="mobilePart1" placeholder="+91 or country code" inputmode="numeric" />
+            <div class="error" id="errMobile1">Enter country code (e.g., +91).</div>
+          </div>
+          <div class="field third">
+            <label class="label">Mobile number (part 2) <span class="req">*</span></label>
+            <input type="text" id="mobilePart2" placeholder="10 digits" inputmode="numeric" />
+            <div class="error" id="errMobile2">Enter a valid 10-digit number.</div>
+          </div>
+          <div class="field third">
+            <label class="label">Alternate number</label>
+            <input type="text" id="altMobile" placeholder="+91 9XXXXXXXXX" inputmode="numeric" />
+            <div class="error" id="errAltMobile">Enter a valid number (country code + digits).</div>
+          </div>
+        </div>
+      </div>
 
-      <label>Sex</label>
-      <select name="sex" required>
-        <option value="">-- Select --</option>
-        <option>Male</option>
-        <option>Female</option>
-        <option>Other</option>
-      </select>
+      <!-- Address -->
+      <div class="card">
+        <div class="section-title">Address</div>
+        <div class="row">
+          <div class="field third">
+            <label class="label">Building / Street <span class="req">*</span></label>
+            <input type="text" id="addrStreet" placeholder="e.g., 22, Shanti Nagar, 3rd Floor" />
+            <div class="error" id="errAddrStreet">Please enter building/street.</div>
+          </div>
+          <div class="field third">
+            <label class="label">City <span class="req">*</span></label>
+            <input type="text" id="addrCity" placeholder="e.g., Indore" />
+            <div class="error" id="errAddrCity">Please enter city.</div>
+          </div>
+          <div class="field third">
+            <label class="label">Pin code <span class="req">*</span></label>
+            <input type="text" id="addrPincode" placeholder="e.g., 452001" inputmode="numeric" />
+            <div class="error" id="errAddrPincode">Enter a valid 6-digit pin code.</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field half">
+            <label class="label">State/Province <span class="req">*</span></label>
+            <input type="text" id="addrState" placeholder="e.g., Madhya Pradesh" />
+            <div class="error" id="errAddrState">Please enter state/province.</div>
+          </div>
+          <div class="field half">
+            <label class="label">Country <span class="req">*</span></label>
+            <select id="addrCountry">
+              <option value="">Select country</option>
+              <option>India</option>
+              <option>Canada</option>
+              <option>New Zealand</option>
+              <option>Japan</option>
+              <option>United States</option>
+              <option>United Kingdom</option>
+              <option>Other</option>
+            </select>
+            <div class="error" id="errAddrCountry">Please select country.</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field half">
+            <label class="label">Address proof type <span class="req">*</span></label>
+            <select id="addrProofType">
+              <option value="">Select proof</option>
+              <option>Passport</option>
+              <option>Driving License</option>
+              <option>Aadhaar</option>
+              <option>Voter ID</option>
+              <option>Utility Bill</option>
+              <option>Other</option>
+            </select>
+            <div class="error" id="errAddrProofType">Please select a proof type.</div>
+          </div>
+          <div class="field half hidden" id="addrProofOtherWrap">
+            <label class="label">Other proof (specify)</label>
+            <input type="text" id="addrProofOther" placeholder="e.g., Rent Agreement, Bank Statement" />
+          </div>
+        </div>
+      </div>
 
-      <label>Mobile Number</label>
-      <input type="tel" name="mobile" placeholder="+91 9876543210" required>
+      <!-- Uploads -->
+      <div class="card">
+        <div class="section-title">Uploads</div>
+        <div class="row">
+          <div class="field half">
+            <label class="label">Upload photo (portrait) <span class="req">*</span></label>
+            <input type="file" id="photoUpload" accept="image/*" />
+            <div class="hint">Clear face, good lighting, JPG/PNG, max 5MB.</div>
+            <div class="error" id="errPhotoUpload">Please upload a valid photo (JPG/PNG ≤ 5MB).</div>
+          </div>
+          <div class="field half">
+            <label class="label">Upload document — front <span class="req">*</span></label>
+            <input type="file" id="docFront" accept="image/*,application/pdf" />
+            <div class="hint">Readable, full frame, JPG/PNG/PDF, max 5MB.</div>
+            <div class="error" id="errDocFront">Please upload a valid front image/PDF ≤ 5MB.</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field half">
+            <label class="label">Upload document — back <span class="req">*</span></label>
+            <input type="file" id="docBack" accept="image/*,application/pdf" />
+            <div class="hint">Readable, full frame, JPG/PNG/PDF, max 5MB.</div>
+            <div class="error" id="errDocBack">Please upload a valid back image/PDF ≤ 5MB.</div>
+          </div>
+          <div class="field half">
+            <div class="notice">Tip: If your document has no back side, re-upload the front and add a note in the comments.</div>
+          </div>
+        </div>
+      </div>
 
-      <label>Alternate Number</label>
-      <input type="tel" name="altMobile">
+      <!-- Role & departments -->
+      <div class="card">
+        <div class="section-title">Employment preferences</div>
 
-      <label>Email ID</label>
-      <input type="email" name="email" required>
+        <div class="row">
+          <div class="field half">
+            <label class="label">Employment type <span class="req">*</span></label>
+            <select id="employmentType">
+              <option value="">Select</option>
+              <option value="full">Full-time (one department only)</option>
+              <option value="part">Part-time (up to 3 departments)</option>
+            </select>
+            <div class="error" id="errEmploymentType">Please select employment type.</div>
+          </div>
+          <div class="field half">
+            <label class="label">Preferred countries</label>
+            <div class="inline">
+              <label class="tag"><input type="checkbox" id="prefCA" /> Canada</label>
+              <label class="tag"><input type="checkbox" id="prefNZ" /> New Zealand</label>
+              <label class="tag"><input type="checkbox" id="prefJP" /> Japan</label>
+              <label class="tag"><input type="checkbox" id="prefUS" /> USA</label>
+              <label class="tag"><input type="checkbox" id="prefOtherCountry" /> Other</label>
+            </div>
+          </div>
+        </div>
 
-      <label>Address</label>
-      <textarea name="address" required></textarea>
+        <div class="divider"></div>
 
-      <!-- Identity Proof -->
-      <h3>🪪 Identity Proof</h3>
-      <label>Address Proof (Mandatory)</label>
-      <select name="addressProof" required>
-        <option value="">-- Select Document --</option>
-        <option>Voter Card</option>
-        <option>Driving Licence</option>
-        <option>Aadhaar Card</option>
-        <option>Passport</option>
-      </select>
+        <div class="row">
+          <div class="field half">
+            <label class="label">Departments (select up to 3 for part-time; 1 for full-time) <span class="req">*</span></label>
+            <select id="departments" multiple size="6">
+              <option value="marketing">Marketing</option>
+              <option value="sales">Sales</option>
+              <option value="design">Design</option>
+              <option value="development">Development</option>
+              <option value="seo">SEO</option>
+              <option value="support">Support</option>
+            </select>
+            <div class="hint">Hold Ctrl/Cmd to select multiple (part-time only).</div>
+            <div class="error" id="errDepartments">Please select departments (rules apply).</div>
+          </div>
 
-      <label>Document Number</label>
-      <input type="text" name="docNumber" required>
+          <div class="field half">
+            <label class="label">Connected roles (based on selected department) <span class="req">*</span></label>
+            <select id="roles" multiple size="6">
+              <!-- Populated dynamically -->
+            </select>
+            <div class="hint">Choose roles relevant to your selected department(s).</div>
+            <div class="error" id="errRoles">Please select at least one role.</div>
+          </div>
+        </div>
 
-      <label>PAN Card Number (Optional)</label>
-      <input type="text" name="panNumber">
+        <div class="divider"></div>
 
-      <label>Upload Photo</label>
-      <input type="file" name="photo" accept="image/*">
+        <div class="row">
+          <div class="field half">
+            <label class="label">Work hours — USA slots (visible when USA selected & part-time)</label>
+            <div id="usaSlots" class="pill hidden">
+              <!-- dynamically rendered slots 7-8, 8-9, ... -->
+            </div>
+            <div class="hint">Select multiple slots for part-time. Full-time: fixed timezone per selected country.</div>
+          </div>
+          <div class="field half">
+            <label class="label">Preferred language(s) <span class="req">*</span></label>
+            <div class="inline">
+              <label class="tag"><input type="checkbox" name="lang" value="English" /> English</label>
+              <label class="tag"><input type="checkbox" name="lang" value="Hindi" /> Hindi</label>
+              <label class="tag"><input type="checkbox" name="lang" value="Marathi" /> Marathi</label>
+              <label class="tag"><input type="checkbox" name="lang" value="Other" id="langOtherChk" /> Other</label>
+            </div>
+            <div id="langOtherWrap" class="field hidden" style="margin-top:10px;">
+              <label class="label">Specify other language(s)</label>
+              <input type="text" id="langOther" placeholder="e.g., Gujarati, Bengali, Spanish" />
+            </div>
+            <div class="error" id="errLang">Please select at least one language.</div>
+          </div>
+        </div>
 
-      <!-- Department & Role Selection -->
-      <h3>🏢 Department & Role</h3>
-      <label>Choose Department</label>
-      <select name="department" required>
-        <option value="">-- Select Department --</option>
-        <option>Telecaller</option>
-        <option>Sales</option>
-        <option>Technical</option>
-        <option>Support</option>
-        <option>Field Staff</option>
-      </select>
+        <div class="divider"></div>
 
-      <label>Choose Role</label>
-      <select name="jobRole" required>
-        <optgroup label="Telecaller">
-          <option>Voice Support (Inbound)</option>
-          <option>Lead Generation (Outbound)</option>
-          <option>Lead Conversion (Outbound)</option>
-        </optgroup>
-        <optgroup label="Sales">
-          <option>Sales Executive</option>
-          <option>Sales Manager</option>
-          <option>Lead Generator</option>
-        </optgroup>
-        <optgroup label="Support">
-          <option>Email Support</option>
-          <option>Chat Support</option>
-          <option>Live Web Support</option>
-        </optgroup>
-        <optgroup label="Technical">
-          <option>Frontend Developer</option>
-          <option>Backend Developer</option>
-          <option>Full Stack Developer</option>
-          <option>Mobile App Developer</option>
-          <option>Blockchain Engineer</option>
-          <option>Game Developer</option>
-          <option>AI/ML Engineer</option>
-          <option>UI/UX Designer</option>
-        </optgroup>
-        <optgroup label="Field Staff">
-          <option>Delivery Staff</option>
-          <option>Sales Executive</option>
-          <option>Sales Manager</option>
-        </optgroup>
-      </select>
+        <div class="row">
+          <div class="field">
+            <label class="label">What do you understand about Cloudora? <span class="req">*</span></label>
+            <textarea id="understandCloudora" rows="3" placeholder="Share your understanding of our brand, services, and values."></textarea>
+            <div class="error" id="errUnderstand">Please provide a brief answer (min 20 characters).</div>
+          </div>
+        </div>
 
-      <!-- Work Preferences -->
-      <h3>🌍 Work Preferences</h3>
-      <label>Preferred Country</label>
-      <select name="country" required>
-        <option value="">-- Select Country --</option>
-        <option>India</option>
-        <option>USA</option>
-        <option>UK</option>
-        <option>Germany</option>
-        <option>UAE</option>
-        <option>Other</option>
-      </select>
+        <div class="row">
+          <div class="field half">
+            <label class="label">How did you hear about us?</label>
+            <select id="hearAbout">
+              <option value="">Select</option>
+              <option>WhatsApp</option>
+              <option>Instagram</option>
+              <option>Friend/Referral</option>
+              <option>Website</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field half hidden" id="hearOtherWrap">
+            <label class="label">Please specify</label>
+            <input type="text" id="hearOther" placeholder="e.g., Event, Meetup, Community" />
+          </div>
+        </div>
 
-      <label>Work Type</label>
-      <select name="workType" required>
-        <option value="">-- Select Type --</option>
-        <option>Full-time (8 hours)</option>
-        <option>Part-time (1 hour)</option>
-        <option>Part-time (2 hours)</option>
-        <option>Part-time (4 hours)</option>
-        <option>Part-time (6 hours)</option>
-      </select>
+        <div class="row">
+          <div class="small">Note: Full-time employees may join only one department. Part-time applicants may select up to three departments and multiple USA time slots where applicable.</div>
+        </div>
+      </div>
 
-      <label>Preferred Work Slot</label>
-      <select name="workSlot" required>
-        <option value="">-- Select Slot --</option>
-        <option>Morning</option>
-        <option>Afternoon</option>
-        <option>Evening</option>
-        <option>Night</option>
-      </select>
-
-      <label>Preferred Language of Communication</label>
-      <select name="language" required>
-        <option value="">-- Select Language --</option>
-        <option>English</option>
-        <option>Hindi</option>
-        <option>Other</option>
-      </select>
-
-      <!-- Work Style & Experience -->
-      <h3>🧑‍💻 Work Style & Experience</h3>
-      <label>Work Samples (Links)</label>
-      <input type="url" name="workLinks">
-
-      <label>Experience (Years)</label>
-      <input type="number" name="experience">
-
-      <label>Last Company Name</label>
-      <input type="text" name="lastCompany">
-
-      <label>Last Drawn Salary</label>
-      <input type="number" name="lastSalary">
-
-      <label>Expected Salary</label>
-      <input type="number" name="expectedSalary">
-
-      <label>How do you prefer to work?</label>
-      <select name="workStyle" required>
-        <option value="">-- Select Style --</option>
-        <option>Independent</option>
-        <option>Team Collaboration</option>
-        <option>Flexible / Adaptive</option>
-        <option>Structured / Process-driven</option>
-      </select>
-
-      <label>How do you handle deadlines?</label>
-      <textarea name="deadlineApproach" placeholder="Describe your approach..."></textarea>
-
-      <label>Motivation to join Cloudora</label>
-      <textarea name="motivation" placeholder="Why do you want to join?"></textarea>
-
-      <button type="submit" class="btn">Submit Application</button>
-      <span id="formStatus" class="pill" style="display:none"></span>
+      <!-- Agreement & submit -->
+      <div class="card">
+        <div class="section-title">Agreement</div>
+        <div class="row">
+          <div class="field">
+            <label class="inline">
+              <input type="checkbox" id="agree" />
+              <span>I confirm all information is true and I agree to Cloudora’s terms.</span>
+            </label>
+            <div class="error" id="errAgree">You must accept the terms to submit.</div>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="submit">Submit application</button>
+          <button type="button" class="secondary" id="saveDraft">Save draft</button>
+        </div>
+        <div class="success" id="successMsg">Your application was submitted. We’ll contact you shortly.</div>
+      </div>
     </form>
-  </section>
-  <script src="app.js"></script>
+  </div>
+
+  <script src="applicant-form.js"></script>
 </body>
 </html>
