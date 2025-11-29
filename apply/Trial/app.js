@@ -41,20 +41,6 @@ const validImageTypes = ["image/jpeg", "image/png"];
 const validDocTypes = ["image/jpeg", "image/png", "application/pdf"];
 const isValidFile = (file, types) => file && types.includes(file.type) && file.size <= maxSize;
 
-/* ---------- Role mapping (basic) ---------- */
-const ROLE_MAP = {
-  tele_lead_domestic: ["Tele Lead - Domestic"],
-  tele_lead_international: ["Tele Lead - Intl"],
-  tele_sales_domestic: ["Sales - Domestic"],
-  tele_sales_international: ["Sales - Intl"],
-  chat_support: ["Chat Support"],
-  tele_support_domestic: ["Tele Support Domestic"],
-  tele_support_international: ["Tele Support Intl"],
-  developer: ["Frontend Dev", "Backend Dev", "Full-stack Dev"],
-  content_creatives: ["Content Creator", "Video Editor", "Graphic Designer"],
-  marketing_outreach: ["Marketing Executive", "SEO Specialist"]
-};
-
 /* ---------- USA Slots builder ---------- */
 function buildUsaSlots() {
   const wrap = $("usaSlots");
@@ -136,38 +122,48 @@ function toggleUsaSlots() {
   }
 }
 
-/* ---------- Collect form data ---------- */
-function collectData(includeFiles = true) {
-  const langs = Array.from(document.querySelectorAll('input[name="lang"]:checked')).map(i => i.value);
-  const usaSelections = Array.from($("usaSlots").querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
+// ---------- Role mapping ----------
+const ROLE_MAP = {
+  tele_lead_domestic: ["Tele Lead - Domestic"],
+  tele_lead_international: ["Tele Lead - International"],
+  tele_sales_domestic: ["Sales - Domestic"],
+  tele_sales_international: ["Sales - International"],
+  chat_support: ["Chat Support"],
+  tele_support_domestic: ["Tele Support - Domestic"],
+  tele_support_international: ["Tele Support - International"],
+  developer: ["Frontend Developer", "Backend Developer", "Full-stack Developer"],
+  content_creatives: ["Content Creator", "Video Editor", "Graphic Designer"],
+  marketing_outreach: ["Marketing Executive", "SEO Specialist"]
+};
+
+// ---------- Collect form data ----------
+function collectData() {
+  const departments = Array.from($("departments")?.selectedOptions || []).map(o => o.value);
+  const roles = Array.from($("roles")?.selectedOptions || []).map(o => o.value);
+  const languages = Array.from(document.querySelectorAll('input[name="lang"]:checked')).map(i => i.value);
+  const usaSlots = Array.from($("usaSlots").querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
+
   return {
     fullName: $("fullName")?.value?.trim(),
     email: $("email")?.value?.trim(),
     mobileNumber: $("mobileNumber")?.value?.trim(),
-    altMobile: $("altMobile")?.value?.trim(),
-    addrStreet: $("addrStreet")?.value?.trim(),
-    addrCity: $("addrCity")?.value?.trim(),
-    addrPincode: $("addrPincode")?.value?.trim(),
-    addrState: $("addrState")?.value?.trim(),
     addrCountry: $("addrCountry")?.value,
-    addrProofType: $("addrProofType")?.value,
-    addrProofOther: $("addrProofOther")?.value?.trim(),
     employmentType: $("employmentType")?.value,
     prefCountry: $("prefCountry")?.value,
-    departments: Array.from($("departments")?.selectedOptions || []).map(o => o.value),
-    roles: Array.from($("roles")?.selectedOptions || []).map(o => o.value),
-    usaSlots: usaSelections,
-    languages: langs,
+    departments,
+    roles,
+    usaSlots,
+    languages,
     langOther: $("langOther")?.value?.trim(),
     understandCloudora: $("understandCloudora")?.value?.trim(),
     hearAbout: $("hearAbout")?.value,
     hearOther: $("hearOther")?.value?.trim(),
     agree: !!$("agree")?.checked,
-    files: includeFiles ? {
-      photoUpload: $("photoUpload")?.files[0] || null,
+    files: {
+      photo: $("photoUpload")?.files[0] || null,
       docFront: $("docFront")?.files[0] || null,
       docBack: $("docBack")?.files[0] || null
-    } : undefined
+    }
   };
 }
 
