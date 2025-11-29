@@ -125,18 +125,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         // --- 3️⃣ Insert Lead into Supabase ---
-        const { error: leadError } = await insertLead({
-          id: tempId,
-          full_name: formData.get("name"),
-          email: formData.get("email"),
-          phone: formData.get("phone"),
-          country: formData.get("country"),
-          city: formData.get("city"),
-          resume_url: resumeUrl,
-          status: "trial",
-        });
-        if (leadError) throw new Error("Supabase Lead insert failed: " + leadError.message);
-
+        const { error: appError } = await insertApplication({
+  id: tempId,
+  full_name: formData.get("name"),
+  email: formData.get("email"),
+  phone: formData.get("phone"),
+  country: formData.get("country"),
+  city: formData.get("city"),
+  resume_link: resumeField?.value || null,  // match actual column name
+  status: "trial",
+});
+if (appError) throw new Error("Supabase Application insert failed: " + appError.message);
+        
         // --- 4️⃣ Create Trial Record ---
         const { error: trialError } = await insertTrial({
           lead_id: tempId,
