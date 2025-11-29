@@ -9,9 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const resumeField = document.getElementById("resumeLink");
   const resumeHelp = document.getElementById("resumeHelp");
   const portfolioField = document.getElementById("portfolioLink");
-  const vacancySelect = document.getElementById("vacancy");
-  const resumeField = document.getElementById("resumeLink");
-const resumeHelp = document.getElementById("resumeHelp");
+  
   
   // --- Hamburger Menu Logic ---
   const hamburger = document.querySelector('.hamburger');
