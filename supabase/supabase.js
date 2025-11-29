@@ -2,11 +2,51 @@
 
 import { createClient } from '@supabase/supabase-js'
 
-// ✅ Initialize Supabase client
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
+// ✅ Supabase project credentials
+const supabaseUrl = "https://rfilnqigcadeawytwqmz.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJmaWxucWlnY2FkZWF3eXR3cW16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxMzE2NTIsImV4cCI6MjA3OTcwNzY1Mn0.1wtcjczrzhv2YsE7hGQL11imPxmFVS4sjxlJGvIZ26o";
+
+// ✅ Initialize Supabase client
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+
+// ✅ Supabase project credentials
+const supabaseUrl = "https://rfilnqigcadeawytwqmz.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."; // your anon key
+
+// ✅ Initialize client
+export const supabase = createClient(supabaseUrl, supabaseKey);
+
+// ✅ Storage bucket name
+export const UPLOAD_BUCKET = "uploads";
+
+// ---------- UUID Generator ----------
+export function uuidv4() {
+  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+  );
+}
+
+// ---------- File Upload Helper ----------
+export async function uploadFile(file, folder) {
+  if (!file) return null;
+  const ext = file.name.split('.').pop();
+  const path = `${folder}/${file.name.replace(/\s/g, "_")}_${Date.now()}.${ext}`;
+  const { error } = await supabase.storage.from(UPLOAD_BUCKET).upload(path, file, { upsert: true });
+  if (error) throw new Error("File upload failed: " + error.message);
+  const { data } = supabase.storage.from(UPLOAD_BUCKET).getPublicUrl(path);
+  return data.publicUrl;
+}
+
+// ---------- Lead Insert Helper ----------
+export async function insertLead(leadData) {
+  return await supabase.from("lead").insert([leadData]).select();
+}
+
+// ---------- Trial Insert Helper ----------
+export async function insertTrial(trialData) {
+  return await supabase.from("trial").insert([trialData]);
+}
 
 //
 // 🔑 AUTH HELPERS
