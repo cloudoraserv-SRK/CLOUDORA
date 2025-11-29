@@ -166,7 +166,7 @@ if (appError) throw new Error("Supabase Application insert failed: " + appError.
           jobForm.reset();
 
           setTimeout(() => {
-            window.location.href = `trial.html?tempId=${tempId}`;
+            window.location.href = `../apply/trial/application.html?tempId=${tempId}`;
           }, 2000);
         }
       } catch (err) {
