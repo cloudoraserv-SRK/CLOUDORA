@@ -192,10 +192,23 @@ async function submitToSupabase(payload, statusElId = "formStatus") {
     statusEl.textContent = "Saving...";
     statusEl.style.backgroundColor = "";
   }
+function generateUUID() {
+  if (crypto.randomUUID) {
+    return crypto.randomUUID();
+  } else {
+    // fallback using Math.random (less secure but works for IDs)
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      const r = Math.random() * 16 | 0;
+      const v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
+}
 
   try {
     // --- Generate UUID for lead ---
-    const leadId = crypto.randomUUID(); // browser-native UUID
+    const uuid = generateUUID();
+
 
     const addressCombined = [payload.addrStreet, payload.addrCity, payload.addrState, payload.addrPincode].filter(Boolean).join(", ");
     const leadRow = {
