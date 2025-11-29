@@ -71,13 +71,15 @@ export async function insertEnquiry(enquiryData) {
 }
 
 // 📝 APPLICATION HELPERS
+// 📝 APPLICATION HELPERS
 export async function getApplications() {
-  return await supabase.from('view_application_full').select('*')
+  return await supabase.from("view_application_full").select("*");
 }
 
 export async function insertApplication(appData) {
-  return await supabase.from('application').insert([appData])
+  return await supabase.from("application").insert([appData]);
 }
+
 
 // 📄 AGREEMENT HELPERS
 export async function insertAgreement(agreementData) {
