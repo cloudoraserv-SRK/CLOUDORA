@@ -1,6 +1,4 @@
 import { supabase, uuidv4, uploadFile, insertLead, insertTrial } from "../supabase/supabase.js";
-
-
 // --- DOM Ready ---
 document.addEventListener("DOMContentLoaded", () => {
   const jobForm = document.getElementById("jobForm");
@@ -9,7 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const resumeField = document.getElementById("resumeLink");
   const resumeHelp = document.getElementById("resumeHelp");
   const portfolioField = document.getElementById("portfolioLink");
-  
   
   // --- Hamburger Menu Logic ---
   const hamburger = document.querySelector('.hamburger');
@@ -110,8 +107,7 @@ if (hamburgerBtn && mobileNav) {
     });
   }
 
-
-   // --- Job Form Submission ---
+// --- Job Form Submission ---
   if (jobForm) {
     jobForm.addEventListener("submit", async (e) => {
       e.preventDefault();
