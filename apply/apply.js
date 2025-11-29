@@ -1,37 +1,39 @@
 import { supabase, uuidv4, uploadFile, insertLead, insertTrial } from "../supabase/supabase.js";
+
 // --- DOM Ready ---
 document.addEventListener("DOMContentLoaded", () => {
+  // --- DOM references ---
   const jobForm = document.getElementById("jobForm");
   const statusEl = document.getElementById("formStatus");
   const vacancySelect = document.getElementById("vacancy");
   const resumeField = document.getElementById("resumeLink");
   const resumeHelp = document.getElementById("resumeHelp");
   const portfolioField = document.getElementById("portfolioLink");
-  
+
   // --- Hamburger Menu Logic ---
-  const hamburger = document.querySelector('.hamburger');
-  const mobileMenu = document.querySelector('.mobile');
-  const navLinks = document.querySelectorAll('.navlinks a, .mobile a');
+  const hamburger = document.querySelector(".hamburger");
+  const mobileMenu = document.querySelector(".mobile");
+  const navLinks = document.querySelectorAll(".navlinks a, .mobile a");
 
   if (hamburger && mobileMenu) {
-    hamburger.addEventListener('click', () => {
-      const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
-      hamburger.setAttribute('aria-expanded', !isExpanded);
-      mobileMenu.setAttribute('aria-modal', !isExpanded);
-      document.body.style.overflow = isExpanded ? 'auto' : 'hidden';
+    hamburger.addEventListener("click", () => {
+      const isExpanded = hamburger.getAttribute("aria-expanded") === "true";
+      hamburger.setAttribute("aria-expanded", !isExpanded);
+      mobileMenu.setAttribute("aria-modal", !isExpanded);
+      document.body.style.overflow = isExpanded ? "auto" : "hidden";
     });
 
-    navLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        hamburger.setAttribute('aria-expanded', 'false');
-        mobileMenu.setAttribute('aria-modal', 'false');
-        document.body.style.overflow = 'auto';
+    navLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        hamburger.setAttribute("aria-expanded", "false");
+        mobileMenu.setAttribute("aria-modal", "false");
+        document.body.style.overflow = "auto";
       });
     });
   }
 
   // --- Footer Year ---
-  const yearSpan = document.getElementById('year');
+  const yearSpan = document.getElementById("year");
   if (yearSpan) {
     yearSpan.textContent = new Date().getFullYear();
   }
@@ -41,26 +43,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updatePrices(selectedCurrency) {
     fetch(`https://api.exchangerate-api.com/v4/latest/INR`)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         const rate = data.rates[selectedCurrency];
         if (!rate) return;
 
-        document.querySelectorAll('[data-inr]').forEach(el => {
-          const basePrice = parseFloat(el.getAttribute('data-inr'));
+        document.querySelectorAll("[data-inr]").forEach((el) => {
+          const basePrice = parseFloat(el.getAttribute("data-inr"));
           if (isNaN(basePrice)) return;
 
           const converted = (basePrice * rate).toFixed(0);
           const formatted = new Intl.NumberFormat(undefined, {
-            style: 'currency',
-            currency: selectedCurrency
+            style: "currency",
+            currency: selectedCurrency,
           }).format(converted);
 
-          if (el.tagName.toLowerCase() === 'option' && el.parentElement.id === 'budget') {
+          if (el.tagName.toLowerCase() === "option" && el.parentElement.id === "budget") {
             if (basePrice === 1000) {
-              el.textContent = `${formatted} – ${new Intl.NumberFormat(undefined, { style: 'currency', currency: selectedCurrency }).format((5000 * rate).toFixed(0))}`;
+              el.textContent = `${formatted} – ${new Intl.NumberFormat(undefined, { style: "currency", currency: selectedCurrency }).format((5000 * rate).toFixed(0))}`;
             } else if (basePrice === 5000) {
-              el.textContent = `${formatted} – ${new Intl.NumberFormat(undefined, { style: 'currency', currency: selectedCurrency }).format((10000 * rate).toFixed(0))}`;
+              el.textContent = `${formatted} – ${new Intl.NumberFormat(undefined, { style: "currency", currency: selectedCurrency }).format((10000 * rate).toFixed(0))}`;
             } else if (basePrice === 10000) {
               el.textContent = `${formatted}+`;
             }
@@ -82,18 +84,8 @@ document.addEventListener("DOMContentLoaded", () => {
       updatePrices(selectedCurrency);
     });
   }
-});
 
-// --- Mobile Nav Toggle ---
-const hamburgerBtn = document.getElementById('hamburger');
-const mobileNav = document.getElementById('mobileNav');
-if (hamburgerBtn && mobileNav) {
-  hamburgerBtn.addEventListener('click', () => {
-    mobileNav.classList.toggle('active');
-  });
-}
-
-// --- Vacancy logic ---
+  // --- Vacancy logic ---
   if (vacancySelect && resumeField && resumeHelp) {
     vacancySelect.addEventListener("change", () => {
       const selected = vacancySelect.value;
@@ -107,7 +99,7 @@ if (hamburgerBtn && mobileNav) {
     });
   }
 
-// --- Job Form Submission ---
+  // --- Job Form Submission ---
   if (jobForm) {
     jobForm.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -178,6 +170,7 @@ if (hamburgerBtn && mobileNav) {
       }
     });
   }
+});
 
 
 // --- Google Translate ---
