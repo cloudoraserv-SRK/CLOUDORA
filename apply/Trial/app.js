@@ -1,4 +1,4 @@
-// main.js
+// app.js
 // Single JS file with Supabase integration for the Cloudora form
 
 // ---------- Supabase config ----------
@@ -346,4 +346,78 @@ function loadDraftFromLocal() {
     if (data.addrProofOther) $("addrProofOther").value = data.addrProofOther;
     if (data.employmentType) $("employmentType").value = data.employmentType;
     if (Array.isArray(data.departments)) {
-      const depSel = $("depart
+      const depSel = $("departments");
+      Array.from(depSel.options).forEach(o => o.selected = data.departments.includes(o.value));
+      populateRoles();
+    }
+    if (Array.isArray(data.roles)) {
+      const roleSel = $("roles");
+      Array.from(roleSel.options).forEach(o => o.selected = data.roles.includes(o.value));
+    }
+    if (data.languages && Array.isArray(data.languages)) {
+      document.querySelectorAll('input[name="lang"]').forEach(i => i.checked = data.languages.includes(i.value));
+    }
+    if (data.langOther) $("langOther").value = data.langOther;
+    if (data.understandCloudora) $("understandCloudora").value = data.understandCloudora;
+    if (data.hearAbout) $("hearAbout").value = data.hearAbout;
+    if (data.hearOther) $("hearOther").value = data.hearOther;
+    if (data.agree) $("agree").checked = data.agree;
+    toggleUsaSlots();
+  } catch (err) {
+    console.warn("Failed to parse draft:", err);
+  }
+}
+
+// ---------- Initialize listeners ----------
+function initForm() {
+  attachToggles();
+  const depSel = $("departments");
+  if (depSel) depSel.addEventListener("change", populateRoles);
+
+  const emp = $("employmentType");
+  if (emp) emp.addEventListener("change", function() {
+    const depSel = $("departments");
+    if (depSel) Array.from(depSel.options).forEach(o => o.selected = false);
+    if (depSel) depSel.multiple = this.value !== "full";
+    populateRoles();
+    toggleUsaSlots();
+  });
+
+  const prefCountry = $("prefCountry");
+  if (prefCountry) prefCountry.addEventListener("change", toggleUsaSlots);
+
+  const saveDraftBtn = $("saveDraft");
+  if (saveDraftBtn) saveDraftBtn.addEventListener("click", saveDraftToLocal);
+
+  loadDraftFromLocal();
+
+  const form = $("cloudoraForm");
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const payload = validateAndCollect();
+      if (!payload) return;
+      const statusEl = $("formStatus");
+      if (statusEl) {
+        statusEl.style.display = "inline-block";
+        statusEl.textContent = "Submitting...";
+        statusEl.style.backgroundColor = "";
+      }
+      const res = await submitToSupabase(payload, "formStatus");
+      if (res.success) {
+        $("successMsg").style.display = "block";
+        form.reset();
+        hide($("addrProofOtherWrap"));
+        hide($("langOtherWrap"));
+        hide($("hearOtherWrap"));
+        localStorage.removeItem("cloudoraDraft");
+        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+      } else {
+        alert("Submission failed. See console for details.");
+      }
+    });
+  }
+
+  populateRoles();
+  toggleUsaSlots();
+}
