@@ -36,11 +36,6 @@ export async function insertLead(leadData) {
   return await supabase.from("lead").insert([leadData]).select();
 }
 
-// Application helpers
-export async function insertApplication(appData) {
-  return await supabase.from("application").insert([appData]);
-}
-
 export async function insertTrial(trialData) {
   return await supabase.from("trial").insert([trialData]);
 }
