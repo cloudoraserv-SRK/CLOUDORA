@@ -31,8 +31,14 @@ export async function uploadFile(file, folder) {
 }
 
 // ---------- Lead + Trial Helpers ----------
+// Lead helpers
 export async function insertLead(leadData) {
   return await supabase.from("lead").insert([leadData]).select();
+}
+
+// Application helpers
+export async function insertApplication(appData) {
+  return await supabase.from("application").insert([appData]);
 }
 
 export async function insertTrial(trialData) {
