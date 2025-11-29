@@ -58,7 +58,7 @@ export async function getSession() {
 }
 
 // 📊 LEAD + ENQUIRY HELPERS
-export async function getLead() {
+export async function getLeads() {
   return await supabase.from('lead').select('*').order('created_at', { ascending: false })
 }
 
@@ -72,7 +72,7 @@ export async function insertEnquiry(enquiryData) {
 
 // 📝 APPLICATION HELPERS
 // 📝 APPLICATION HELPERS
-export async function getApplication() {
+export async function getApplications() {
   return await supabase.from("view_application_full").select("*");
 }
 
