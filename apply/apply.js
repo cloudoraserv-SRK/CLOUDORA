@@ -119,11 +119,10 @@ document.addEventListener("DOMContentLoaded", () => {
           headers: { Accept: "application/json" },
         });
 
-        // --- 2️⃣ File Uploads ---
-        let resumeUrl = null;
-        let portfolioUrl = null;
-        if (resumeField.files[0]) resumeUrl = await uploadFile(resumeField.files[0], `leads/${tempId}`);
-        if (portfolioField?.files[0]) portfolioUrl = await uploadFile(portfolioField.files[0], `leads/${tempId}`);
+            // --- 2️⃣ Resume / Portfolio Link ---
+      const resumeUrl = resumeField?.value || null;
+
+
 
         // --- 3️⃣ Insert Lead into Supabase ---
         const { error: leadError } = await insertLead({
