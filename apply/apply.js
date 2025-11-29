@@ -1,6 +1,7 @@
 const supabaseUrl = "https://rfilnqigcadeawytwqmz.supabase.co";
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJmaWxucWlnY2FkZWF3eXR3cW16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxMzE2NTIsImV4cCI6MjA3OTcwNzY1Mn0.1wtcjczrzhv2YsE7hGQL11imPxmFVS4sjxlJGvIZ26o";
 const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+const UPLOAD_BUCKET = "uploads"; // Change to your storage bucket name
 
 // ---------- UUID Generator ----------
 function uuidv4() {
@@ -8,10 +9,27 @@ function uuidv4() {
     (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
   );
 }
+// ---------- File Upload Helper ----------
+async function uploadFile(file, folder) {
+  if (!file) return null;
+  const ext = file.name.split('.').pop();
+  const path = `${folder}/${file.name.replace(/\s/g, "_")}_${Date.now()}.${ext}`;
+  const { data, error } = await supabase.storage.from(UPLOAD_BUCKET).upload(path, file, { upsert: true });
+  if (error) throw new Error("File upload failed: " + error.message);
+  const { publicUrl } = supabase.storage.from(UPLOAD_BUCKET).getPublicUrl(path);
+  return publicUrl;
+}
 
 // --- DOM Ready ---
 document.addEventListener('DOMContentLoaded', () => {
 
+  const jobForm = document.getElementById('jobForm');
+  const statusEl = document.getElementById("formStatus");
+  const vacancySelect = document.getElementById('vacancy');
+  const resumeField = document.getElementById('resumeLink');
+  const resumeHelp = document.getElementById('resumeHelp');
+  const portfolioField = document.getElementById('portfolioLink');
+  
   // --- Hamburger Menu Logic ---
   const hamburger = document.querySelector('.hamburger');
   const mobileMenu = document.querySelector('.mobile');
@@ -96,25 +114,8 @@ if (hamburgerBtn && mobileNav) {
     mobileNav.classList.toggle('active');
   });
 }
-// --- Supabase --- //
-// ---------- Upload file to Supabase Storage ----------
-async function uploadFile(file, folder) {
-  if (!file) return null;
-  const ext = file.name.split('.').pop();
-  const path = `${folder}/${file.name.replace(/\s/g, "_")}_${Date.now()}.${ext}`;
-  const { data, error } = await supabase.storage.from(UPLOAD_BUCKET).upload(path, file, { upsert: true });
-  if (error) throw new Error("File upload failed: " + error.message);
-  const { publicUrl } = supabase.storage.from(UPLOAD_BUCKET).getPublicUrl(path);
-  return publicUrl;
-}
-const statusEl = document.getElementById("formStatus");
-  const jobForm = document.getElementById('jobForm');
-  const vacancySelect = document.getElementById('vacancy');
-  const resumeField = document.getElementById('resumeLink');
-  const resumeHelp = document.getElementById('resumeHelp');
-  const portfolioField = document.getElementById('portfolioLink');
 
-  // --- Resume requirement logic ---
+  // --- Resume Requirement Logic ---
   if (vacancySelect && resumeField && resumeHelp) {
     vacancySelect.addEventListener('change', () => {
       const selected = vacancySelect.value;
@@ -128,7 +129,7 @@ const statusEl = document.getElementById("formStatus");
     });
   }
 
-  // --- Form Submission (Formspree + Supabase + File Upload) ---
+  // --- Job Form Submission ---
   if (jobForm) {
     jobForm.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -138,75 +139,67 @@ const statusEl = document.getElementById("formStatus");
       statusEl.classList.add("loading");
 
       const formData = new FormData(jobForm);
-      const leadUUID = uuidv4();
-      const appUUID = uuidv4();
+      const tempId = uuidv4(); // Temporary ID for this applicant
 
       try {
-        // --- 1️⃣ Formspree Submission ---
+        // --- 1️⃣ Formspree Submission (optional) ---
         const fsResponse = await fetch("https://formspree.io/f/mrbwawkz", {
           method: "POST",
           body: formData,
           headers: { 'Accept': 'application/json' }
         });
 
-        // --- 2️⃣ Upload Resume & Portfolio Files ---
+        // --- 2️⃣ File Uploads ---
         let resumeUrl = null;
         let portfolioUrl = null;
         const resumeFile = resumeField.files[0];
         const portfolioFile = portfolioField?.files[0];
 
-        if (resumeFile) {
-          resumeUrl = await uploadFile(resumeFile, `leads/${leadUUID}`);
-        }
-        if (portfolioFile) {
-          portfolioUrl = await uploadFile(portfolioFile, `leads/${leadUUID}`);
-        }
+        if (resumeFile) resumeUrl = await uploadFile(resumeFile, `leads/${tempId}`);
+        if (portfolioFile) portfolioUrl = await uploadFile(portfolioFile, `leads/${tempId}`);
 
-        // --- 3️⃣ Supabase Lead Insert ---
+        // --- 3️⃣ Insert Lead into Supabase ---
         const { data: leadData, error: leadError } = await supabase.from("lead").insert([{
-          id: leadUUID,
+          id: tempId,
           full_name: formData.get("name"),
           email: formData.get("email"),
           phone: formData.get("phone"),
           country: formData.get("country"),
           city: formData.get("city"),
           linkedin: formData.get("linkedin"),
-          github: formData.get("github")
+          github: formData.get("github"),
+          resume_url: resumeUrl,
+          portfolio_url: portfolioUrl,
+          status: "trial" // mark as trial initially
         }]).select();
 
         if (leadError) throw new Error("Supabase Lead insert failed: " + leadError.message);
 
-        // --- 4️⃣ Supabase Application Insert ---
-        const { error: appError } = await supabase.from("application").insert([{
-          id: appUUID,
-          lead_id: leadUUID,
-          form_type: "final",
-          role_category: formData.get("vacancy"),
-          preferred_language: formData.get("preferredLanguage"),
-          work_mode: formData.get("workMode"),
-          engagement_type: formData.get("availability"),
-          country: formData.get("country"),
-          work_country: formData.get("workCountry"),
-          timezone: formData.get("shift"),
-          preferred_schedule: formData.get("workMode"),
-          skills: formData.get("skills"),
-          experience: formData.get("experience"),
-          resume_url: resumeUrl,
-          portfolio_url: portfolioUrl,
-          notes: formData.get("message"),
-          status: "submitted"
+        // --- 4️⃣ Create Trial Record ---
+        const { error: trialError } = await supabase.from("trial").insert([{
+          lead_id: tempId,
+          trial_start: new Date().toISOString(),
+          trial_end: new Date(Date.now() + 7*24*60*60*1000).toISOString(), // 7 days trial
+          access_level: "trial",
+          status: "active"
         }]);
+
+        if (trialError) throw new Error("Trial record creation failed: " + trialError.message);
 
         statusEl.classList.remove("loading");
 
-        if (appError || !fsResponse.ok) {
-          statusEl.textContent = `❌ Submission failed. ${appError ? appError.message : ''}`;
+        if (!fsResponse.ok) {
+          statusEl.textContent = "❌ Formspree submission failed.";
           statusEl.style.backgroundColor = "#dc2626";
         } else {
-          statusEl.textContent = "✅ Thank you! Your application has been submitted.";
+          statusEl.textContent = `✅ Application submitted! Your temporary ID: ${tempId}`;
           statusEl.style.backgroundColor = "#16a34a";
           jobForm.reset();
-          setTimeout(() => { window.location.href = "./policy/privacy.html"; }, 2000);
+
+          // Optionally, redirect to trial form page with tempId
+          setTimeout(() => {
+            window.location.href = `trial.html?tempId=${tempId}`;
+          }, 2000);
         }
 
       } catch (err) {
