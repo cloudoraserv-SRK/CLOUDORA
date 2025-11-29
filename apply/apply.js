@@ -112,13 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const tempId = uuidv4();
 
       try {
-        // --- 1️⃣ Formspree Submission (optional) ---
-        const fsResponse = await fetch("https://formspree.io/f/mvgjydyg", {
-          method: "POST",
-          body: formData,
-          headers: { Accept: "application/json" },
-        });
-
             // --- 2️⃣ Resume / Portfolio Link ---
   const resumeUrl = resumeField?.value || null;
 
