@@ -1,60 +1,179 @@
+/* ---------- Cloudora Global Theme ---------- */
+:root {
+  --bg: #0d1120;
+  --card: #161b29;
+  --text: #e8ecf1;
+  --muted: #9ba7ba;
+  --accent: #00A7FF;
+  --accent-soft: #0098e8;
+  --ok: #17c964;
+  --warn: #ff8a00;
+  --error: #ff4d4f;
+  --border: #263046;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background: #f9fafb;
   margin: 0;
-  padding: 0;
+  font-family: "Inter", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
 }
 
 .container {
-  max-width: 700px;
+  max-width: 1100px;
   margin: 40px auto;
-  background: #fff;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 0 20px;
 }
 
-h2, h3 {
-  color: #333;
+h1 {
+  font-size: 30px;
+  margin: 0 0 5px;
 }
 
-label {
-  display: block;
-  margin-top: 15px;
-  font-weight: bold;
+.sub {
+  color: var(--muted);
+  margin-bottom: 24px;
 }
 
+/* ---------- Cards ---------- */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 22px;
+  border-radius: 14px;
+  margin-bottom: 26px;
+  box-shadow: 0px 4px 16px rgba(0,0,0,0.25);
+}
+
+.section-title {
+  font-size: 17px;
+  margin-bottom: 12px;
+  color: #d3e9ff;
+  font-weight: 600;
+}
+
+/* ---------- Form Layout ---------- */
+.row {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 14px;
+}
+
+.field { grid-column: span 12; }
+.field.half { grid-column: span 6; }
+.field.third { grid-column: span 4; }
+
+@media (max-width: 760px) {
+  .field.half,
+  .field.third {
+    grid-column: span 12;
+  }
+}
+
+/* ---------- Inputs ---------- */
 input, select, textarea {
-  width: 100%;
+  background: #0b0f1d;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  padding: 11px 12px;
+  font-size: 14px;
+  transition: border 0.3s ease;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #748299;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(0,167,255,0.25);
+  outline: none;
+}
+
+.label {
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.req {
+  color: var(--warn);
+}
+
+/* ---------- Error & Messages ---------- */
+.error {
+  font-size: 12px;
+  color: var(--error);
+  display: none;
+  margin-top: 6px;
+}
+
+.error.show { display: block; }
+
+.success {
+  color: var(--ok);
+  font-size: 13px;
+  display: none;
+  margin-top: 10px;
+}
+
+/* ---------- Special UI ---------- */
+.notice {
+  background: #0b1630;
   padding: 10px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: 1px solid var(--border);
+  color: #cee5ff;
+  border-radius: 10px;
 }
 
-textarea {
-  resize: vertical;
-}
-
-.btn {
-  margin-top: 20px;
-  padding: 12px 20px;
-  background: #2563eb;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.btn:hover {
-  background: #1e40af;
+.tag {
+  background: #0f152b;
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  color: var(--muted);
+  border-radius: 999px;
+  font-size: 12px;
 }
 
 .pill {
-  display: inline-block;
-  margin-top: 10px;
-  padding: 6px 12px;
-  border-radius: 20px;
-  background: #10b981;
-  color: #fff;
+  background: #0b1630;
+  border: 1px dashed var(--border);
+  padding: 10px;
+  border-radius: 10px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 18px 0;
+}
+
+/* ---------- Buttons ---------- */
+button {
+  background: var(--accent);
+  padding: 11px 16px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #041226;
+  transition: 0.25s;
+}
+
+button:hover {
+  background: var(--accent-soft);
+}
+
+button.secondary {
+  background: #101423;
+  border: 1px solid var(--border);
+  color: #d6e6ff;
+}
+
+button.secondary:hover {
+  background: #1a2035;
 }
