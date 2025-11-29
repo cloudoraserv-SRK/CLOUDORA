@@ -69,17 +69,11 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="field third">
-            <label class="label">Mobile number (part 1) <span class="req">*</span></label>
-            <input type="text" id="mobilePart1" placeholder="+91 or country code" inputmode="numeric" />
-            <div class="error" id="errMobile1">Enter country code (e.g., +91).</div>
-          </div>
-          <div class="field third">
-            <label class="label">Mobile number (part 2) <span class="req">*</span></label>
-            <input type="text" id="mobilePart2" placeholder="10 digits" inputmode="numeric" />
-            <div class="error" id="errMobile2">Enter a valid 10-digit number.</div>
-          </div>
+        <div class="field half">
+  <label class="label">Mobile number <span class="req">*</span></label>
+  <input type="text" id="mobileNumber" placeholder="+91 9876543210" inputmode="numeric" />
+  <div class="error" id="errMobileNumber">Enter a valid mobile number with country code.</div>
+</div>
           <div class="field third">
             <label class="label">Alternate number</label>
             <input type="text" id="altMobile" placeholder="+91 9XXXXXXXXX" inputmode="numeric" />
@@ -196,13 +190,17 @@
           </div>
           <div class="field half">
             <label class="label">Preferred countries</label>
-            <div class="inline">
-              <label class="tag"><input type="checkbox" id="prefCA" /> Canada</label>
-              <label class="tag"><input type="checkbox" id="prefNZ" /> New Zealand</label>
-              <label class="tag"><input type="checkbox" id="prefJP" /> Japan</label>
-              <label class="tag"><input type="checkbox" id="prefUS" /> USA</label>
-              <label class="tag"><input type="checkbox" id="prefOtherCountry" /> Other</label>
-            </div>
+            <select id="addrCountry">
+  <option value="">Select country</option>
+  <option>India</option>
+  <option>Canada</option>
+  <option>New Zealand</option>
+  <option>Japan</option>
+  <option>United States</option>
+  <option>United Kingdom</option>
+  <option>Europe</option>
+  <option>Other</option>
+</select>
           </div>
         </div>
 
@@ -210,15 +208,34 @@
 
         <div class="row">
           <div class="field half">
-            <label class="label">Departments (select up to 3 for part-time; 1 for full-time) <span class="req">*</span></label>
-            <select id="departments" multiple size="6">
-              <option value="marketing">Marketing</option>
-              <option value="sales">Sales</option>
-              <option value="design">Design</option>
-              <option value="development">Development</option>
-              <option value="seo">SEO</option>
-              <option value="support">Support</option>
-            </select>
+  <label class="label">Departments (select up to 3 for part-time; 1 for full-time) <span class="req">*</span></label>
+  <select id="departments" multiple size="12">
+    <optgroup label="Telecalling – Lead Generation">
+      <option value="tele_lead_domestic">📞 Tele Lead Generation Domestic</option>
+      <option value="tele_lead_international">🌍 Tele Lead Generation International</option>
+    </optgroup>
+    <optgroup label="Telecalling – Sales Conversion">
+      <option value="tele_sales_domestic">💼 Tele Sales Conversion Domestic</option>
+      <option value="tele_sales_international">🌐 Tele Sales Conversion International</option>
+    </optgroup>
+    <optgroup label="Support">
+      <option value="chat_support">💬 Chat Support (Email, Live Web, WhatsApp)</option>
+      <option value="tele_support_domestic">📞 Tele Support Domestic</option>
+      <option value="tele_support_international">🌍 Tele Support International</option>
+    </optgroup>
+    <optgroup label="Technical">
+      <option value="developer">🛠️ Technical Developer</option>
+    </optgroup>
+    <optgroup label="Content & Creatives">
+      <option value="content_creatives">✍️ Content & Creatives (Reels, Video, Editing, Blogging, Acting, Animation, Graphics, Logo Design, etc.)</option>
+    </optgroup>
+    <optgroup label="Marketing & Outreach">
+      <option value="marketing_outreach">📢 Marketing & Outreach (SEO, Campaigning, Ads, etc.)</option>
+    </optgroup>
+  </select>
+  <div class="hint">Hold Ctrl/Cmd to select multiple (part-time only).</div>
+  <div class="error" id="errDepartments">Please select departments (rules apply).</div>
+</div>
             <div class="hint">Hold Ctrl/Cmd to select multiple (part-time only).</div>
             <div class="error" id="errDepartments">Please select departments (rules apply).</div>
           </div>
