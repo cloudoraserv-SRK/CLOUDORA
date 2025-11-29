@@ -184,7 +184,7 @@ async function uploadFileToSupabase(file, pathInBucket) {
   }
 }
 
-// ---------- Submit to Supabase ----------
+// ---------- Submit to Supabase with UUID ----------
 async function submitToSupabase(payload, statusElId = "formStatus") {
   const statusEl = $(statusElId);
   if (statusEl) {
@@ -192,9 +192,14 @@ async function submitToSupabase(payload, statusElId = "formStatus") {
     statusEl.textContent = "Saving...";
     statusEl.style.backgroundColor = "";
   }
+
   try {
+    // --- Generate UUID for lead ---
+    const leadId = crypto.randomUUID(); // browser-native UUID
+
     const addressCombined = [payload.addrStreet, payload.addrCity, payload.addrState, payload.addrPincode].filter(Boolean).join(", ");
     const leadRow = {
+      id: leadId, // use UUID as primary key
       full_name: payload.fullName || null,
       email: payload.email || null,
       phone: payload.mobileNumber || null,
@@ -205,21 +210,19 @@ async function submitToSupabase(payload, statusElId = "formStatus") {
       status: "new"
     };
 
-    const { data: leadData, error: leadError } = await window.supabaseClient.from("lead").insert([leadRow]).select();
+    const { error: leadError } = await window.supabaseClient.from("lead").insert([leadRow]);
     if (leadError) throw new Error("Lead insert failed: " + leadError.message);
-    const leadId = leadData?.[0]?.id;
-    if (!leadId) throw new Error("No lead ID returned.");
 
-    // --- upload files
+    // --- upload files ---
     const uploads = {};
     const ts = Date.now();
     if (payload.files?.photoUpload) uploads.photo_url = await uploadFileToSupabase(payload.files.photoUpload, `leads/${leadId}/photo_${ts}.${payload.files.photoUpload.name.split(".").pop()}`);
     if (payload.files?.docFront) uploads.doc_front_url = await uploadFileToSupabase(payload.files.docFront, `leads/${leadId}/doc_front_${ts}.${payload.files.docFront.name.split(".").pop()}`);
     if (payload.files?.docBack) uploads.doc_back_url = await uploadFileToSupabase(payload.files.docBack, `leads/${leadId}/doc_back_${ts}.${payload.files.docBack.name.split(".").pop()}`);
 
-    // --- application insert
+    // --- application insert ---
     const applicationRow = {
-      lead_id: leadId,
+      lead_id: leadId, // reference UUID
       form_type: "final",
       role_category: (payload.departments || []).join(", "),
       preferred_language: (payload.languages || []).join(", "),
@@ -239,7 +242,7 @@ async function submitToSupabase(payload, statusElId = "formStatus") {
     const { error: appError } = await window.supabaseClient.from("application").insert([applicationRow]);
     if (appError) throw new Error("Application insert failed: " + appError.message);
 
-    // --- agreement
+    // --- agreement ---
     if (payload.agree) {
       const agreementRow = {
         lead_id: leadId,
@@ -265,6 +268,7 @@ async function submitToSupabase(payload, statusElId = "formStatus") {
     return { success: false, error: err };
   }
 }
+
 
 // ---------- Validation & front-end submit ----------
 function validateAndCollect() {
