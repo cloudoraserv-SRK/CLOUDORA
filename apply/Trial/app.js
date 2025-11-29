@@ -1,22 +1,7 @@
 // app.js
-// Single JS file with Supabase integration for the Cloudora form
-
-// ---------- Supabase config ----------
-const SUPABASE_URL = "https://rfilnqigcadeawytwqmz.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJmaWxucWlnY2FkZWF3eXR3cW16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxMzE2NTIsImV4cCI6MjA3OTcwNzY1Mn0.1wtcjczrzhv2YsE7hGQL11imPxmFVS4sjxlJGvIZ26o";
+import { supabase, uuidv4, uploadFile, insertLead, insertTrial } from "../supabase/supabase.js";
 const UPLOAD_BUCKET = "applicant-uploads";
 
-// ---------- Load Supabase client ----------
-(async () => {
-  if (!window.supabase) {
-    const s = document.createElement("script");
-    s.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js";
-    document.head.appendChild(s);
-    await new Promise(res => (s.onload = res));
-  }
-  window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  initForm();
-})();
 
 // ---------- Utilities ----------
 const $ = (id) => document.getElementById(id);
@@ -170,49 +155,21 @@ function collectData(includeFiles = true) {
   };
 }
 
-// ---------- Upload file to Supabase ----------
-async function uploadFileToSupabase(file, pathInBucket) {
-  if (!file) return null;
-  try {
-    const { data, error } = await window.supabaseClient.storage.from(UPLOAD_BUCKET).upload(pathInBucket, file, { cacheControl: "3600", upsert: true });
-    if (error) throw error;
-    const { data: urlData } = window.supabaseClient.storage.from(UPLOAD_BUCKET).getPublicUrl(pathInBucket);
-    return urlData?.publicUrl || null;
-  } catch (err) {
-    console.error("uploadFileToSupabase failed:", err);
-    return null;
-  }
-}
-
-// ---------- Submit to Supabase with UUID ----------
-async function submitToSupabase(payload, statusElId = "formStatus") {
-  const statusEl = $(statusElId);
+// ---------- Submit ----------
+export async function submitToSupabase(payload, statusElId = "formStatus") {
+  const statusEl = document.getElementById(statusElId);
   if (statusEl) {
     statusEl.style.display = "inline-block";
     statusEl.textContent = "Saving...";
     statusEl.style.backgroundColor = "";
   }
-function generateUUID() {
-  if (crypto.randomUUID) {
-    return crypto.randomUUID();
-  } else {
-    // fallback using Math.random (less secure but works for IDs)
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      const r = Math.random() * 16 | 0;
-      const v = c === 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
-  }
-}
 
   try {
-    // --- Generate UUID for lead ---
-    const uuid = generateUUID();
-
+    const leadId = uuidv4();
 
     const addressCombined = [payload.addrStreet, payload.addrCity, payload.addrState, payload.addrPincode].filter(Boolean).join(", ");
     const leadRow = {
-      id: leadId, // use UUID as primary key
+      id: leadId,
       full_name: payload.fullName || null,
       email: payload.email || null,
       phone: payload.mobileNumber || null,
@@ -222,20 +179,18 @@ function generateUUID() {
       source: payload.hearAbout || null,
       status: "new"
     };
+    await insertLead(leadRow);
 
-    const { error: leadError } = await window.supabaseClient.from("lead").insert([leadRow]);
-    if (leadError) throw new Error("Lead insert failed: " + leadError.message);
-
-    // --- upload files ---
+    // --- Upload files ---
     const uploads = {};
     const ts = Date.now();
-    if (payload.files?.photoUpload) uploads.photo_url = await uploadFileToSupabase(payload.files.photoUpload, `leads/${leadId}/photo_${ts}.${payload.files.photoUpload.name.split(".").pop()}`);
-    if (payload.files?.docFront) uploads.doc_front_url = await uploadFileToSupabase(payload.files.docFront, `leads/${leadId}/doc_front_${ts}.${payload.files.docFront.name.split(".").pop()}`);
-    if (payload.files?.docBack) uploads.doc_back_url = await uploadFileToSupabase(payload.files.docBack, `leads/${leadId}/doc_back_${ts}.${payload.files.docBack.name.split(".").pop()}`);
+    if (payload.files?.photoUpload) uploads.photo_url = await uploadFile(payload.files.photoUpload, `leads/${leadId}/photo_${ts}.${payload.files.photoUpload.name.split(".").pop()}`);
+    if (payload.files?.docFront) uploads.doc_front_url = await uploadFile(payload.files.docFront, `leads/${leadId}/doc_front_${ts}.${payload.files.docFront.name.split(".").pop()}`);
+    if (payload.files?.docBack) uploads.doc_back_url = await uploadFile(payload.files.docBack, `leads/${leadId}/doc_back_${ts}.${payload.files.docBack.name.split(".").pop()}`);
 
-    // --- application insert ---
+    // --- Application insert ---
     const applicationRow = {
-      lead_id: leadId, // reference UUID
+      lead_id: leadId,
       form_type: "final",
       role_category: (payload.departments || []).join(", "),
       preferred_language: (payload.languages || []).join(", "),
@@ -243,19 +198,14 @@ function generateUUID() {
       engagement_type: payload.employmentType || null,
       country: payload.addrCountry || null,
       work_country: payload.prefCountry || null,
-      timezone: null,
       preferred_schedule: (payload.usaSlots || []).join(", "),
-      skills: null,
-      experience: null,
       resume_url: uploads.doc_front_url || null,
-      portfolio_url: null,
       notes: payload.understandCloudora || payload.hearOther || null,
       status: "submitted"
     };
-    const { error: appError } = await window.supabaseClient.from("application").insert([applicationRow]);
-    if (appError) throw new Error("Application insert failed: " + appError.message);
+    await insertApplication(applicationRow);
 
-    // --- agreement ---
+    // --- Agreement insert ---
     if (payload.agree) {
       const agreementRow = {
         lead_id: leadId,
@@ -263,8 +213,7 @@ function generateUUID() {
         agreed_at: new Date().toISOString(),
         terms_version: null
       };
-      const { error: agrErr } = await window.supabaseClient.from("agreement").insert([agreementRow]);
-      if (agrErr) console.warn("Agreement insert warning:", agrErr.message);
+      await insertAgreement(agreementRow);
     }
 
     if (statusEl) {
