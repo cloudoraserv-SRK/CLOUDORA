@@ -133,7 +133,6 @@ document.addEventListener("DOMContentLoaded", () => {
           country: formData.get("country"),
           city: formData.get("city"),
           resume_url: resumeUrl,
-          portfolio_url: portfolioUrl,
           status: "trial",
         });
         if (leadError) throw new Error("Supabase Lead insert failed: " + leadError.message);
