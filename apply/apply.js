@@ -2,6 +2,13 @@ const supabaseUrl = "https://rfilnqigcadeawytwqmz.supabase.co";
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJmaWxucWlnY2FkZWF3eXR3cW16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxMzE2NTIsImV4cCI6MjA3OTcwNzY1Mn0.1wtcjczrzhv2YsE7hGQL11imPxmFVS4sjxlJGvIZ26o";
 const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
+// ---------- UUID Generator ----------
+function uuidv4() {
+  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+  );
+}
+
 // --- DOM Ready ---
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -90,62 +97,50 @@ if (hamburgerBtn && mobileNav) {
   });
 }
 
-// --- Resume Requirement Logic ---
-const vacancySelect = document.getElementById('vacancy');
-const resumeField = document.getElementById('resumeLink');
-const resumeHelp = document.getElementById('resumeHelp');
-const jobForm = document.getElementById('jobForm');
-
-if (vacancySelect && resumeField && resumeHelp) {
-  vacancySelect.addEventListener('change', function() {
-    const selected = vacancySelect.value;
-    if (
-      selected.includes('Developer') ||
-      selected.includes('Engineer') ||
-      selected.includes('Designer') ||
-      selected.includes('Tech')
-    ) {
-      resumeField.required = true;
-      resumeHelp.style.display = 'block';
-    } else {
-      resumeField.required = false;
-      resumeHelp.style.display = 'none';
-    }
-  });
-
-  jobForm.addEventListener('submit', function(e) {
-    if (resumeField.required && !resumeField.value) {
-      e.preventDefault();
-      resumeHelp.style.display = 'block';
-      resumeField.focus();
-    }
-  });
-}
-
-// --- Supabase Integration ---
 const statusEl = document.getElementById("formStatus");
+  const jobForm = document.getElementById('jobForm');
+  const vacancySelect = document.getElementById('vacancy');
+  const resumeField = document.getElementById('resumeLink');
+  const resumeHelp = document.getElementById('resumeHelp');
 
-if (jobForm) {
-  jobForm.addEventListener("submit", async function(e) {
-    e.preventDefault();
-    statusEl.style.display = "inline-block";
-    statusEl.textContent = "Submitting...";
-    statusEl.classList.add("loading");
+  // --- Resume requirement logic ---
+  if (vacancySelect && resumeField && resumeHelp) {
+    vacancySelect.addEventListener('change', () => {
+      const selected = vacancySelect.value;
+      if (/Developer|Engineer|Designer|Tech/i.test(selected)) {
+        resumeField.required = true;
+        resumeHelp.style.display = 'block';
+      } else {
+        resumeField.required = false;
+        resumeHelp.style.display = 'none';
+      }
+    });
+  }
 
-    const formData = new FormData(this);
+  // --- Form Submission (Formspree + Supabase + UUID) ---
+  if (jobForm) {
+    jobForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      statusEl.style.display = "inline-block";
+      statusEl.textContent = "Submitting...";
+      statusEl.style.backgroundColor = "";
+      statusEl.classList.add("loading");
 
-    try {
-      // --- 1. Submit to Formspree ---
-      const response = await fetch("https://formspree.io/f/mrbwawkz", {
-        method: "POST",
-        body: formData,
-        headers: { 'Accept': 'application/json' }
-      });
+      const formData = new FormData(jobForm);
+      const leadUUID = uuidv4();
+      const appUUID = uuidv4();
 
-      // --- 2. Supabase Insert ---
-      const { data: leadData, error: leadError } = await supabase
-        .from("lead")
-        .insert([{
+      try {
+        // 1️⃣ Formspree Submission
+        const fsResponse = await fetch("https://formspree.io/f/mrbwawkz", {
+          method: "POST",
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        // 2️⃣ Supabase Lead Insert with UUID
+        const { data: leadData, error: leadError } = await supabase.from("lead").insert([{
+          id: leadUUID,
           full_name: formData.get("name"),
           email: formData.get("email"),
           phone: formData.get("phone"),
@@ -153,28 +148,14 @@ if (jobForm) {
           city: formData.get("city"),
           linkedin: formData.get("linkedin"),
           github: formData.get("github")
-        }])
-        .select();
+        }]).select();
 
-      if (leadError) {
-        statusEl.classList.remove("loading");
-        statusEl.textContent = "❌ Lead insert failed: " + leadError.message;
-        statusEl.style.backgroundColor = "#dc2626";
-        return;
-      }
+        if (leadError) throw new Error("Supabase Lead insert failed: " + leadError.message);
 
-      const leadId = leadData?.[0]?.id;
-      if (!leadId) {
-        statusEl.classList.remove("loading");
-        statusEl.textContent = "❌ Lead ID missing after insert.";
-        statusEl.style.backgroundColor = "#dc2626";
-        return;
-      }
-
-      const { error: appError } = await supabase
-        .from("application")
-        .insert([{
-          lead_id: leadId,
+        // 3️⃣ Supabase Application Insert with UUID
+        const { error: appError } = await supabase.from("application").insert([{
+          id: appUUID,
+          lead_id: leadUUID,
           form_type: "final",
           role_category: formData.get("vacancy"),
           preferred_language: formData.get("preferredLanguage"),
@@ -192,30 +173,45 @@ if (jobForm) {
           status: "submitted"
         }]);
 
-      statusEl.classList.remove("loading");
+        statusEl.classList.remove("loading");
 
-      if (appError) {
-        statusEl.textContent = "❌ Application insert failed: " + appError.message;
+        if (appError || !fsResponse.ok) {
+          statusEl.textContent = `❌ Submission failed. ${appError ? appError.message : ''}`;
+          statusEl.style.backgroundColor = "#dc2626";
+        } else {
+          statusEl.textContent = "✅ Thank you! Your application has been submitted.";
+          statusEl.style.backgroundColor = "#16a34a";
+          jobForm.reset();
+          setTimeout(() => { window.location.href = "./policy/privacy.html"; }, 2000);
+        }
+
+      } catch (err) {
+        statusEl.classList.remove("loading");
+        statusEl.textContent = "❌ Error: " + err.message;
         statusEl.style.backgroundColor = "#dc2626";
-      } else if (!response.ok) {
-        statusEl.textContent = "❌ Formspree submission failed.";
-        statusEl.style.backgroundColor = "#dc2626";
-      } else {
-        statusEl.textContent = "✅ Thank you! Your application has been submitted. Redirecting...";
-        statusEl.style.backgroundColor = "#16a34a";
-        jobForm.reset();
-        setTimeout(() => {
-          window.location.href = "./policy/privacy.html";
-        }, 2000);
       }
+    });
+  }
+});
+✅ Key Improvements:
+Each lead and application now has a UUID (id) instead of auto-increment.
 
-    } catch (err) {
-      statusEl.classList.remove("loading");
-      statusEl.textContent = "❌ Error: " + err.message;
-      statusEl.style.backgroundColor = "#dc2626";
-    }
-  });
-}
+Formspree + Supabase submission remains fully integrated.
+
+Handles resume requirement dynamically.
+
+Proper status messages with success/error feedback.
+
+If you want, I can also integrate file uploads (resume, portfolio) into Supabase Storage like your previous Cloudora form, so resumes get uploaded and the public URL is stored.
+
+Do you want me to do that next?
+
+
+
+
+
+
+
 
 // --- Google Translate ---
 function googleTranslateElementInit() {
