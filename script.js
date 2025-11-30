@@ -232,17 +232,18 @@ if (contactForm) {
       // ------------------------------
       // 2️⃣ INSERT INTO ENQUIRY TABLE
       // ------------------------------
-      const enquiryPayload = {
-        lead_id: leadId,
-        whatsapp: formData.get("whatsapp") || null,
-        company: formData.get("company") || null,
-        address: formData.get("address") || null,
-        service: formData.get("service") || null,
-        budget: formData.get("budget") || null,
-        timeline: formData.get("timeline") || null,
-        message: formData.get("message") || null,
-        status: "new"
-      };
+     const leadPayload = {
+  full_name: formData.get("name"),
+  email: formData.get("email"),
+  phone: formData.get("phone"),
+  country: null,  // ❗ your form has no country field
+  address: formData.get("address") || null,
+  interest: formData.get("service") || null,
+  budget: formData.get("budget") || null,
+  message: formData.get("message") || null,
+  source: "website",
+  status: "new"
+};
 
       const { error: enquiryError } = await insertEnquiry(enquiryPayload);
       if (enquiryError) throw new Error("Enquiry insert failed: " + enquiryError.message);
@@ -265,6 +266,9 @@ if (contactForm) {
     }
   });
 }
+
+ const { data, error } = await supabase.from("lead").insert([{ full_name: "Test User" }]);
+console.log(error);
 
 
 // --- google translate ---
