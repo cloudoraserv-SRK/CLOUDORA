@@ -824,6 +824,15 @@ s0.parentNode.insertBefore(s1,s0);
 </script>
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+  // Wait 1 second after DOM is ready so Tawk can load first
+  setTimeout(() => {
+    autoTranslateByBrowserLang();
+  }, 1000);
+});
+</script>
+
        <script>
   function autoTranslateByBrowserLang() {
     const langMap = {
@@ -856,8 +865,6 @@ s0.parentNode.insertBefore(s1,s0);
 
     tryTranslate();
   }
-
-  window.addEventListener('load', autoTranslateByBrowserLang);
 </script>
 
 </body>
