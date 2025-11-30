@@ -1,7 +1,7 @@
 // app.js
 import { supabase, uuidv4, uploadFile, insertLead, insertApplication, insertAgreement } from "/supabase/supabase.js";
-const UPLOAD_BUCKET = "applicant-uploads";
 
+const UPLOAD_BUCKET = "applicant-uploads";
 
 // ---------- Utilities ----------
 const $ = (id) => document.getElementById(id);
@@ -27,11 +27,7 @@ function buildUsaSlots() {
   const wrap = $("usaSlots");
   if (!wrap) return;
   wrap.innerHTML = "";
-  const slots = [
-    "07:00–08:00","08:00–09:00","09:00–10:00",
-    "10:00–11:00","11:00–12:00","12:00–13:00",
-    "13:00–14:00","14:00–15:00","15:00–16:00"
-  ];
+  const slots = ["07:00–08:00","08:00–09:00","09:00–10:00","10:00–11:00","11:00–12:00","12:00–13:00","13:00–14:00","14:00–15:00","15:00–16:00"];
   const container = document.createElement("div");
   container.className = "flex";
   slots.forEach(s => {
@@ -56,12 +52,12 @@ const ROLE_MAP = {
   chat_support: ["Chat Support"],
   tele_support_domestic: ["Tele Support - Domestic"],
   tele_support_international: ["Tele Support - International"],
-  developer: ["Frontend Developer", "Backend Developer", "Full-stack Developer"],
-  content_creatives: ["Content Creator", "Video Editor", "Graphic Designer"],
-  marketing_outreach: ["Marketing Executive", "SEO Specialist"]
+  developer: ["Frontend Developer","Backend Developer","Full-stack Developer"],
+  content_creatives: ["Content Creator","Video Editor","Graphic Designer"],
+  marketing_outreach: ["Marketing Executive","SEO Specialist"]
 };
 
-// ---------- Populate roles based on departments ----------
+// ---------- Populate roles ----------
 function populateRoles() {
   const depSel = $("departments");
   const roleSel = $("roles");
@@ -69,9 +65,7 @@ function populateRoles() {
   const selectedDeps = Array.from(depSel.selectedOptions).map(o => o.value);
   roleSel.innerHTML = "";
   const roles = new Set();
-  selectedDeps.forEach(d => {
-    (ROLE_MAP[d] || []).forEach(r => roles.add(r));
-  });
+  selectedDeps.forEach(d => (ROLE_MAP[d] || []).forEach(r => roles.add(r)));
   Array.from(roles).forEach(r => {
     const opt = document.createElement("option");
     opt.value = r;
@@ -80,29 +74,14 @@ function populateRoles() {
   });
 }
 
-// ---------- Toggle other fields ----------
+// ---------- Toggle "Other" fields ----------
 function attachToggles() {
-  const addrProofType = $("addrProofType");
-  if (addrProofType) {
-    addrProofType.addEventListener("change", (e) => {
-      if (e.target.value === "Other") show($("addrProofOtherWrap")); else hide($("addrProofOtherWrap"));
-    });
-  }
-  const hearAbout = $("hearAbout");
-  if (hearAbout) {
-    hearAbout.addEventListener("change", (e) => {
-      if (e.target.value === "Other") show($("hearOtherWrap")); else hide($("hearOtherWrap"));
-    });
-  }
-  const langOtherChk = $("langOtherChk");
-  if (langOtherChk) {
-    langOtherChk.addEventListener("change", (e) => {
-      if (e.target.checked) show($("langOtherWrap")); else hide($("langOtherWrap"));
-    });
-  }
+  $("addrProofType")?.addEventListener("change", e => e.target.value === "Other" ? show($("addrProofOtherWrap")) : hide($("addrProofOtherWrap")));
+  $("hearAbout")?.addEventListener("change", e => e.target.value === "Other" ? show($("hearOtherWrap")) : hide($("hearOtherWrap")));
+  $("langOtherChk")?.addEventListener("change", e => e.target.checked ? show($("langOtherWrap")) : hide($("langOtherWrap")));
 }
 
-// ---------- Employment & USA slot logic ----------
+// ---------- Employment & USA slots ----------
 function toggleUsaSlots() {
   const emp = $("employmentType")?.value;
   const pref = $("prefCountry")?.value;
@@ -155,20 +134,16 @@ function collectData(includeFiles = true) {
   };
 }
 
-// ---------- Submit ----------
-export async function submitToSupabase(payload, statusElId = "formStatus") {
-  const statusEl = document.getElementById(statusElId);
-  if (statusEl) {
-    statusEl.style.display = "inline-block";
-    statusEl.textContent = "Saving...";
-    statusEl.style.backgroundColor = "";
-  }
+// ---------- Submit to Supabase ----------
+async function submitToSupabase(payload, statusElId = "formStatus") {
+  const statusEl = $(statusElId);
+  if (statusEl) { statusEl.style.display = "inline-block"; statusEl.textContent = "Saving..."; statusEl.style.backgroundColor = ""; }
 
   try {
     const leadId = uuidv4();
-
     const addressCombined = [payload.addrStreet, payload.addrCity, payload.addrState, payload.addrPincode].filter(Boolean).join(", ");
-    const leadRow = {
+
+    await insertLead({
       id: leadId,
       full_name: payload.fullName || null,
       email: payload.email || null,
@@ -178,8 +153,7 @@ export async function submitToSupabase(payload, statusElId = "formStatus") {
       address: addressCombined || null,
       source: payload.hearAbout || null,
       status: "new"
-    };
-    await insertLead(leadRow);
+    });
 
     // --- Upload files ---
     const uploads = {};
@@ -189,7 +163,7 @@ export async function submitToSupabase(payload, statusElId = "formStatus") {
     if (payload.files?.docBack) uploads.doc_back_url = await uploadFile(payload.files.docBack, `leads/${leadId}/doc_back_${ts}.${payload.files.docBack.name.split(".").pop()}`);
 
     // --- Application insert ---
-    const applicationRow = {
+    await insertApplication({
       lead_id: leadId,
       form_type: "final",
       role_category: (payload.departments || []).join(", "),
@@ -202,37 +176,21 @@ export async function submitToSupabase(payload, statusElId = "formStatus") {
       resume_url: uploads.doc_front_url || null,
       notes: payload.understandCloudora || payload.hearOther || null,
       status: "submitted"
-    };
-    await insertApplication(applicationRow);
+    });
 
     // --- Agreement insert ---
-    if (payload.agree) {
-      const agreementRow = {
-        lead_id: leadId,
-        agreed: true,
-        agreed_at: new Date().toISOString(),
-        terms_version: null
-      };
-      await insertAgreement(agreementRow);
-    }
+    if (payload.agree) await insertAgreement({ lead_id: leadId, agreed: true, agreed_at: new Date().toISOString(), terms_version: null });
 
-    if (statusEl) {
-      statusEl.textContent = "✅ Submitted successfully";
-      statusEl.style.backgroundColor = "#16a34a";
-    }
+    if (statusEl) { statusEl.textContent = "✅ Submitted successfully"; statusEl.style.backgroundColor = "#16a34a"; }
     return { success: true, leadId, uploads };
   } catch (err) {
     console.error(err);
-    if (statusEl) {
-      statusEl.textContent = "❌ " + (err.message || "Submission failed");
-      statusEl.style.backgroundColor = "#dc2626";
-    }
+    if (statusEl) { statusEl.textContent = "❌ " + (err.message || "Submission failed"); statusEl.style.backgroundColor = "#dc2626"; }
     return { success: false, error: err };
   }
 }
 
-
-// ---------- Validation & front-end submit ----------
+// ---------- Validate & collect ----------
 function validateAndCollect() {
   document.querySelectorAll(".error").forEach(el => el.classList.remove("show"));
   $("successMsg").style.display = "none";
@@ -241,10 +199,8 @@ function validateAndCollect() {
 
   if (!($("fullName")?.value || "").trim()) { showErr("errFullName", true); ok = false; }
   if (!isEmail($("email")?.value || "")) { showErr("errEmail", true); ok = false; }
-  const mobile = ($("mobileNumber")?.value || "").trim();
-  if (!isIntlPhone(mobile)) { showErr("errMobileNumber", true); ok = false; }
-  const alt = ($("altMobile")?.value || "").trim();
-  if (alt && !isIntlPhone(alt)) { showErr("errAltMobile", true); ok = false; }
+  if (!isIntlPhone(($("mobileNumber")?.value || "").trim())) { showErr("errMobileNumber", true); ok = false; }
+  if (($("altMobile")?.value || "").trim() && !isIntlPhone(($("altMobile")?.value || "").trim())) { showErr("errAltMobile", true); ok = false; }
   if (!($("addrStreet")?.value || "").trim()) { showErr("errAddrStreet", true); ok = false; }
   if (!($("addrCity")?.value || "").trim()) { showErr("errAddrCity", true); ok = false; }
   if (!isPincode($("addrPincode")?.value || "")) { showErr("errAddrPincode", true); ok = false; }
@@ -253,9 +209,7 @@ function validateAndCollect() {
   if (!($("addrProofType")?.value || "")) { showErr("errAddrProofType", true); ok = false; }
   if (($("addrProofType")?.value || "") === "Other" && !($("addrProofOther")?.value || "").trim()) { showErr("errAddrProofType", true); ok = false; }
 
-  const photo = $("photoUpload")?.files[0];
-  const front = $("docFront")?.files[0];
-  const back = $("docBack")?.files[0];
+  const photo = $("photoUpload")?.files[0], front = $("docFront")?.files[0], back = $("docBack")?.files[0];
   if (!isValidFile(photo, validImageTypes)) { showErr("errPhotoUpload", true); ok = false; }
   if (!isValidFile(front, validDocTypes)) { showErr("errDocFront", true); ok = false; }
   if (!isValidFile(back, validDocTypes)) { showErr("errDocBack", true); ok = false; }
@@ -264,9 +218,7 @@ function validateAndCollect() {
   if (!emp) { showErr("errEmploymentType", true); ok = false; }
 
   const deps = Array.from($("departments")?.selectedOptions || []).map(o => o.value);
-  if (deps.length === 0) { showErr("errDepartments", true); ok = false; }
-  if (emp === "full" && deps.length !== 1) { showErr("errDepartments", true); ok = false; }
-  if (emp === "part" && deps.length > 3) { showErr("errDepartments", true); ok = false; }
+  if (deps.length === 0 || (emp === "full" && deps.length !== 1) || (emp === "part" && deps.length > 3)) { showErr("errDepartments", true); ok = false; }
 
   const roles = Array.from($("roles")?.selectedOptions || []).map(o => o.value);
   if (roles.length === 0) { showErr("errRoles", true); ok = false; }
@@ -276,8 +228,7 @@ function validateAndCollect() {
   if (usaVisible && emp === "part" && usaSelectedSlots === 0) { alert("Select at least one USA slot for part-time USA preference."); ok = false; }
 
   const langChecked = document.querySelectorAll('input[name="lang"]:checked').length;
-  if (langChecked === 0) { showErr("errLang", true); ok = false; }
-  if ($("langOtherChk")?.checked && !($("langOther")?.value || "").trim()) { showErr("errLang", true); ok = false; }
+  if (langChecked === 0 || ($("langOtherChk")?.checked && !($("langOther")?.value || "").trim())) { showErr("errLang", true); ok = false; }
 
   if ((($("understandCloudora")?.value || "").trim().length) < 20) { showErr("errUnderstand", true); ok = false; }
   if (!($("agree")?.checked)) { showErr("errAgree", true); ok = false; }
@@ -286,7 +237,7 @@ function validateAndCollect() {
   return collectData(true);
 }
 
-// ---------- Save / Load draft ----------
+// ---------- Draft save/load ----------
 function saveDraftToLocal() {
   const data = collectData(false);
   localStorage.setItem("cloudoraDraft", JSON.stringify(data));
@@ -298,92 +249,47 @@ function loadDraftFromLocal() {
   if (!raw) return;
   try {
     const data = JSON.parse(raw);
-    if (data.fullName) $("fullName").value = data.fullName;
-    if (data.email) $("email").value = data.email;
-    if (data.mobileNumber) $("mobileNumber").value = data.mobileNumber;
-    if (data.altMobile) $("altMobile").value = data.altMobile;
-    if (data.addrStreet) $("addrStreet").value = data.addrStreet;
-    if (data.addrCity) $("addrCity").value = data.addrCity;
-    if (data.addrPincode) $("addrPincode").value = data.addrPincode;
-    if (data.addrState) $("addrState").value = data.addrState;
-    if (data.addrCountry) $("addrCountry").value = data.addrCountry;
-    if (data.prefCountry) $("prefCountry").value = data.prefCountry;
-    if (data.addrProofType) $("addrProofType").value = data.addrProofType;
-    if (data.addrProofOther) $("addrProofOther").value = data.addrProofOther;
-    if (data.employmentType) $("employmentType").value = data.employmentType;
-    if (Array.isArray(data.departments)) {
-      const depSel = $("departments");
-      Array.from(depSel.options).forEach(o => o.selected = data.departments.includes(o.value));
-      populateRoles();
-    }
-    if (Array.isArray(data.roles)) {
-      const roleSel = $("roles");
-      Array.from(roleSel.options).forEach(o => o.selected = data.roles.includes(o.value));
-    }
-    if (data.languages && Array.isArray(data.languages)) {
-      document.querySelectorAll('input[name="lang"]').forEach(i => i.checked = data.languages.includes(i.value));
-    }
-    if (data.langOther) $("langOther").value = data.langOther;
-    if (data.understandCloudora) $("understandCloudora").value = data.understandCloudora;
-    if (data.hearAbout) $("hearAbout").value = data.hearAbout;
-    if (data.hearOther) $("hearOther").value = data.hearOther;
-    if (data.agree) $("agree").checked = data.agree;
+    Object.keys(data).forEach(k => { if ($(k)) $(k).value = data[k]; });
+    if (data.departments) { Array.from($("departments").options).forEach(o => o.selected = data.departments.includes(o.value)); populateRoles(); }
+    if (data.roles) { Array.from($("roles").options).forEach(o => o.selected = data.roles.includes(o.value)); }
+    if (data.languages && Array.isArray(data.languages)) { document.querySelectorAll('input[name="lang"]').forEach(i => i.checked = data.languages.includes(i.value)); }
     toggleUsaSlots();
-  } catch (err) {
-    console.warn("Failed to parse draft:", err);
-  }
+  } catch (err) { console.warn("Failed to load draft:", err); }
 }
 
 // ---------- Initialize listeners ----------
 function initForm() {
   attachToggles();
-  const depSel = $("departments");
-  if (depSel) depSel.addEventListener("change", populateRoles);
-
-  const emp = $("employmentType");
-  if (emp) emp.addEventListener("change", function() {
-    const depSel = $("departments");
-    if (depSel) Array.from(depSel.options).forEach(o => o.selected = false);
-    if (depSel) depSel.multiple = this.value !== "full";
-    populateRoles();
-    toggleUsaSlots();
+  $("departments")?.addEventListener("change", populateRoles);
+  $("employmentType")?.addEventListener("change", function() { 
+    Array.from($("departments").options).forEach(o => o.selected = false); 
+    $("departments").multiple = this.value !== "full"; 
+    populateRoles(); 
+    toggleUsaSlots(); 
   });
-
-  const prefCountry = $("prefCountry");
-  if (prefCountry) prefCountry.addEventListener("change", toggleUsaSlots);
-
-  const saveDraftBtn = $("saveDraft");
-  if (saveDraftBtn) saveDraftBtn.addEventListener("click", saveDraftToLocal);
-
+  $("prefCountry")?.addEventListener("change", toggleUsaSlots);
+  $("saveDraft")?.addEventListener("click", saveDraftToLocal);
   loadDraftFromLocal();
 
   const form = $("cloudoraForm");
-  if (form) {
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const payload = validateAndCollect();
-      if (!payload) return;
-      const statusEl = $("formStatus");
-      if (statusEl) {
-        statusEl.style.display = "inline-block";
-        statusEl.textContent = "Submitting...";
-        statusEl.style.backgroundColor = "";
-      }
-      const res = await submitToSupabase(payload, "formStatus");
-      if (res.success) {
-        $("successMsg").style.display = "block";
-        form.reset();
-        hide($("addrProofOtherWrap"));
-        hide($("langOtherWrap"));
-        hide($("hearOtherWrap"));
-        localStorage.removeItem("cloudoraDraft");
-        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-      } else {
-        alert("Submission failed. See console for details.");
-      }
-    });
-  }
+  if (form) form.addEventListener("submit", async e => {
+    e.preventDefault();
+    const payload = validateAndCollect();
+    if (!payload) return;
+    $("formStatus").style.display = "inline-block"; $("formStatus").textContent = "Submitting...";
+    const res = await submitToSupabase(payload, "formStatus");
+    if (res.success) {
+      $("successMsg").style.display = "block";
+      form.reset();
+      hide($("addrProofOtherWrap")); hide($("langOtherWrap")); hide($("hearOtherWrap"));
+      localStorage.removeItem("cloudoraDraft");
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    } else { alert("Submission failed. See console for details."); }
+  });
 
   populateRoles();
   toggleUsaSlots();
 }
+
+// Initialize form on page load
+window.addEventListener("DOMContentLoaded", initForm);
