@@ -253,11 +253,11 @@ function autoTranslateByBrowserLang() {
     if (select && targetLang) {
       select.value = targetLang;
       select.dispatchEvent(new Event('change'));
-      localStorage.setItem("cloudoraLang", targetLang); // save preference
     } else {
       setTimeout(tryTranslate, 500);
     }
   };
+
   tryTranslate();
 }
 
