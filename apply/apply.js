@@ -100,88 +100,77 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // --- Job Form Submission ---
-  if (jobForm) {
-    jobForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      statusEl.style.display = "inline-block";
-      statusEl.textContent = "Submitting...";
-      statusEl.style.backgroundColor = "";
-      statusEl.classList.add("loading");
+if (jobForm) {
+  jobForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    statusEl.style.display = "inline-block";
+    statusEl.textContent = "Submitting...";
+    statusEl.style.backgroundColor = "";
+    statusEl.classList.add("loading");
 
-      const formData = new FormData(jobForm);
-      const tempId = uuidv4();
+    const formData = new FormData(jobForm);
+    const tempId = uuidv4();
 
-      try {
-            // --- 2️⃣ Resume / Portfolio Link ---
-  const resumeUrl = resumeField?.value || null;
+    try {
+      // --- 1️⃣ Insert into lead ---
+      const { data: leadData, error: leadError } = await insertLead({
+        full_name: formData.get("name"),
+        email: formData.get("email"),
+        phone: formData.get("phone"),
+        country: formData.get("country"),
+        status: "new",
+        source: "website",
+      });
+      if (leadError) throw new Error("Supabase Lead insert failed: " + leadError.message);
 
-        // 1️⃣ Insert into lead
-const { error: leadError, data: leadData } = await insertLead({
-  full_name: formData.get("name"),
-  email: formData.get("email"),
-  phone: formData.get("phone"),
-  country: formData.get("country"),
-});
-if (leadError) throw new Error("Supabase Lead insert failed: " + leadError.message);
+      const leadId = leadData[0].id; // must exist
 
-// Get the lead_id from the inserted lead
-const leadId = leadData[0].id;  // must exist
-await insertTrial({
-  lead_id: leadId,
-  ...
-});
+      // --- 2️⃣ Insert into application ---
+      const { error: appError } = await insertApplication({
+        lead_id: leadId,
+        city: formData.get("city"),
+        role_category: formData.get("vacancy"),
+        resume_url: formData.get("resumeLink") || null,
+        skills: formData.get("skills"),
+        experience: formData.get("experience"),
+        availability: formData.get("availability"),
+        work_mode: formData.get("workMode"),
+        preferred_language: formData.get("preferredLanguage"),
+        github: formData.get("github"),
+        linkedin: formData.get("linkedin"),
+        message: formData.get("message"),
+        status: "trial"
+      });
+      if (appError) throw new Error("Supabase Application insert failed: " + appError.message);
 
-// 2️⃣ Insert into application
-const { error: appError } = await insertApplication({
-  lead_id: leadId,
-  city: formData.get("city"),
-  role_category: formData.get("vacancy"),
-  resume_url: resumeField?.value || null,
-  status: "trial",
-  skills: formData.get("skills"),
-  experience: formData.get("experience"),
-  availability: formData.get("availability"),
-  work_mode: formData.get("work_mode"),
-  engagement_type: formData.get("engagement_type"),
-  schedule: formData.get("schedule"),
-  notes: formData.get("notes"),
-});
-if (appError) throw new Error("Supabase Application insert failed: " + appError.message);
-        
-        
-        // --- 4️⃣ Create Trial Record ---
-        const { error: trialError } = await insertTrial({
-          lead_id: tempId,
-          trial_start: new Date().toISOString(),
-          trial_end: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-          access_level: "trial",
-          status: "active",
-        });
-        if (trialError) throw new Error("Trial record creation failed: " + trialError.message);
+      // --- 3️⃣ Create Trial Record ---
+      const { error: trialError } = await insertTrial({
+        lead_id: leadId,
+        trial_start: new Date().toISOString(),
+        trial_end: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+        access_level: "trial",
+        status: "active",
+      });
+      if (trialError) throw new Error("Trial record creation failed: " + trialError.message);
 
-        // --- Success ---
-        statusEl.classList.remove("loading");
-        if (!fsResponse.ok) {
-          statusEl.textContent = "❌ Formspree submission failed.";
-          statusEl.style.backgroundColor = "#dc2626";
-        } else {
-          statusEl.textContent = `✅ Application submitted! Your temporary ID: ${tempId}`;
-          statusEl.style.backgroundColor = "#16a34a";
-          jobForm.reset();
+      // --- Success ---
+      statusEl.classList.remove("loading");
+      statusEl.textContent = `✅ Application submitted! Your temporary ID: ${tempId}`;
+      statusEl.style.backgroundColor = "#16a34a";
+      jobForm.reset();
 
-          setTimeout(() => {
-            window.location.href = `../apply/trial/application.html?tempId=${tempId}`;
-          }, 2000);
-        }
-      } catch (err) {
-        statusEl.classList.remove("loading");
-        statusEl.textContent = "❌ Error: " + err.message;
-        statusEl.style.backgroundColor = "#dc2626";
-      }
-    });
-  }
-});
-console.log("Lead insert data:", leadData, "error:", leadError);
+      setTimeout(() => {
+        window.location.href = `../apply/trial/application.html?tempId=${tempId}`;
+      }, 2000);
+    } catch (err) {
+      statusEl.classList.remove("loading");
+      statusEl.textContent = "❌ Error: " + err.message;
+      statusEl.style.backgroundColor = "#dc2626";
+      console.error("Job Form submission error:", err);
+    }
+  });
+}
+
 
 
 // --- Google Translate ---
