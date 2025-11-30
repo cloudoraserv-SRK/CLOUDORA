@@ -1,6 +1,6 @@
  // ---------- IMPORT CENTRAL SUPABASE CLIENT ----------
   import("./supabase/supabase.js").then(({ supabase }) => {
-
+import { insertLead } from "./supabase/supabase.js";
 document.addEventListener('DOMContentLoaded', () => {
     
   // --- Hamburger Menu ---
