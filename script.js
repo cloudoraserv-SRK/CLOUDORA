@@ -1,7 +1,7 @@
-document.addEventListener('DOMContentLoaded', () => {
-
  // ---------- IMPORT CENTRAL SUPABASE CLIENT ----------
   import("./supabase/supabase.js").then(({ supabase }) => {
+
+document.addEventListener('DOMContentLoaded', () => {
     
   // --- Hamburger Menu ---
   const hamburger = document.querySelector('.hamburger');
@@ -193,46 +193,52 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ---------- Contact Form Submission ----------
-    const contactForm = document.getElementById("contactForm");
-    const statusEl = document.getElementById("formStatus");
+  const contactForm = document.getElementById("contactForm");
+  const statusEl = document.getElementById("formStatus");
 
-    if (contactForm) {
-      contactForm.addEventListener("submit", async function (e) {
-        e.preventDefault();
-        if (!statusEl) return;
+  if (!contactForm || !statusEl) return;
 
-        statusEl.style.display = "inline-block";
-        statusEl.textContent = "Submitting...";
-        statusEl.style.backgroundColor = "";
+  contactForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-        const formData = new FormData(this);
+    statusEl.style.display = "inline-block";
+    statusEl.textContent = "Submitting...";
+    statusEl.style.backgroundColor = "";
+    
+    const formData = new FormData(contactForm);
 
-        try {
-          const { data, error } = await supabase.from("lead").insert([{
-            name: formData.get("name"),
-            email: formData.get("email"),
-            phone: formData.get("phone"),
-            sourceref: formData.get("company"),
-            country: formData.get("country"),
-            productinterest: formData.get("service"),
-            status: "new",
-            source: "website"
-          }]);
+    // Construct lead object for Supabase
+    const leadData = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      phone: formData.get("phone"),
+      whatsapp: formData.get("whatsapp") || null,
+      sourceref: formData.get("company") || null,
+      address: formData.get("address") || null,
+      country: formData.get("country") || null,
+      productinterest: formData.get("service") || null,
+      budget: formData.get("budget") || null,
+      timeline: formData.get("timeline") || null,
+      message: formData.get("message") || null,
+      status: "new",
+      source: "website"
+    };
 
-          if (error) throw error;
+    try {
+      const { data, error } = await insertLead(leadData);
 
-          statusEl.textContent = "✅ Thanks! Your enquiry was saved.";
-          statusEl.style.backgroundColor = "#16a34a";
-          contactForm.reset();
+      if (error) throw error;
 
-        } catch (err) {
-          statusEl.textContent = "❌ Error: " + err.message;
-          statusEl.style.backgroundColor = "#dc2626";
-          console.error("Contact form submission error:", err);
-        }
-
-      });
+      statusEl.textContent = "✅ Thanks! Your enquiry was successfully submitted.";
+      statusEl.style.backgroundColor = "#16a34a";
+      contactForm.reset();
+    } catch (err) {
+      console.error("Supabase insert error:", err);
+      statusEl.textContent = "❌ Error submitting form: " + err.message;
+      statusEl.style.backgroundColor = "#dc2626";
     }
+  });
+});
 
 // --- google translate ---
 function googleTranslateElementInit() {
