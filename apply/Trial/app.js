@@ -1,5 +1,5 @@
 // app.js
-import { supabase, uuidv4, uploadFile, insertLead, insertApplication, insertAgreement } from "./supabase/supabase.js";
+import { supabase, uuidv4, uploadFile, insertLead, insertApplication, insertAgreement } from "/supabase/supabase.js";
 const UPLOAD_BUCKET = "applicant-uploads";
 
 
