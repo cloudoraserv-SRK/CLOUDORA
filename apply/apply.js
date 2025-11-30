@@ -1,4 +1,4 @@
-import { supabase, uuidv4, uploadFile, insertApplication, insertLead, insertTrial } from "../supabase/supabase.js";
+import { supabase, uuidv4, uploadFile, insertApplication, insertLead, insertTrial } from "./supabase/supabase.js";
 
 // --- DOM Ready ---
 document.addEventListener("DOMContentLoaded", () => {
