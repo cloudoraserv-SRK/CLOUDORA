@@ -268,5 +268,5 @@ function autoTranslateByBrowserLang() {
 }
 
 window.addEventListener('load', autoTranslateByBrowserLang);
- });
+ 
 
