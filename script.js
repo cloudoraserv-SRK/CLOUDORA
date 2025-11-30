@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Construct lead object for Supabase
     const leadData = {
-      name: formData.get("name"),
+      full_name: formData.get("name"),
       email: formData.get("email"),
       phone: formData.get("phone"),
       whatsapp: formData.get("whatsapp") || null,
