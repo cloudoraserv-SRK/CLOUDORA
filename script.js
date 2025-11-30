@@ -192,52 +192,80 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ---------- Contact Form Submission ----------
-  const contactForm = document.getElementById("contactForm");
-  const statusEl = document.getElementById("formStatus");
+  // --- CONTACT FORM SUBMISSION ---
+const contactForm = document.getElementById("contactForm");
+const contactStatus = document.getElementById("formStatus");
 
-  if (!contactForm || !statusEl) return;
-
+if (contactForm) {
   contactForm.addEventListener("submit", async (e) => {
     e.preventDefault();
+    contactStatus.style.display = "inline-block";
+    contactStatus.textContent = "Submitting...";
+    contactStatus.classList.add("loading");
+    contactStatus.style.backgroundColor = "";
 
-    statusEl.style.display = "inline-block";
-    statusEl.textContent = "Submitting...";
-    statusEl.style.backgroundColor = "";
-    
     const formData = new FormData(contactForm);
 
-    // Construct lead object for Supabase
-    const leadData = {
-      full_name: formData.get("name"),
-      email: formData.get("email"),
-      phone: formData.get("phone"),
-      whatsapp: formData.get("whatsapp") || null,
-      sourceref: formData.get("company") || null,
-      address: formData.get("address") || null,
-      country: formData.get("country") || null,
-      interest: formData.get("service") || null,
-      budget: formData.get("budget") || null,
-      timeline: formData.get("timeline") || null,
-      message: formData.get("message") || null,
-      status: "new",
-      source: "website"
-    };
-
     try {
-      const { data, error } = await insertLead(leadData);
+      // ---------------------------
+      // 1️⃣ INSERT INTO LEAD TABLE
+      // ---------------------------
+      const leadPayload = {
+        full_name: formData.get("name"),
+        email: formData.get("email"),
+        phone: formData.get("phone"),
+        country: formData.get("country") || null,
+        address: formData.get("address") || null,
+        interest: formData.get("service") || null,
+        budget: formData.get("budget") || null,
+        message: formData.get("message") || null,
+        source: "website",
+        status: "new"
+      };
 
-      if (error) throw error;
+      const { data: leadData, error: leadError } = await insertLead(leadPayload);
+      if (leadError) throw new Error("Lead insert failed: " + leadError.message);
 
-      statusEl.textContent = "✅ Thanks! Your enquiry was successfully submitted.";
-      statusEl.style.backgroundColor = "#16a34a";
+      const leadId = leadData[0].id; // 🟢 Lead successfully created
+
+
+      // ------------------------------
+      // 2️⃣ INSERT INTO ENQUIRY TABLE
+      // ------------------------------
+      const enquiryPayload = {
+        lead_id: leadId,
+        whatsapp: formData.get("whatsapp") || null,
+        company: formData.get("company") || null,
+        address: formData.get("address") || null,
+        service: formData.get("service") || null,
+        budget: formData.get("budget") || null,
+        timeline: formData.get("timeline") || null,
+        message: formData.get("message") || null,
+        status: "new"
+      };
+
+      const { error: enquiryError } = await insertEnquiry(enquiryPayload);
+      if (enquiryError) throw new Error("Enquiry insert failed: " + enquiryError.message);
+
+
+      // ------------------------------
+      // ✅ SUCCESS
+      // ------------------------------
+      contactStatus.classList.remove("loading");
+      contactStatus.textContent = "✅ Request submitted! We will contact you shortly.";
+      contactStatus.style.backgroundColor = "#16a34a";
+
       contactForm.reset();
+
     } catch (err) {
-      console.error("Supabase insert error:", err);
-      statusEl.textContent = "❌ Error submitting form: " + err.message;
-      statusEl.style.backgroundColor = "#dc2626";
+      contactStatus.classList.remove("loading");
+      contactStatus.textContent = "❌ Error submitting form: " + err.message;
+      contactStatus.style.backgroundColor = "#dc2626";
+      console.error("Contact Form Error:", err);
     }
   });
-});
+}
+
 
 // --- google translate ---
 function googleTranslateElementInit() {
