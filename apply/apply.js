@@ -181,6 +181,7 @@ if (appError) throw new Error("Supabase Application insert failed: " + appError.
     });
   }
 });
+console.log("Lead insert data:", leadData, "error:", leadError);
 
 
 // --- Google Translate ---
