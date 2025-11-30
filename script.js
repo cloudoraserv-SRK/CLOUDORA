@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
       sourceref: formData.get("company") || null,
       address: formData.get("address") || null,
       country: formData.get("country") || null,
-      productinterest: formData.get("service") || null,
+      interest: formData.get("service") || null,
       budget: formData.get("budget") || null,
       timeline: formData.get("timeline") || null,
       message: formData.get("message") || null,
