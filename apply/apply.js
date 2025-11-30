@@ -198,6 +198,6 @@ function autoTranslateByBrowserLang() {
     }
   };
   tryTranslate();
-}); 
+} 
 
 window.addEventListener('load', autoTranslateByBrowserLang);
