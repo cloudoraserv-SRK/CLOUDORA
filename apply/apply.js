@@ -125,7 +125,11 @@ const { error: leadError, data: leadData } = await insertLead({
 if (leadError) throw new Error("Supabase Lead insert failed: " + leadError.message);
 
 // Get the lead_id from the inserted lead
-const leadId = leadData[0].id;
+const leadId = leadData[0].id;  // must exist
+await insertTrial({
+  lead_id: leadId,
+  ...
+});
 
 // 2️⃣ Insert into application
 const { error: appError } = await insertApplication({
