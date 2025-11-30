@@ -261,4 +261,6 @@ function autoTranslateByBrowserLang() {
   tryTranslate();
 }
 
-window.addEventListener('load', autoTranslateByBrowserLang)};
+window.addEventListener('load', autoTranslateByBrowserLang);
+ });
+
