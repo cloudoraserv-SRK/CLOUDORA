@@ -67,7 +67,10 @@ export async function getEnquiries() {
 }
 
 export async function insertEnquiry(enquiryData) {
-  return await supabase.from('enquiry').insert([enquiryData])
+  return await supabase
+    .from("enquiry")
+    .insert([enquiryData])
+    .select();
 }
 
 // 📝 APPLICATION HELPERS
