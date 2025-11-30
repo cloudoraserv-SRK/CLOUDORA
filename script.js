@@ -234,9 +234,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-  });
-});
-
 // --- google translate ---
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({
