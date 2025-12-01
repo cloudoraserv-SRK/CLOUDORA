@@ -191,77 +191,35 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// ---------- Contact Form Submission ----------
-  // --- CONTACT FORM SUBMISSION ---
-const contactForm = document.getElementById("contactForm");
-const contactStatus = document.getElementById("formStatus");
+// ========= Supabase Client ===========
+const supabaseUrl = "YOUR_URL";
+const supabaseKey = "YOUR_ANON_KEY";
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-if (contactForm) {
-  contactForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    contactStatus.style.display = "inline-block";
-    contactStatus.textContent = "Submitting...";
-    contactStatus.classList.add("loading");
-    contactStatus.style.backgroundColor = "";
+// ========= Insert Lead ===============
+async function insertLead(data) {
+    const { data: inserted, error } = await supabase
+        .from("leads")
+        .insert([data])
+        .select();
 
-    const formData = new FormData(contactForm);
-
-   try {
-      // -----------------------------------
-      // 1️⃣ LEAD PAYLOAD
-      // -----------------------------------
-      const leadPayload = {
-        full_name: formData.get("name"),
-        email: formData.get("email"),
-        phone: formData.get("phone"),
-        country: formData.get("country") || null,
-        address: formData.get("address") || null,
-        interest: formData.get("service") || null,
-        budget: formData.get("budget") || null,
-        message: formData.get("message") || null,
-        source: "website",
-        status: "new"
-      };
-
-      const { data: leadData, error: leadError } = await insertLead(leadPayload);
-      if (leadError) throw new Error("Lead insert failed: " + leadError.message);
-
-      const leadId = leadData[0].id;
-
-
-
-      // -----------------------------------
-      // 2️⃣ ENQUIRY PAYLOAD
-      // -----------------------------------
-      const enquiryPayload = {
-        lead_id: leadId,
-        message: formData.get("message") || null,
-        interest: formData.get("service") || null,
-        budget: formData.get("budget") || null,
-        source: "website"
-      };
-
-      const { error: enquiryError } = await insertEnquiry(enquiryPayload);
-      if (enquiryError) throw new Error("Enquiry insert failed: " + enquiryError.message);
-
-
-
-      // -----------------------------------
-      // SUCCESS
-      // -----------------------------------
-      contactStatus.classList.remove("loading");
-      contactStatus.textContent = "✅ Request submitted successfully!";
-      contactStatus.style.backgroundColor = "#16a34a";
-      contactForm.reset();
-
-    } catch (err) {
-      contactStatus.classList.remove("loading");
-      contactStatus.textContent = "❌ Error: " + err.message;
-      contactStatus.style.backgroundColor = "#dc2626";
-      console.error("Contact Form Error:", err);
-    }
-  });
+    return { inserted, error };
 }
+
+// ========= Log Activity ===============
+async function logActivity(employee_id, action, details) {
+    return supabase.from("activity_log").insert([
+        {
+            employee_id,
+            action,
+            details,
+        }
+    ]);
+}
+
+window.insertLead = insertLead;
+window.logActivity = logActivity;
+
 
 // --- google translate ---
 function googleTranslateElementInit() {
