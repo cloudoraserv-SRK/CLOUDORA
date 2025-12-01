@@ -1,157 +1,134 @@
-// routefolder/supabase/supabase.js
+// ------------------------------
+// Cloudora CRM Supabase Client
+// ------------------------------
 
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
+const SUPABASE_ANON_KEY = "YOUR_ANON_KEY";
 
-// ✅ Supabase project credentials
-const supabaseUrl = "https://rfilnqigcadeawytwqmz.supabase.co";
-const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJmaWxucWlnY2FkZWF3eXR3cW16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxMzE2NTIsImV4cCI6MjA3OTcwNzY1Mn0.1wtcjczrzhv2YsE7hGQL11imPxmFVS4sjxlJGvIZ26o"
-                         
-// ✅ Initialize Supabase client
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// Create Supabase client
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// ✅ Storage bucket name
-export const UPLOAD_BUCKET = "uploads";
+// -------------------------------------------------
+// UNIVERSAL INSERT FUNCTION
+// -------------------------------------------------
+async function insertData(table, data) {
+  const { error } = await supabase.from(table).insert([data]);
 
-// ---------- UUID Generator ----------
-export function uuidv4() {
-  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-  );
+  if (error) {
+    console.error(`❌ Supabase Insert Error (${table}):`, error.message);
+    return { success: false, error: error.message };
+  }
+
+  return { success: true };
 }
 
-// ---------- File Upload Helper ----------
-export async function uploadFile(file, folder) {
-  if (!file) return null;
-  const ext = file.name.split('.').pop();
-  const path = `${folder}/${file.name.replace(/\s/g, "_")}_${Date.now()}.${ext}`;
-  const { error } = await supabase.storage.from(UPLOAD_BUCKET).upload(path, file, { upsert: true });
-  if (error) throw new Error("File upload failed: " + error.message);
-  const { data } = supabase.storage.from(UPLOAD_BUCKET).getPublicUrl(path);
-  return data.publicUrl;
+// -------------------------------------------------
+// UNIVERSAL UPDATE FUNCTION
+// -------------------------------------------------
+async function updateData(table, match, data) {
+  const { error } = await supabase.from(table).update(data).match(match);
+
+  if (error) {
+    console.error(`❌ Supabase Update Error (${table}):`, error.message);
+    return { success: false, error: error.message };
+  }
+
+  return { success: true };
 }
 
-// ---------- Lead + Trial Helpers ----------
-// Lead helpers
-export async function insertLead(leadData) {
-  return await supabase.from("lead").insert([leadData]).select();
+// -------------------------------------------------
+// UNIVERSAL SELECT FUNCTION
+// -------------------------------------------------
+async function fetchData(table, match = {}) {
+  const { data, error } = await supabase.from(table).select("*").match(match);
+
+  if (error) {
+    console.error(`❌ Supabase Select Error (${table}):`, error.message);
+    return { success: false, error: error.message, data: [] };
+  }
+
+  return { success: true, data };
 }
 
-export async function insertTrial(trialData) {
-  return await supabase.from("trial").insert([trialData]);
+// -------------------------------------------------
+// LEADS
+// -------------------------------------------------
+async function createLead(full_name, email, phone, source = "website") {
+  return insertData("leads", {
+    full_name,
+    email,
+    phone,
+    source,
+    created_at: new Date().toISOString()
+  });
 }
 
-// 🔑 AUTH HELPERS
-export async function signUp(email, password, metadata = {}) {
-  return await supabase.auth.signUp({ email, password, options: { data: metadata } })
+// -------------------------------------------------
+// EMPLOYEES
+// -------------------------------------------------
+async function createEmployee(data) {
+  return insertData("employees", data);
 }
 
-export async function signIn(email, password) {
-  return await supabase.auth.signInWithPassword({ email, password })
+// -------------------------------------------------
+// DEPARTMENTS
+// -------------------------------------------------
+async function createDepartment(name, description = "") {
+  return insertData("departments", { name, description });
 }
 
-export async function signOut() {
-  return await supabase.auth.signOut()
+// -------------------------------------------------
+// ROLES
+// -------------------------------------------------
+async function createRole(name, permissions = {}) {
+  return insertData("roles", { name, permissions });
 }
 
-export async function getSession() {
-  return await supabase.auth.getSession()
+// -------------------------------------------------
+// TASKS
+// -------------------------------------------------
+async function assignTask(title, description, assigned_to, assigned_by, due_date) {
+  return insertData("tasks", {
+    title,
+    description,
+    assigned_to,
+    assigned_by,
+    due_date
+  });
 }
 
-// 📊 LEAD + ENQUIRY HELPERS
-export async function getLeads() {
-  return await supabase.from('lead').select('*').order('created_at', { ascending: false })
+// -------------------------------------------------
+// ATTENDANCE
+// -------------------------------------------------
+async function logAttendance(employee_id, login_time = new Date().toISOString()) {
+  return insertData("attendance", { employee_id, login_time });
 }
 
-export async function getEnquiries() {
-  return await supabase.from('view_enquiry_full').select('*')
+// -------------------------------------------------
+// ACTIVITY LOG
+// -------------------------------------------------
+async function logActivity(employee_id, action, details = "") {
+  return insertData("activity_log", {
+    employee_id,
+    action,
+    details,
+    created_at: new Date().toISOString()
+  });
 }
 
-export async function insertEnquiry(enquiryData) {
-  return await supabase
-    .from("enquiry")
-    .insert([enquiryData])
-    .select();
-}
+// -------------------------------------------------
+// EXPORT TO WINDOW
+// -------------------------------------------------
+window.supabaseInsert = insertData;
+window.supabaseUpdate = updateData;
+window.supabaseFetch = fetchData;
 
-// 📝 APPLICATION HELPERS
-// 📝 APPLICATION HELPERS
-export async function getApplications() {
-  return await supabase.from("view_application_full").select("*");
-}
+window.createLead = createLead;
+window.createEmployee = createEmployee;
+window.createDepartment = createDepartment;
+window.createRole = createRole;
+window.assignTask = assignTask;
+window.logAttendance = logAttendance;
+window.logActivity = logActivity;
 
-export async function insertApplication(appData) {
-  return await supabase.from("application").insert([appData]);
-}
-
-
-// 📄 AGREEMENT HELPERS
-export async function insertAgreement(agreementData) {
-  return await supabase.from('agreement').insert([agreementData])
-}
-
-export async function getAgreements() {
-  return await supabase.from('agreement').select('*')
-}
-
-// 💼 SALES HELPERS
-export async function getSalesPipeline() {
-  return await supabase.from('view_sales_pipeline').select('*')
-}
-
-export async function insertSale(saleData) {
-  return await supabase.from('sales').insert([saleData])
-}
-
-// 🛠 TECHNICAL HELPERS
-export async function getTechnicalTasks() {
-  return await supabase.from('technical').select('*')
-}
-
-export async function insertTechnicalTask(taskData) {
-  return await supabase.from('technical').insert([taskData])
-}
-
-export async function insertDeliverable(deliverableData) {
-  return await supabase.from('deliverables').insert([deliverableData])
-}
-
-// 🎧 SUPPORT HELPERS
-export async function getSupportTickets() {
-  return await supabase.from('view_support_full').select('*')
-}
-
-export async function insertSupportTicket(ticketData) {
-  return await supabase.from('support').insert([ticketData])
-}
-
-// 👥 ASSIGNMENT HELPERS
-export async function assignLead(assignData) {
-  return await supabase.from('assignment').insert([assignData])
-}
-
-export async function getAssignments() {
-  return await supabase.from('assignment').select('*')
-}
-
-// 📜 ACTIVITY LOGS
-export async function logActivity(logData) {
-  return await supabase.from('activity_logs').insert([logData])
-}
-
-export async function getActivityLogs(entityType, entityId) {
-  return await supabase
-    .from('activity_logs')
-    .select('*')
-    .eq('entity_type', entityType)
-    .eq('entity_id', entityId)
-    .order('created_at', { ascending: false })
-}
-
-// ⚙️ ROUTING RULES
-export async function getRoutingRules() {
-  return await supabase.from('routing_rules').select('*')
-}
-
-export async function insertRoutingRule(ruleData) {
-  return await supabase.from('routing_rules').insert([ruleData])
-}
+console.log("🔥 Cloudora Supabase CRM initialized successfully");
