@@ -261,7 +261,7 @@ if (contactForm) {
       console.error("Contact Form Error:", err);
     }
   });
-});
+}
 
 
  const { data, error } = await supabase.from("lead").insert([{ full_name: "Test User" }]);
