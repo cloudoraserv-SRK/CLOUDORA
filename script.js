@@ -206,10 +206,10 @@ if (contactForm) {
 
     const formData = new FormData(contactForm);
 
-    try {
-      // ---------------------------
-      // 1️⃣ INSERT INTO LEAD TABLE
-      // ---------------------------
+   try {
+      // -----------------------------------
+      // 1️⃣ LEAD PAYLOAD
+      // -----------------------------------
       const leadPayload = {
         full_name: formData.get("name"),
         email: formData.get("email"),
@@ -226,46 +226,43 @@ if (contactForm) {
       const { data: leadData, error: leadError } = await insertLead(leadPayload);
       if (leadError) throw new Error("Lead insert failed: " + leadError.message);
 
-      const leadId = leadData[0].id; // 🟢 Lead successfully created
+      const leadId = leadData[0].id;
 
 
-      // ------------------------------
-      // 2️⃣ INSERT INTO ENQUIRY TABLE
-      // ------------------------------
-     const leadPayload = {
-  full_name: formData.get("name"),
-  email: formData.get("email"),
-  phone: formData.get("phone"),
-  country: null,  // ❗ your form has no country field
-  address: formData.get("address") || null,
-  interest: formData.get("service") || null,
-  budget: formData.get("budget") || null,
-  message: formData.get("message") || null,
-  source: "website",
-  status: "new"
-};
+
+      // -----------------------------------
+      // 2️⃣ ENQUIRY PAYLOAD
+      // -----------------------------------
+      const enquiryPayload = {
+        lead_id: leadId,
+        message: formData.get("message") || null,
+        interest: formData.get("service") || null,
+        budget: formData.get("budget") || null,
+        source: "website"
+      };
 
       const { error: enquiryError } = await insertEnquiry(enquiryPayload);
       if (enquiryError) throw new Error("Enquiry insert failed: " + enquiryError.message);
 
 
-      // ------------------------------
-      // ✅ SUCCESS
-      // ------------------------------
-      contactStatus.classList.remove("loading");
-      contactStatus.textContent = "✅ Request submitted! We will contact you shortly.";
-      contactStatus.style.backgroundColor = "#16a34a";
 
+      // -----------------------------------
+      // SUCCESS
+      // -----------------------------------
+      contactStatus.classList.remove("loading");
+      contactStatus.textContent = "✅ Request submitted successfully!";
+      contactStatus.style.backgroundColor = "#16a34a";
       contactForm.reset();
 
     } catch (err) {
       contactStatus.classList.remove("loading");
-      contactStatus.textContent = "❌ Error submitting form: " + err.message;
+      contactStatus.textContent = "❌ Error: " + err.message;
       contactStatus.style.backgroundColor = "#dc2626";
       console.error("Contact Form Error:", err);
     }
   });
-}
+});
+
 
  const { data, error } = await supabase.from("lead").insert([{ full_name: "Test User" }]);
 console.log(error);
