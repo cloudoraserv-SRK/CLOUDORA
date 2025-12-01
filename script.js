@@ -263,11 +263,6 @@ if (contactForm) {
   });
 }
 
-
- const { data, error } = await supabase.from("lead").insert([{ full_name: "Test User" }]);
-console.log(error);
-
-
 // --- google translate ---
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({
