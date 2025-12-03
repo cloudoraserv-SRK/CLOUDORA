@@ -38,20 +38,21 @@ if (languageSelect) {
 // 🧞 Initialize Genie Core
 genieCore.init({
   onOutput: async (txt) => {
-    console.log("%cGenie:", "color:#0ff;font-weight:bold", txt);
-
-    // speak only if audio toggle ON
-    if (audioToggle?.checked) {
-      try { await speak(txt); } catch(e){ console.warn("TTS error", e); }
-    }
-
-    showToast(txt); // temporary message
+    addMessage(txt, "genie");
+    if (audioToggle && audioToggle.checked) speak(txt);
   },
 
-  onUpdateUI: ({ mode, stepIndex, step }) => {
-    console.log("UI Update →", mode, stepIndex, step);
-    // here later we will display step-based option buttons
+  onOptions: (opts) => {
+    showOptions(opts);
   }
+});
+
+document.getElementById("chatSendBtn")?.addEventListener("click", async () => {
+  const txt = document.getElementById("chatInput").value.trim();
+  if (!txt) return;
+  addMessage(txt, "user");
+  document.getElementById("chatInput").value = "";
+  await genieCore.handleUserInput(txt);
 });
 
 // 🔊 Toast-style popup (temporary UI)
