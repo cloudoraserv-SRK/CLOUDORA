@@ -261,6 +261,25 @@ export const genieCore = {
   return;
 }
 
+     if (this.state.mode === "business_flow") {
+  switch (input.toLowerCase()) {
+    case "real_estate":
+      return this.pitchCategory("real_estate");
+
+    case "restaurants":
+      return this.pitchCategory("restaurants");
+
+    case "ecommerce":
+      return this.pitchCategory("ecommerce");
+
+    case "travel":
+      return this.pitchCategory("travel");
+
+    // continue for all categories
+  }
+}
+
+     
     // If we are in internal policy mode: answer directly
     if (this.mode === "internal_policy_mode") {
       const answer = this._answerInternal(text);
