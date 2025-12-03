@@ -105,6 +105,235 @@ const CATEGORY_MAP = {
   "logistics": { name: "Logistics & Transport", pitchKey: "pitch.logistics" },
   "home-services": { name: "Home Services", pitchKey: "pitch.homeservices" }
 };
+// -----------------------------
+// CATEGORY PITCHES (full engine)
+// -----------------------------
+const CATEGORY_PITCHES = {
+  "real_estate": {
+    title: "Real Estate",
+    short: "Get genuine buyer & seller enquiries, CRM & telecaller support.",
+    bullets: [
+      "Verified buyer/seller leads",
+      "Property listing promotion & ads",
+      "CRM for follow-ups + telecaller support"
+    ],
+    ctas: [
+      { label: "Show Property Lead Plan", action: "plan_real_estate" },
+      { label: "Get Quick Quote", action: "quote" },
+      { label: "Connect to Sales", action: "connect_sales" }
+    ]
+  },
+
+  "restaurants": {
+    title: "Restaurants & Cafes",
+    short: "Increase walk-ins & online orders with promotions, Google ranking & manpower.",
+    bullets: [
+      "Local ads to boost walk-ins",
+      "Menu promotions & order system",
+      "Google Maps ranking & reputation management"
+    ],
+    ctas: [
+      { label: "Show Restaurant Plan", action: "plan_restaurants" },
+      { label: "Get Marketing Quote", action: "quote" },
+      { label: "Connect to Sales", action: "connect_sales" }
+    ]
+  },
+
+  "local_services": {
+    title: "Local Service Providers",
+    short: "Daily service calls via hyperlocal ads, WhatsApp outreach & listing.",
+    bullets: [
+      "Google Business listing setup",
+      "WhatsApp marketing templates",
+      "Hyperlocal ad campaigns for daily requests"
+    ],
+    ctas: [
+      { label: "Show Local Lead Plan", action: "plan_local_services" },
+      { label: "Get Quick Quote", action: "quote" },
+      { label: "Join as Service Partner", action: "join_partner" }
+    ]
+  },
+
+  "retail": {
+    title: "Retail Shops",
+    short: "Drive footfall with store promotions, local ads & online catalogues.",
+    bullets: [
+      "Store promotions & local ads",
+      "Simple online catalogue",
+      "Customer retention programs"
+    ],
+    ctas: [
+      { label: "Show Retail Plan", action: "plan_retail" },
+      { label: "Get Quote", action: "quote" },
+      { label: "Connect to Sales", action: "connect_sales" }
+    ]
+  },
+
+  "startups": {
+    title: "Startups & Entrepreneurs",
+    short: "End-to-end setup: branding, website, hiring & growth support.",
+    bullets: [
+      "Full business setup & branding",
+      "MVP website/app & go-to-market",
+      "Hiring support and training"
+    ],
+    ctas: [
+      { label: "Show Startup Pack", action: "plan_startups" },
+      { label: "Request Strategy Call", action: "strategy_call" },
+      { label: "Get Quote", action: "quote" }
+    ]
+  },
+
+  "education": {
+    title: "Education & Training",
+    short: "Drive student admissions with targeted campaigns and CRM follow-ups.",
+    bullets: [
+      "Admission enquiry campaigns",
+      "Landing pages & CRM for follow-ups",
+      "Faculty recruitment support"
+    ],
+    ctas: [
+      { label: "Show Education Pack", action: "plan_education" },
+      { label: "Request Demo", action: "demo" },
+      { label: "Get Quote", action: "quote" }
+    ]
+  },
+
+  "ecommerce": {
+    title: "E-commerce Sellers",
+    short: "Boost orders via product creatives, ads & remarketing funnels.",
+    bullets: [
+      "Product catalog & creatives",
+      "Performance ads + remessaging",
+      "Conversion optimization & catalog management"
+    ],
+    ctas: [
+      { label: "Show E-commerce Pack", action: "plan_ecommerce" },
+      { label: "Get Quick Quote", action: "quote" },
+      { label: "Connect to Sales", action: "connect_sales" }
+    ]
+  },
+
+  "health": {
+    title: "Health & Wellness",
+    short: "More appointments and memberships with local SEO and booking automation.",
+    bullets: [
+      "Appointment booking systems",
+      "Local SEO & Google maps optimization",
+      "Content & review management to build trust"
+    ],
+    ctas: [
+      { label: "Show Health Plan", action: "plan_health" },
+      { label: "Request Demo", action: "demo" },
+      { label: "Get Quote", action: "quote" }
+    ]
+  },
+
+  "automobile": {
+    title: "Automobile",
+    short: "Generate buyer enquiries, test-drive bookings & service appointments.",
+    bullets: [
+      "Local ads for buyer leads",
+      "Test-drive & booking funnels",
+      "Service appointment automation"
+    ],
+    ctas: [
+      { label: "Show Auto Pack", action: "plan_automobile" },
+      { label: "Get Quote", action: "quote" },
+      { label: "Connect to Sales", action: "connect_sales" }
+    ]
+  },
+
+  "travel": {
+    title: "Travel & Tourism",
+    short: "Drive booking enquiries with targeted campaigns, landing pages & automation.",
+    bullets: [
+      "Campaigns for tour packages",
+      "Booking enquiry funnels",
+      "WhatsApp automation for follow-ups"
+    ],
+    ctas: [
+      { label: "Show Travel Pack", action: "plan_travel" },
+      { label: "Request Demo", action: "demo" },
+      { label: "Get Quote", action: "quote" }
+    ]
+  },
+
+  "beauty": {
+    title: "Beauty & Fashion",
+    short: "More bookings & brand presence with local ads and appointment systems.",
+    bullets: [
+      "Local promotions & booking system",
+      "Instagram/Facebook campaigns",
+      "Portfolio & appointment automation"
+    ],
+    ctas: [
+      { label: "Show Beauty Plan", action: "plan_beauty" },
+      { label: "Get Quote", action: "quote" },
+      { label: "Connect to Sales", action: "connect_sales" }
+    ]
+  },
+
+  "finance": {
+    title: "Financial Services",
+    short: "Generate qualified leads and appointments via trust-building campaigns.",
+    bullets: [
+      "Lead generation for insurance / loans",
+      "Automated appointment scheduling",
+      "CRM funnels for follow-ups"
+    ],
+    ctas: [
+      { label: "Show Finance Pack", action: "plan_finance" },
+      { label: "Request Demo", action: "demo" },
+      { label: "Get Quote", action: "quote" }
+    ]
+  },
+
+  "manufacturing": {
+    title: "Manufacturing & Wholesale",
+    short: "Get B2B buyer leads, distributor outreach and product cataloging.",
+    bullets: [
+      "B2B lead campaigns",
+      "Distributor network outreach",
+      "Product catalog creation"
+    ],
+    ctas: [
+      { label: "Show Manufacturing Pack", action: "plan_manufacturing" },
+      { label: "Request B2B Quote", action: "quote" },
+      { label: "Connect to Sales", action: "connect_sales" }
+    ]
+  },
+
+  "freelancer": {
+    title: "Freelancers & Creators",
+    short: "Find high-value clients with portfolio websites and targeted marketing.",
+    bullets: [
+      "Portfolio website & branding",
+      "Client acquisition campaigns",
+      "Social proof & promotion"
+    ],
+    ctas: [
+      { label: "Show Freelancer Pack", action: "plan_freelancer" },
+      { label: "Get Quick Quote", action: "quote" },
+      { label: "Join Marketplace", action: "join_marketplace" }
+    ]
+  },
+
+  "logistics": {
+    title: "Logistics & Transport",
+    short: "Increase bookings and visibility via map ranking and booking systems.",
+    bullets: [
+      "Booking & enquiry systems",
+      "Local map visibility",
+      "Staff recruitment for operations"
+    ],
+    ctas: [
+      { label: "Show Logistics Pack", action: "plan_logistics" },
+      { label: "Get Quote", action: "quote" },
+      { label: "Connect to Sales", action: "connect_sales" }
+    ]
+  }
+};
 
 // -----------------------------
 // FLOW DEFINITIONS (keys map to i18n keys in /i18n/*.json)
