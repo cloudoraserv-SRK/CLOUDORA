@@ -122,3 +122,43 @@ select{
   background:#ffffff15;padding:8px 14px;border-radius:999px;
   margin:0 6px;font-weight:700;
 }
+
+
+/* ---------------- small additions ---------------- */
+
+/* float effect for cloud items (gentle up/down) */
+@keyframes cloudFloatY { 0%{transform:translateY(0)} 50%{transform:translateY(-10px)} 100%{transform:translateY(0)} }
+.cloud-item { animation: cloudFloatY 6s ease-in-out infinite; }
+
+/* ensure clouds sit visually above bg video */
+.cloud-area { position: relative; z-index: 30; }
+
+/* genie awake state: center genie visually and move question under it */
+/* requires script to add body.genie-awake class */
+body.genie-awake .stage-inner {
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+body.genie-awake .genie-column { order: 0; width: 100%; display:flex; justify-content:center; }
+body.genie-awake .question-column { order: 1; width: 95%; max-width:720px; }
+
+/* center genie image horizontally by using left/transform already used */
+.genie-img { left: 50%; transform: translateX(-50%); transition: transform .45s ease; }
+
+/* awake scale from script animation — keep responsive safe */
+body.genie-awake .genie-img { transform: translateX(-50%) scale(1.08); }
+
+/* narrow screen: stacked layout */
+body.narrow .stage-inner { flex-direction: column; align-items: center; }
+body.narrow .genie-column, body.narrow .question-column { width:92%; }
+
+/* allow button & audio switch spacing */
+#allowBtn { margin-right: 8px; }
+#audioSwitch { margin-left: 8px; }
+
+/* ensure cloud labels readable over bg */
+.cloud-label { color: #021; text-shadow: 0 1px 0 rgba(255,255,255,0.5); }
+
+/* keep cloud area above video and overlay */
+.cloud-area { z-index: 40; pointer-events:auto; }
