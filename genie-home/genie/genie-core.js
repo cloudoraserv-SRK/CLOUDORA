@@ -431,11 +431,35 @@
     }
   };
 
-  // toggle listening wrapper
-  Genie.prototype.toggleListen = function(){
-    this.toggleListenCalled = true;
-    this.toggleListen(); // placeholder if script binds differently
-  };
+  // replace the old broken toggleListen implementation with this:
+Genie.prototype.toggleListen = function(){
+  // ensure mic permission
+  if(!this.micAllowed){
+    alert('Please click Allow Audio first to enable microphone (HTTPS or localhost required).');
+    return;
+  }
+  // ensure recognition exists
+  if(!this.recognition) this._setupRecognition();
+  if(!this.recognition){
+    alert('Speech recognition not available in this browser.');
+    return;
+  }
+
+  if(!this.isListening){
+    try{
+      this.recognition.start();
+      this.isListening = true;
+      if(this.dom && this.dom.speechStatus) this.dom.speechStatus.textContent = 'Microphone: listening';
+    }catch(e){
+      console.warn('recognition.start failed', e);
+    }
+  } else {
+    try{ this.recognition.stop(); }catch(e){ /* ignore */ }
+    this.isListening = false;
+    if(this.dom && this.dom.speechStatus) this.dom.speechStatus.textContent = 'Microphone: not active';
+  }
+};
+
 
   // attach to window
   window.Genie = Genie;
