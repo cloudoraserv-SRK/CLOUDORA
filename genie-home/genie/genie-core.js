@@ -464,6 +464,15 @@ Genie.prototype.showInput = function(show){
   if(!box) return;
   box.style.display = show ? "block" : "none";
 };
+export const genieCore = {
+    start() {
+        console.log("Genie Core Started");
+    },
+
+    speak(text) {
+        console.log("Genie speaking:", text);
+    }
+};
 
   // attach to window
   window.Genie = Genie;
