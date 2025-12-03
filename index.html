@@ -111,30 +111,48 @@
     </label>
   </div>
 
-    <!-- =======================
-     GENIE INTRO SECTION
+<!-- =======================
+   GENIE MAGIC INTRO SECTION
 =========================== -->
-<section class="geniehero">
-    <div class="geniehero-content">
 
-        <h1 class="genietitle">
-            Your AI Genie for Business Growth
-        </h1>
+<section class="genie-magic">
 
-        <p class="geniesubtitle">
-            I’m here to automate your work, boost your business, and guide you with smart decisions.
-        </p>
+    <!-- Floating particles behind -->
+    <div id="particles"></div>
 
-        <div class="genie-card">
-            <img src="assets/genie.png" class="genie-img" alt="Genie" />
+    <!-- TEXT HEADER -->
+    <div class="genie-header">
+        <h1>Your AI Genie for Business Growth</h1>
+        <p>I automate your tasks, optimise your workflow, and guide you with intelligent decisions.</p>
+        <p class="small">Watch the intro, explore the genie page, or interact directly with the AI.</p>
+    </div>
 
-            <p class="genie-intro-text">
-                Tap the button to see how Genie transforms your workflow into magic.
-            </p>
+    <!-- 3 MAGICAL CARDS -->
+    <div class="genie-grid">
 
-            <button class="btn" id="playGenieIntro">
-                ▶ Play Genie Introduction
+        <!-- GENIE IMAGE -->
+        <div class="magic-card">
+            <div class="glow"></div>
+            <img src="assets/genie.png" alt="Genie" class="magic-img" />
+            <button class="magic-btn" id="playGenieIntro">▶ Play Genie Intro</button>
+        </div>
+
+        <!-- GENIE PAGE PREVIEW -->
+        <div class="magic-card">
+            <div class="glow"></div>
+            <img src="assets/genieimage.png" alt="Genie Page Preview" class="magic-img" />
+            <button class="magic-btn" onclick="window.location.href='genie-home/index.html'">
+                Open Genie Page
             </button>
+        </div>
+
+        <!-- GENIE INTRO VIDEO -->
+        <div class="magic-card">
+            <div class="glow"></div>
+            <video class="magic-video" controls>
+                <source src="assets/genieintro.mp4" type="video/mp4">
+            </video>
+            <button class="magic-btn">Watch Full Intro</button>
         </div>
 
     </div>
@@ -155,20 +173,7 @@
             </video>
         </div>
     </section>
-
-    <!-- =======================
-         GENIE PAGE PREVIEW
-    ========================== -->
-    <section class="genie-preview">
-        <h2>Experience the Genie Page</h2>
-        <p>See how Genie interacts with users in real-time.</p>
-
-        <div class="preview-card">
-            <img src="assets/genieimage.png" alt="Genie Page Preview" />
-            <button class="btn" onclick="window.location.href='genie-home/index.html'">Open Genie Page</button>
-        </div>
-    </section>
-    
+  
 <section class="hero" id="hero">
   <div class="hero-content">
     <h1 class="title" data-reveal>Grow Your Business with <span class="highlight">Cloudora</span> 🚀</h1>
