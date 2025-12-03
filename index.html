@@ -111,39 +111,34 @@
     </label>
   </div>
 
-<section class="genie-section">
+
+    <section class="genie-section">
 
     <div class="genie-container">
 
-        <!-- LEFT SIDE — CAROUSEL -->
-        <div class="carousel-panel">
+        <!-- LEFT SIDE — TWO CARDS VERTICAL -->
+        <div class="left-stack">
 
-            <h2 class="side-title">Explore Genie Features</h2>
+            <!-- 1 — Preview Card -->
+            <div class="stack-card">
+                <img src="assets/genieimage.png" class="stack-img" />
+                <h3>Genie Interaction Page</h3>
+                <p>Explore how Genie talks and guides users through smart onboarding.</p>
+                <button class="magic-btn" onclick="window.location.href='genie-home/index.html'">
+                    Open Genie Page
+                </button>
+            </div>
 
-            <div class="carousel">
-
-                <!-- Slide 1 -->
-                <div class="carousel-item">
-                    <img src="assets/genieimage.png" class="carousel-img" />
-                    <h3>Genie Interaction Page</h3>
-                    <p>Experience live onboarding, voice interaction, chat, and task creation.</p>
-                    <button class="magic-btn" onclick="window.location.href='genie-home/index.html'">
-                        Open Genie Page
-                    </button>
-                </div>
-
-                <!-- Slide 2 -->
-                <div class="carousel-item">
-                    <video class="carousel-img" controls>
-                        <source src="assets/genieintro.mp4" type="video/mp4">
-                    </video>
-                    <h3>Genie Intro Video</h3>
-                    <p>Watch how Cloudora Genie assists users with automation and intelligence.</p>
-                    <button class="magic-btn">
-                        Watch Full Intro
-                    </button>
-                </div>
-
+            <!-- 2 — Video Card -->
+            <div class="stack-card">
+                <video class="stack-img" controls>
+                    <source src="assets/genie-intro.mp4">
+                </video>
+                <h3>Genie Intro Video</h3>
+                <p>Watch the full introduction of Cloudora Genie and its capabilities.</p>
+                <button class="magic-btn">
+                    Watch Full Intro
+                </button>
             </div>
 
         </div>
@@ -153,8 +148,7 @@
             <img src="assets/genie.png" class="genie-big" />
             <h2 class="genie-title">Your AI Genie</h2>
             <p class="genie-info">
-                Smart, powerful and always ready. Genie adapts to your business
-                and helps you grow with automation, insights and voice guidance.
+                Smart, voice-enabled, and always ready to help your business grow through intelligent automation.
             </p>
             <button class="magic-btn" id="playGenieIntro">
                 ▶ Play Genie Intro
@@ -164,6 +158,7 @@
     </div>
 
 </section>
+
     <!-- =======================
          CLOUDORA INTRO VIDEO
     ========================== -->
