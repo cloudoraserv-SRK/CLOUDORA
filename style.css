@@ -360,99 +360,113 @@ body {
     color: #333;
     overflow-x: hidden;
 }
-/* Genie */
-.genie-magic {
+
+/* MAIN SECTION */
+.genie-section {
     padding: 80px 20px;
-    background: #07101c;      /* fixed dark bg */
+    background: #0a0f1c;
     color: #fff;
-    text-align: center;
-    overflow: hidden;
 }
 
-/* Section Title */
-.genie-title-box {
-    max-width: 800px;
-    margin: 0 auto 60px;
-}
-
-.genie-title-box h1 {
-    font-size: 45px;
-    font-weight: 800;
-    color: #78a3ff;
-}
-
-.genie-title-box p {
-    font-size: 18px;
-    opacity: 0.75;
-}
-
-.genie-title-box .sub {
-    font-size: 16px;
-    opacity: 0.55;
-}
-
-/* Grid Layout */
-.genie-grid {
+/* MAIN WRAPPER */
+.genie-container {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 35px;
+    align-items: flex-start;
+    gap: 40px;
+    flex-wrap: wrap;
 }
 
-/* Cards */
-.magic-card {
-    width: 320px;
-    padding: 25px;
-    border-radius: 25px;
-    background: rgba(255,255,255,0.06);
-    backdrop-filter: blur(12px);
-    box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+/* LEFT PANEL */
+.carousel-panel {
+    width: 420px;
+}
+
+.side-title {
+    font-size: 26px;
+    margin-bottom: 20px;
+    color: #91aaff;
+}
+
+/* CAROUSEL CONTAINER */
+.carousel {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    height: 480px;
+}
+
+/* SLIDE ITEMS */
+.carousel-item {
+    width: 100%;
+    padding: 20px;
+    background: rgba(255,255,255,0.07);
+    backdrop-filter: blur(10px);
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     text-align: center;
-    transition: 0.35s;
+    animation: slideUp 12s infinite;
 }
 
-/* Card hover */
-.magic-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 55px rgba(0,120,255,0.5);
-}
-
-/* Card Title */
-.card-title {
-    font-size: 22px;
-    margin-bottom: 10px;
-    color: #87aaff;
-}
-
-.card-text {
-    font-size: 15px;
-    opacity: 0.7;
-    margin-bottom: 15px;
-}
-
-/* Media inside cards */
-.magic-img,
-.magic-video {
+/* CAROUSEL IMAGE/VIDEO */
+.carousel-img {
     width: 100%;
     border-radius: 15px;
     margin-bottom: 15px;
 }
 
-/* Button */
+/* RIGHT SIDE GENIE PANEL */
+.genie-panel {
+    width: 360px;
+    padding: 25px;
+    text-align: center;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(14px);
+    border-radius: 22px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+.genie-big {
+    width: 100%;
+    border-radius: 20px;
+    margin-bottom: 20px;
+}
+
+.genie-title {
+    color: #87aaff;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.genie-info {
+    font-size: 15px;
+    opacity: 0.7;
+    margin-bottom: 20px;
+}
+
+/* BUTTON */
 .magic-btn {
     padding: 12px 30px;
-    border-radius: 40px;
     border: none;
-    background: linear-gradient(135deg, #4d6bff, #879aff);
+    border-radius: 40px;
+    background: linear-gradient(135deg, #4b6aff, #8095ff);
     color: #fff;
-    font-weight: 600;
     cursor: pointer;
+    font-weight: 600;
     transition: 0.25s;
 }
 
 .magic-btn:hover {
     transform: scale(1.08);
-    background: linear-gradient(135deg, #2c4aff, #5d73ff);
+    background: linear-gradient(135deg, #2e48ff, #5b6eff);
+}
+
+/* Simple auto slide animation */
+@keyframes slideUp {
+    0% { transform: translateY(0); }
+    45% { transform: translateY(0); }
+    55% { transform: translateY(-520px); }
+    100% { transform: translateY(-520px); }
 }
 
 /* =====================
