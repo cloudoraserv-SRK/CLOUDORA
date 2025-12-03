@@ -1,11 +1,11 @@
-/* -------------------------------------
+/* ==========================================
    GLOBAL THEME
--------------------------------------- */
+========================================== */
 :root {
   --bg: #020b1d;
   --text: rgba(255,255,255,0.92);
+  --glass: rgba(255,255,255,0.10);
   --soft: rgba(255,255,255,0.15);
-  --glass: rgba(255,255,255,0.08);
   --accent1: #49c9ff;
   --accent2: #0b82e6;
 }
@@ -15,22 +15,21 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: Inter, system-ui, sans-serif;
+  font-family: Inter, system-ui;
   overflow-x: hidden;
 }
 
-/* -------------------------------------
-   BACKGROUND VIDEO + OVERLAY
--------------------------------------- */
+/* ==========================================
+   BACKGROUND VIDEO
+========================================== */
 .bg-video {
   position: fixed;
   inset: 0;
   width: 100%; height: 100%;
   object-fit: cover;
-  z-index: 0;
   filter: brightness(.45) contrast(.9);
+  z-index: 0;
 }
-
 .bg-overlay {
   position: fixed;
   inset: 0;
@@ -38,57 +37,64 @@ body {
   z-index: 1;
 }
 
-/* -------------------------------------
-   HEADER (audio switch + language + help)
--------------------------------------- */
+/* ==========================================
+   HEADER
+========================================== */
 .header {
   position: fixed;
-  z-index: 50;
   top: 18px; left: 18px; right: 18px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  z-index: 60;
 }
+
+.header-left { display: flex; align-items: center; gap: 10px; }
+.cloud-logo {
+  width: 50px; height: 32px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #53d5ff, #0f7cd5);
+}
+
+.brand-title { font-size: 22px; font-weight: 800; }
+.brand-sub { font-size: 12px; opacity: .75; }
 
 .header-right {
   display: flex;
-  gap: 10px;
   align-items: center;
+  gap: 12px;
 }
 
-#audioSwitch, #langSelect, #helpBtn {
-  padding: 8px 12px;
+/* FIX: language dropdown visibility */
+#langSelect {
+  padding: 8px;
   border-radius: 10px;
-  background: rgba(0,0,0,0.45);
+  background: rgba(0,0,0,0.45) !important;
+  color: white !important;
   border: 1px solid rgba(255,255,255,0.25);
-  color: white;
-  cursor: pointer;
 }
 
-/* -------------------------------------
+/* ==========================================
    MAIN STAGE
--------------------------------------- */
+========================================== */
 .stage {
-  position: relative;
-  z-index: 20;
-  padding-top: 120px;
   min-height: 100vh;
+  padding-top: 120px;
   display: flex;
   justify-content: center;
+  z-index: 30;
 }
-
 .stage-inner {
   width: 100%;
   max-width: 1100px;
   display: flex;
-  gap: 40px;
-  align-items: flex-start;
+  gap: 50px;
   justify-content: center;
 }
 
-/* -------------------------------------
-   GENIE SECTION
--------------------------------------- */
+/* ==========================================
+   GENIE COLUMN
+========================================== */
 .genie-column {
   width: 380px;
   display: flex;
@@ -97,144 +103,153 @@ body {
   position: relative;
 }
 
-/* Correct cloth position */
+/* FIXED GENIE WRAP */
+.genie-wrap {
+  width: 100%;
+  min-height: 420px;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+/* GENIE IMAGE CENTER PERFECT */
+.genie-img {
+   width: 430px !important;
+  max-width: 430px !important;
+  transform-origin: bottom center;
+  transform-origin: bottom center;
+  z-index: 5;
+  position: relative;
+}
+
+/* When audio is allowed (genie-awake) */
+body.genie-awake .genie-img {
+  transform: scale(1.32) !important; /* Bigger genie */
+  animation: genieBreatheBig 3s ease-in-out infinite !important;
+}
+
+/* Big breathing animation */
+@keyframes genieBreatheBig {
+  0%   { transform: scale(1.32); }
+  50%  { transform: scale(1.38); }
+  100% { transform: scale(1.32); }
+}
+
+
+/* CLOTH BOX PERFECT ABOVE GENIE */
 .cloth {
   position: absolute;
-  top: 20px;
-  padding: 8px 16px;
+  top: 30px;
   left: 50%;
+   font size: 18px;
   transform: translateX(-50%);
   background: #ffe57a;
+  padding: 12px 20px;
   border-radius: 12px;
   font-weight: 700;
-  color: #032136;
-  transition: 0.4s;
+  color: #062130;
   z-index: 10;
+  transition: 0.4s ease;
 }
-.cloth.hidden { opacity: 0; transform: translate(-50%, -20px) scale(.7); }
-
-/* GENIE IMAGE PERFECT */
-.genie-img {
-  width: 320px;
-  position: relative;
-  z-index: 5;
-  transition: transform 0.6s ease;
-  transform-origin: bottom center;
+.cloth.hidden {
+  opacity: 0; transform: translate(-50%, -20px) scale(.7);
 }
 
-/* BREATHING ANIMATION */
-body.genie-awake .genie-img {
-  animation: breathe 3.2s ease-in-out infinite;
-  transform: scale(1.05);
-}
-
-@keyframes breathe {
-  0%   { transform: scale(1.05); }
-  50%  { transform: scale(1.12); }
-  100% { transform: scale(1.05); }
-}
-
-/* OLD BUTTON REMOVED */
+/* REMOVE OLD BUTTONS */
 .controls { display: none !important; }
 
-/* -------------------------------------
+/* ==========================================
    QUESTION AREA
--------------------------------------- */
+========================================== */
 .question-column {
   width: 480px;
   max-width: 90%;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
 }
 
 .question-card {
-  background: var(--glass);
   padding: 20px;
+  background: var(--glass);
   border-radius: 16px;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.45);
 }
 
 .question-text {
   font-size: 22px;
   font-weight: 800;
 }
+.sub-text {
+  font-size: 13px;
+  opacity: .75;
+  margin-top: 6px;
+}
 
-/* TEXTBOX */
+/* TEXT BOX INPUT */
 #userInputBox {
   width: 100%;
   margin-top: 12px;
   padding: 12px;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
   border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.22);
   color: white;
   display: none;
   font-size: 16px;
 }
 
-/* AUTO-SUGGESTION */
-#suggestBox {
-  display: none;
-  background: rgba(0,0,0,0.55);
-  margin-top: 4px;
-  padding: 8px;
-  border-radius: 8px;
-  font-size: 14px;
-  color: #9ddcff;
-}
-
-/* LISTEN + SKIP BUTTONS */
+/* BUTTONS BELOW QUESTION */
 .question-buttons {
   margin-top: 14px;
   display: flex;
-  gap: 12px;
+  gap: 14px;
 }
-
 .listen-btn {
   width: 48px; height: 48px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.2);
-  border: 1px solid rgba(255,255,255,0.25);
+  font-size: 22px;
   display: flex;
   align-items: center; justify-content: center;
-  font-size: 22px;
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.25);
   cursor: pointer;
 }
 
 .skip-btn {
-  padding: 10px 18px;
-  background: rgba(255,255,255,0.12);
+  padding: 10px 14px;
   border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
   cursor: pointer;
 }
 
-/* -------------------------------------
-   CLOUD OPTION BUTTONS
--------------------------------------- */
+/* ==========================================
+   CLOUD OPTIONS
+========================================== */
 .cloud-area {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
   justify-content: center;
-  margin-top: 10px;
-  z-index: 40;
+  gap: 18px;
+  margin-top: 15px;
 }
 
 .cloud-item {
   width: 180px;
   height: 110px;
   position: relative;
+  animation: floatCloud 5s ease-in-out infinite,
+             fadeInCloud .6s ease-out forwards;
   cursor: pointer;
-  animation: floatY 5s ease-in-out infinite, slideIn 0.6s ease-out forwards;
 }
 
 .cloud-item img.cloud-bg {
   width: 100%; height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 16px 20px rgba(0,0,0,0.4));
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4));
 }
 
 .cloud-label {
@@ -245,37 +260,59 @@ body.genie-awake .genie-img {
   font-weight: 800;
 }
 
-/* FLOATING ANIMATION */
-@keyframes floatY {
-  0% { transform: translateY(0px); }
+@keyframes floatCloud {
+  0% { transform: translateY(0); }
   50% { transform: translateY(-12px); }
-  100% { transform: translateY(0px); }
+  100% { transform: translateY(0); }
+}
+@keyframes fadeInCloud {
+  from { opacity: 0; transform: translateY(20px) scale(.9); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* SLIDE-IN CLOUD ENTRY */
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(40px) scale(.8); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-/* TELEPORT DISAPPEAR */
+/* TELEPORT DISMISS */
 .teleport {
   animation: teleportOut 0.65s forwards;
 }
 @keyframes teleportOut {
   0% { opacity: 1; transform: scale(1); }
-  50% { opacity: .5; transform: scale(.7) rotate(12deg); }
-  100% { opacity: 0; transform: scale(0) rotate(28deg); }
+  50% { opacity: .5; transform: scale(.7) rotate(10deg); }
+  100% { opacity: 0; transform: scale(0) rotate(20deg); }
 }
 
-/* -------------------------------------
-   MOBILE FIX
--------------------------------------- */
-@media (max-width: 720px){
+/* ==========================================
+   FOOTER
+========================================== */
+.footer {
+  position: fixed;
+  bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 20;
+}
+.footer-clouds {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+.footer-pill {
+  width: 180px;
+  text-align: center;
+  padding: 8px 14px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 20px;
+  font-weight: 700;
+}
+
+/* ==========================================
+   MOBILE ADJUSTMENTS
+========================================== */
+@media (max-width: 768px) {
   .stage-inner {
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
   }
   .genie-img { width: 260px; }
 }
