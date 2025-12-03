@@ -172,3 +172,10 @@ function showOptions(options) {
     container.appendChild(btn);
   });
 }
+
+
+function logEvent(eventType, payload) {
+  const logs = JSON.parse(localStorage.getItem("genie_logs") || "[]");
+  logs.push({ id: Date.now(), eventType, payload, ts: new Date().toISOString() });
+  localStorage.setItem("genie_logs", JSON.stringify(logs));
+}
