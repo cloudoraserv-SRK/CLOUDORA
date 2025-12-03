@@ -68,17 +68,6 @@ function populateCurrency(detectedCountry){
   });
 }
 
-// Basic auto-detect
-function autoDetect(){
-  const navLang = navigator.language || navigator.userLanguage || "en";
-  const langCode = navLang.split("-")[0];
-  const country = (navLang.split("-")[1] || "IN").toUpperCase();
-  const detected = priorityLanguages.find(l=>l.code===langCode) || {code:langCode,label:langCode};
-  populateLanguageBar(detected);
-  populateCurrency(country);
-}
-autoDetect();
-
 // thunder effect every 8 seconds (5-10s requirement approximated)
 let thunderInterval = null;
 function startThunder() {
