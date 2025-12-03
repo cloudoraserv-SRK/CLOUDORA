@@ -1,7 +1,7 @@
 import { speak } from "./api/tts.js";
 import { listen } from "./api/stt.js";
 import { genieCore } from "./genie/genie-core.js";
-
+genieCore.start();
 // script.js — UI only, binds DOM to Genie
 
 document.getElementById("playGenieIntro").addEventListener("click", () => {
