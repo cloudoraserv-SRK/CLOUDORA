@@ -1,101 +1,314 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Cloudora Genie — Onboarding</title>
-<link rel="stylesheet" href="style.css">
-</head>
+/* ==========================================
+   GLOBAL THEME
+========================================== */
+:root {
+  --bg: #020b1d;
+  --text: rgba(255,255,255,0.92);
+  --glass: rgba(255,255,255,0.10);
+  --soft: rgba(255,255,255,0.15);
+  --accent1: #49c9ff;
+  --accent2: #0b82e6;
+}
 
-<body>
-<div id="app">
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, system-ui;
+  overflow-x: hidden;
+}
 
-  <!-- Background video -->
-  <video id="bgVideo" class="bg-video" autoplay loop muted playsinline src="assets/video/bg.mp4"></video>
-  <div class="bg-overlay"></div>
+/* ==========================================
+   BACKGROUND VIDEO
+========================================== */
+.bg-video {
+  position: fixed;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: brightness(.45) contrast(.9);
+  z-index: 0;
+}
+.bg-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 1;
+}
 
-  <!-- Background thunder audio -->
-  <audio id="bgAudio" src="assets/audio/thunder.wav" preload="auto"></audio>
+/* ==========================================
+   HEADER
+========================================== */
+.header {
+  position: fixed;
+  top: 18px; left: 18px; right: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 60;
+}
 
-  <!-- Header -->
-  <header class="header">
-    <div class="header-left">
-      <div class="cloud-logo"></div>
-      <div class="brand">
-        <div class="brand-title">Cloudora</div>
-        <div class="brand-sub">Genie Onboarding</div>
-      </div>
-    </div>
+.header-left { display: flex; align-items: center; gap: 10px; }
+.cloud-logo {
+  width: 50px; height: 32px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #53d5ff, #0f7cd5);
+}
 
-    <div class="header-right">
-      <button id="audioSwitch">Audio Off</button>
-      <select id="langSelect"></select>
-      <button id="helpBtn" class="btn small">Help</button>
-    </div>
-  </header>
+.brand-title { font-size: 22px; font-weight: 800; }
+.brand-sub { font-size: 12px; opacity: .75; }
 
-  <!-- Main stage -->
-  <main class="stage">
-    <div class="stage-inner">
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-      <!-- Genie column -->
-      <div class="genie-column">
-        <div class="genie-wrap">
-          <img src="assets/images/genie.png" id="genieImg" class="genie-img">
-          <div id="cloth" class="cloth">Allow audio to wake the Genie</div>
-        </div>
+/* FIX: language dropdown visibility */
+#langSelect {
+  padding: 8px;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.45) !important;
+  color: white !important;
+  border: 1px solid rgba(255,255,255,0.25);
+}
 
-        <div id="speechStatus" class="muted">Microphone: not active</div>
-      </div>
+/* ==========================================
+   MAIN STAGE
+========================================== */
+.stage {
+  min-height: 100vh;
+  padding-top: 120px;
+  display: flex;
+  justify-content: center;
+  z-index: 30;
+}
+.stage-inner {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  gap: 50px;
+  justify-content: center;
+}
 
-      <!-- Question area -->
-      <section class="question-column">
-        <div id="questionCard" class="question-card">
+/* ==========================================
+   GENIE COLUMN
+========================================== */
+.genie-column {
+  width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
 
-          <div id="questionText" class="question-text">Loading…</div>
-          <div id="subText" class="sub-text">Choose an option</div>
+/* FIXED GENIE WRAP */
+.genie-wrap {
+  width: 100%;
+  min-height: 420px;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
 
-          <!-- TEXT INPUT -->
-          <input id="userInputBox" placeholder="Type your answer..." style="display:none;">
+/* GENIE IMAGE CENTER PERFECT */
+.genie-img {
+  width: 360px;
+  max-width: 90vw;
+  transform-origin: bottom center;
+  transition: transform 0.45s ease;
+  z-index: 5;
+  position: relative;
+}
 
-          <!-- MIC + SKIP BUTTONS -->
-          <div class="question-buttons">
-            <button id="micBtn" class="listen-btn">🎤</button>
-            <button id="nextBtn" class="skip-btn">Skip →</button>
-          </div>
+/* GENIE BREATHING AFTER AUDIO ALLOWED */
+body.genie-awake .genie-img {
+  transform: scale(1.1);
+  animation: genieBreathe 3s ease-in-out infinite;
+}
+@keyframes genieBreathe {
+  0% { transform: scale(1.1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1.1); }
+}
 
-        </div>
+/* CLOTH BOX PERFECT ABOVE GENIE */
+.cloth {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ffe57a;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-weight: 700;
+  color: #062130;
+  z-index: 10;
+  transition: 0.4s ease;
+}
+.cloth.hidden {
+  opacity: 0; transform: translate(-50%, -20px) scale(.7);
+}
 
-        <!-- CLOUD OPTIONS -->
-        <div id="cloudArea" class="cloud-area"></div>
-      </section>
+/* REMOVE OLD BUTTONS */
+.controls { display: none !important; }
 
-    </div>
-  </main>
+/* ==========================================
+   QUESTION AREA
+========================================== */
+.question-column {
+  width: 480px;
+  max-width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-clouds">
-      <div class="footer-pill">CRM • Leads</div>
-      <div class="footer-pill">Training • Support</div>
-      <div class="footer-pill">Marketing • Wallet</div>
-    </div>
-  </footer>
+.question-card {
+  padding: 20px;
+  background: var(--glass);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+}
 
-</div>
+.question-text {
+  font-size: 22px;
+  font-weight: 800;
+}
+.sub-text {
+  font-size: 13px;
+  opacity: .75;
+  margin-top: 6px;
+}
 
-<!-- animations first -->
-<script src="animations/cyclone.js"></script>
+/* TEXT BOX INPUT */
+#userInputBox {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 12px;
+  color: white;
+  display: none;
+  font-size: 16px;
+}
 
-<!-- api hooks -->
-<script src="api/tts.js"></script>
-<script src="api/stt.js"></script>
+/* BUTTONS BELOW QUESTION */
+.question-buttons {
+  margin-top: 14px;
+  display: flex;
+  gap: 14px;
+}
+.listen-btn {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  font-size: 22px;
+  display: flex;
+  align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.25);
+  cursor: pointer;
+}
 
-<!-- genie brain -->
-<script src="genie/genie-core.js"></script>
+.skip-btn {
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+  cursor: pointer;
+}
 
-<!-- UI logic -->
-<script src="script.js"></script>
+/* ==========================================
+   CLOUD OPTIONS
+========================================== */
+.cloud-area {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 15px;
+}
 
-</body>
-</html>
+.cloud-item {
+  width: 180px;
+  height: 110px;
+  position: relative;
+  animation: floatCloud 5s ease-in-out infinite,
+             fadeInCloud .6s ease-out forwards;
+  cursor: pointer;
+}
+
+.cloud-item img.cloud-bg {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4));
+}
+
+.cloud-label {
+  position: absolute;
+  bottom: -12px;
+  width: 100%;
+  text-align: center;
+  font-weight: 800;
+}
+
+@keyframes floatCloud {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0); }
+}
+@keyframes fadeInCloud {
+  from { opacity: 0; transform: translateY(20px) scale(.9); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* TELEPORT DISMISS */
+.teleport {
+  animation: teleportOut 0.65s forwards;
+}
+@keyframes teleportOut {
+  0% { opacity: 1; transform: scale(1); }
+  50% { opacity: .5; transform: scale(.7) rotate(10deg); }
+  100% { opacity: 0; transform: scale(0) rotate(20deg); }
+}
+
+/* ==========================================
+   FOOTER
+========================================== */
+.footer {
+  position: fixed;
+  bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 20;
+}
+.footer-clouds {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+.footer-pill {
+  width: 180px;
+  text-align: center;
+  padding: 8px 14px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 20px;
+  font-weight: 700;
+}
+
+/* ==========================================
+   MOBILE ADJUSTMENTS
+========================================== */
+@media (max-width: 768px) {
+  .stage-inner {
+    flex-direction: column;
+    align-items: center;
+  }
+  .genie-img { width: 260px; }
+}
