@@ -4,6 +4,12 @@ import { speak } from "./api/tts.js";
 import { listen } from "./api/stt.js";
 import { initSupabase } from "./api/supabase.js";
 import { loadLanguage, t } from "./i18n/t.js";
+// load default detected language
+loadLanguage(languageSelect.value);
+
+languageSelect.addEventListener("change", () => {
+  loadLanguage(languageSelect.value);
+});
 
 
 // Initialize Supabase connection (optional, no keys here)
