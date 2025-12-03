@@ -1,21 +1,14 @@
-// script.js — entry module
+// IMPORTS FIRST
 import { genieCore } from "./genie/genie-core.js";
 import { speak } from "./api/tts.js";
 import { listen } from "./api/stt.js";
 import { initSupabase } from "./api/supabase.js";
 import { loadLanguage, t } from "./i18n/t.js";
-// load default detected language
-loadLanguage(languageSelect.value);
 
-languageSelect.addEventListener("change", () => {
-  loadLanguage(languageSelect.value);
-});
-
-
-// Initialize Supabase connection (optional, no keys here)
+// Initialize Supabase
 initSupabase();
 
-// DOM refs
+// DOM REFERENCES MUST COME BEFORE USING THEM
 const languageSelect = document.getElementById("languageSelect");
 const currencySelect = document.getElementById("currencySelect");
 const audioToggle = document.getElementById("audioToggle");
@@ -44,22 +37,22 @@ const localeCurrency = {
   "EU": "EUR"
 };
 
-function populateLanguageBar(detected){
-  // put detected first if available
-  const seen = new Set();
-  if(detected){
-    seen.add(detected.code);
-    const opt = document.createElement("option");
-    opt.value = detected.code; opt.textContent = detected.label + " (detected)";
-    languageSelect.appendChild(opt);
-  }
-  for(const lang of priorityLanguages){
-    if(seen.has(lang.code)) continue;
-    const opt=document.createElement("option");
-    opt.value=lang.code; opt.textContent=lang.label;
-    languageSelect.appendChild(opt);
-  }
+function autoDetect() {
+  const navLang = navigator.language || "en-IN";
+  const langCode = navLang.split("-")[0];
+
+  // Put detected language in dropdown first
+  languageSelect.value = langCode;
 }
+autoDetect();
+
+// ❗ NOW we can safely load translation
+loadLanguage(languageSelect.value);
+
+// Update translation on change
+languageSelect.addEventListener("change", () => {
+  loadLanguage(languageSelect.value);
+});
 
 function populateCurrency(detectedCountry){
   const detectedCurrency = localeCurrency[detectedCountry] || "USD";
