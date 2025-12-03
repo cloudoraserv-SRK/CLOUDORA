@@ -1,29 +1,43 @@
-import { Genie } from "./genie/genie-core.js";
+// script.js — UI only, no logic inside
 
-const allowBtn = document.getElementById("allowBtn");
-const listenBtn = document.getElementById("listenBtn");
-const skipBtn = document.getElementById("skipBtn");
-const langSelect = document.getElementById("langSelect");
-const bgAudio = document.getElementById("bgAudio");
+let genie = null;
 
-const genie = new Genie();
+window.addEventListener("DOMContentLoaded", () => {
+  // Create Genie
+  genie = new Genie();
+  genie.start();
 
-allowBtn.onclick = async () => {
+  const allowBtn = document.getElementById("allowBtn");
+  const listenBtn = document.getElementById("listenBtn");
+  const skipBtn = document.getElementById("skipBtn");
+  const cloth = document.getElementById("cloth");
+  const speechStatus = document.getElementById("speechStatus");
+  const bgAudio = document.getElementById("bgAudio");
+
+  // Allow Audio
+  allowBtn.addEventListener("click", async () => {
     try {
-        await navigator.mediaDevices.getUserMedia({ audio:true });
-        document.getElementById("cloth").classList.add("hidden");
-        genie.micAllowed = true;
-        bgAudio.play();   // thunder sound
-        document.getElementById("speechStatus").textContent = "Microphone: active";
-    } catch {
-        alert("Microphone requires HTTPS / localhost");
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+      genie.setMicAllowed(true);
+      cloth.classList.add("hidden");
+      speechStatus.textContent = "Microphone: active";
+
+      // Background thunder plays only after user gesture
+      bgAudio.play().catch(() => {});
+    } catch (err) {
+      alert("Microphone requires HTTPS or localhost. Demo mode only.");
     }
-};
+  });
 
-listenBtn.onclick = () => genie.toggleListen();
+  // Listen
+  listenBtn.addEventListener("click", () => {
+    genie.toggleListen();
+  });
 
-skipBtn.onclick = () => genie.skip();
+  // Skip
+  skipBtn.addEventListener("click", () => {
+    genie.skip();
+  });
 
-langSelect.onchange = (e) => genie.changeLanguage(e.target.value);
-
-window.onload = () => genie.start();
+  console.log("Genie home initialized.");
+});
