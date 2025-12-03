@@ -3,6 +3,8 @@ import { genieCore } from "./genie/genie-core.js";
 import { speak } from "./api/tts.js";
 import { listen } from "./api/stt.js";
 import { initSupabase } from "./api/supabase.js";
+import { loadLanguage, t } from "./i18n/t.js";
+
 
 // Initialize Supabase connection (optional, no keys here)
 initSupabase();
