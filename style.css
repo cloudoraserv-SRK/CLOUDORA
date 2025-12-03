@@ -391,13 +391,20 @@ body {
 /* CAROUSEL CONTAINER */
 .carousel {
     width: 100%;
-    overflow: hidden;
-    position: relative;
-    height: 480px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    scroll-snap-type: x mandatory;
+    display: flex;
+    gap: 20px;
+    padding-bottom: 10px;
 }
 
 /* SLIDE ITEMS */
 .carousel-item {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    display: inline-block;
     width: 100%;
     padding: 20px;
     background: rgba(255,255,255,0.07);
@@ -405,7 +412,6 @@ body {
     border-radius: 18px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     text-align: center;
-    animation: slideUp 12s infinite;
 }
 
 /* CAROUSEL IMAGE/VIDEO */
@@ -427,7 +433,7 @@ body {
 }
 
 .genie-big {
-    width: 100%;
+    width: 200%;
     border-radius: 20px;
     margin-bottom: 20px;
 }
@@ -459,14 +465,6 @@ body {
 .magic-btn:hover {
     transform: scale(1.08);
     background: linear-gradient(135deg, #2e48ff, #5b6eff);
-}
-
-/* Simple auto slide animation */
-@keyframes slideUp {
-    0% { transform: translateY(0); }
-    45% { transform: translateY(0); }
-    55% { transform: translateY(-520px); }
-    100% { transform: translateY(-520px); }
 }
 
 /* =====================
