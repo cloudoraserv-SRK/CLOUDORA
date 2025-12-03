@@ -216,6 +216,17 @@ export const genieCore = {
     this.sendCurrentQuestion();
   },
 
+   startFlow(mode) {
+  this.state.mode = mode;
+  
+  if (mode === "business_flow") {
+    this.send("Sure! What type of business are you in?");
+    this.showCategoryButtons();
+    return;
+  }
+}
+
+   
   // send question for the current step
   sendCurrentQuestion() {
     const flow = FLOWS[this.mode];
@@ -243,6 +254,12 @@ export const genieCore = {
       this.sendOutput(greet);
       return greet;
     }
+
+     if (intent === "business_intent") {
+  this.send("Great! To guide you better, choose your business type:");
+  this.showCategoryButtons();
+  return;
+}
 
     // If we are in internal policy mode: answer directly
     if (this.mode === "internal_policy_mode") {
@@ -502,3 +519,28 @@ export const genieCore = {
     this.updateUI({ mode: this.mode });
   }
 };
+showCategoryButtons() {
+  if (!this.callbacks.onOptions) return;
+
+  const categories = [
+    { label: "Real Estate", value: "real_estate" },
+    { label: "Restaurant / Cafe", value: "restaurants" },
+    { label: "E-commerce", value: "ecommerce" },
+    { label: "Local Services", value: "local_services" },
+    { label: "Retail Shops", value: "retail" },
+    { label: "Startups", value: "startups" },
+    { label: "Education / Coaching", value: "education" },
+    { label: "Travel & Tourism", value: "travel" },
+    { label: "Fitness / Coaches", value: "fitness" },
+    { label: "Beauty / Salon", value: "beauty" },
+    { label: "Automobile", value: "automobile" },
+    { label: "Logistics / Transport", value: "logistics" },
+    { label: "Finance / Insurance", value: "finance" },
+    { label: "Manufacturing", value: "manufacturing" },
+    { label: "Freelancers / Creators", value: "freelancer" },
+    { label: "Other", value: "other" }
+  ];
+
+  this.callbacks.onOptions(categories);
+}
+
