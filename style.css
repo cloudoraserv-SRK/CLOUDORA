@@ -346,6 +346,123 @@ section {
   margin: 0 auto;
   color: var(--color-secondary);
 }
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background: #f5f8ff;
+    color: #333;
+    overflow-x: hidden;
+}
+
+/* =====================
+   HERO SECTION (GENIE)
+======================== */
+.hero {
+    padding: 60px 20px;
+    text-align: center;
+    background: linear-gradient(#e8efff, #fff);
+}
+
+.title {
+    font-size: 38px;
+    font-weight: 700;
+    color: #1a237e;
+}
+
+.subtitle {
+    margin-top: 10px;
+    font-size: 18px;
+    opacity: 0.8;
+}
+
+.genie-card {
+    margin: 30px auto;
+    width: 280px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.genie-img {
+    width: 100%;
+    border-radius: 15px;
+}
+
+/* Button */
+.btn {
+    margin-top: 15px;
+    padding: 10px 25px;
+    background: #4c6fff;
+    color: #fff;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #324ad6;
+}
+
+/* =====================
+   CLOUDORA VIDEO SECTION
+======================== */
+.cloudora-video {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.cloudora-video h2 {
+    font-size: 32px;
+    color: #0d47a1;
+}
+
+.info {
+    margin-top: 10px;
+    font-size: 18px;
+    opacity: 0.7;
+}
+
+.video-box {
+    margin-top: 30px;
+}
+
+video {
+    width: 95%;
+    max-width: 700px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* =====================
+   GENIE PAGE PREVIEW
+======================== */
+.genie-preview {
+    padding: 60px 20px;
+    background: #eef3ff;
+    text-align: center;
+}
+
+.preview-card {
+    margin: 30px auto;
+    width: 300px;
+    padding: 15px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.preview-card img {
+    width: 100%;
+    border-radius: 10px;
+}
 
 /* Hero Section */
 .hero {
