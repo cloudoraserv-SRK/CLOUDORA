@@ -4,6 +4,15 @@
 let genie = null;
 
 window.addEventListener('DOMContentLoaded', () => {
+
+  const micBtn = document.getElementById("micBtn");
+const skipBtn2 = document.getElementById("skipBtn");
+const userInput = document.getElementById("userInputBox");
+
+  micBtn.onclick = () => genie.toggleListen();
+skipBtn2.onclick = () => genie.skip();
+
+  
   // ensure Genie exists
   if(typeof Genie !== 'function'){
     console.error('Genie not found. Make sure genie-core.js is loaded BEFORE script.js');
