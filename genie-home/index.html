@@ -77,10 +77,16 @@
 
 </div>
 
-<script src="script.js"></script>
-<script src="genie/genie-core.js"></script>
-<script src="api/tts.js"></script>
+<!-- animations first (teleportEffect available) -->
 <script src="animations/cyclone.js"></script>
+<!-- optional api hooks, keep if you have them -->
+<script src="api/tts.js"></script>
+<script src="api/stt.js"></script>
+<!-- genie core (uses teleportEffect & api hooks) -->
+<script src="genie/genie-core.js"></script>
+<!-- UI wiring that calls new Genie() -->
+<script src="script.js"></script>
+
 
 </body>
 </html>
