@@ -190,7 +190,7 @@ h3 { font-size: clamp(1.4rem, 3vw, 2rem); }
   top: 0;
   left: 0;
   width: 100%;
-   background: #ffffff;
+   background: #1c1c1c;
     box-shadow: 0 3px 10px rgba(0,0,0,0.1);
     z-index: 999;
 }
