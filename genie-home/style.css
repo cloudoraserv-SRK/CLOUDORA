@@ -88,3 +88,19 @@ body.genie-awake .genie-img { animation: genieBreatheBig 3s ease-in-out infinite
   .genie-wrap { min-height:380px; }
   .question-column { width:92%; }
 }
+
+/* CLOTH BOX PERFECT ABOVE GENIE */
+.cloth {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 18px;              /* <-- corrected */
+  background: #ffe57a;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: 700;
+  color: #062130;
+  z-index: 10;
+  transition: 0.4s ease;
+}
