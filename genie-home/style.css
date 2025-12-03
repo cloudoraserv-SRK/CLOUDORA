@@ -1,106 +1,50 @@
-/* ==========================================
-   GLOBAL THEME
-========================================== */
-:root {
-  --bg: #020b1d;
-  --text: rgba(255,255,255,0.92);
-  --glass: rgba(255,255,255,0.10);
-  --soft: rgba(255,255,255,0.15);
-  --accent1: #49c9ff;
-  --accent2: #0b82e6;
+:root{
+  --accent:#f5b500;
+  --gold:#ffd86b;
+  --dark: #0b1020;
+  --glass: rgba(255,255,255,0.06);
 }
 
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: Inter, system-ui;
-  overflow-x: hidden;
+*{box-sizing:border-box;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;margin:0;padding:0}
+html,body,#app{height:100%}
+body{background:linear-gradient(180deg,#07102a,#091228);color:#fff;overflow-x:hidden}
+
+.hero{position:relative;height:80vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#bgVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.25;pointer-events:none}
+
+.genie-wrap{position:relative;z-index:6;pointer-events:none}
+.genie{width:180px;height:auto;will-change:transform;animation:fly 8s ease-in-out infinite}
+
+@keyframes fly{
+  0%{transform:translateX(-60px) translateY(0)}
+  50%{transform:translateX(60px) translateY(-12px)}
+  100%{transform:translateX(-60px) translateY(0)}
 }
 
-/* BACKGROUND */
-.bg-video { position: fixed; inset: 0; width:100%; height:100%; object-fit:cover; filter:brightness(.45) contrast(.9); z-index:0; }
-.bg-overlay { position: fixed; inset:0; background: rgba(0,0,0,0.35); z-index:1; }
+.controls{position:relative;z-index:10;display:flex;flex-direction:column;gap:1rem;align-items:center}
+.bar{display:flex;gap:.5rem;background:var(--glass);padding:.5rem;border-radius:12px;backdrop-filter: blur(6px)}
+.bar select{background:transparent;border:0;color:#fff;padding:.4rem;border-radius:8px}
+.toggle{display:flex;align-items:center;gap:.4rem;color:#fff}
 
-/* HEADER */
-.header { position: fixed; top:18px; left:18px; right:18px; display:flex; justify-content:space-between; align-items:center; z-index:60; }
-.header-left { display:flex; align-items:center; gap:10px; }
-.cloud-logo { width:50px; height:32px; border-radius:999px; background: linear-gradient(180deg, #53d5ff, #0f7cd5); }
-.brand-title { font-size:22px; font-weight:800; }
-.brand-sub { font-size:12px; opacity:.75; }
-.header-right { display:flex; align-items:center; gap:12px; }
-#langSelect { padding:8px; border-radius:10px; background:rgba(0,0,0,0.45) !important; color:white !important; border:1px solid rgba(255,255,255,0.25); }
+.options{display:flex;gap:1rem;align-items:center;justify-content:center}
+.gold-cloud, .treasure, .cloud-btn{background:linear-gradient(180deg,var(--gold),var(--accent));border:none;padding:12px 18px;border-radius:24px;box-shadow:0 8px 20px rgba(0,0,0,0.4);cursor:pointer;font-weight:600}
+.text-input{display:flex;gap:.5rem;align-items:center}
+.text-input input{padding:.6rem;border-radius:8px;border:0;min-width:240px}
 
-/* STAGE */
-.stage { min-height:100vh; padding-top:120px; display:flex; justify-content:center; z-index:30; }
-.stage-inner { width:100%; max-width:1100px; display:flex; gap:50px; justify-content:center; align-items:flex-start; }
+.clouds{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+.cloud{position:absolute;opacity:.9;width:280px}
+.cloud.c1{top:10%;left:-20%;animation:cloudmove 40s linear infinite}
+.cloud.c2{top:25%;left:-30%;width:220px;animation:cloudmove 55s linear infinite}
+.cloud.c3{top:45%;left:-10%;width:260px;animation:cloudmove 50s linear infinite}
+.cloud.c4{top:60%;left:-25%;width:200px;animation:cloudmove 60s linear infinite}
+.cloud.c5{top:75%;left:-15%;width:240px;animation:cloudmove 46s linear infinite}
 
-/* GENIE */
-.genie-column { width:380px; display:flex; flex-direction:column; align-items:center; position:relative; }
-.genie-wrap { width:100%; min-height:520px; position:relative; display:flex; align-items:flex-end; justify-content:center; overflow:visible; }
-.genie-img { width:430px !important; max-width:430px !important; transform-origin:bottom center; z-index:5; position:relative; transition:transform .45s ease; }
-body.genie-awake .genie-img { animation: genieBreatheBig 3s ease-in-out infinite, genieFloat 4.5s ease-in-out infinite; transform: scale(1.32); }
-@keyframes genieBreatheBig { 0%{transform:scale(1.32)} 50%{transform:scale(1.38)} 100%{transform:scale(1.32)} }
-@keyframes genieFloat { 0%{transform:translateY(0) scale(1.32)} 50%{transform:translateY(-18px) scale(1.38)} 100%{transform:translateY(0) scale(1.32)} }
-
-/* cloth */
-.cloth { position:absolute; top:30px; left:50%; transform:translateX(-50%); background:#ffe57a; padding:12px 20px; border-radius:12px; font-weight:700; color:#062130; z-index:10; transition:0.4s ease; }
-.cloth.hidden { opacity:0; transform:translate(-50%,-20px) scale(.7); }
-
-/* hide old .controls by default; script keeps them for fallback */
-.controls { display:block; }
-
-/* QUESTION */
-.question-column { width:480px; max-width:90%; display:flex; flex-direction:column; gap:18px; }
-.question-card { padding:20px; background:var(--glass); border-radius:16px; backdrop-filter:blur(10px); box-shadow:0 10px 30px rgba(0,0,0,0.45); }
-.question-text { font-size:22px; font-weight:800; }
-.sub-text { font-size:13px; opacity:.75; margin-top:6px; }
-
-/* input & suggestions */
-#userInputBox { width:100%; margin-top:12px; padding:12px; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); border-radius:12px; color:white; display:none; font-size:16px; }
-#suggestBox { display:none; margin-top:6px; padding:8px; border-radius:8px; background:rgba(0,0,0,0.5); color:#9ddcff; font-size:14px; }
-
-/* buttons */
-.question-buttons { margin-top:14px; display:flex; gap:14px; }
-.listen-btn { width:48px; height:48px; border-radius:50%; font-size:22px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.2); border:1px solid rgba(255,255,255,0.25); cursor:pointer; }
-.skip-btn { padding:10px 14px; border-radius:12px; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); cursor:pointer; }
-
-/* CLOUDS */
-.cloud-area { display:flex; flex-wrap:wrap; justify-content:center; gap:18px; margin-top:15px; z-index:40; }
-.cloud-item { width:180px; height:110px; position:relative; animation: floatCloud 5s ease-in-out infinite, fadeInCloud .6s ease-out forwards; cursor:pointer; }
-.cloud-item img.cloud-bg { width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 10px 20px rgba(0,0,0,0.4)); }
-.cloud-label { position:absolute; bottom:-12px; width:100%; text-align:center; font-weight:800; }
-@keyframes floatCloud { 0%{transform:translateY(0)} 50%{transform:translateY(-12px)} 100%{transform:translateY(0)} }
-@keyframes fadeInCloud { from{opacity:0;transform:translateY(20px) scale(.9)} to{opacity:1;transform:translateY(0) scale(1)} }
-.teleport { animation: teleportOut 0.65s forwards; }
-@keyframes teleportOut { 0%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.7) rotate(10deg)}100%{opacity:0;transform:scale(0) rotate(20deg)} }
-
-/* FOOTER */
-.footer { position:fixed; bottom:20px; width:100%; display:flex; justify-content:center; z-index:20; }
-.footer-clouds { display:flex; flex-direction:column; gap:8px; align-items:center; }
-.footer-pill { width:180px; text-align:center; padding:8px 14px; background:rgba(255,255,255,0.08); border-radius:20px; font-weight:700; }
-
-/* MOBILE */
-@media (max-width:768px) {
-  .stage-inner { flex-direction:column; align-items:center; gap:18px; padding:30px 12px; }
-  .genie-img { width:260px !important; max-width:260px !important; }
-  .genie-wrap { min-height:380px; }
-  .question-column { width:92%; }
+@keyframes cloudmove{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(160vw)}
 }
 
-/* CLOTH BOX PERFECT ABOVE GENIE */
-.cloth {
-  position: absolute;
-  top: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 18px;              /* <-- corrected */
-  background: #ffe57a;
-  padding: 12px 20px;
-  border-radius: 12px;
-  font-weight: 700;
-  color: #062130;
-  z-index: 10;
-  transition: 0.4s ease;
-}
+.site-footer{position:fixed;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(0,0,0,0.35),transparent);padding:.6rem 1rem;display:flex;justify-content:center;gap:1rem;z-index:20}
+.site-footer a{color:#fff;text-decoration:none;opacity:.9}
+
+.gold-cloud:hover,.treasure:hover,.cloud-btn:hover{transform:translateY(-6px);transition:transform .2s ease}
