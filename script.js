@@ -1,6 +1,10 @@
  // ---------- IMPORT CENTRAL SUPABASE CLIENT ----------
 import("./supabase/supabase.js").then(({ supabase, insertLead }) => {
 document.addEventListener('DOMContentLoaded', () => {
+// GENIE INTRO BUTTON
+document.getElementById("playGenieIntro").addEventListener("click", function () {
+    alert("Genie intro video/audio will play here. (Hook your TTS or intro animation)");
+});
     
   // --- Hamburger Menu ---
   const hamburger = document.querySelector('.hamburger');
@@ -100,6 +104,16 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   });
+
+ // CLOUDORA VIDEO AUTOPLAY ON SCROLL
+window.addEventListener("scroll", function () {
+    const video = document.getElementById("cloudoraVideo");
+    const rect = video.getBoundingClientRect();
+
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+        video.play();
+    }
+});
 
   // --- Job Filter ---
   const filterButtons = document.querySelectorAll('.job-filters .filter-btn');
