@@ -3,6 +3,11 @@ import { listen } from "./api/stt.js";
 import { genieCore } from "./genie/genie-core.js";
 
 // script.js — UI only, binds DOM to Genie
+
+document.getElementById("playGenieIntro").addEventListener("click", () => {
+    alert("Genie Intro Playing… Attach your video/animation here.");
+});
+
 // Defensive wiring: works if genie-core.js exposes Genie class and methods.
 
 let genie = null;
