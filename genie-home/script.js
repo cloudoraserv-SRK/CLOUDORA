@@ -107,3 +107,33 @@ userText?.addEventListener("keydown", (e) => {
     sendText.click();
   }
 });
+
+function addMessage(text, sender = "genie") {
+  const msgWrapper = document.getElementById("chatMessages");
+  const msg = document.createElement("div");
+  msg.classList.add(sender === "genie" ? "genie-msg" : "user-msg");
+  msg.textContent = text;
+  msgWrapper.appendChild(msg);
+  msgWrapper.scrollTop = msgWrapper.scrollHeight;
+}
+
+function clearOptionButtons() {
+  document.getElementById("optionButtons").innerHTML = "";
+}
+
+function showOptions(options) {
+  clearOptionButtons();
+  const container = document.getElementById("optionButtons");
+
+  options.forEach(opt => {
+    const btn = document.createElement("div");
+    btn.classList.add("option-btn");
+    btn.textContent = opt.label;
+    btn.addEventListener("click", () => {
+      addMessage(opt.label, "user");
+      genieCore.handleUserInput(opt.value);
+      clearOptionButtons();
+    });
+    container.appendChild(btn);
+  });
+}
