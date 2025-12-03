@@ -459,7 +459,11 @@ Genie.prototype.toggleListen = function(){
     if(this.dom && this.dom.speechStatus) this.dom.speechStatus.textContent = 'Microphone: not active';
   }
 };
-
+Genie.prototype.showInput = function(show){
+  const box = document.getElementById("userInputBox");
+  if(!box) return;
+  box.style.display = show ? "block" : "none";
+};
 
   // attach to window
   window.Genie = Genie;
