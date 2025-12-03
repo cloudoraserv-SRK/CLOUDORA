@@ -18,6 +18,12 @@ body{margin:0;background:var(--bg);color:var(--muted);font-family:Inter,system-u
   background:rgba(0,0,0,0.35);
 }
 
+#langSelect {
+  background: rgba(0,0,0,0.45) !important;
+  color: white !important;
+  border: 1px solid rgba(255,255,255,0.25);
+}
+
 .header{
   position:fixed;z-index:50;top:18px;left:18px;right:18px;
   display:flex;justify-content:space-between;align-items:center;
@@ -50,14 +56,23 @@ select{
   width:380px;display:flex;flex-direction:column;align-items:center;
 }
 
-.genie-wrap{
-  width:320px;height:420px;position:relative;
+/* Fix genie cut issue */
+.genie-wrap {
+  position: relative;
+  width: 100%;
+  height: auto;
+  min-height: 480px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: visible !important;
 }
 
-.genie-img{
-  width:90%;position:absolute;bottom:0;left:50%;
-  transform:translateX(-50%);
-  filter:drop-shadow(0 25px 50px rgba(0,0,0,0.7));
+.genie-img {
+  position: relative;
+  width: 380px;
+  max-width: 90vw;
+  transform-origin: bottom center;
 }
 
 .cloth{
@@ -79,30 +94,35 @@ select{
 }
 
 .cloud-area{
-  display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;
+  display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;padding-bottom: 100px;
 }
 
-.cloud-item{
-  position:relative;width:220px;height:120px;border-radius:999px;
-  overflow:hidden;cursor:pointer;background:#ffffff08;
-  border:1px solid rgba(255,255,255,.05);
-  transition:.35s;display:flex;align-items:center;justify-content:center;
-  box-shadow:0 14px 40px rgba(0,0,0,.4);
+/* Make cloud shapes beautiful + floating */
+.cloud-item {
+  background: transparent;
+  border: none;
+  overflow: visible;
+  animation: cloudFloatY 5s ease-in-out infinite;
 }
 
-.cloud-item:hover{
-  transform:translateY(-8px);
+.cloud-item img.cloud-bg {
+  filter: drop-shadow(0 10px 18px rgba(0,0,0,0.35));
+  border-radius: 50%;
 }
 
-.cloud-bg{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  opacity:.95;
+.cloud-item .cloud-label {
+  position: absolute;
+  bottom: -10px;
+  width: 100%;
+  font-weight: 800;
+  color: white;
+  text-shadow: 0 3px 6px rgba(0,0,0,.6);
 }
-
-.cloud-label{
-  position:relative;z-index:5;color:#012;font-weight:700;font-size:15px;
+@keyframes cloudFloatY {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0px); }
 }
-
 /* Teleport animation */
 .teleport{
   animation:teleportOut .7s forwards;
@@ -115,12 +135,19 @@ select{
 
 .footer{
   position:fixed;bottom:20px;width:100%;
-  display:flex;justify-content:center;z-index:50;
+  display:flex;justify-content:center;z-index:20;
 }
 
-.footer-pill{
-  background:#ffffff15;padding:8px 14px;border-radius:999px;
-  margin:0 6px;font-weight:700;
+.footer-clouds {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.footer-pill {
+  width: 180px;
+  text-align: center;
 }
 
 
@@ -131,7 +158,7 @@ select{
 .cloud-item { animation: cloudFloatY 6s ease-in-out infinite; }
 
 /* ensure clouds sit visually above bg video */
-.cloud-area { position: relative; z-index: 30; }
+.cloud-area { position: relative; z-index: 50; }
 
 /* genie awake state: center genie visually and move question under it */
 /* requires script to add body.genie-awake class */
