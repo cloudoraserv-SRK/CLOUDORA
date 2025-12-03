@@ -360,56 +360,81 @@ body {
     overflow-x: hidden;
 }
 
-/* =====================
+/* ============================
    HERO SECTION (GENIE)
-======================== */
-.hero {
-    padding: 60px 20px;
+=============================== */
+
+.geniehero {
+    padding: 90px 20px 60px;
     text-align: center;
-    background: linear-gradient(#e8efff, #fff);
+    background: radial-gradient(circle at top, #e9f1ff 0%, #ffffff 60%);
 }
 
-.title {
-    font-size: 38px;
-    font-weight: 700;
-    color: #1a237e;
+.geniehero-content {
+    max-width: 700px;
+    margin: auto;
 }
 
-.subtitle {
-    margin-top: 10px;
+.genietitle {
+    font-size: 42px;
+    font-weight: 800;
+    color: #2a2f99;
+    line-height: 1.2;
+}
+
+.geniesubtitle {
+    margin-top: 12px;
     font-size: 18px;
-    opacity: 0.8;
+    opacity: 0.75;
 }
 
 .genie-card {
-    margin: 30px auto;
-    width: 280px;
-    padding: 20px;
-    background: #fff;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    margin: 40px auto;
+    width: 340px;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 25px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+    transition: 0.3s ease;
+}
+
+.genie-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
 }
 
 .genie-img {
-    width: 500%;
-    border-radius: 15px;
+    width: 100%;
+    border-radius: 20px;
+}
+
+/* Genie small text */
+.genie-intro-text {
+    margin-top: 15px;
+    font-size: 16px;
+    opacity: 0.7;
+    line-height: 1.4;
 }
 
 /* Button */
 .btn {
-    margin-top: 15px;
-    padding: 10px 25px;
-    background: #4c6fff;
+    margin-top: 20px;
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #4b6bff, #7b8dff);
     color: #fff;
+    font-size: 15px;
     border: none;
-    border-radius: 40px;
+    font-weight: 600;
+    border-radius: 50px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.25s ease;
 }
 
 .btn:hover {
-    background: #324ad6;
+    background: linear-gradient(135deg, #324ad6, #5566e8);
+    transform: scale(1.05);
 }
+
 
 /* =====================
    CLOUDORA VIDEO SECTION
