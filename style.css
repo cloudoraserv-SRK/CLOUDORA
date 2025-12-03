@@ -362,80 +362,131 @@ body {
 }
 
 /* ============================
-   HERO SECTION (GENIE)
+   GENIE MAGIC INTRO SECTION
 =============================== */
-
-.geniehero {
-    padding: 90px 20px 60px;
+.genie-magic {
+    position: relative;
+    padding: 100px 20px;
+    background: #05060f;
+    color: #fff;
+    overflow: hidden;
     text-align: center;
-    background: radial-gradient(circle at top, #e9f1ff 0%, #ffffff 60%);
 }
 
-.geniehero-content {
-    max-width: 700px;
+/* PARTICLES BACKGROUND */
+#particles {
+    position: absolute;
+    inset: 0;
+    background: url("https://i.ibb.co/6t3zpVZ/particle.png") repeat;
+    opacity: 0.2;
+    animation: floatParticles 45s linear infinite;
+}
+
+@keyframes floatParticles {
+    from { transform: translateY(0); }
+    to { transform: translateY(-2000px); }
+}
+
+/* HEADER TEXT */
+.genie-header {
+    max-width: 750px;
     margin: auto;
+    margin-bottom: 60px;
+    position: relative;
+    z-index: 5;
 }
 
-.genietitle {
-    font-size: 42px;
+.genie-header h1 {
+    font-size: 48px;
     font-weight: 800;
-    color: #2a2f99;
-    line-height: 1.2;
+    color: #7aa2ff;
 }
 
-.geniesubtitle {
-    margin-top: 12px;
-    font-size: 18px;
+.genie-header p {
     opacity: 0.75;
+    font-size: 18px;
 }
 
-.genie-card {
-    margin: 40px auto;
-    width: 340px;
-    padding: 25px;
-    background: #ffffff;
+.small {
+    margin-top: 8px;
+    font-size: 15px;
+    opacity: 0.5;
+}
+
+/* 3 CARDS */
+.genie-grid {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 10;
+}
+
+/* MAGIC CARD */
+.magic-card {
+    width: 300px;
+    padding: 20px;
     border-radius: 25px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+    position: relative;
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 50px rgba(0,0,0,0.5);
+    transition: 0.4s ease;
+    cursor: pointer;
+    transform-style: preserve-3d;
+}
+
+.magic-card:hover {
+    transform: translateY(-12px) scale(1.05);
+    box-shadow: 0 0 60px rgba(0,100,255,0.5);
+}
+
+/* Neon Glow Behind Cards */
+.glow {
+    position: absolute;
+    inset: 0;
+    border-radius: 25px;
+    background: radial-gradient(circle, rgba(0,119,255,0.4), transparent 70%);
+    filter: blur(40px);
+    z-index: -1;
+    opacity: 0;
     transition: 0.3s ease;
 }
 
-.genie-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+.magic-card:hover .glow {
+    opacity: 1;
 }
 
-.genie-img {
+/* CARD IMAGE */
+.magic-img {
     width: 100%;
     border-radius: 20px;
 }
 
-/* Genie small text */
-.genie-intro-text {
-    margin-top: 15px;
-    font-size: 16px;
-    opacity: 0.7;
-    line-height: 1.4;
+/* VIDEO */
+.magic-video {
+    width: 100%;
+    border-radius: 20px;
 }
 
-/* Button */
-.btn {
-    margin-top: 20px;
+/* BUTTON */
+.magic-btn {
+    margin-top: 15px;
     padding: 12px 30px;
-    background: linear-gradient(135deg, #4b6bff, #7b8dff);
-    color: #fff;
-    font-size: 15px;
+    background: linear-gradient(135deg, #5a7bff, #8393ff);
     border: none;
+    border-radius: 40px;
+    color: #fff;
     font-weight: 600;
-    border-radius: 50px;
     cursor: pointer;
     transition: 0.25s ease;
 }
 
-.btn:hover {
-    background: linear-gradient(135deg, #324ad6, #5566e8);
-    transform: scale(1.05);
+.magic-btn:hover {
+    background: linear-gradient(135deg, #325aff, #6479ff);
+    transform: scale(1.08);
 }
-
 
 /* =====================
    CLOUDORA VIDEO SECTION
@@ -467,28 +518,6 @@ video {
     box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
 
-/* =====================
-   GENIE PAGE PREVIEW
-======================== */
-.genie-preview {
-    padding: 60px 20px;
-    background: #eef3ff;
-    text-align: center;
-}
-
-.preview-card {
-    margin: 30px auto;
-    width: 300px;
-    padding: 15px;
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
-
-.preview-card img {
-    width: 100%;
-    border-radius: 10px;
-}
 
 /* Hero Section */
 .hero {
