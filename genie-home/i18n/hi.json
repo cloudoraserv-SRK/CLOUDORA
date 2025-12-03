@@ -1,0 +1,16 @@
+{
+  "ui": {
+    "tap_to_say": "Tap to Say",
+    "type_placeholder": "Type your request...",
+    "grow_business": "Grow My Business",
+    "get_website": "Get a Website",
+    "login": "Cloudora Login",
+    "apply": "Apply"
+  },
+  "genie": {
+    "welcome": "Hello! How can I help you today?",
+    "build_website": "Sure! I can help you build a website. What type do you need?",
+    "grow_business": "Great! Tell me about your business, and I’ll help you grow.",
+    "fallback": "Okay! How can I support you further?"
+  }
+}
