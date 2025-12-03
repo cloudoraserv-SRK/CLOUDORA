@@ -3,100 +3,58 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Cloudora Genie — Onboarding</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Cloudora — Genie Home</title>
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
-<!-- Favicon for most browsers -->
-<link rel="icon" type="image/x-icon" href="/assets/favicon/favicon.ico" />
+  <main id="app">
+    <section id="hero" class="hero">
+      <video id="bgVideo" autoplay muted loop playsinline src="/assets/video/bg.mp4"></video>
 
-<!-- PNG versions for modern browsers -->
-<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
-
-<!-- Apple and Android icons -->
-<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
-<link rel="manifest" href="assets/favicon/site.webmanifest"> 
-
-<!-- Android icons for home screen and PWA -->
-<link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon/android-chrome-192x192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon/android-chrome-512x512.png">
-  <div id="app">
-
-    <!-- Background video -->
-    <video id="bgVideo" class="bg-video" autoplay loop muted playsinline src="assets/video/bg.mp4"></video>
-    <div class="bg-overlay"></div>
-
-    <!-- Background thunder audio -->
-    <audio id="bgAudio" src="assets/audio/thunder.wav" preload="auto"></audio>
-
-    <!-- Header -->
-    <header class="header">
-      <div class="header-left">
-        <div class="cloud-logo"></div>
-        <div class="brand">
-          <div class="brand-title">Cloudora</div>
-          <div class="brand-sub">Genie Onboarding</div>
-        </div>
+      <div class="genie-wrap">
+        <img id="genieImg" src="/assets/images/genie.png" alt="Genie" class="genie floating" />
       </div>
 
-      <div class="header-right">
-        <button id="audioSwitch" class="btn small">Audio: OFF</button>
-        <select id="langSelect"></select>
-        <button id="helpBtn" class="btn small">Help</button>
-      </div>
-    </header>
-
-    <!-- Main stage -->
-    <main class="stage">
-      <div class="stage-inner">
-
-        <!-- Genie column -->
-        <div class="genie-column">
-          <div class="genie-wrap">
-            <img src="assets/images/genie.png" id="genieImg" class="genie-img" alt="Genie">
-            <div id="cloth" class="cloth">Allow audio to wake the Genie</div>
-          </div>
-
-          <div id="speechStatus" class="muted">Microphone: not active</div>
-
-          <div class="controls">
-            <button id="allowBtn" class="btn primary">Allow Audio</button>
-            <button id="listenBtn" class="btn ghost">Listen</button>
-            <button id="skipBtn" class="btn ghost">Skip</button>
-          </div>
+      <div id="controls" class="controls">
+        <div id="langCurrencyBar" class="bar">
+          <select id="languageSelect"></select>
+          <select id="currencySelect"></select>
+          <label class="toggle">
+            <input id="audioToggle" type="checkbox" checked>
+            <span>Audio</span>
+          </label>
         </div>
 
-        <!-- Question area -->
-        <section class="question-column">
-          <div id="questionCard" class="question-card">
-            <div id="questionText" class="question-text">Loading…</div>
-            <div id="subText" class="sub-text">Choose an option</div>
-            <input id="userInputBox" placeholder="Type your answer..." style="display:none;">
-            <div id="suggestBox" style="display:none"></div>
-            <div class="question-buttons">
-              <button id="micBtn" class="listen-btn" aria-label="Start listening">🎤</button>
-              <button id="skipBtn2" class="skip-btn">Skip →</button>
-            </div>
+        <div id="options" class="options">
+          <!-- example floating option buttons -->
+          <button class="gold-cloud">Grow My Business</button>
+          <button class="treasure">Get a Website</button>
+          <button id="tapToSay" class="cloud-btn">Tap to Say 🎤</button>
+          <div class="text-input">
+            <input id="userText" placeholder="Type your request..." />
+            <button id="sendText">Send</button>
           </div>
-
-          <div id="cloudArea" class="cloud-area" role="list"></div>
-        </section>
-
+        </div>
       </div>
-    </main>
+    </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-      <div class="footer-clouds">
-        <div class="footer-pill">CRM • Leads</div>
-        <div class="footer-pill">Training • Support</div>
-        <div class="footer-pill">Marketing • Wallet</div>
-      </div>
+    <!-- animated clouds -->
+    <div id="clouds" class="clouds">
+      <img src="/assets/images/cloud1.png" class="cloud c1" />
+      <img src="/assets/images/cloud2.png" class="cloud c2" />
+      <img src="/assets/images/cloud3.png" class="cloud c3" />
+      <img src="/assets/images/cloud4.png" class="cloud c4" />
+      <img src="/assets/images/cloud5.png" class="cloud c5" />
+    </div>
+
+    <footer class="site-footer">
+      <a href="/login">Cloudora Login</a> · <a href="/apply">Apply</a>
     </footer>
-  </div>
 
-  <!-- UI wiring that calls new Genie() -->
-<script type="module" src="script.js"></script>
+    <audio id="thunder" src="/assets/audio/thunder.wav" preload="auto"></audio>
+  </main>
+
+  <script type="module" src="/script.js"></script>
 </body>
 </html>
