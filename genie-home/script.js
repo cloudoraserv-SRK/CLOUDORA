@@ -47,6 +47,40 @@ genieCore.init({
   }
 });
 
+btn.addEventListener("click", () => {
+  addMessage(opt.label, "user");
+  // opt.value may be JSON (our design) => parse
+  let payload = opt.value;
+  try { payload = JSON.parse(opt.value); } catch(e) { /* not JSON */ }
+  // if payload.action exists, handle locally
+  if (payload && payload.action) {
+    // handle common actions locally
+    if (payload.action === "quote") {
+      genieCore.sendOutput("Sure — I can prepare a quick quote. Please share your budget (or type 'no budget').");
+      // optionally set mode to a quote flow
+      genieCore.mode = "quote_flow";
+      return;
+    }
+    if (payload.action === "connect_sales") {
+      genieCore.sendOutput("I'll connect you to our sales team — please share your contact number or say 'call me'.");
+      return;
+    }
+    if (payload.action.startsWith("plan_")) {
+      // show brief plan summary or ask follow-up questions
+      genieCore.sendOutput(`Here's a short plan for ${payload.category}: we'll run targeted campaigns, set up listings, and provide telecaller follow-ups. Do you want the detailed plan?`);
+      return;
+    }
+    if (payload.action === "join_partner") {
+      genieCore.sendOutput("Great — we can onboard you as a service partner. Please share your name and phone number to start.");
+      return;
+    }
+  }
+  // fallback: when option is plain string, pass to normal flow
+  genieCore.handleUserInput(opt.value);
+  clearOptionButtons();
+});
+
+
 document.getElementById("chatSendBtn")?.addEventListener("click", async () => {
   const txt = document.getElementById("chatInput").value.trim();
   if (!txt) return;
