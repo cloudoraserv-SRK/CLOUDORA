@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Job Application</title>
+
+<!-- Global theme -->
+<link rel="stylesheet" href="../style.css">
+
+<!-- Job form specific CSS -->
+<link rel="stylesheet" href="./job.css">
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="brand">Cloudora Genie</div>
+  <div class="controls">
+    <select id="langSelect"></select>
+    <button id="speakBtn" class="btn-mini">🔊</button>
+  </div>
+</header>
+
+<main class="container fade-in">
+
+  <h2 data-translate="job_apply_title">Job Application Form</h2>
+  <p class="subtitle" data-translate="job_apply_sub">Fill details to apply for Cloudora workforce</p>
+
+  <form id="jobForm" class="job-card">
+
+  <!-- PERSONAL -->
+  <h3 class="section-title">Personal Details</h3>
+
+  <div class="grid-2">
+    <div>
+      <label>Full Name *</label>
+      <input id="name" required>
+      <div class="error-label" id="err-name">Please enter a valid name</div>
+    </div>
+
+    <div>
+      <label>Phone Number *</label>
+      <input id="phone" required pattern="[0-9]{10}">
+      <div class="error-label" id="err-phone">Enter valid 10-digit phone number</div>
+    </div>
+
+    <div>
+      <label>Email *</label>
+      <input id="email" required>
+      <div class="error-label" id="err-email">Enter valid email</div>
+    </div>
+
+    <div>
+      <label>Current City *</label>
+      <input id="city" required>
+      <div class="error-label" id="err-city">City cannot be blank</div>
+    </div>
+
+    <div>
+      <label>Gender *</label>
+      <select id="gender" required>
+        <option value="">Select</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+      </select>
+      <div class="error-label" id="err-gender">Please select gender</div>
+    </div>
+
+    <div>
+      <label>Date of Birth *</label>
+      <input type="date" id="dob" required>
+      <div class="error-label" id="err-dob">Select valid date of birth</div>
+    </div>
+  </div>
+
+  <!-- JOB PREF -->
+  <h3 class="section-title">Job Preferences</h3>
+
+  <div class="grid-2">
+    <div>
+      <label>Select Department *</label>
+      <select id="department" required>
+        <option value="">-- Select --</option>
+        <option value="tele_lead_domestic">Telecalling - Lead - Domestic</option>
+        <option value="tele_lead_international">Telecalling - Lead - international</option>
+        <option value="tele_sales_domestic">Sales - Domestic</option>
+        <option value="tele_sales_international">Sales - International</option>
+      </select>
+      <div class="error-label" id="err-dept">Select a department</div>
+    </div>
+
+    <div>
+      <label>Job Type *</label>
+      <select id="jobType" required>
+        <option value="">-- Select --</option>
+        <option value="fulltime">Full Time</option>
+        <option value="parttime">Part Time</option>
+      </select>
+      <div class="error-label" id="err-jobType">Choose job type</div>
+    </div>
+
+    <div>
+      <label>Preferred Shift *</label>
+      <select id="shift" required>
+        <option value="">-- Select --</option>
+        <option value="morning">Morning</option>
+        <option value="evening">Evening</option>
+        <option value="night">Night</option>
+      </select>
+      <div class="error-label" id="err-shift">Select shift preference</div>
+    </div>
+
+    <div>
+      <label>Country Preference *</label>
+      <select id="country" required>
+        <option value="">-- Select --</option>
+        <option value="india">India</option>
+        <option value="international">International</option>
+      </select>
+      <div class="error-label" id="err-country">Select country preference</div>
+    </div>
+
+
+  <!-- EXPERIENCE -->
+  <h3 class="section-title">Experience & Skills</h3>
+
+  <div class="grid-2">
+    <div>
+      <label>Experience (Months) *</label>
+      <input type="number" id="experience" required min="0">
+      <div class="error-label" id="err-exp">Enter valid experience</div>
+    </div>
+
+    <div>
+      <label>Skill Rating (1–5) *</label>
+      <select id="skills" required>
+        <option value="">Select</option>
+        <option>1</option><option>2</option>
+        <option>3</option><option>4</option>
+        <option>5</option>
+      </select>
+      <div class="error-label" id="err-skills">Select skill rating</div>
+    </div>
+
+    <div>
+      <label>Languages Known *</label>
+      <input id="languages" required placeholder="English, Hindi...">
+      <div class="error-label" id="err-lang">Enter languages</div>
+    </div>
+  </div>
+
+  <!-- WHY SECTION -->
+  <h3 class="section-title">About You</h3>
+
+  <label>Why should we hire you? *</label>
+  <textarea id="why" rows="3" required></textarea>
+  <div class="error-label" id="err-why">Please write at least 10 words</div>
+
+  <!-- CHECKBOX -->
+  <div class="checkbox-container">
+    <input type="checkbox" id="applyEmployee">
+    <label for="applyEmployee">Apply for 7-day trial (employee)</label>
+  </div>
+
+  <button type="submit" class="btn-primary">Submit Application</button>
+
+</form>
+
+</main>
+
+<script src="../api/supabase.min.js"></script>
+<script src="../global.js"></script>
+<script src="./job.js"></script>
+
+<script>
+  initializeLanguageSelector();
+  applyTranslations();
+  document.getElementById("speakBtn").onclick = () =>
+    speak("Please fill out your job application");
+</script>
+
+</body>
+</html>

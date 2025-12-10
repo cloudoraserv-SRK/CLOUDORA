@@ -1,0 +1,100 @@
+/* JOB FORM FINAL PROFESSIONAL VERSION */
+
+.job-card {
+  background: #ffffff;
+  padding: 34px;
+  border-radius: 18px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.08);
+  max-width: 950px;
+  margin: 60px auto;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.section-title {
+  margin: 28px 0 14px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #30334c;
+  letter-spacing: 0.3px;
+  padding-left: 10px;
+  border-left: 4px solid #6366f1;
+}
+
+/* Grid layout */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 22px;
+  margin-bottom: 10px;
+}
+
+/* Inputs */
+label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #2d2f3e;
+  margin-bottom: 6px;
+  display: block;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #cfd4e3;
+  background: #f9faff;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+  outline: none;
+}
+
+textarea {
+  resize: none;
+}
+
+/* Checkbox */
+.checkbox-container {
+  margin: 20px 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Submit button */
+.btn-primary {
+  width: 100%;
+  background: #6366f1;
+  border: none;
+  color: white;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 22px;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.btn-primary:hover {
+  background: #5149e8;
+  transform: translateY(-2px);
+}
+
+/* Error messages */
+.error-label {
+  color: #d32f2f;
+  font-size: 13px;
+  margin-top: 4px;
+  display: none;
+}
+
+/* Fade */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
