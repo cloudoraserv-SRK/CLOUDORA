@@ -1,0 +1,122 @@
+:root {
+  --bg: #eef2ff;
+  --card: #ffffff;
+  --accent: #6366f1;
+  --accent-soft: #a5b4fc;
+  --text: #1e1b4b;
+  --muted: #6b7280;
+  --shadow: rgba(50, 50, 93, 0.12);
+}
+
+body {
+  font-family: "Poppins", system-ui, sans-serif;
+  background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+  margin: 0;
+  color: var(--text);
+}
+
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 24px;
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0px 4px 8px var(--shadow);
+}
+
+.brand {
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--accent);
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-mini {
+  padding: 6px 10px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.btn-mini:hover { background: var(--accent-soft); }
+
+.container {
+  max-width: 980px;
+  margin: 40px auto;
+  text-align: center;
+  padding: 0 16px;
+}
+
+.subtitle {
+  color: var(--muted);
+  margin-top: -10px;
+  margin-bottom: 30px;
+}
+
+.card-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.card {
+  background: var(--card);
+  padding: 26px;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px var(--shadow);
+  text-decoration: none;
+  color: var(--text);
+  font-weight: 600;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px var(--shadow);
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(160px,1fr));
+  gap: 18px;
+  margin: 30px 0;
+}
+
+.module-btn {
+  padding: 18px;
+  background: #eef2ff;
+  border: none;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  transition: 0.2s;
+}
+
+.module-btn:hover {
+  background: #e0e7ff;
+  transform: translateY(-3px);
+}
+
+.module-btn.disabled {
+  background: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+}

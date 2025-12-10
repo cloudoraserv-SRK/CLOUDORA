@@ -1,0 +1,37 @@
+{
+"project": "cloudora-genie-frontend",
+"version": "1.0.0",
+"backend_url": "http://localhost:8787",
+"supabase": {
+"url": "REPLACE_SUPABASE_URL",
+"anonKey": "REPLACE_SUPABASE_ANON_KEY",
+"serviceRoleKey": "REPLACE_SUPABASE_SERVICE_ROLE_KEY"
+},
+"files": [
+"index.html",
+"style.css",
+"global.js",
+"genie-widget.js",
+"api/supabase.js",
+"api/stt.js",
+"api/tts.js",
+"job/job.html",
+"job/job.js",
+"job/agreement.html",
+"job/generate-id.html",
+"job/login.html",
+"job/dashboard.html",
+"employee/login.html",
+"employee/dashboard.html",
+"admin/admin.html",
+"admin/admin.js",
+"backend/index.js",
+"package.json",
+"README.md"
+],
+"unique_id_format": "CLD-{YYMMDD}-{RANDB10}",
+"password_length": 10,
+"default_language": "en",
+"supported_languages": ["en","hi","mr","bn","ta","te","kn","ml","gu","pa","es","de"],
+"currency_supported": ["INR","USD","EUR"],
+"lead_distribution_strategy": "shift_round_robin"

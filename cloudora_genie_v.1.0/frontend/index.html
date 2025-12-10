@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Cloudora Genie - Home</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="brand">🌈 Cloudora Genie</div>
+
+  <div class="controls">
+    <select id="langSelect"></select>
+    <select id="currencySelect"></select>
+    <button id="speakBtn" class="btn-mini">🔊</button>
+    <button id="listenBtn" class="btn-mini">🎤</button>
+  </div>
+</header>
+
+<main class="container fade-in">
+  <h1 data-translate="welcome">Welcome to Cloudora Genie</h1>
+
+  <p class="subtitle" data-translate="subtitle">
+    Your multilingual AI assistant for job, business & automation.
+  </p>
+
+  <div class="card-grid">
+    <a class="card" href="./job/job.html" data-translate="apply_job">Apply for Job / Lead</a>
+    <a class="card" href="./employee/login.html" data-translate="emp_login">Employee Login</a>
+    <a class="card" href="./client/client.html" data-translate="client_login">Customer Login</a>
+    <a class="card" href="./partner/partner.html" data-translate="partner_login">Partner Login</a>
+    <a class="card" href="./admin/admin.html" data-translate="admin_panel">Admin Panel</a>
+  </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
+<script src="global.js"></script>
+
+
+<script>
+  initializeLanguageSelector();
+
+  // TTS button
+  document.getElementById("speakBtn").onclick = () => {
+    speak("Welcome to Cloudora Genie!");
+  };
+
+  // STT button
+  document.getElementById("listenBtn").onclick = () => {
+    startListening((text) => alert("You said: " + text));
+  };
+</script>
+
+</body>
+</html>

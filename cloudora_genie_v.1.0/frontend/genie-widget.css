@@ -1,0 +1,75 @@
+#genie-bubble {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #4f46e5;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 99999;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+#genie-bubble img {
+  width: 60px;
+}
+
+#genie-window {
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  width: 350px;
+  height: 480px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 999999;
+}
+
+#genie-header {
+  background: #4f46e5;
+  color: white;
+  padding: 12px;
+  font-size: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#genie-chat {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  font-size: 14px;
+}
+
+.msg-user {
+  text-align: right;
+  margin: 6px 0;
+}
+.msg-bot {
+  text-align: left;
+  margin: 6px 0;
+}
+
+#genie-input-box {
+  display: flex;
+  padding: 10px;
+  background: #f3f4f6;
+}
+#genie-input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+#genie-send {
+  margin-left: 8px;
+  padding: 10px;
+  background: #4f46e5;
+  color: white;
+  border-radius: 10px;
+  border: none;
+}
