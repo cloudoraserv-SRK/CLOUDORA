@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Generate Employee ID</title>
+
+<link rel="stylesheet" href="../style.css">
+
+<style>
+.box {
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  max-width: 650px;
+  margin: 60px auto;
+  text-align: center;
+}
+#status {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+.emp-id-box {
+  background: #f3f4ff;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #3730a3;
+  display: none;
+}
+</style>
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="brand">Cloudora Genie</div>
+  <div class="controls">
+    <select id="langSelect"></select>
+  </div>
+</header>
+
+<main class="container fade-in">
+
+  <div class="box">
+    <h2>Verifying Your Application…</h2>
+
+    <div id="status">Please wait…</div>
+    <div id="empBox" class="emp-id-box"></div>
+
+    <button id="generateBtn" class="btn-primary" style="display:none;">
+      Generate Employee ID
+    </button>
+
+    <button id="loginBtn" class="btn-primary" style="display:none;">
+      Go to Login Page
+    </button>
+  </div>
+
+</main>
+
+<!-- 1️⃣ LOAD SUPABASE SDK FIRST (MANDATORY) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+<!-- 2️⃣ LOAD GLOBAL.JS AFTER SDK -->
+<script src="../global.js"></script>
+
+<!-- 3️⃣ PAGE SCRIPT -->
+<script>
+initializeLanguageSelector();
+applyTranslations();
+
+// read lead_uid from URL
+const url = new URLSearchParams(window.location.search);
+const lead_uid = url.get("lead");
+
+const statusEl = document.getElementById("status");
+const empBox = document.getElementById("empBox");
+const generateBtn = document.getElementById("generateBtn");
+const loginBtn = document.getElementById("loginBtn");
+
+// --------------------------------------------
+// Step 1 — Verify Lead & Agreement Status
+// --------------------------------------------
+async function verifyLead() {
+  try {
+    const res = await fetch(CONFIG.BACKEND + "/api/job/verify-lead", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({ lead_uid })
+    });
+
+    const j = await res.json();
+
+    if (!j.ok) {
+      statusEl.innerText = "Invalid or incomplete application.";
+      return;
+    }
+
+    if (!j.lead.agreement_status) {
+      statusEl.innerText = "Agreement not accepted. Please go back.";
+      return;
+    }
+
+    statusEl.innerText = "Application verified. You can now generate your Employee ID.";
+    generateBtn.style.display = "block";
+
+  } catch (err) {
+    statusEl.innerText = "Network error. Try again.";
+  }
+}
+
+verifyLead();
+
+// --------------------------------------------
+// Step 2 — Generate Employee ID
+// --------------------------------------------
+generateBtn.onclick = async () => {
+  statusEl.innerText = "Generating Employee ID…";
+
+  try {
+    const res = await fetch(CONFIG.BACKEND + "/api/job/create-employee", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({ lead_uid })
+    });
+
+    const j = await res.json();
+
+    if (!j.ok) {
+      statusEl.innerText = j.error || "Unable to generate ID.";
+      return;
+    }
+
+    const emp = j.employee;
+
+    empBox.innerHTML = `
+      Employee ID: <b>${emp.employee_id}</b><br>
+      Password: <b>${emp.password}</b>
+    `;
+    empBox.style.display = "block";
+
+    statusEl.innerText = "Employee account created successfully!";
+    generateBtn.style.display = "none";
+    loginBtn.style.display = "block";
+
+  } catch (err) {
+    statusEl.innerText = "Unable to connect. Please try again.";
+  }
+};
+
+// --------------------------------------------
+// Step 3 — Go to Login Page
+// --------------------------------------------
+loginBtn.onclick = () => {
+  window.location.href = "../employee/login.html";
+};
+</script>
+
+</body>
+</html>
