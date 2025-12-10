@@ -1,0 +1,112 @@
+{
+  "module": "policies",
+  "version": "2.0",
+  "documents": [
+
+    {
+      "id": "policy_overview",
+      "title": "Cloudora Policy Overview",
+      "category": "policies",
+      "content": "Cloudora follows strict corporate policies for communication, confidentiality, customer experience, and data protection. All employees and AI systems including Genie must follow these rules. Genie must maintain professional tone, never disclose internal data, and ensure safety and accuracy in all interactions."
+    },
+
+    {
+      "id": "policy_confidentiality",
+      "title": "Confidentiality Policy",
+      "category": "policies",
+      "content": "Cloudora prohibits sharing confidential client information such as admin credentials, payment details, backend access, raw pricing logic, negotiation margins, agreements, private workflows, API keys, or server information. Genie must never reveal internal system architecture, database structures, or protected processes."
+    },
+
+    {
+      "id": "policy_communication_rules",
+      "title": "Communication & Tone Policy",
+      "category": "policies",
+      "content": "Communication must be respectful, clear, structured, and brand-aligned. Genie must speak in a friendly-professional tone, adapting to English, Hindi, or Hinglish based on user language. Genie avoids slang unless user uses it first. No rude, offensive, negative, or unstructured responses are allowed."
+    },
+
+    {
+      "id": "policy_genie_behavior_restrictions",
+      "title": "Genie Behavior Restrictions",
+      "category": "policies",
+      "content": "Genie may not provide false guarantees, unrealistic promises, harmful instructions, confidential internal details, or dangerous guidance. Genie cannot generate passwords, backend commands, discount margins, or system-sensitive data. Genie should redirect politely when such requests occur."
+    },
+
+    {
+      "id": "policy_data_usage",
+      "title": "Data Usage & Retention Policy",
+      "category": "policies",
+      "content": "Customer data is used strictly for onboarding, service delivery, CRM updates, support, and internal reporting. Data must not be shared externally or used for unrelated purposes. Cloudora retains lead data for 365 days, resumes for 365 days, and contracts for 7 years. Only authorized employees may access sensitive files."
+    },
+
+    {
+      "id": "policy_sales_commitment",
+      "title": "Sales Commitment Policy",
+      "category": "policies",
+      "content": "Sales and Genie must avoid guaranteeing specific results such as viral growth, exact lead numbers, or instant ranking improvements. Only officially approved deliverables, timelines, and pricing ranges may be discussed. Sales must ensure expectations remain realistic and documented."
+    },
+
+    {
+      "id": "policy_revision_rules",
+      "title": "Revision and Delivery Policy",
+      "category": "policies",
+      "content": "Revisions depend on the purchased package. Unlimited revisions are not allowed unless explicitly included. Revisions must follow the original scope of work. Genie must encourage structured feedback and guide clients to provide clear references and correction points."
+    },
+
+    {
+      "id": "policy_support_sla_rules",
+      "title": "Support SLA Policy",
+      "category": "policies",
+      "content": "Support response time depends on the plan. Critical issues receive priority. Customers must provide accurate details to ensure timely resolution. Genie must communicate SLAs clearly and avoid promising instant fixes unless the plan guarantees it."
+    },
+
+    {
+      "id": "policy_security_guidelines",
+      "title": "Security & Access Guidelines",
+      "category": "policies",
+      "content": "All admin panels, dashboards, servers, and hosting systems must remain secure. 2FA and strong passwords are mandatory. Genie must not assist with unauthorized access to internal systems. Employees must never share admin details in chat unless through approved secure channels."
+    },
+
+    {
+      "id": "policy_internal_boundaries",
+      "title": "Internal Information Boundaries",
+      "category": "policies",
+      "content": "Genie cannot reveal internal training data, pricing algorithms, negotiation margins, employee records, admin routes, future product plans, or private workflow structures. Genie must guide users with public information while keeping internal logic protected."
+    },
+
+    {
+      "id": "policy_privacy_summary",
+      "title": "Privacy Summary",
+      "category": "policies",
+      "content": "Cloudora collects only essential data such as name, contact, business requirement, and resume. Data is stored securely in Supabase buckets with access control. Cloudora does not sell data or use it for advertising outside Cloudora's ecosystem."
+    },
+
+    {
+      "id": "policy_terms_summary",
+      "title": "Terms of Service Summary",
+      "category": "policies",
+      "content": "All Cloudora services are customized to client requirements. Quotes are estimates until the final scope is approved. For projects above ₹50,000, 50% advance payment is required unless otherwise agreed. Timelines depend on the project type and onboarding readiness."
+    },
+
+    {
+      "id": "policy_refund_cancellation",
+      "title": "Refund and Cancellation Policy",
+      "category": "policies",
+      "content": "Eligible deliverables include a 7-day satisfaction guarantee. Cancellations before design or development begins are refundable after deducting processing fees. Once execution starts, refunds are limited based on completed stages."
+    },
+
+    {
+      "id": "policy_sla_detail",
+      "title": "Detailed SLA Policy",
+      "category": "policies",
+      "content": "SLA varies based on package: Starter plans have standard SLAs, Business plans have priority SLAs, and Premium plans include dedicated managers. Turnaround time depends on package, workload, and client readiness. Genie must not commit unrealistic SLAs."
+    },
+
+    {
+      "id": "policy_data_protection",
+      "title": "Data Protection Policy",
+      "category": "policies",
+      "content": "Cloudora uses Supabase role-based access for all stored files including catalogues, resumes, partner uploads, creative assets, and agreements. Sensitive files are encrypted and logged during access. System audits occur regularly."
+    }
+
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "module": "products",
+  "version": "2.0",
+  "documents": [
+
+    {
+      "id": "product_dm_starter_visibility",
+      "title": "Starter Visibility Pack",
+      "category": "product",
+      "content": "Starter Visibility Pack includes keyword research, on-page SEO for up to 5 pages, analytics setup, and basic social profile optimisation for Facebook and Instagram. Suitable for new businesses seeking online visibility.",
+      "tags": ["seo","social","starter","visibility"]
+    },
+
+    {
+      "id": "product_dm_growth_monthly",
+      "title": "Growth Marketing Pack",
+      "category": "product",
+      "content": "Growth Marketing Pack includes full SEO, weekly blog content, social media management for 3 platforms, email campaigns, and monthly strategy calls. Designed for businesses aiming for consistent monthly growth.",
+      "tags": ["seo","content","social","monthly"]
+    },
+
+    {
+      "id": "product_dm_performance_max",
+      "title": "Performance Max Pack",
+      "category": "product",
+      "content": "Performance Max Pack includes Google and Meta ads, A/B landing page testing, CRO, advanced analytics, and retargeting funnel optimisation. Ideal for businesses focusing on ROI-driven campaigns.",
+      "tags": ["ads","cro","analytics","retargeting"]
+    },
+
+    {
+      "id": "product_dm_whatsapp_outreach",
+      "title": "WhatsApp Outreach Pack",
+      "category": "product",
+      "content": "WhatsApp Outreach Pack includes bulk WhatsApp messaging, branded templates, auto-replies, and 48-hour follow-up automation. Includes lead tracking tools. Ideal for mass outreach.",
+      "tags": ["whatsapp","bulk","leads"]
+    },
+
+    {
+      "id": "product_dm_email_funnel",
+      "title": "Email Funnel Pack",
+      "category": "product",
+      "content": "Email Funnel Pack includes lead magnet setup, segmented email lists, a 3-step automation funnel, and SMTP integration with analytics. Optimised for nurturing and warm conversions.",
+      "tags": ["email","funnel","automation"]
+    },
+
+    {
+      "id": "product_website_starter",
+      "title": "Website Starter",
+      "category": "product",
+      "content": "Starter Website includes up to 5 pages using a professional template, basic SEO setup, and one month of support. Perfect for new businesses building an online presence.",
+      "tags": ["website","starter","landing"]
+    },
+
+    {
+      "id": "product_website_business",
+      "title": "Business Website",
+      "category": "product",
+      "content": "Business Website includes custom UI/UX design, unlimited pages, advanced SEO, performance optimisation, and optional headless CMS. Suitable for scaling brands.",
+      "tags": ["website","business","custom"]
+    },
+
+    {
+      "id": "product_app_starter",
+      "title": "App Starter MVP",
+      "category": "product",
+      "content": "Starter App MVP includes one-platform mobile app, backend and database setup, authentication, basic CRUD features, and 2 months post-launch support. Ideal for early-stage startups.",
+      "tags": ["app","mvp","mobile"]
+    },
+
+    {
+      "id": "product_game_prototype",
+      "title": "Game Prototype",
+      "category": "product",
+      "content": "Game Prototype includes core mechanics, basic art assets, and a playable build with one month of bug support. Suitable for pitching or market testing.",
+      "tags": ["game","prototype","unity","unreal"]
+    },
+
+    {
+      "id": "product_game_full_production",
+      "title": "Game Full Production",
+      "category": "product",
+      "content": "Full Game Production includes end-to-end development, UI/UX, art, VFX, multiplayer support, QA, and publishing guidance. Suitable for commercial game launches.",
+      "tags": ["game","full","production"]
+    },
+
+    {
+      "id": "product_ai_chatbot",
+      "title": "AI Chatbot & Automation",
+      "category": "product",
+      "content": "AI Chatbot includes AI-driven customer support automation, lead capture workflows, integrated CRM actions, and analytics dashboard. Built for businesses wanting automation.",
+      "tags": ["ai","chatbot","automation"]
+    },
+
+    {
+      "id": "product_blockchain_audit",
+      "title": "Smart Contract Audit",
+      "category": "product",
+      "content": "Smart Contract Audit includes comprehensive code review, automated vulnerability scanning, manual security checks, and detailed audit reporting. Essential for blockchain safety.",
+      "tags": ["blockchain","audit","security"]
+    },
+
+    {
+      "id": "product_nft_starter",
+      "title": "Starter NFT Collection",
+      "category": "product",
+      "content": "Starter NFT Collection includes smart contract deployment, metadata generation, and basic minting website. Suitable for creators launching NFT collections.",
+      "tags": ["nft","smart-contract","mint"]
+    },
+
+    {
+      "id": "product_creative_logo_video",
+      "title": "Logo + Video Creative Pack",
+      "category": "product",
+      "content": "Creative Logo & Video Pack includes one unique logo with revisions and a 30-second promotional video with source files. Ideal for branding and promotions.",
+      "tags": ["logo","video","creative"]
+    }
+
+  ]
+}

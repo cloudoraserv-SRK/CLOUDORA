@@ -1,0 +1,39 @@
+{
+  "module": "employee_benefits",
+  "version": "1.0",
+  "documents": [
+
+    {
+      "id": "benefits_overview",
+      "title": "Employee Benefits Overview",
+      "category": "employee_benefits",
+      "content": "Cloudora offers structured benefits including training support, fast growth paths, transparent incentives, performance-based rewards, and supportive guidance from Genie.",
+      "metadata": {}
+    },
+
+    {
+      "id": "7_day_onboarding_benefits",
+      "title": "7-Day Trial Employee Benefits",
+      "category": "employee_benefits",
+      "content": "During the 7-day trial: employees receive full training, real-time Genie support, call scripts, daily tasks, XP rewards, job role clarity, and fair evaluation. Good performance leads to selection.",
+      "metadata": {}
+    },
+
+    {
+      "id": "incentive_criteria",
+      "title": "Incentive Criteria (Universal)",
+      "category": "employee_benefits",
+      "content": "Incentives depend on: punctuality, CRM discipline, task completion, call quality, customer handling, teamwork, and behaviour. Genie tracks performance patterns to guide improvement.",
+      "metadata": {}
+    },
+
+    {
+      "id": "post_selection_benefits",
+      "title": "Post-Selection Employee Benefits",
+      "category": "employee_benefits",
+      "content": "Benefits after selection: stable salary, performance incentives, XP-based rewards, certificates, skill-growth training, career-progress roadmap, Genie-based daily coaching.",
+      "metadata": {}
+    }
+
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "module": "hr_policies",
+  "version": "1.0",
+  "documents": [
+
+    {
+      "id": "hr_policy_overview",
+      "title": "Cloudora HR Overview",
+      "category": "hr_policies",
+      "content": "Cloudora HR policies ensure a professional, respectful, and productive work environment. Employees must follow attendance, communication rules, behaviour standards, and confidentiality guidelines.",
+      "metadata": {}
+    },
+
+    {
+      "id": "attendance_policy",
+      "title": "Attendance & Work Discipline",
+      "category": "hr_policies",
+      "content": "Employees must follow shift timing, complete daily tasks, update CRM, attend meetings, and communicate delays. Uninformed absences are not allowed.",
+      "metadata": {}
+    },
+
+    {
+      "id": "communication_policy",
+      "title": "Communication Policy",
+      "category": "hr_policies",
+      "content": "Communication with customers and colleagues must be polite, structured, professional and on-time. Genie helps with message formatting and tone improvement.",
+      "metadata": {}
+    },
+
+    {
+      "id": "behaviour_policy",
+      "title": "Behaviour & Culture Policy",
+      "category": "hr_policies",
+      "content": "Cloudora promotes respect, teamwork, accountability and positivity. Bullying, anger, disrespectful behaviour or argument-based communication is not allowed.",
+      "metadata": {}
+    },
+
+    {
+      "id": "confidentiality_policy",
+      "title": "Confidentiality Policy",
+      "category": "hr_policies",
+      "content": "Employees must protect customer data, internal documents, pricing sheets and workflow processes. Genie will not reveal restricted information to any employee without access.",
+      "metadata": {}
+    },
+
+    {
+      "id": "performance_policy",
+      "title": "Performance Expectations",
+      "category": "hr_policies",
+      "content": "Employees are expected to meet weekly and monthly targets, maintain quality work, improve skills and follow workflows. Genie provides support for performance improvement.",
+      "metadata": {}
+    }
+
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "module": "leaderboard",
+  "version": "1.0",
+  "documents": [
+
+    {
+      "id": "leaderboard_overview",
+      "title": "Leaderboard Overview",
+      "category": "leaderboard",
+      "content": "Cloudora maintains a monthly leaderboard to motivate employees. Ranking is based on performance score, XP, CRM discipline, punctuality, and customer feedback.",
+      "metadata": {}
+    },
+
+    {
+      "id": "leaderboard_scoring",
+      "title": "Leaderboard Scoring Logic",
+      "category": "leaderboard",
+      "content": "Leaderboard Score = Performance Score (50%) + XP Level (25%) + CRM Discipline (15%) + Customer Feedback (10%).",
+      "metadata": {}
+    },
+
+    {
+      "id": "leaderboard_rewards",
+      "title": "Leaderboard Rewards",
+      "category": "leaderboard",
+      "content": "Top performers receive: certificates, bonuses, team recognition, extra XP, priority shift choices, and performance badges.",
+      "metadata": {}
+    }
+
+  ]
+}
