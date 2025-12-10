@@ -1,0 +1,21 @@
+{
+  "module": "master",
+  "version": "1.0",
+  "includes": [
+    "kb_company.json",
+    "kb_crm.json",
+    "kb_deliverables.json",
+    "kb_demand_rules.json",
+    "kb_genie_behavior.json",
+    "kb_jobs.json",
+    "kb_policies.json",
+    "kb_pricing.json",
+    "kb_products.json",
+    "kb_sales.json",
+    "kb_support.json",
+    "kb_tech_docs.json",
+    "kb_telecalling.json",
+    "kb_training.json",
+    "kb_workflows.json"
+  ]
+}

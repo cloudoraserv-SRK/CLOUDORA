@@ -1,0 +1,81 @@
+{
+  "module": "telecalling",
+  "version": "2.0",
+  "documents": [
+
+    {
+      "id": "telecalling_language_mode",
+      "title": "Telecalling Language Detection Rules",
+      "category": "telecalling",
+      "content": "Telecalling system auto-detects language using user locale, input language, and fallback Hinglish. Genie must reply in the detected language automatically and switch languages smoothly based on caller preference.",
+      "metadata": {
+        "language_mode": "auto_detect",
+        "preferred_detection_order": ["user_locale", "user_input_language", "default_hinglish"]
+      }
+    },
+
+    {
+      "id": "telecalling_opening_scripts",
+      "title": "Telecalling Opening Scripts",
+      "category": "telecalling",
+      "content": "Hindi: Namaste, main Cloudora se bol raha hoon. Aapka thoda samay milega? Hum aapko business growth me madad kar sakte hain.\nEnglish: Hello, this is Cloudora. Do you have a minute to discuss services that can help your business grow?\nHinglish: Hello, main Cloudora se bol raha hoon — kya aap thoda time de sakte hain? Hum aapke liye budget-friendly plan bana sakte hain.",
+      "metadata": {
+        "scripts": {
+          "hin": "Namaste, main Cloudora se bol raha/rahi hoon. Aapka thoda samay milega? Hum aapko business growth me madad kar sakte hain.",
+          "eng": "Hello, this is Cloudora. Do you have a minute to discuss services that can help your business grow?",
+          "hinglish": "Hello, main Cloudora se bol raha hoon — kya aap thoda time de sakte hain? Hum aapke liye budget-friendly plan bana sakte hain."
+        }
+      }
+    },
+
+    {
+      "id": "telecalling_qualification_flow",
+      "title": "Telecalling Qualification Questions",
+      "category": "telecalling",
+      "content": "Qualification questions include: Are you running any online campaigns? What is your monthly or one-time budget? Which services are you most interested in? (Website, Ads, Social Media, WhatsApp) What is your preferred contact time? These questions help filter and route the lead correctly.",
+      "metadata": {
+        "fields": [
+          {"q":"Are you currently running any online campaigns?","field":"current_campaigns"},
+          {"q":"What is your monthly budget or ballpark?","field":"detected_budget"},
+          {"q":"Which services interest you most? (Website, Ads, Social, WhatsApp)","field":"product_interest"},
+          {"q":"Preferred contact time?","field":"contact_time"}
+        ]
+      }
+    },
+
+    {
+      "id": "telecalling_compliance_rules",
+      "title": "Telecalling Compliance Rules",
+      "category": "telecalling",
+      "content": "Compliance requirements: Do not call between restricted hours. Confirm opt-in before sending bulk WhatsApp messages. Inform the caller if the conversation is recorded for training or quality. Follow privacy and consent guidelines strictly.",
+      "metadata": {
+        "do_not_call_hours_local": {"start":"21:00","end":"08:00"},
+        "opt_in_requirement": "Telecaller must confirm opt-in before bulk WhatsApp outreach",
+        "call_recording_notice": "Inform user if call is recorded for quality reasons"
+      }
+    },
+
+    {
+      "id": "telecalling_handoff_rules",
+      "title": "Telecalling Handoff Rules",
+      "category": "telecalling",
+      "content": "Leads must be handed off to sales if they show valid budget and have clear service interest. If the conversation indicates a job seeker or job application, escalate to HR flow. Correct routing improves conversion and minimizes confusion.",
+      "metadata": {
+        "qualify_to_sales_if": ["detected_budget > minimum*0.8","product_interest not null"],
+        "escalate_to_hr_if": ["job_application flagged"]
+      }
+    },
+
+    {
+      "id": "telecalling_cadence",
+      "title": "Telecalling Cadence and Attempts",
+      "category": "telecalling",
+      "content": "Telecalling cadence: maximum three attempts. First attempt is immediate, second after 2 days, third after 5 days. If there is still no response, mark as cold and shift to passive nurturing.",
+      "metadata": {
+        "max_attempts": 3,
+        "days_between_calls": [0, 2, 5]
+      }
+    }
+
+  ]
+}

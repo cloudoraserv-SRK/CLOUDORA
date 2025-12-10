@@ -1,0 +1,105 @@
+{
+  "module": "workflows",
+  "version": "3.0",
+  "documents": [
+
+    {
+      "id": "workflow_marketing_overview",
+      "title": "Marketing Monthly Workflow Overview",
+      "category": "workflow_marketing",
+      "content": "Cloudora's marketing workflow ensures consistent delivery across content, ads, and reporting. Stages include requirement gathering, monthly planning, content production, internal review, client approvals, scheduling, ad campaign execution, monitoring, optimization, and reporting.",
+      "metadata": {
+        "phases": ["requirement", "planning", "production", "review", "approval", "publishing", "ads", "analytics", "reporting"]
+      }
+    },
+
+    {
+      "id": "workflow_marketing_steps",
+      "title": "Marketing Workflow Steps",
+      "category": "workflow_marketing",
+      "content": "Step-by-step marketing flow: 1) Collect brand inputs and references. 2) Create content calendar. 3) Produce graphics, carousels, reels, and captions. 4) Internal QC review. 5) Share drafts for client approval. 6) Schedule content. 7) Run targeted ad campaigns. 8) Track analytics. 9) Deliver monthly report.",
+      "metadata": {}
+    },
+
+    {
+      "id": "workflow_website_overview",
+      "title": "Website Development Workflow Overview",
+      "category": "workflow_website",
+      "content": "Website development flows through requirement gathering, wireframes, UI design, development, content integration, SEO structure, QA testing, client review, revisions, hosting setup, domain setup, SSL, and final deployment.",
+      "metadata": {}
+    },
+
+    {
+      "id": "workflow_website_steps",
+      "title": "Website Development Workflow Steps",
+      "category": "workflow_website",
+      "content": "Step-by-step: 1) Collect brand assets. 2) Plan site structure. 3) Create wireframes. 4) Design UI mockups. 5) Develop frontend/backend. 6) Integrate content. 7) Apply SEO tags. 8) Conduct responsive testing. 9) Fix bugs. 10) Provide preview link. 11) Apply revisions. 12) Deploy. 13) Map domain and enable SSL. 14) Final handover.",
+      "metadata": {}
+    },
+
+    {
+      "id": "workflow_app_overview",
+      "title": "App Development Workflow Overview",
+      "category": "workflow_app",
+      "content": "Cloudora’s app workflow includes planning, feature documentation, wireframes, UI/UX design, backend + API development, database setup, app coding, integration testing, optimization, deployment, and maintenance.",
+      "metadata": {}
+    },
+
+    {
+      "id": "workflow_app_steps",
+      "title": "App Development Workflow Steps",
+      "category": "workflow_app",
+      "content": "Steps: 1) Requirement analysis. 2) Finalize feature list. 3) Create wireframes. 4) Design UI screens. 5) Build APIs and database. 6) Develop app. 7) Integrate all modules. 8) Test functionality and performance. 9) Obtain client review. 10) Apply revisions. 11) Publish to app stores. 12) Ongoing maintenance.",
+      "metadata": {}
+    },
+
+    {
+      "id": "workflow_ai_overview",
+      "title": "AI Automation Workflow Overview",
+      "category": "workflow_ai",
+      "content": "AI automation involves designing STT/TTS systems, building chatbot flows, creating data pipelines, and automating CRM or business tasks. The goal is to reduce manual work, improve accuracy, and scale business operations.",
+      "metadata": {}
+    },
+
+    {
+      "id": "workflow_ai_steps",
+      "title": "AI Automation Workflow Steps",
+      "category": "workflow_ai",
+      "content": "AI automation steps: 1) Analyze processes. 2) Identify tasks suitable for automation. 3) Set up STT/TTS or chatbot logic. 4) Build internal flows and rules. 5) Define API/database structures. 6) Test scenarios. 7) Deploy automation. 8) Monitor real-world performance. 9) Optimize flows.",
+      "metadata": {}
+    },
+
+    {
+      "id": "workflow_creative_overview",
+      "title": "Creative Studio Workflow Overview",
+      "category": "workflow_creative",
+      "content": "Creative workflow includes brief collection, concept direction, moodboards, design/animation creation, editing, internal QC, client revisions, and delivery of final formats.",
+      "metadata": {}
+    },
+
+    {
+      "id": "workflow_creative_steps",
+      "title": "Creative Studio Workflow Steps",
+      "category": "workflow_creative",
+      "content": "Steps: 1) Collect detailed brief. 2) Prepare references or moodboards. 3) Create initial designs or animation concepts. 4) Edit or animate as required. 5) Conduct internal review. 6) Share for client feedback. 7) Apply revisions. 8) Finalize asset. 9) Export required formats. 10) Deliver via dashboard or drive.",
+      "metadata": {}
+    },
+
+    {
+      "id": "workflow_support_overview",
+      "title": "Support Workflow Overview",
+      "category": "workflow_support",
+      "content": "Support workflow handles bug reporting, categorization, troubleshooting, SLA application, escalations, and resolution updates. Genie helps collect issue details and route them correctly.",
+      "metadata": {}
+    },
+
+    {
+      "id": "workflow_support_steps",
+      "title": "Support Workflow Steps",
+      "category": "workflow_support",
+      "content": "Steps: 1) Receive issue with full details. 2) Categorize into design, content, technical, hosting. 3) Assign severity. 4) Allocate to appropriate support team. 5) Fix issue. 6) Provide update to customer. 7) Close ticket. 8) Log in CRM.",
+      "metadata": {}
+    }
+
+  ]
+}

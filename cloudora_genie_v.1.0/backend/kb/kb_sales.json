@@ -1,0 +1,151 @@
+{
+  "module": "sales",
+  "version": "2.0",
+  "documents": [
+
+    {
+      "id": "sales_style_overview",
+      "title": "Sales Style: Neutral Consultative",
+      "category": "sales",
+      "content": "Cloudora follows a neutral consultative sales approach. The goal is to understand the customer's needs, budget, and timeline before recommending any plan. Sales representatives ask structured questions, avoid assumptions, and position Cloudora as a trusted advisor focused on business outcomes rather than pushing predefined packages.",
+      "metadata": {}
+    },
+
+    {
+      "id": "sales_discovery_questions",
+      "title": "Sales Discovery Questions",
+      "category": "sales",
+      "content": "Core discovery questions include: What is your primary business goal (leads, brand, commerce)? What is your monthly or one-time budget range? Do you currently run a website, ads, or marketing? What geographies are you targeting? What is your preferred timeline? These questions help clarify requirements before recommending a solution.",
+      "metadata": {}
+    },
+
+    {
+      "id": "sales_pitch_template",
+      "title": "Sales Pitch Template",
+      "category": "sales",
+      "content": "Opening Line: Thank you — before I share options, may I know your budget and timeline? Discovery Summary: Based on your goals, we recommend an approach that aligns with your intended outcomes and available resources. Closing Line: We’ll customise a plan within your budget — shall I prepare a short proposal?",
+      "metadata": {}
+    },
+
+    {
+      "id": "sales_objection_handling_rules",
+      "title": "Objection Handling Rules",
+      "category": "sales",
+      "content": "Common objection handling patterns: If pricing feels high, ask for budget, offer phased solutions, and highlight quick wins such as trials. If the customer is not ready, offer a 3-day trial or audit. If a competitor price is mentioned, ask for details and highlight Cloudora's value and satisfaction guarantee.",
+      "metadata": {}
+    },
+
+    {
+      "id": "sales_quote_generation_rules",
+      "title": "Quote Generation Logic",
+      "category": "sales",
+      "content": "For employees: The quote generator shows minimum, typical, and premium price ranges with editable deliverables. For clients: Genie must avoid showing internal pricing, instead asking for budget and tailoring a recommended approach. Quotes are always custom and based on discovery.",
+      "metadata": {}
+    },
+
+    {
+      "id": "sales_negotiation_rules",
+      "title": "Negotiation Rules",
+      "category": "sales",
+      "content": "Negotiation brackets include 10%, 20%, and 40% discounts. Anything above 20% requires manager approval. Prices cannot drop below minimum thresholds. Genie must auto-flag if a discount violates minimum pricing rules.",
+      "metadata": {}
+    },
+
+    {
+      "id": "sales_intro_script",
+      "title": "Sales Call Introduction Script",
+      "category": "sales",
+      "content": "Hello! This is Cloudora calling. We help businesses grow using digital marketing, websites, automation, and business tools. I’d love to understand your business and guide you with the best growth plan. Could you share a little about your business and goals?",
+      "metadata": {}
+    },
+
+    {
+      "id": "sales_qualification_questions_extended",
+      "title": "Lead Qualification Questions",
+      "category": "sales",
+      "content": "Qualification questions include: What does your business do? Are you currently running marketing or ads? What outcomes do you want to achieve? What challenges are you facing? What’s your timeline? Are you the decision-maker? What is your monthly marketing or development budget?",
+      "metadata": {}
+    },
+
+    {
+      "id": "sales_pitch_marketing",
+      "title": "Marketing Sales Pitch",
+      "category": "sales",
+      "content": "For marketing leads: Cloudora accelerates growth using content, reels, targeted ads, SEO, and strategic brand building. Plans focus on visibility, engagement, and conversions. Every strategy is customised based on business type and audience. Clients experience improved lead flow, better engagement, and stronger brand authority.",
+      "metadata": {}
+    },
+
+    {
+      "id": "sales_pitch_website",
+      "title": "Website Development Sales Pitch",
+      "category": "sales",
+      "content": "For website leads: Cloudora builds modern, fast, mobile-responsive, SEO-optimised websites with strong UI/UX. Whether you need a portfolio, business site, ecommerce store, or custom system, Cloudora handles development, hosting, deployment, and support.",
+      "metadata": {}
+    },
+
+    {
+      "id": "sales_pitch_ai",
+      "title": "AI & Automation Sales Pitch",
+      "category": "sales",
+      "content": "For automation leads: Cloudora automates workflows with AI chatbots, CRM integration, lead capture automation, voice systems, and task automation. Automation increases efficiency, reduces manual effort, and offers 24/7 performance.",
+      "metadata": {}
+    },
+
+    {
+      "id": "sales_closing_script",
+      "title": "Sales Closing Script",
+      "category": "sales",
+      "content": "Closing Line: Based on what you shared, the solution we propose fits your goals and budget. We can start onboarding immediately. Shall I send the agreement and onboarding checklist? Once confirmed, the team will be assigned and we move to the next step.",
+      "metadata": {}
+    },
+
+    {
+      "id": "sales_followup_message",
+      "title": "Follow-Up Message",
+      "category": "sales",
+      "content": "Hi! Just checking in regarding our discussion. I’d love to help you scale using the right plan. Whenever you're ready, we can move forward. Feel free to ask anything — I’m here to help.",
+      "metadata": {}
+    },
+
+    {
+      "id": "sales_objection_pricing",
+      "title": "Objection Handling: Pricing",
+      "category": "sales",
+      "content": "If the customer feels pricing is high: Acknowledge concern, reinforce Cloudora's quality, highlight long-term value, and explain that cheaper services often compromise strategy or execution. Cloudora focuses on delivering measurable results.",
+      "metadata": {}
+    },
+
+    {
+      "id": "sales_objection_time",
+      "title": "Objection Handling: No Time",
+      "category": "sales",
+      "content": "If the customer says they do not have time: Reassure that Cloudora handles execution end-to-end, enabling customers to focus on their business without extra workload.",
+      "metadata": {}
+    },
+
+    {
+      "id": "sales_objection_results",
+      "title": "Objection Handling: Results Doubt",
+      "category": "sales",
+      "content": "If the customer is unsure about results: Reinforce Cloudora's strategic approach using data, content quality, targeting optimisation, and continuous refinement. Offer trials or low-cost starter plans to build trust.",
+      "metadata": {}
+    },
+
+    {
+      "id": "sales_proposal_structure",
+      "title": "Proposal Structure Overview",
+      "category": "sales",
+      "content": "A standard proposal includes: Business understanding, recommended strategy, package deliverables, pricing structure, timeline, onboarding steps, and next-step actions. Genie auto-generates proposals based on lead inputs.",
+      "metadata": {}
+    },
+
+    {
+      "id": "sales_closing_reminder",
+      "title": "Closing Reminder Message",
+      "category": "sales",
+      "content": "Hi! Just a reminder that the plan we discussed is ready. Starting sooner accelerates your growth timeline. Let me know if you'd like to proceed — I can assist with onboarding immediately.",
+      "metadata": {}
+    }
+
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "module": "employee_performance",
+  "version": "1.0",
+  "documents": [
+
+    {
+      "id": "performance_scoring_overview",
+      "title": "Employee Performance Scoring Overview",
+      "category": "performance",
+      "content": "Cloudora uses a transparent and fair performance scoring system. Scores are based on quality of work, task completion, discipline, communication, customer experience, and reliability.",
+      "metadata": {}
+    },
+
+    {
+      "id": "performance_score_formula",
+      "title": "Performance Scoring Formula",
+      "category": "performance",
+      "content": "Performance Score = (Task Completion 30%) + (Quality 25%) + (Discipline 15%) + (Communication 15%) + (Team Behaviour 15%). Score ranges: 90+ = Excellent, 75–89 = Strong, 60–74 = Average, 40–59 = Needs Improvement, <40 = Critical.",
+      "metadata": {}
+    },
+
+    {
+      "id": "performance_rules",
+      "title": "Performance Expectations",
+      "category": "performance",
+      "content": "Employees must: complete tasks on time, maintain quality, follow SOP, communicate clearly, update CRM, avoid errors, show professionalism, and collaborate with team members.",
+      "metadata": {}
+    },
+
+    {
+      "id": "performance_rewards",
+      "title": "Performance Rewards",
+      "category": "performance",
+      "content": "High performers receive: incentives, leadership opportunities, priority shifts, fast-track promotions, monthly recognition, and additional Genie assistance modules.",
+      "metadata": {}
+    }
+
+  ]
+}
