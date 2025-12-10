@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Call Panel - Cloudora Genie</title>
+
+<link rel="stylesheet" href="../style.css">
+<style>
+.panel {
+  max-width: 700px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.07);
+}
+.lead-box {
+  background: #eef2ff;
+  padding: 18px;
+  border-radius: 12px;
+}
+.qbtn {
+  padding: 12px 20px;
+  border-radius: 10px;
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  margin: 6px 4px;
+  font-weight: 600;
+}
+</style>
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="brand">Cloudora Call Panel</div>
+  <button onclick="goBack()" class="btn-mini">↩ Back</button>
+</header>
+
+<main class="container fade-in">
+
+  <div class="panel">
+
+    <h2>Lead Calling Panel</h2>
+
+    <div id="loading">Fetching next lead...</div>
+
+    <div id="leadBox" class="lead-box" style="display:none;">
+      <p><b>Name:</b> <span id="l_name"></span></p>
+      <p><b>Phone:</b> <span id="l_phone"></span></p>
+      <p><b>Email:</b> <span id="l_email"></span></p>
+      <p><b>City:</b> <span id="l_city"></span></p>
+    </div>
+
+    <button id="callBtn" class="qbtn" style="display:none;">📞 Call</button>
+
+    <h3 style="margin-top:20px;">Update Status</h3>
+
+    <div id="statusBtns" style="display:none;">
+      <button class="qbtn" onclick="updateStatus('interested')">Interested</button>
+      <button class="qbtn" onclick="updateStatus('not_interested')">Not Interested</button>
+      <button class="qbtn" onclick="updateStatus('callback')">Callback</button>
+      <button class="qbtn" onclick="updateStatus('wrong_number')">Wrong Number</button>
+    </div>
+
+    <textarea id="notes" placeholder="Add notes..." style="width:100%; margin-top:20px; height:100px;"></textarea>
+
+    <button id="nextLeadBtn" class="qbtn" style="display:none; background:#10b981;">Next Lead →</button>
+
+  </div>
+
+</main>
+
+<script src="../global.js"></script>
+
+<script>
+const empID = localStorage.getItem("employee_id");
+if (!empID) window.location.href = "./login.html";
+
+let CURRENT_LEAD = null;
+
+function goBack() {
+  window.location.href = "./dashboard.html";
+}
+
+// Load next lead
+async function loadNextLead() {
+  document.getElementById("loading").style.display = "block";
+  document.getElementById("leadBox").style.display = "none";
+  document.getElementById("callBtn").style.display = "none";
+  document.getElementById("statusBtns").style.display = "none";
+  document.getElementById("nextLeadBtn").style.display = "none";
+
+  const res = await fetch(CONFIG.BACKEND + "/api/job/next-lead", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({ employee_id: empID })
+  });
+
+  const j = await res.json();
+
+  if (!j.ok || !j.lead) {
+    document.getElementById("loading").innerText = "No leads available right now.";
+    return;
+  }
+
+  CURRENT_LEAD = j.lead;
+
+  document.getElementById("loading").style.display = "none";
+  document.getElementById("leadBox").style.display = "block";
+
+  l_name.innerText = CURRENT_LEAD.name;
+  l_phone.innerText = CURRENT_LEAD.phone;
+  l_email.innerText = CURRENT_LEAD.email || "-";
+  l_city.innerText = CURRENT_LEAD.city || "-";
+
+  callBtn.style.display = "block";
+  statusBtns.style.display = "block";
+  nextLeadBtn.style.display = "none";
+}
+
+// CALL BUTTON
+callBtn.onclick = () => {
+  window.location.href = "tel:" + CURRENT_LEAD.phone;
+};
+
+// UPDATE STATUS
+async function updateStatus(status) {
+  const notes = document.getElementById("notes").value;
+
+  await fetch(CONFIG.BACKEND + "/api/job/update-lead", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({
+      id: CURRENT_LEAD.id,
+      employee_id: empID,
+      status,
+      notes
+    })
+  });
+
+  nextLeadBtn.style.display = "block";
+}
+
+nextLeadBtn.onclick = loadNextLead;
+
+loadNextLead();
+</script>
+
+</body>
+</html>

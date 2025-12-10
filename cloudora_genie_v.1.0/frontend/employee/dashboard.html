@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Employee Dashboard</title>
+
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="./dashboard.css">
+
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="brand">Cloudora Employee Dashboard</div>
+
+  <div class="controls">
+    <select id="langSelect"></select>
+    <button class="btn-mini" id="logoutBtn">Logout</button>
+  </div>
+</header>
+
+<main class="container fade-in">
+
+  <!-- EMPLOYEE INFO -->
+  <div class="emp-card">
+    <h2>Welcome, <span id="empName"></span></h2>
+    <p><b>ID:</b> <span id="empID"></span></p>
+    <p><b>Department:</b> <span id="empDept"></span></p>
+    <p><b>Shift:</b> <span id="empShift"></span></p>
+  </div>
+
+  <!-- CALL PANEL BUTTON -->
+  <button class="btn-primary" onclick="openPage('./call-panel.html')">
+    📞 Start Calling Panel
+  </button>
+
+  <!-- WORK MODULES -->
+  <h2 class="section-title">Work Modules</h2>
+
+  <div class="module-grid">
+
+    <button class="module-btn" onclick="openPage('./attendance.html')">
+      📅 Attendance
+    </button>
+
+    <button class="module-btn" onclick="openPage('./daily-score.html')">
+  ⭐ Daily Score
+</button>
+
+    <button class="module-btn disabled">📊 Trial Progress (Coming Soon)</button>
+    <button class="module-btn" onclick="openPage('./training.html')">
+  🎧 Training System
+</button>
+
+    <button class="module-btn disabled">💰 Incentives (Coming Soon)</button>
+<button class="module-btn" onclick="openPage('./lead-filters.html')">
+  🔍 Lead Filters
+</button>
+
+
+  </div>
+
+  <!-- ADMIN LEAD INSERT OPTION -->
+  <div class="admin-panel">
+    <h3>Insert Lead (Admin Only)</h3>
+    <div class="grid-2">
+  <input id="leadName" placeholder="Lead Name">
+  <input id="leadPhone" placeholder="Phone">
+  <input id="leadEmail" placeholder="Email">
+  <input id="leadCity" placeholder="City">
+
+  <!-- NEW FIELDS -->
+  <input id="leadCompany" placeholder="Company Name">
+  
+  <select id="leadInterest">
+    <option value="">Select Interest</option>
+    <option>Digital Marketing</option>
+    <option>Website Development</option>
+    <option>App Development</option>
+    <option>Automation / AI</option>
+    <option>Graphics / Branding</option>
+    <option>BPO / Calling</option>
+    <option>Game Development</option>
+  </select>
+
+  <select id="leadSource">
+    <option value="">Lead Source</option>
+    <option>Facebook Ads</option>
+    <option>Instagram</option>
+    <option>Google Search</option>
+    <option>Website Form</option>
+    <option>WhatsApp</option>
+    <option>Referral</option>
+    <option>Cold Call</option>
+  </select>
+
+  <select id="leadTemperature">
+    <option value="warm">Warm</option>
+    <option value="hot">Hot</option>
+    <option value="cold">Cold</option>
+  </select>
+</div>
+
+    <button class="btn-secondary" id="insertLeadBtn">Insert Lead</button>
+    <div id="insertStatus" class="info"></div>
+  </div>
+
+  <!-- LEADS SECTION -->
+  <h2 class="section-title">Today's Assigned Leads</h2>
+
+  <div id="leadList" class="lead-list"></div>
+
+</main>
+
+<!-- FIXED: LOAD SUPABASE BEFORE global.js -->
+<script src="../api/supabase.min.js"></script>
+<script src="../global.js"></script>
+
+<script>
+// --------------------------------------
+// BASIC FUNCTIONS
+// --------------------------------------
+function openPage(url) {
+  window.location.href = url;
+}
+
+// LANGUAGE INIT
+initializeLanguageSelector();
+applyTranslations();
+
+// EMPLOYEE SESSION
+const empID = localStorage.getItem("employee_id");
+const empName = localStorage.getItem("employee_name");
+const empDept = localStorage.getItem("employee_department");
+
+if (!empID) window.location.href = "./login.html";
+
+document.getElementById("empID").innerText = empID;
+document.getElementById("empName").innerText = empName || "Employee";
+document.getElementById("empDept").innerText = empDept || "-";
+document.getElementById("empShift").innerText =
+  localStorage.getItem("employee_shift") || "-";
+
+// LOGOUT
+document.getElementById("logoutBtn").onclick = () => {
+  localStorage.clear();
+  window.location.href = "./login.html";
+};
+
+// --------------------------------------
+// LEAD INSERT (ADMIN)
+// --------------------------------------
+document.getElementById("insertLeadBtn").onclick = async () => {
+  const payload = {
+    name: leadName.value.trim(),
+    phone: leadPhone.value.trim(),
+    email: leadEmail.value.trim(),
+    city: leadCity.value.trim(),
+
+    company_name: leadCompany.value.trim(),
+    interest: leadInterest.value,
+    source: leadSource.value,
+    temperature: leadTemperature.value,
+
+    assigned_to: empID
+  };
+
+  if (!payload.name || !payload.phone) {
+    insertStatus.innerText = "Name & Phone are required.";
+    return;
+  }
+
+  const res = await fetch(CONFIG.BACKEND + "/api/admin/insert-lead", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(payload)
+  });
+
+  const j = await res.json();
+  insertStatus.innerText = j.ok ? "Lead inserted successfully." : "Error inserting lead.";
+};
+
+
+// --------------------------------------
+// LOAD LEADS (using my-leads API)
+// --------------------------------------
+async function loadLeads() {
+  const res = await fetch(CONFIG.BACKEND + "/api/job/my-leads", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ employee_id: empID })
+  });
+
+  const j = await res.json();
+
+  if (!j.ok || j.leads.length === 0) {
+    document.getElementById("leadList").innerHTML = "No leads assigned.";
+    return;
+  }
+
+  const container = document.getElementById("leadList");
+  container.innerHTML = "";
+
+  j.leads.forEach(lead => {
+    container.innerHTML += `
+      <div class="lead-card">
+        <h4>${lead.name} (${lead.phone})</h4>
+        <p>Email: ${lead.email || "-"} | City: ${lead.city || "-"}</p>
+
+        <select id="status-${lead.id}">
+          <option value="pending">Pending</option>
+          <option value="interested">Interested</option>
+          <option value="not_interested">Not Interested</option>
+          <option value="callback">Callback</option>
+          <option value="wrong_number">Wrong Number</option>
+        </select>
+
+        <textarea id="note-${lead.id}" placeholder="Add call notes..."></textarea>
+
+        <button class="btn-small" onclick="updateLead(${lead.id})">Update</button>
+      </div>
+    `;
+  });
+}
+
+loadLeads();
+
+// --------------------------------------
+// UPDATE LEAD
+// --------------------------------------
+async function updateLead(id) {
+  const status = document.getElementById("status-" + id).value;
+  const notes = document.getElementById("note-" + id).value;
+
+  const res = await fetch(CONFIG.BACKEND + "/api/job/update-lead", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ id, employee_id: empID, status, notes })
+  });
+
+  const j = await res.json();
+  alert(j.ok ? "Lead updated!" : "Error updating lead");
+}
+function openPage(url) {
+  window.location.href = url;
+}
+</script>
+
+</body>
+
+</html>
+

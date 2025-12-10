@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lead Filters - Cloudora</title>
+
+<link rel="stylesheet" href="../style.css">
+
+<style>
+.filter-box {
+  max-width: 900px;
+  background: #fff;
+  margin: 25px auto;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.lead-card {
+  padding: 14px;
+  background: #eef2ff;
+  border-radius: 12px;
+  margin-top: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="brand">Lead Filters</div>
+  <button onclick="goBack()" class="btn-mini">← Back</button>
+</header>
+
+<main class="container fade-in">
+
+  <div class="filter-box">
+    <h2>Filter Leads</h2>
+
+    <div class="filter-grid">
+      <select id="fStatus">
+        <option value="">Status</option>
+        <option value="pending">Pending</option>
+        <option value="interested">Interested</option>
+        <option value="callback">Callback</option>
+        <option value="not_interested">Not Interested</option>
+      </select>
+
+      <select id="fCountry">
+        <option value="">Country Pref</option>
+        <option value="india">India</option>
+        <option value="international">International</option>
+      </select>
+
+      <select id="fShift">
+        <option value="">Shift</option>
+        <option value="morning">Morning</option>
+        <option value="evening">Evening</option>
+        <option value="night">Night</option>
+      </select>
+
+      <input id="fCity" placeholder="City">
+      <input id="fDept" placeholder="Department (tele/sales)">
+      <input id="fSegment" placeholder="Segment (B2B/B2C etc)">
+    </div>
+
+    <button class="btn-primary" style="margin-top:15px;" onclick="applyFilters()">
+      Apply Filters
+    </button>
+  </div>
+
+  <div id="resultBox" class="filter-box">
+    <h2>Results</h2>
+    <div id="leadList">No results yet.</div>
+  </div>
+
+</main>
+
+<script src="../api/supabase.min.js"></script>
+<script src="../global.js"></script>
+
+<script>
+const empID = localStorage.getItem("employee_id");
+if (!empID) window.location.href = "./login.html";
+
+function goBack(){
+  window.location.href = "./dashboard.html";
+}
+
+async function applyFilters() {
+  const filters = {
+    status: fStatus.value,
+    country: fCountry.value,
+    shift: fShift.value,
+    city: fCity.value.trim(),
+    department: fDept.value.trim(),
+    segment: fSegment.value.trim()
+  };
+
+  const res = await fetch(CONFIG.BACKEND + "/api/job/filter-leads", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify(filters)
+  });
+
+  const j = await res.json();
+
+  if (!j.ok) {
+    leadList.innerHTML = "Error fetching results.";
+    return;
+  }
+
+  if (j.leads.length === 0) {
+    leadList.innerHTML = "No matching leads.";
+    return;
+  }
+
+  leadList.innerHTML = "";
+  j.leads.forEach(l => {
+    leadList.innerHTML += `
+      <div class="lead-card">
+        <b>${l.name}</b> (${l.phone})<br>
+        City: ${l.city || "-"} | Country: ${l.country_pref}<br>
+        Status: ${l.status || "pending"}<br>
+        Department: ${l.department || "-"}<br>
+        Shift: ${l.shift || "-"}
+      </div>
+    `;
+  });
+}
+</script>
+
+</body>
+</html>
