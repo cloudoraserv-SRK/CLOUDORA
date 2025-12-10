@@ -1,0 +1,20 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Panel</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<main class="container">
+<h2>Admin</h2>
+<div class="card">
+<h3>Upload Leads CSV</h3>
+<input type="file" id="csvfile" accept=".csv" />
+<button id="uploadBtn">Upload & Create Leads</button>
+</div>
+<div class="card">
+<h3>Assign Leads to Shift</h3>
+<select id="shiftSelect"><option value="morning">Morning</option><option value="evening">Evening</option><option value="night">Night</option></select>
+<button id="assignBtn">Assign Selected</button>
+</div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="/global.js"></script>
+<script src="/admin/admin.js"></script>
+</body></html>
