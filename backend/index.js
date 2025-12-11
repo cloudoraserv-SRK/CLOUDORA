@@ -24,7 +24,7 @@ import jobRouter from "./routes/job/job.js";
 // Memory Engine
 import memoryModule from "./genie/memory/memory.js";
 import trainingRouter from "./routes/training.js";
-import cors from "cors";
+
 // Logger
 const logger = console;
 
@@ -230,5 +230,6 @@ const PORT = process.env.PORT || 8787;
 app.listen(PORT, () => {
   console.log(`🔥 Cloudora Genie backend running on ${PORT}`);
 });
+
 
 
