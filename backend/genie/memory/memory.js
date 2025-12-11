@@ -24,7 +24,7 @@ export default function memoryModule({ supabase, logger = console }) {
   }
 
   // -----------------------------------
-  // Create new session if needed
+  // Create new session
   // -----------------------------------
   async function createSession(sessionId, meta = {}) {
     try {
@@ -32,7 +32,6 @@ export default function memoryModule({ supabase, logger = console }) {
         .from("genie_sessions")
         .insert([{ session_id: sessionId, meta, state: {} }]);
 
-      // ignore duplicate error
       if (error && error.code !== "23505") {
         logger.error("createSession error:", error);
       }
@@ -76,24 +75,32 @@ export default function memoryModule({ supabase, logger = console }) {
   }
 
   // -----------------------------------
-  // Reset only flow keys, keep meta safe
+  // SAFE RESET FLOW — FIXED VERSION
   // -----------------------------------
   async function resetFlow(sessionId) {
-    const row = await getSession(sessionId);
-    if (!row) return;
+    try {
+      const current = await getState(sessionId);
 
-    const { meta } = row;
+      const newState = {
+        ...current,
+        flow: null,       // only flow cleared
+        activeFlow: null, // activeFlow cleared
+        paused: false     // paused cleared
+      };
 
-    const { error } = await supabase
-      .from("genie_sessions")
-      .update({
-        state: {},
-        meta: meta,  // FIX: keep original meta
-        updated_at: new Date().toISOString()
-      })
-      .eq("session_id", sessionId);
+      const { error } = await supabase
+        .from("genie_sessions")
+        .update({
+          state: newState,
+          updated_at: new Date().toISOString()
+        })
+        .eq("session_id", sessionId);
 
-    if (error) logger.error("resetFlow error:", error);
+      if (error) logger.error("resetFlow error:", error);
+
+    } catch (e) {
+      logger.error("resetFlow failed:", e);
+    }
   }
 
   // -----------------------------------
@@ -104,8 +111,7 @@ export default function memoryModule({ supabase, logger = console }) {
       const { error } = await supabase
         .from("genie_sessions")
         .update({
-          // FIX: clear flow safely
-          state: { activeFlow: null, paused: false },
+          state: { activeFlow: null, paused: false, flow: null },
           meta: {},
           updated_at: new Date().toISOString()
         })
@@ -135,9 +141,7 @@ export default function memoryModule({ supabase, logger = console }) {
     }
   }
 
-  // -----------------------------------
-  // EXPORTS
-  // -----------------------------------
+  // EXPORT
   return {
     getSession,
     createSession,
