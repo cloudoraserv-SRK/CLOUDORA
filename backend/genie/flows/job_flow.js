@@ -1,13 +1,17 @@
 // backend/genie/flows/job_flow.js
 // FINAL — Stable, flexible, Hindi/English friendly job application flow
+// FIXED: state persistence, activeFlow persistence, resetFlow safety
 
 export default {
   async handle(sessionId, userText, { memory, supabase, logger }) {
 
-    // Load flow state
-    const flow = (await memory.getState(sessionId))?.flow || { step: 0, data: {} };
+    // Load state safely
+    const state = await memory.getState(sessionId);
+    const flow = state.flow || { step: 0, data: {} };
     const step = flow.step ?? 0;
     const lower = (userText || "").toLowerCase().trim();
+
+    logger.log("[JOB FLOW]", { step, text: userText });
 
     // ---------------------------------------------------------
     // STEP 0 — Detect job interest + capture role
@@ -26,7 +30,11 @@ export default {
       if (containsJob) {
         flow.data.role = userText.trim();
         flow.step = 1;
-        await memory.setState(sessionId, { flow });
+
+        await memory.setState(sessionId, {
+          flow,
+          activeFlow: "job"
+        });
 
         return {
           reply: `Great — applying for "${flow.data.role}". How many years of experience do you have?`
@@ -35,8 +43,11 @@ export default {
 
       // If not detected → Ask clearly
       flow.step = 0;
-      await memory.setState(sessionId, { flow });
-      return { reply: "Which role are you applying for? (Telecaller, Sales, Developer, etc.)" };
+      await memory.setState(sessionId, { flow, activeFlow: "job" });
+
+      return {
+        reply: "Which role are you applying for? (Telecaller, Sales, Developer, etc.)"
+      };
     }
 
     // ---------------------------------------------------------
@@ -47,9 +58,14 @@ export default {
       flow.data.experience = years ? Number(years) : userText.trim();
 
       flow.step = 2;
-      await memory.setState(sessionId, { flow });
+      await memory.setState(sessionId, {
+        flow,
+        activeFlow: "job"
+      });
 
-      return { reply: "Nice. What skills or tools do you know? (comma separated)" };
+      return {
+        reply: "Nice. What skills or tools do you know? (comma separated)"
+      };
     }
 
     // ---------------------------------------------------------
@@ -62,20 +78,22 @@ export default {
         .filter(Boolean);
 
       flow.step = 3;
-      await memory.setState(sessionId, { flow });
+      await memory.setState(sessionId, { flow, activeFlow: "job" });
 
-      return { reply: "Are you available for a short paid trial if selected? (yes/no)" };
+      return {
+        reply: "Are you available for a short paid trial if selected? (yes/no)"
+      };
     }
 
     // ---------------------------------------------------------
     // STEP 3 — Trial availability
     // ---------------------------------------------------------
     if (step === 3) {
-      const yes = /^y(es)?$/i.test(userText.trim());
+      const yes = /^y(es)?$/i.test(lower);
       flow.data.available_for_trial = yes;
 
       flow.step = 4;
-      await memory.setState(sessionId, { flow });
+      await memory.setState(sessionId, { flow, activeFlow: "job" });
 
       return {
         reply: "Optional: If you have a resume/portfolio link, type it now (or type skip)."
@@ -91,29 +109,35 @@ export default {
       }
 
       flow.step = 5;
-      await memory.setState(sessionId, { flow });
+      await memory.setState(sessionId, { flow, activeFlow: "job" });
 
-      return { reply: "Would you like to discuss expected CTC? (yes/no)" };
+      return {
+        reply: "Would you like to discuss expected CTC? (yes/no)"
+      };
     }
 
     // ---------------------------------------------------------
     // STEP 5 — Check if candidate wants to mention CTC
     // ---------------------------------------------------------
     if (step === 5) {
-      if (/^y(es)?$/i.test(lower)) {
-        flow.step = 6;
-        await memory.setState(sessionId, { flow });
+      const wantsCTC = /^y(es)?$/i.test(lower);
 
-        return { reply: "Please mention your expected CTC (monthly/annual or a range)." };
+      if (wantsCTC) {
+        flow.step = 6;
+        await memory.setState(sessionId, { flow, activeFlow: "job" });
+
+        return {
+          reply: "Please mention your expected CTC (monthly/annual or a range)."
+        };
       }
 
-      // No CTC → finalize application
+      // No CTC → finalize
       const application = {
         role: flow.data.role,
         experience: flow.data.experience,
         skills: Array.isArray(flow.data.skills)
           ? flow.data.skills.join(", ")
-          : (flow.data.skills || null),
+          : flow.data.skills || null,
         trial: flow.data.available_for_trial,
         resume: flow.data.resume || null,
         ctc: null,
@@ -127,6 +151,7 @@ export default {
       }
 
       await memory.resetFlow(sessionId);
+
       return {
         reply: `Thanks — your application for ${application.role} is recorded. We'll contact you if shortlisted.`,
         finished: true
@@ -144,7 +169,7 @@ export default {
         experience: flow.data.experience,
         skills: Array.isArray(flow.data.skills)
           ? flow.data.skills.join(", ")
-          : (flow.data.skills || null),
+          : flow.data.skills || null,
         trial: flow.data.available_for_trial,
         resume: flow.data.resume || null,
         ctc: flow.data.ctc,
@@ -166,7 +191,7 @@ export default {
     }
 
     // ---------------------------------------------------------
-    // DEFAULT
+    // DEFAULT (Failsafe)
     // ---------------------------------------------------------
     return {
       reply: "Let's restart the job application. Which role do you want to apply for?",
