@@ -116,35 +116,58 @@ export default function createGenie({ logger = console } = {}) {
     // ------------------------------------------------------
 
     // 👉 JOB FLOW
-    if (activeFlow === "job") {
-      const out = await jobFlow.handle(sessionId, userText, {
-        memory,
-        supabase,
-        logger
-      });
+  if (activeFlow === "job") {
+  try {
+    logger.log("[GENIE] routing → JOB FLOW");
 
-      if (out?.finished) {
-        await memory.setState(sessionId, { activeFlow: null });
-      }
+    const out = await jobFlow.handle(sessionId, userText, {
+      memory,
+      supabase,
+      logger
+    });
 
-      return out;
+    logger.log("[JOB FLOW OUTPUT]", out);
+
+    if (out?.finished) {
+      await memory.setState(sessionId, { activeFlow: null });
     }
+
+    return out;
+  } catch (err) {
+    logger.error("[JOB FLOW ERROR]", err);
+    return {
+      reply: "Job flow crashed internally. Please try again.",
+      finished: false
+    };
+  }
+}
 
     // 👉 BUSINESS FLOW
-    if (activeFlow === "business") {
-      const out = await businessFlow.handle(sessionId, userText, {
-        memory,
-        supabase,
-        logger
-      });
+if (activeFlow === "business") {
+  try {
+    logger.log("[GENIE] routing → BUSINESS FLOW");
 
-      if (out?.finished) {
-        await memory.setState(sessionId, { activeFlow: null });
-      }
+    const out = await businessFlow.handle(sessionId, userText, {
+      memory,
+      supabase,
+      logger
+    });
 
-      return out;
+    logger.log("[BUSINESS FLOW OUTPUT]", out);
+
+    if (out?.finished) {
+      await memory.setState(sessionId, { activeFlow: null });
     }
 
+    return out;
+  } catch (err) {
+    logger.error("[BUSINESS FLOW ERROR]", err);
+    return {
+      reply: "Business flow crashed internally. Please try again.",
+      finished: false
+    };
+  }
+}
     // ------------------------------------------------------
     // GENERAL FALLBACK
     // ------------------------------------------------------
@@ -164,4 +187,5 @@ export default function createGenie({ logger = console } = {}) {
     memory
   };
 }
+
 
