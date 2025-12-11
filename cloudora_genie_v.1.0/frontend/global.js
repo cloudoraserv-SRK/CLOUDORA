@@ -5,7 +5,7 @@
 const CONFIG = {
   SUPA_URL: "https://gnihhujwqxkigwwnksgw.supabase.co",
   SUPA_ANON: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImduaWhodWp3cXhraWd3d25rc2d3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ4OTc2MjcsImV4cCI6MjA4MDQ3MzYyN30.tOYXHySzEQ2py-NUNBmlpp7QWciaGSSD_NeWpLbeRaw",
-  BACKEND: "https://cloudoraserv.cloud",
+  BACKEND: "https://cloudora.railway.internal",
 
   LANG: localStorage.getItem("lang") || "en",
   CURRENCY: localStorage.getItem("currency") || "INR",
@@ -149,6 +149,7 @@ window.speak = speak;
 window.startListening = startListening;
 window.applyTranslations = applyTranslations;
 window.initializeLanguageSelector = initializeLanguageSelector;
+
 
 
 
