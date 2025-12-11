@@ -31,7 +31,18 @@ const logger = console;
 // Express App
 // ---------------------------------------------
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: ["https://cloudoraserv.cloud", "http://localhost:3000"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
+
+// Handle Preflight Requests
+app.options("*", cors());
+
 app.use(bodyParser.json({ limit: "512kb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -197,3 +208,4 @@ const PORT = process.env.PORT || 8787;
 app.listen(PORT, () => {
   console.log(`🔥 Cloudora Genie backend running on ${PORT}`);
 });
+
