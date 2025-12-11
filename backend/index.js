@@ -24,6 +24,7 @@ import jobRouter from "./routes/job/job.js";
 // Memory Engine
 import memoryModule from "./genie/memory/memory.js";
 import trainingRouter from "./routes/training.js";
+import cors from "cors";
 // Logger
 const logger = console;
 
@@ -39,6 +40,27 @@ app.use(
     credentials: true,
   })
 );
+
+// Handle Backend local server 
+app.use(
+  cors({
+    origin: [
+      "http://127.0.0.1:5500",
+      "http://localhost:5500",
+      "https://cloudoraserv.cloud",
+      "https://cloudora-production.up.railway.app"
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+    preflightContinue: false
+  })
+);
+
+// Handle OPTIONS request properly
+app.options("*", cors());
+
+
 
 // Handle Preflight Requests
 app.options("*", cors());
@@ -208,4 +230,5 @@ const PORT = process.env.PORT || 8787;
 app.listen(PORT, () => {
   console.log(`🔥 Cloudora Genie backend running on ${PORT}`);
 });
+
 
