@@ -160,8 +160,14 @@ app.post("/api/genie/message", async (req, res) => {
   try {
     const { sessionId, message } = req.body || {};
     const id = await ensureSession(sessionId);
+
     const output = await genie.handleInput(id, safeText(message || ""));
-    return res.json({ ...output, sessionId: id });
+
+    return res.json({
+      reply: output.text || output.reply || "Okay!",
+      sessionId: id
+    });
+
   } catch (e) {
     logger.error("genie message error:", e);
     return res.status(500).json({ error: "Genie failed" });
@@ -190,3 +196,4 @@ const PORT = process.env.PORT || 8787;
 app.listen(PORT, () => {
   console.log(`🔥 Cloudora Genie backend running on ${PORT}`);
 });
+
