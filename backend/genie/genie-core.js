@@ -1,3 +1,6 @@
+console.log("JOB FLOW LOADED:", jobFlow);
+console.log("BUSINESS FLOW LOADED:", businessFlow);
+
 // ===========================================================
 // CLOUDORA GENIE — FINAL UPDATED GENIE-CORE (STABLE V3)
 // FIXED:
@@ -161,3 +164,4 @@ export default function createGenie({ logger = console } = {}) {
     memory
   };
 }
+
