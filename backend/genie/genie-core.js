@@ -26,10 +26,16 @@ export default function createGenie({ logger = console } = {}) {
   // ----------------------------------------------------------
   // START SESSION
   // ----------------------------------------------------------
-  async function startSession(sessionId, meta = {}) {
-    await memory.createSession(sessionId, meta);
-    return { ok: true, sessionId };
-  }
+  async function startSession() {
+  const res = await fetch(CONFIG.BACKEND + "/api/genie/start", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" }
+  });
+
+  const j = await res.json();
+  SESSION_ID = j.sessionId;
+  localStorage.setItem("genie_session", SESSION_ID);
+}
 
   // ----------------------------------------------------------
   // HANDLE INPUT
@@ -187,5 +193,6 @@ if (activeFlow === "business") {
     memory
   };
 }
+
 
 
