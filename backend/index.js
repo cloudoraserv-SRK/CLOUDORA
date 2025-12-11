@@ -29,49 +29,46 @@ import trainingRouter from "./routes/training.js";
 const logger = console;
 
 // ---------------------------------------------
-// Express App
+// Express App Init
 // ---------------------------------------------
+const app = express();
+
 // ---------------------------------------------
-// CORS CONFIG (FINAL FIX)
+// CORS CONFIG (FINAL PRODUCTION VERSION)
 // ---------------------------------------------
 const allowedOrigins = [
   "http://127.0.0.1:5500",
   "http://localhost:5500",
   "http://localhost:3000",
   "https://cloudoraserv.cloud",
-  "https://cloudora-production.up.railway.app"
+  "https://cloudora-production.up.railway.app",
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow non-browser tools (Postman, Curl)
       if (!origin) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      } else {
-        return callback(new Error("CORS blocked: " + origin), false);
-      }
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error("CORS blocked: " + origin), false);
     },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
-    preflightContinue: false
+    preflightContinue: false,
   })
 );
 
-// Proper preflight handler
 app.options("*", cors());
 
-
-app.use(bodyParser.json({ limit: "512kb" }));
+// ---------------------------------------------
+// BODY PARSER
+// ---------------------------------------------
+app.use(bodyParser.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use("/api/training", trainingRouter);
 
 // ---------------------------------------------
-// Supabase (Service Role for backend)
+// Supabase (Service Role)
 // ---------------------------------------------
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -79,23 +76,19 @@ const supabase = createClient(
 );
 
 // ---------------------------------------------
-// Memory Engine Init
+// Memory Engine + Genie Init
 // ---------------------------------------------
 const memory = memoryModule({ supabase, logger });
-
-// ---------------------------------------------
-// Genie Core Init
-// ---------------------------------------------
 const genie = createGenie({ logger });
 
-// Clean utility
+// Utility
 function safeText(v) {
-  if (v === undefined || v === null) return "";
+  if (!v) return "";
   return String(v).trim();
 }
 
 // ---------------------------------------------
-// Session Helper
+// SESSION HELPER
 // ---------------------------------------------
 async function ensureSession(sessionId, meta = {}) {
   if (!sessionId) sessionId = "sess_" + Date.now();
@@ -105,7 +98,7 @@ async function ensureSession(sessionId, meta = {}) {
 }
 
 // ---------------------------------------------
-// ROUTES (ORDER MATTERS — JOB FIRST, ETC.)
+// ROUTES (ORDER MATTERS)
 // ---------------------------------------------
 app.use("/api/job", jobRouter);
 app.use("/api/admin", adminRouter);
@@ -113,12 +106,15 @@ app.use("/api/tasks", tasksRouter);
 app.use("/api/catalogue", catalogueRouter);
 app.use("/api/proposal", proposalRouter);
 
-// Genie
+// Genie Routes
 app.use("/api/genie", genieRoutes);
 app.use("/api/genie", genieMediaRoutes);
 
+// Training Route
+app.use("/api/training", trainingRouter);
+
 // ---------------------------------------------
-// Create New Session
+// SESSION + ROLE + MESSAGE ROUTES
 // ---------------------------------------------
 app.post("/api/genie/start", async (req, res) => {
   try {
@@ -134,9 +130,6 @@ app.post("/api/genie/start", async (req, res) => {
   }
 });
 
-// ---------------------------------------------
-// Role Selection Handler
-// ---------------------------------------------
 app.post("/api/genie/role", async (req, res) => {
   try {
     const { role, sessionId: provided } = req.body || {};
@@ -144,68 +137,35 @@ app.post("/api/genie/role", async (req, res) => {
 
     await memory.setState(sessionId, { role });
 
-    switch (String(role || "").toLowerCase()) {
-      case "client":
-        return res.json({
-          reply: "Great! Let’s grow your business.",
-          redirect: "/client/client.html",
-        });
+    const lower = String(role || "").toLowerCase();
 
-      case "job":
-        return res.json({
-          reply: "Starting your job application.",
-          redirect: "/job/job.html",
-        });
+    const redirects = {
+      client: "/client/client.html",
+      job: "/job/job.html",
+      employee: "/employee/login.html",
+      partner: "/partner/partner.html",
+    };
 
-      case "employee":
-        return res.json({
-          reply: "Opening employee login…",
-          redirect: "/employee/login.html",
-        });
-
-      case "partner":
-        return res.json({
-          reply: "Starting partner onboarding.",
-          redirect: "/partner/partner.html",
-        });
-
-      default:
-        return res.json({
-          reply: "Please choose the correct option.",
-          redirect: null,
-        });
-    }
+    return res.json({
+      reply: `Starting ${lower} flow...`,
+      redirect: redirects[lower] || null,
+    });
   } catch (e) {
     logger.error("role error:", e);
     return res.status(500).json({ error: "Role selection failed" });
   }
 });
 
-// ---------------------------------------------
-// MAIN GENIE MESSAGE HANDLER (NEW)
-// ---------------------------------------------
 app.post("/api/genie/message", async (req, res) => {
   try {
     const { sessionId, message } = req.body || {};
     const id = await ensureSession(sessionId);
-
     const output = await genie.handleInput(id, safeText(message || ""));
     return res.json({ ...output, sessionId: id });
   } catch (e) {
     logger.error("genie message error:", e);
-    return res.status(500).json({ error: "Genie failed to respond" });
+    return res.status(500).json({ error: "Genie failed" });
   }
-});
-
-// ---------------------------------------------
-// OLD (Legacy) Genie Handler — backward compatibility
-// ---------------------------------------------
-app.post("/api/genie", async (req, res) => {
-  const { sessionId, text } = req.body;
-  const id = await ensureSession(sessionId);
-
-  const output = await genie.handleInput(id, safeText(text || ""));
-  return res.json({ ...output, sessionId: id });
 });
 
 // ---------------------------------------------
@@ -218,7 +178,7 @@ app.post("/api/onboarding/log", async (req, res) => {
     return res.json({ ok: true });
   } catch (e) {
     logger.error("onboarding log error:", e);
-    return res.status(500).json({ error: e.message || "Log failed" });
+    return res.status(500).json({ error: e.message });
   }
 });
 
@@ -230,7 +190,3 @@ const PORT = process.env.PORT || 8787;
 app.listen(PORT, () => {
   console.log(`🔥 Cloudora Genie backend running on ${PORT}`);
 });
-
-
-
-
