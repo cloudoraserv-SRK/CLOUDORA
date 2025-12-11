@@ -31,25 +31,29 @@ const logger = console;
 // ---------------------------------------------
 // Express App
 // ---------------------------------------------
-const app = express();
-app.use(
-  cors({
-    origin: ["https://cloudoraserv.cloud", "http://localhost:3000"],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  })
-);
+// ---------------------------------------------
+// CORS CONFIG (FINAL FIX)
+// ---------------------------------------------
+const allowedOrigins = [
+  "http://127.0.0.1:5500",
+  "http://localhost:5500",
+  "http://localhost:3000",
+  "https://cloudoraserv.cloud",
+  "https://cloudora-production.up.railway.app"
+];
 
-// Handle Backend local server 
 app.use(
   cors({
-    origin: [
-      "http://127.0.0.1:5500",
-      "http://localhost:5500",
-      "https://cloudoraserv.cloud",
-      "https://cloudora-production.up.railway.app"
-    ],
+    origin: function (origin, callback) {
+      // Allow non-browser tools (Postman, Curl)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("CORS blocked: " + origin), false);
+      }
+    },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
@@ -57,13 +61,9 @@ app.use(
   })
 );
 
-// Handle OPTIONS request properly
+// Proper preflight handler
 app.options("*", cors());
 
-
-
-// Handle Preflight Requests
-app.options("*", cors());
 
 app.use(bodyParser.json({ limit: "512kb" }));
 app.use(express.urlencoded({ extended: true }));
@@ -230,6 +230,7 @@ const PORT = process.env.PORT || 8787;
 app.listen(PORT, () => {
   console.log(`🔥 Cloudora Genie backend running on ${PORT}`);
 });
+
 
 
 
