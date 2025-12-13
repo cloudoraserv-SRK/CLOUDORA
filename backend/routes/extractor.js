@@ -6,7 +6,7 @@ console.log("EXTRACTOR ROUTES LOADED");
 
 import express from "express";
 import supabase from "../api/supabase.js";
-import serpWorker from "../services/serp_worker.js";
+import { extract as serpExtract } from "../services/serp_worker.js";
 
 const router = express.Router();
 
@@ -18,7 +18,7 @@ router.post("/live", async (req, res) => {
     const { category, city, employee_id } = req.body;
 
     try {
-        const leads = await serpWorker.extract(category, city);
+        const leads = await serpExtract(category, city);
 
         let savedCount = 0;
         let assignedCount = 0;
