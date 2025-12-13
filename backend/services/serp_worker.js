@@ -1,11 +1,10 @@
-// -----------------------------------------------
-// Cloudora SERP Worker (Google Maps / SERP API)
-// -----------------------------------------------
+// -------------------------------------------------------
+// Cloudora SERP Worker (FULL ESM VERSION)
+// -------------------------------------------------------
 
-require("dotenv").config();
-const axios = require("axios");
+import axios from "axios";
 
-module.exports = {
+export default {
     extract: async function (category, city) {
         try {
             const query = `${category} in ${city}`;
@@ -15,7 +14,6 @@ module.exports = {
             )}&hl=en&api_key=${process.env.SERP_API_KEY}`;
 
             const response = await axios.get(url);
-
             const results = response.data.local_results || [];
 
             return results.map(r => ({
@@ -23,7 +21,7 @@ module.exports = {
                 phone: r.phone || null,
                 address: r.address || null,
                 website: r.website || null,
-                email: r.emails ? r.emails[0] : null
+                email: r.emails?.[0] || null
             }));
 
         } catch (err) {
