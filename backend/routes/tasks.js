@@ -1,73 +1,113 @@
-// backend/routes/tasks.js
-import express from "express";
-import "dotenv/config";
-import taskEngine from "../genie/task_engine.js";
+// ---------------------------------------------
+// Cloudora Tasks API (CLEAN BASIC VERSION)
+// All AI / Genie / Memory removed
+// ---------------------------------------------
 
+import express from "express";
 const router = express.Router();
 
-// POST /api/task/claim  { taskId, employeeId }
+// TEMPORARY in-memory tasks (for clean backend)
+let tasks = [];
+
+// ---------------------------------------------
+// CLAIM TASK
+// ---------------------------------------------
 router.post("/task/claim", async (req, res) => {
   const { taskId, employeeId } = req.body;
-  if (!taskId || !employeeId) return res.status(400).json({ error: "taskId & employeeId required" });
-  const out = await taskEngine.claimTask(taskId, employeeId);
-  return res.json(out);
+
+  if (!taskId || !employeeId)
+    return res.status(400).json({ error: "taskId & employeeId required" });
+
+  tasks = tasks.map(t =>
+    t.id === taskId ? { ...t, assigned_to: employeeId, status: "claimed" } : t
+  );
+
+  return res.json({ ok: true, message: "Task claimed" });
 });
 
-// POST /api/task/unclaim  { taskId, employeeId }
+// ---------------------------------------------
+// UNCLAIM TASK
+// ---------------------------------------------
 router.post("/task/unclaim", async (req, res) => {
-  const { taskId, employeeId } = req.body;
-  const out = await taskEngine.unclaimTask(taskId, employeeId);
-  return res.json(out);
+  const { taskId } = req.body;
+
+  tasks = tasks.map(t =>
+    t.id === taskId ? { ...t, assigned_to: null, status: "unclaimed" } : t
+  );
+
+  return res.json({ ok: true, message: "Task unclaimed" });
 });
 
-// POST /api/task/start  { taskId, employeeId }
+// ---------------------------------------------
+// START TASK
+// ---------------------------------------------
 router.post("/task/start", async (req, res) => {
   const { taskId, employeeId } = req.body;
-  const out = await taskEngine.startTask(taskId, employeeId);
-  return res.json(out);
+
+  tasks = tasks.map(t =>
+    t.id === taskId ? { ...t, status: "in-progress", started_by: employeeId } : t
+  );
+
+  return res.json({ ok: true, message: "Task started" });
 });
 
-// POST /api/task/stop  { taskId, employeeId, markComplete, notes, callStatus }
+// ---------------------------------------------
+// STOP TASK
+// ---------------------------------------------
 router.post("/task/stop", async (req, res) => {
-  const { taskId, employeeId, markComplete=false, notes="", callStatus=null } = req.body;
-  const out = await taskEngine.stopTask(taskId, employeeId, { markComplete, notes, callStatus });
-  return res.json(out);
+  const { taskId } = req.body;
+
+  tasks = tasks.map(t =>
+    t.id === taskId ? { ...t, status: "stopped" } : t
+  );
+
+  return res.json({ ok: true, message: "Task stopped" });
 });
 
-// POST /api/task/complete  { taskId, employeeId, notes }
+// ---------------------------------------------
+// COMPLETE TASK
+// ---------------------------------------------
 router.post("/task/complete", async (req, res) => {
-  const { taskId, employeeId, notes="" } = req.body;
-  const out = await taskEngine.completeTask(taskId, employeeId, notes);
-  return res.json(out);
+  const { taskId } = req.body;
+
+  tasks = tasks.map(t =>
+    t.id === taskId ? { ...t, status: "completed" } : t
+  );
+
+  return res.json({ ok: true, message: "Task marked complete" });
 });
 
-// GET /api/task/list?employeeId=...
+// ---------------------------------------------
+// LIST TASKS BY EMPLOYEE
+// ---------------------------------------------
 router.get("/task/list", async (req, res) => {
-  const employeeId = req.query.employeeId || null;
-  const out = await taskEngine.listTasksForEmployee(employeeId, {});
-  return res.json(out);
+  const employeeId = req.query.employeeId;
+
+  const list = tasks.filter(t => t.assigned_to === employeeId);
+
+  return res.json({ ok: true, tasks: list });
 });
 
-// GET /api/task/unassigned
+// ---------------------------------------------
+// UNASSIGNED TASKS
+// ---------------------------------------------
 router.get("/task/unassigned", async (req, res) => {
-  const out = await taskEngine.listUnassignedTasks(200);
-  return res.json(out);
+  const list = tasks.filter(t => !t.assigned_to);
+  return res.json({ ok: true, tasks: list });
 });
 
-// POST /api/task/prefs { employeeId, country, product, shift }
+// ---------------------------------------------
+// SET EMPLOYEE PREFERENCES (TEMP MOCK)
+// ---------------------------------------------
 router.post("/task/prefs", async (req, res) => {
-  const { employeeId, country, product, shift } = req.body;
-  if (!employeeId) return res.status(400).json({ error: "employeeId required" });
-  const out = await taskEngine.setEmployeePrefs(employeeId, { country, product, shift });
-  return res.json(out);
+  return res.json({ ok: true, message: "Preferences saved" });
 });
 
-// POST /api/task/shift { employeeId, shift }
+// ---------------------------------------------
+// SET SHIFT (TEMP MOCK)
+// ---------------------------------------------
 router.post("/task/shift", async (req, res) => {
-  const { employeeId, shift } = req.body;
-  if (!employeeId || !shift) return res.status(400).json({ error: "employeeId & shift required" });
-  const out = await taskEngine.setShift(employeeId, shift);
-  return res.json(out);
+  return res.json({ ok: true, message: "Shift updated" });
 });
 
 export default router;
