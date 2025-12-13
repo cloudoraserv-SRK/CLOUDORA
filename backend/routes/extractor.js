@@ -4,7 +4,7 @@
 
 const express = require("express");
 const router = express.Router();
-const supabase = require("../supabase");
+const supabase = require("../api/supabase");
 const serpWorker = require("../services/serp_worker");
 
 // -------------------------------------------------------
