@@ -13,8 +13,10 @@ export default {
                 query
             )}&hl=en&api_key=${process.env.SERP_API_KEY}`;
 
-            const response = await axios.get(url);
-            const results = response.data.local_results || [];
+            const response = await fetch(url);
+            const data = await response.json();
+
+            const results = data.local_results || [];
 
             return results.map(r => ({
                 name: r.title || null,
@@ -30,3 +32,4 @@ export default {
         }
     }
 };
+
