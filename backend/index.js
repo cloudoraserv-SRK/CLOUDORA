@@ -44,7 +44,6 @@ const allowedOrigins = [
   "https://cloudoraserv.cloud",
   "https://cloudora-production.up.railway.app",
 ];
-app.use("/api/extract", extractorRoutes);
 
 app.use(
   cors({
@@ -69,6 +68,10 @@ app.use(bodyParser.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// -------------------------------
+// Routes
+// --------------------------------
+app.use("/api/extract", extractorRoutes);
 // ---------------------------------------------
 // Supabase (Service Role)
 // ---------------------------------------------
@@ -200,6 +203,7 @@ const PORT = process.env.PORT || 8787;
 app.listen(PORT, () => {
   console.log(`🔥 Cloudora Genie backend running on ${PORT}`);
 });
+
 
 
 
