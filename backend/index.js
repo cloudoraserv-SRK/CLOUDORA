@@ -43,6 +43,8 @@ const allowedOrigins = [
   "https://cloudoraserv.cloud",
   "https://cloudora-production.up.railway.app",
 ];
+const extractorRoutes = require("./routes/extractor");
+app.use("/api/extract", extractorRoutes);
 
 app.use(
   cors({
