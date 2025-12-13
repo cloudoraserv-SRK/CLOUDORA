@@ -182,4 +182,5 @@ router.get("/raw", async (req, res) => {
     return res.json({ ok: true, leads: data });
 });
 
-module.exports = router;
+export default router;
+
