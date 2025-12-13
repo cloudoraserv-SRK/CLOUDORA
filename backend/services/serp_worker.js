@@ -1,3 +1,6 @@
+console.log("SERP RESULTS COUNT:", results.length);
+
+
 // -------------------------------------------------------
 // Cloudora SERP Worker (NO AXIOS - Native Fetch)
 // -------------------------------------------------------
