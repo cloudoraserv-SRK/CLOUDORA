@@ -1,35 +1,36 @@
-console.log("SERP RESULTS COUNT:", results.length);
+// -----------------------------------------------
+// Cloudora SERP Worker (Google Maps / SERP API)
+// -----------------------------------------------
 
+import axios from "axios";
+import dotenv from "dotenv";
 
-// -------------------------------------------------------
-// Cloudora SERP Worker (NO AXIOS - Native Fetch)
-// -------------------------------------------------------
+dotenv.config();
 
-export default {
-    extract: async function (category, city) {
-        try {
-            const query = `${category} in ${city}`;
+export async function extract(category, city) {
+  try {
+    const query = `${category} in ${city}`;
 
-            const url = `https://serpapi.com/search.json?engine=google_maps&q=${encodeURIComponent(
-    query
-)}&hl=en&google_domain=google.com&api_key=${process.env.SERP_API_KEY}`;
+    const url = `https://serpapi.com/search.json?engine=google_maps&q=${encodeURIComponent(
+      query
+    )}&hl=en&google_domain=google.com&api_key=${process.env.SERP_API_KEY}`;
 
-            const response = await fetch(url);
-            const data = await response.json();
+    const response = await axios.get(url);
 
-            const results = data.local_results || [];
+    const results = response.data.local_results || [];
 
-            return results.map(r => ({
-                name: r.title || null,
-                phone: r.phone || null,
-                address: r.address || null,
-                website: r.website || null,
-                email: r.emails?.[0] || null
-            }));
+    console.log("🔥 SERP RESULTS COUNT:", results.length);
+    console.log("🔥 SAMPLE RESULT:", results[0]);
 
-        } catch (err) {
-            console.log("SERP WORKER ERROR:", err);
-            return [];
-        }
-    }
-};
+    return results.map((r) => ({
+      name: r.title || null,
+      phone: r.phone || null,
+      address: r.address || null,
+      website: r.website || null,
+      email: r.emails ? r.emails[0] : null,
+    }));
+  } catch (err) {
+    console.log("❌ SERP WORKER ERROR:", err.message);
+    return [];
+  }
+}
