@@ -24,6 +24,7 @@ import jobRouter from "./routes/job/job.js";
 // Memory Engine
 import memoryModule from "./genie/memory/memory.js";
 import trainingRouter from "./routes/training.js";
+import extractorRoutes from "./routes/extractor.js";
 
 // Logger
 const logger = console;
@@ -43,7 +44,6 @@ const allowedOrigins = [
   "https://cloudoraserv.cloud",
   "https://cloudora-production.up.railway.app",
 ];
-const extractorRoutes = require("./routes/extractor");
 app.use("/api/extract", extractorRoutes);
 
 app.use(
@@ -200,5 +200,6 @@ const PORT = process.env.PORT || 8787;
 app.listen(PORT, () => {
   console.log(`🔥 Cloudora Genie backend running on ${PORT}`);
 });
+
 
 
