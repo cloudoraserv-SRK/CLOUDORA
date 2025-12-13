@@ -4,10 +4,13 @@
 
 import axios from "axios";
 import dotenv from "dotenv";
+
 dotenv.config();
 
-async function extract(category, city) {
+export async function extract(category, city) {
   try {
+    console.log("ENV KEY LOADED?", process.env.SERP_API_KEY ? "YES" : "NO");
+
     const query = `${category} in ${city}`;
 
     const url = `https://serpapi.com/search.json?engine=google_maps&q=${encodeURIComponent(
@@ -18,7 +21,7 @@ async function extract(category, city) {
 
     const results = response.data.local_results || [];
 
-    console.log("🔥 SERP RESULTS COUNT:", results.length);
+    console.log("🔥 SERP COUNT:", results.length);
 
     return results.map((r) => ({
       name: r.title || null,
@@ -27,11 +30,8 @@ async function extract(category, city) {
       website: r.website || null,
       email: r.emails ? r.emails[0] : null,
     }));
-
   } catch (err) {
     console.log("❌ SERP WORKER ERROR:", err.message);
     return [];
   }
 }
-
-export default { extract };
