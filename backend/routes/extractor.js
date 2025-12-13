@@ -41,7 +41,11 @@ router.post("/live", async (req, res) => {
         .select()
         .single();
 
-      if (error) continue;
+     if (error) {
+    console.log("INSERT ERROR:", error);
+    continue;
+}
+
       savedCount++;
 
       await supabase
