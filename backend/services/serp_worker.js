@@ -4,10 +4,9 @@
 
 import axios from "axios";
 import dotenv from "dotenv";
-
 dotenv.config();
 
-export async function extract(category, city) {
+async function extract(category, city) {
   try {
     const query = `${category} in ${city}`;
 
@@ -20,7 +19,6 @@ export async function extract(category, city) {
     const results = response.data.local_results || [];
 
     console.log("🔥 SERP RESULTS COUNT:", results.length);
-    console.log("🔥 SAMPLE RESULT:", results[0]);
 
     return results.map((r) => ({
       name: r.title || null,
@@ -29,8 +27,11 @@ export async function extract(category, city) {
       website: r.website || null,
       email: r.emails ? r.emails[0] : null,
     }));
+
   } catch (err) {
     console.log("❌ SERP WORKER ERROR:", err.message);
     return [];
   }
 }
+
+export default { extract };
