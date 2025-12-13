@@ -1,17 +1,27 @@
 console.log("EXTRACTOR ROUTES LOADED");
 
 // -------------------------------------------------------
-// Cloudora - Extractor Routes (FULL VERSION - ESM)
+// Cloudora - Extractor Routes (FINAL FIXED BACKEND VERSION)
 // -------------------------------------------------------
 
 import express from "express";
-import { supabase } from "../lib/supabaseClient.js";
+import { createClient } from "@supabase/supabase-js";
 import { extract as serpExtract } from "../services/serp_worker.js";
 
 const router = express.Router();
 
+// ✅ BACKEND SUPABASE CLIENT (SERVICE ROLE REQUIRED)
+const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY
+);
+
+// Debug
+console.log("SUPABASE URL:", process.env.SUPABASE_URL);
+console.log("SERVICE ROLE LOADED:", process.env.SUPABASE_SERVICE_ROLE_KEY ? "YES" : "NO");
+
 // -------------------------------------------------------
-// 1) LIVE EXTRACTION (SERP API → RAW TABLE → ASSIGN)
+// 1) LIVE EXTRACTION (SERP → scraped_leads → assign)
 // -------------------------------------------------------
 
 router.post("/live", async (req, res) => {
@@ -20,11 +30,16 @@ router.post("/live", async (req, res) => {
     try {
         const leads = await serpExtract(category, city);
 
+        console.log("SERP LEADS COUNT:", leads.length);
+
         let savedCount = 0;
         let assignedCount = 0;
 
         for (let lead of leads) {
-            const { data: raw, error } = await supabase
+            // ---------------------------
+            // INSERT RAW LEAD
+            // ---------------------------
+            const { data: raw, error: insertErr } = await supabase
                 .from("scraped_leads")
                 .insert({
                     name: lead.name || null,
@@ -41,16 +56,28 @@ router.post("/live", async (req, res) => {
                 .select()
                 .single();
 
-            if (error) continue;
+            if (insertErr) {
+                console.log("INSERT ERROR:", insertErr);
+                continue; // skip failed ones
+            }
+
             savedCount++;
 
-            await supabase
+            // ---------------------------
+            // ASSIGN LEAD
+            // ---------------------------
+            const { error: assignErr } = await supabase
                 .from("scraped_leads_assignments")
                 .insert({
                     scraped_lead_id: raw.id,
                     employee_id,
                     status: "assigned"
                 });
+
+            if (assignErr) {
+                console.log("ASSIGN ERROR:", assignErr);
+                continue;
+            }
 
             assignedCount++;
         }
@@ -69,7 +96,7 @@ router.post("/live", async (req, res) => {
 
 
 // -------------------------------------------------------
-// 2) EXISTING DATABASE (RAW → ASSIGN)
+// 2) EXISTING DB LEADS → ASSIGN
 // -------------------------------------------------------
 
 router.post("/from-db", async (req, res) => {
@@ -109,7 +136,7 @@ router.post("/from-db", async (req, res) => {
 
 
 // -------------------------------------------------------
-// 3) MY ASSIGNED / EXTRACTED LEADS
+// 3) GET MY ASSIGNED LEADS
 // -------------------------------------------------------
 
 router.get("/my-leads", async (req, res) => {
@@ -154,7 +181,7 @@ router.post("/assign-selected", async (req, res) => {
 
 
 // -------------------------------------------------------
-// 5) RAW LEADS (FILTER PAGE)
+// 5) RAW LEADS LIST (Filter page)
 // -------------------------------------------------------
 
 router.get("/raw", async (req, res) => {
@@ -174,10 +201,5 @@ router.get("/raw", async (req, res) => {
 
     return res.json({ ok: true, leads: data });
 });
-
-
-// -------------------------------------------------------
-// EXPORT ROUTER (ESM REQUIRED)
-// -------------------------------------------------------
 
 export default router;
