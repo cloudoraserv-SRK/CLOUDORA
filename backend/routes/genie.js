@@ -5,7 +5,7 @@
 import express from "express";
 const router = express.Router();
 
-// ---------- START SESSION (DUMMY) ----------
+// START session dummy
 router.post("/start", async (req, res) => {
   return res.json({
     ok: true,
@@ -13,19 +13,13 @@ router.post("/start", async (req, res) => {
   });
 });
 
-// ---------- SIMPLE MESSAGE ROUTE ----------
+// BASIC MESSAGE ROUTE
 router.post("/message", async (req, res) => {
   const msg = req.body.message || "";
-
   return res.json({
-    reply: "Genie basic mode active — AI engine disabled.",
+    reply: "Genie basic mode active — AI engine removed.",
     userMessage: msg
   });
-});
-
-// ---------- HEALTH ----------
-router.get("/", (req, res) => {
-  res.json({ ok: true, genie: "clean" });
 });
 
 export default router;
