@@ -1,3 +1,5 @@
+console.log("EXTRACTOR ROUTES LOADED");
+
 // -------------------------------------------------------
 // Cloudora - Extractor Routes (FULL VERSION - ESM)
 // -------------------------------------------------------
