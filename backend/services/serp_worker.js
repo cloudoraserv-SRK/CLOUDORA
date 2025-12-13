@@ -1,8 +1,6 @@
 // -------------------------------------------------------
-// Cloudora SERP Worker (FULL ESM VERSION)
+// Cloudora SERP Worker (NO AXIOS - Native Fetch)
 // -------------------------------------------------------
-
-import axios from "axios";
 
 export default {
     extract: async function (category, city) {
@@ -32,4 +30,3 @@ export default {
         }
     }
 };
-
