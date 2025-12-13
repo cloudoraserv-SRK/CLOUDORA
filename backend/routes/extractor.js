@@ -5,7 +5,7 @@ console.log("EXTRACTOR ROUTES LOADED");
 // -------------------------------------------------------
 
 import express from "express";
-import { supabase } from "../api/supabase.js";
+import supabase from "../api/supabaseClient.js";
 import { extract as serpExtract } from "../services/serp_worker.js";
 
 const router = express.Router();
