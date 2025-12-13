@@ -1,5 +1,5 @@
 // ---------------------------------------------
-// Cloudora Genie — Backend Main Server (FINAL)
+// Cloudora Genie — Backend Main Server (CLEAN STABLE VERSION)
 // ---------------------------------------------
 
 import "dotenv/config";
@@ -8,11 +8,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import { createClient } from "@supabase/supabase-js";
 
-// Core Modules
-import createGenie from "./genie/genie-core.js";
-import { logOnboardingStep } from "./genie/flow_manager.js";
-
-// Routers
+// Routers (working modules)
 import catalogueRouter from "./routes/admin_upload.js";
 import proposalRouter from "./routes/api_proposal.js";
 import genieRoutes from "./routes/genie.js";
@@ -20,9 +16,6 @@ import genieMediaRoutes from "./routes/genie_media.js";
 import tasksRouter from "./routes/tasks.js";
 import adminRouter from "./routes/admin.js";
 import jobRouter from "./routes/job/job.js";
-
-// Memory Engine
-import memoryModule from "./genie/memory/memory.js";
 import trainingRouter from "./routes/training.js";
 import extractorRoutes from "./routes/extractor.js";
 
@@ -30,12 +23,12 @@ import extractorRoutes from "./routes/extractor.js";
 const logger = console;
 
 // ---------------------------------------------
-// Express App Init
+// Express Init
 // ---------------------------------------------
 const app = express();
 
 // ---------------------------------------------
-// CORS CONFIG (FINAL PRODUCTION VERSION)
+// CORS (Final Production Version)
 // ---------------------------------------------
 const allowedOrigins = [
   "http://127.0.0.1:5500",
@@ -55,23 +48,18 @@ app.use(
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
-    preflightContinue: false,
   })
 );
 
 app.options("*", cors());
 
 // ---------------------------------------------
-// BODY PARSER
+// Body Parser
 // ---------------------------------------------
 app.use(bodyParser.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// -------------------------------
-// Routes
-// --------------------------------
-app.use("/api/extract", extractorRoutes);
 // ---------------------------------------------
 // Supabase (Service Role)
 // ---------------------------------------------
@@ -81,133 +69,49 @@ const supabase = createClient(
 );
 
 // ---------------------------------------------
-// Memory Engine + Genie Init
+// ROUTES
 // ---------------------------------------------
-const memory = memoryModule({ supabase, logger });
-const genie = createGenie({ logger });
 
-// Utility
-function safeText(v) {
-  if (!v) return "";
-  return String(v).trim();
-}
+// Extractor (SERP + DB assign)
+app.use("/api/extract", extractorRoutes);
 
-// ---------------------------------------------
-// SESSION HELPER
-// ---------------------------------------------
-async function ensureSession(sessionId, meta = {}) {
-  if (!sessionId) sessionId = "sess_" + Date.now();
-  const existing = await memory.getSession(sessionId);
-  if (!existing) await memory.createSession(sessionId, meta);
-  return sessionId;
-}
-
-// ---------------------------------------------
-// ROUTES (ORDER MATTERS)
-// ---------------------------------------------
+// Job Flow (apply, create-employee, login)
 app.use("/api/job", jobRouter);
+
+// Admin area
 app.use("/api/admin", adminRouter);
+
+// Task manager
 app.use("/api/tasks", tasksRouter);
+
+// Catalogue upload
 app.use("/api/catalogue", catalogueRouter);
+
+// Proposal generator
 app.use("/api/proposal", proposalRouter);
 
-// Genie Routes
-app.use("/api/genie", genieRoutes);
+// Genie media routes (images/audio upload)
 app.use("/api/genie", genieMediaRoutes);
 
-// Training Route
+// Genie simple text route (no memory)
+app.post("/api/genie/message", async (req, res) => {
+  const msg = req.body.message || "";
+  return res.json({ reply: "Okay! (Genie basic mode active)" });
+});
+
+// Training module
 app.use("/api/training", trainingRouter);
 
-// ---------------------------------------------
-// SESSION + ROLE + MESSAGE ROUTES
-// ---------------------------------------------
-app.post("/api/genie/start", async (req, res) => {
-  try {
-    const { sessionId: provided, meta } = req.body || {};
-    const sessionId =
-      provided || "sess_" + Math.random().toString(36).slice(2, 10);
-
-    await memory.createSession(sessionId, meta || {});
-    return res.json({ ok: true, sessionId });
-  } catch (e) {
-    logger.error("start session error:", e);
-    return res.status(500).json({ error: "Unable to create session" });
-  }
-});
-
-app.post("/api/genie/role", async (req, res) => {
-  try {
-    const { role, sessionId: provided } = req.body || {};
-    const sessionId = await ensureSession(provided);
-
-    await memory.setState(sessionId, { role });
-
-    const lower = String(role || "").toLowerCase();
-
-    const redirects = {
-      client: "/client/client.html",
-      job: "/job/job.html",
-      employee: "/employee/login.html",
-      partner: "/partner/partner.html",
-    };
-
-    return res.json({
-      reply: `Starting ${lower} flow...`,
-      redirect: redirects[lower] || null,
-    });
-  } catch (e) {
-    logger.error("role error:", e);
-    return res.status(500).json({ error: "Role selection failed" });
-  }
-});
-
-app.post("/api/genie/message", async (req, res) => {
-  try {
-    const { sessionId, message } = req.body || {};
-    const id = await ensureSession(sessionId);
-
-    const output = await genie.handleInput(id, String(message || "").trim());
-
-    const reply = output.text || output.reply || "Okay!";
-
-    return res.json({
-      reply,
-      sessionId: id
-    });
-
-  } catch (e) {
-    logger.error("genie message error:", e);
-    return res.status(500).json({ reply: "Genie failed" });
-  }
-});
-
-// ---------------------------------------------
-// Onboarding Logs
-// ---------------------------------------------
-app.post("/api/onboarding/log", async (req, res) => {
-  try {
-    const { step, answer, applicationId } = req.body || {};
-    await logOnboardingStep(step, answer, applicationId || null);
-    return res.json({ ok: true });
-  } catch (e) {
-    logger.error("onboarding log error:", e);
-    return res.status(500).json({ error: e.message });
-  }
-});
+// Health check
 app.get("/", (req, res) => {
   res.status(200).send("Cloudora Backend OK");
 });
 
 // ---------------------------------------------
-// SERVER START
+// START SERVER
 // ---------------------------------------------
 const PORT = process.env.PORT || 8787;
 
 app.listen(PORT, () => {
-  console.log(`🔥 Cloudora Genie backend running on ${PORT}`);
+  console.log(`🔥 Cloudora Genie backend running CLEAN on ${PORT}`);
 });
-
-
-
-
-
