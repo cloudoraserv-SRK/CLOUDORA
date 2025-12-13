@@ -30,7 +30,7 @@ router.post("/live", async (req, res) => {
     try {
         const leads = await serpExtract(category, city);
 
-        console.log("SERP LEADS COUNT:", leads.length);
+        console.log("SERP COUNT:", leads.length);
 
         let savedCount = 0;
         let assignedCount = 0;
@@ -39,29 +39,32 @@ router.post("/live", async (req, res) => {
             // ---------------------------
             // INSERT RAW LEAD
             // ---------------------------
-            const { data: raw, error: insertErr } = await supabase
+             try {
+        const leads = await serpExtract(category, city);
+        console.log("SERP COUNT:", leads.length);
+
+        let savedCount = 0;
+
+        for (let lead of leads) {
+            const { error } = await supabase
                 .from("scraped_leads")
                 .insert({
                     name: lead.name || null,
+                    company: lead.name || null,       // fallback
+                    contact_person: null,
                     phone: lead.phone || null,
                     email: lead.email || null,
                     address: lead.address || null,
-                    category,
-                    city,
+                    city: city,
+                    country: "India",
                     website: lead.website || null,
-                    source: "serpapi",
-                    assigned_to: null,
-                    status: "raw"
-                })
-                .select()
-                .single();
+                    category: category,
+                    source: "serpapi"
+                });
 
-            if (insertErr) {
-                console.log("INSERT ERROR:", insertErr);
-                continue; // skip failed ones
-            }
-
-            savedCount++;
+            if (!error) savedCount++;
+            else console.log("INSERT ERROR:", error);
+        }
 
             // ---------------------------
             // ASSIGN LEAD
