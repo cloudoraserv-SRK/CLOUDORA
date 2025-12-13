@@ -1,11 +1,12 @@
-// -----------------------------------------------
-// Cloudora - Extractor Routes (FINAL)
-// -----------------------------------------------
+// -------------------------------------------------------
+// Cloudora - Extractor Routes (FULL VERSION - ESM)
+// -------------------------------------------------------
 
-const express = require("express");
+import express from "express";
+import supabase from "../api/supabase.js";
+import serpWorker from "../services/serp_worker.js";
+
 const router = express.Router();
-const supabase = require("../api/supabase");
-const serpWorker = require("../services/serp_worker");
 
 // -------------------------------------------------------
 // 1) LIVE EXTRACTION (SERP API → RAW TABLE → ASSIGN)
@@ -15,15 +16,12 @@ router.post("/live", async (req, res) => {
     const { category, city, employee_id } = req.body;
 
     try {
-        // 1. SERP API EXTRACTOR
         const leads = await serpWorker.extract(category, city);
 
         let savedCount = 0;
         let assignedCount = 0;
 
         for (let lead of leads) {
-
-            // 2. INSERT RAW LEAD
             const { data: raw, error } = await supabase
                 .from("scraped_leads")
                 .insert({
@@ -44,7 +42,6 @@ router.post("/live", async (req, res) => {
             if (error) continue;
             savedCount++;
 
-            // 3. ASSIGN LEAD TO EMPLOYEE
             await supabase
                 .from("scraped_leads_assignments")
                 .insert({
@@ -63,15 +60,14 @@ router.post("/live", async (req, res) => {
         });
 
     } catch (err) {
-        console.log(err);
+        console.log("LIVE ERROR:", err);
         return res.json({ ok: false, error: err.message });
     }
 });
 
 
-
 // -------------------------------------------------------
-// 2) USE EXISTING DATABASE (RAW → ASSIGN)
+// 2) EXISTING DATABASE (RAW → ASSIGN)
 // -------------------------------------------------------
 
 router.post("/from-db", async (req, res) => {
@@ -90,13 +86,11 @@ router.post("/from-db", async (req, res) => {
     let assignedCount = 0;
 
     for (let lead of leads) {
-        // 1. UPDATE RAW TABLE
         await supabase
             .from("scraped_leads")
             .update({ assigned_to: employee_id, status: "assigned" })
             .eq("id", lead.id);
 
-        // 2. INSERT ASSIGNMENT ENTRY
         await supabase
             .from("scraped_leads_assignments")
             .insert({
@@ -112,9 +106,8 @@ router.post("/from-db", async (req, res) => {
 });
 
 
-
 // -------------------------------------------------------
-// 3) MY EXTRACTED / ASSIGNED LEADS
+// 3) MY ASSIGNED / EXTRACTED LEADS
 // -------------------------------------------------------
 
 router.get("/my-leads", async (req, res) => {
@@ -132,23 +125,19 @@ router.get("/my-leads", async (req, res) => {
 });
 
 
-
 // -------------------------------------------------------
-// 4) ASSIGN SELECTED LEADS (LEAD FILTERS PAGE)
+// 4) ASSIGN SELECTED LEADS
 // -------------------------------------------------------
 
 router.post("/assign-selected", async (req, res) => {
     const { lead_ids, employee_id } = req.body;
 
     for (let id of lead_ids) {
-
-        // Update RAW lead
         await supabase
             .from("scraped_leads")
             .update({ assigned_to: employee_id, status: "assigned" })
             .eq("id", id);
 
-        // Add to assignment table
         await supabase
             .from("scraped_leads_assignments")
             .insert({
@@ -162,15 +151,17 @@ router.post("/assign-selected", async (req, res) => {
 });
 
 
-
 // -------------------------------------------------------
-// 5) RAW LEADS LIST (FOR LEAD FILTERS PAGE)
+// 5) RAW LEADS (FILTER PAGE)
 // -------------------------------------------------------
 
 router.get("/raw", async (req, res) => {
     const { category, city } = req.query;
 
-    let query = supabase.from("scraped_leads").select("*").is("assigned_to", null);
+    let query = supabase
+        .from("scraped_leads")
+        .select("*")
+        .is("assigned_to", null);
 
     if (category) query = query.eq("category", category);
     if (city) query = query.eq("city", city);
@@ -182,5 +173,9 @@ router.get("/raw", async (req, res) => {
     return res.json({ ok: true, leads: data });
 });
 
-export default router;
 
+// -------------------------------------------------------
+// EXPORT ROUTER (ESM REQUIRED)
+// -------------------------------------------------------
+
+export default router;
