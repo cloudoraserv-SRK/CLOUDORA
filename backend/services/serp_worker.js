@@ -11,8 +11,8 @@ export default {
             const query = `${category} in ${city}`;
 
             const url = `https://serpapi.com/search.json?engine=google_maps&q=${encodeURIComponent(
-                query
-            )}&hl=en&api_key=${process.env.SERP_API_KEY}`;
+    query
+)}&hl=en&google_domain=google.com&api_key=${process.env.SERP_API_KEY}`;
 
             const response = await fetch(url);
             const data = await response.json();
