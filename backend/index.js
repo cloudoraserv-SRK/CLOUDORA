@@ -194,6 +194,9 @@ app.post("/api/onboarding/log", async (req, res) => {
     return res.status(500).json({ error: e.message });
   }
 });
+app.get("/", (req, res) => {
+  res.status(200).send("Cloudora Backend OK");
+});
 
 // ---------------------------------------------
 // SERVER START
@@ -203,6 +206,7 @@ const PORT = process.env.PORT || 8787;
 app.listen(PORT, () => {
   console.log(`🔥 Cloudora Genie backend running on ${PORT}`);
 });
+
 
 
 
