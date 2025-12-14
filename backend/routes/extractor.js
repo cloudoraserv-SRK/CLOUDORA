@@ -1,7 +1,7 @@
 console.log("EXTRACTOR ROUTES LOADED");
 
 // -------------------------------------------------------
-// Cloudora Extractor Routes (FINAL STABLE V2)
+// Cloudora Extractor Routes (FINAL STABLE V3 - EMPLOYEE CONTROLLED)
 // -------------------------------------------------------
 
 import express from "express";
@@ -11,25 +11,22 @@ import { extract as serpExtract } from "../services/serp_worker.js";
 const router = express.Router();
 
 // -------------------------------------------------------
-// 1) LIVE EXTRACTION (Duplicate-safe version)
+// 1) LIVE EXTRACTION (Duplicate-safe + No Auto Assign)
 // -------------------------------------------------------
 
 router.post("/live", async (req, res) => {
-    const { category, city, employee_id } = req.body;
+    const { category, city } = req.body;
 
     try {
         const leads = await serpExtract(category, city);
 
         let savedCount = 0;
-        let assignedCount = 0;
 
         for (let lead of leads) {
 
-            // --------------------------------------------
-            // Step 1: Check duplicate website FIRST
-            // --------------------------------------------
             let rawId = null;
 
+            // STEP 1 — CHECK DUPLICATE BY WEBSITE
             if (lead.website) {
                 const { data: exists } = await supabase
                     .from("scraped_leads")
@@ -38,15 +35,12 @@ router.post("/live", async (req, res) => {
                     .maybeSingle();
 
                 if (exists) {
-                    // Duplicate → no insert, but still assign this lead
-                    console.log("DUPLICATE FOUND → Skipping INSERT:", lead.website);
+                    console.log("DUPLICATE FOUND → SKIPPING INSERT:", lead.website);
                     rawId = exists.id;
                 }
             }
 
-            // --------------------------------------------
-            // Step 2: If not duplicate → INSERT new lead
-            // --------------------------------------------
+            // STEP 2 — INSERT IF NEW LEAD
             if (!rawId) {
                 const { data: raw, error } = await supabase
                     .from("scraped_leads")
@@ -74,24 +68,14 @@ router.post("/live", async (req, res) => {
                 savedCount++;
             }
 
-            // --------------------------------------------
-            // Step 3: ASSIGN lead to employee
-            // --------------------------------------------
-            const { error: assignErr } = await supabase
-                .from("scraped_leads_assignments")
-                .insert({
-                    scraped_lead_id: rawId,
-                    employee_id,
-                    status: "assigned"
-                });
-
-            if (!assignErr) assignedCount++;
+            // STEP 3 — NO AUTO ASSIGN
+            // Leads will only assign when employee selects manually
         }
 
         return res.json({
             ok: true,
             saved: savedCount,
-            assigned: assignedCount
+            assigned: 0 // No auto-assign
         });
 
     } catch (err) {
@@ -102,7 +86,7 @@ router.post("/live", async (req, res) => {
 
 
 // -------------------------------------------------------
-// 2) EXISTING DATABASE (RAW → ASSIGN)
+// 2) EXISTING DATABASE (RAW → ASSIGN USING FILTERS)
 // -------------------------------------------------------
 
 router.post("/from-db", async (req, res) => {
@@ -125,7 +109,8 @@ router.post("/from-db", async (req, res) => {
             await supabase
                 .from("scraped_leads")
                 .update({ assigned_to: employee_id, status: "assigned" })
-                .eq("id", lead.id);
+                .eq("id", lead.id)
+                .is("assigned_to", null); // prevents double assignment
 
             await supabase
                 .from("scraped_leads_assignments")
@@ -148,7 +133,7 @@ router.post("/from-db", async (req, res) => {
 
 
 // -------------------------------------------------------
-// 3) MY ASSIGNED / EXTRACTED LEADS
+// 3) FETCH MY ASSIGNED LEADS (Calling Panel)
 // -------------------------------------------------------
 
 router.get("/my-leads", async (req, res) => {
@@ -173,29 +158,47 @@ router.get("/my-leads", async (req, res) => {
 
 
 // -------------------------------------------------------
-// 4) ASSIGN SELECTED LEADS
+// 4) ASSIGN SELECTED LEADS TO EMPLOYEE (MANUAL SELECTION)
 // -------------------------------------------------------
 
 router.post("/assign-selected", async (req, res) => {
     const { lead_ids, employee_id } = req.body;
 
     try {
+        let assignedCount = 0;
+
         for (let id of lead_ids) {
-            await supabase
+
+            // Update raw lead
+            const { error: updErr } = await supabase
                 .from("scraped_leads")
                 .update({ assigned_to: employee_id, status: "assigned" })
-                .eq("id", id);
+                .eq("id", id)
+                .is("assigned_to", null);
 
-            await supabase
+            if (updErr) {
+                console.log("UPDATE ERROR:", updErr);
+                continue;
+            }
+
+            // Insert assignment
+            const { error: assignErr } = await supabase
                 .from("scraped_leads_assignments")
                 .insert({
                     scraped_lead_id: id,
                     employee_id,
                     status: "assigned"
                 });
+
+            if (assignErr) {
+                console.log("ASSIGNMENT ERROR:", assignErr);
+                continue;
+            }
+
+            assignedCount++;
         }
 
-        return res.json({ ok: true, assigned: lead_ids.length });
+        return res.json({ ok: true, assigned: assignedCount });
 
     } catch (err) {
         console.log("ASSIGN SELECTED ERROR:", err);
@@ -205,11 +208,11 @@ router.post("/assign-selected", async (req, res) => {
 
 
 // -------------------------------------------------------
-// 5) RAW LEADS (FILTER PAGE)
+// 5) RAW LEADS LIST (Employees choose leads here)
 // -------------------------------------------------------
 
 router.get("/raw", async (req, res) => {
-    const { category, city } = req.query;
+    const { category, city, search } = req.query;
 
     try {
         let query = supabase
@@ -219,6 +222,16 @@ router.get("/raw", async (req, res) => {
 
         if (category) query = query.eq("category", category);
         if (city) query = query.eq("city", city);
+
+        if (search) {
+            query = query.or(`
+                name.ilike.%${search}%,
+                phone.ilike.%${search}%,
+                email.ilike.%${search}%,
+                address.ilike.%${search}%,
+                website.ilike.%${search}%
+            `);
+        }
 
         const { data, error } = await query.limit(200);
 
