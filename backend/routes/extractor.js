@@ -211,32 +211,34 @@ router.post("/auto-deassign", async (req, res) => {
     }
 });
 // -------------------------------------------------------
-// 6) FETCH NEXT LEAD FOR EMPLOYEE (AUTO SKIP IF NO PHONE)
+// 6) FETCH NEXT LEAD FOR EMPLOYEE (CORRECT + AUTO SKIP)
 // -------------------------------------------------------
-router.get("/next-lead", async (req, res) => {
-    const empID = req.query.employee_id;
+router.post("/next-lead", async (req, res) => {
+    const { employee_id } = req.body;
+
+    if (!employee_id)
+        return res.json({ ok: false, error: "Missing employee_id" });
 
     try {
-        // Fetch all assigned leads (not completed)
+        // Get employee's assigned leads (pending / assigned)
         const { data, error } = await supabase
             .from("scraped_leads_assignments")
-            .select("*, scraped_leads(*)")
-            .eq("employee_id", empID)
+            .select("id, status, scraped_lead_id, scraped_leads(*)")
+            .eq("employee_id", employee_id)
+            .in("status", ["assigned", "pending"])
             .order("created_at", { ascending: true });
 
         if (error) return res.json({ ok: false, error });
-
         if (!data || data.length === 0)
             return res.json({ ok: false, message: "NO_LEADS" });
 
-        // Find first valid lead (skip empty phone)
-        let validLead = null;
+        let nextLead = null;
 
         for (let row of data) {
             const lead = row.scraped_leads;
 
+            // Auto-skip 1: Empty phone number
             if (!lead.phone || lead.phone.trim() === "") {
-                // Auto skip: mark as skipped
                 await supabase
                     .from("scraped_leads_assignments")
                     .update({ status: "skipped" })
@@ -245,19 +247,31 @@ router.get("/next-lead", async (req, res) => {
                 continue;
             }
 
-            validLead = lead;
+            // Auto-skip 2: Mark stale leads older than 48 hrs as expired
+            const assignedAt = new Date(row.created_at);
+            const now = new Date();
+            const hours = (now - assignedAt) / (1000 * 60 * 60);
+
+            if (hours > 48) {
+                await supabase
+                    .from("scraped_leads_assignments")
+                    .update({ status: "expired" })
+                    .eq("id", row.id);
+
+                continue;
+            }
+
+            // This is the next lead for the employee
+            nextLead = lead;
             break;
         }
 
-        if (!validLead)
-            return res.json({
-                ok: false,
-                message: "NO_VALID_LEADS"
-            });
+        if (!nextLead)
+            return res.json({ ok: false, message: "NO_VALID_LEADS" });
 
         return res.json({
             ok: true,
-            lead: validLead
+            lead: nextLead
         });
 
     } catch (err) {
@@ -265,5 +279,6 @@ router.get("/next-lead", async (req, res) => {
         return res.json({ ok: false, error: err.message });
     }
 });
+
 
 export default router;
