@@ -3,6 +3,7 @@ console.log("EXTRACTOR ROUTES LOADED");
 import express from "express";
 import { supabase } from "../api/supabase.js";
 import { extract as serpExtract } from "../services/serp_worker.js";
+import { sendSalesEmail } from "../utils/mailer.js";   // NEW
 
 const router = express.Router();
 
@@ -19,7 +20,6 @@ router.post("/live", async (req, res) => {
         for (let lead of leads) {
             let rawId = null;
 
-            // Duplicate check
             if (lead.website) {
                 const { data: exists } = await supabase
                     .from("scraped_leads")
@@ -96,7 +96,7 @@ router.get("/raw", async (req, res) => {
 });
 
 /* -------------------------------------------------------
-   3) ASSIGN SELECTED LEADS (status = pending)
+   3) ASSIGN SELECTED LEADS → status = pending
 -------------------------------------------------------- */
 router.post("/assign-selected", async (req, res) => {
     const { lead_ids, employee_id } = req.body;
@@ -129,7 +129,7 @@ router.post("/assign-selected", async (req, res) => {
 });
 
 /* -------------------------------------------------------
-   4) NEXT LEAD (only pending)
+   4) NEXT LEAD (pending only, sorted by creation time)
 -------------------------------------------------------- */
 router.post("/next-lead", async (req, res) => {
     const { employee_id } = req.body;
@@ -159,16 +159,16 @@ router.post("/next-lead", async (req, res) => {
 });
 
 /* -------------------------------------------------------
-   5) COMPLETE LEAD ASSIGNMENT
+   5) COMPLETE LEAD
 -------------------------------------------------------- */
 router.post("/complete-lead", async (req, res) => {
-    const { assignment_id } = req.body;
+    const { assignment_id, mark_status } = req.body;
 
     try {
         const { error } = await supabase
             .from("scraped_leads_assignments")
             .update({
-                status: "completed",
+                status: mark_status || "completed",
                 completed_at: new Date().toISOString()
             })
             .eq("id", assignment_id);
@@ -204,7 +204,7 @@ router.post("/update-lead", async (req, res) => {
 });
 
 /* -------------------------------------------------------
-   7) ADD TIMELINE ENTRY
+   7) TIMELINE → ADD ENTRY
 -------------------------------------------------------- */
 router.post("/timeline/add", async (req, res) => {
     const { lead_id, event_text } = req.body;
@@ -225,7 +225,7 @@ router.post("/timeline/add", async (req, res) => {
 });
 
 /* -------------------------------------------------------
-   8) GET TIMELINE LIST
+   8) TIMELINE → LIST
 -------------------------------------------------------- */
 router.post("/timeline", async (req, res) => {
     const { lead_id } = req.body;
@@ -238,6 +238,33 @@ router.post("/timeline", async (req, res) => {
             .order("time", { ascending: false });
 
         return error ? res.json({ ok: false, error }) : res.json({ ok: true, timeline: data });
+    } catch (err) {
+        return res.json({ ok: false, error: err.message });
+    }
+});
+
+/* -------------------------------------------------------
+   9) FORWARD TO SALES TEAM
+-------------------------------------------------------- */
+router.post("/forward-sales", async (req, res) => {
+    const { lead_id, forwarded_by } = req.body;
+
+    try {
+        // Save in sales_leads table
+        const { error } = await supabase
+            .from("sales_leads")
+            .insert({
+                lead_id,
+                forwarded_by,
+                forwarded_at: new Date().toISOString()
+            });
+
+        if (error) return res.json({ ok: false, error });
+
+        // Send email to sales + alert
+        await sendSalesEmail(lead_id);
+
+        return res.json({ ok: true });
     } catch (err) {
         return res.json({ ok: false, error: err.message });
     }
