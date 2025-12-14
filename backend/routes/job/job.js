@@ -169,98 +169,137 @@ router.post("/login", async (req, res) => {
 /* ============================================================
    3️⃣ CALLING PANEL – LOAD NEXT LEAD
 ============================================================ */
-
 router.post("/next-lead", async (req, res) => {
-  const { employee_id } = req.body;
+  try {
+    const { employee_id } = req.body;
 
-  const { data } = await supabase
-    .from("scraped_leads")
-    .select("*")
-    .eq("assigned_to", employee_id)
-    .eq("status", "assigned")
-    .order("created_at", { ascending: true })
-    .limit(1);
+    const { data, error } = await supabase
+      .from("leads")
+      .select("*")
+      .eq("assigned_to", employee_id)
+      .neq("status", "completed")
+      .order("updated_at", { ascending: true })
+      .limit(1);
 
-  if (!data || data.length === 0) {
-    return res.json({ ok:false });
+    if (error || !data || data.length === 0)
+      return res.json({ ok: false });
+
+    return res.json({ ok: true, lead: data[0] });
+
+  } catch (e) {
+    return res.json({ ok: false, error: e.message });
   }
-
-  return res.json({ ok:true, lead:data[0] });
 });
 
 /* ============================================================
    4️⃣ CALLING SCRIPT ENGINE
 ============================================================ */
-
 router.post("/script", async (req, res) => {
-  const { category } = req.body;
+  try {
+    const { category } = req.body;
 
-  const { data, error } = await supabase
-    .from("calling_scripts")
-    .select("*")
-    .eq("category", category)
-    .maybeSingle();
+    const { data, error } = await supabase
+      .from("call_scripts")
+      .select("*")
+      .eq("category", category)
+      .maybeSingle();
 
-  if (error) return res.json({ ok:false, error });
+    if (error || !data) {
+      return res.json({
+        ok: true,
+        opening_script: "Hello sir/mam, this is from Cloudora…",
+        responses: [
+          { key: "interested", label: "Interested", reply: "Great! Let me explain…" },
+          { key: "not_interested", label: "Not Interested", reply: "Can I know the reason?" }
+        ]
+      });
+    }
 
-  return res.json({
-    ok:true,
-    opening_script: data?.opening_script || "No script found.",
-    responses: data?.responses || []
-  });
+    return res.json({
+      ok: true,
+      opening_script: data.opening_script,
+      responses: data.responses
+    });
+
+  } catch (e) {
+    return res.json({ ok: false, error: e.message });
+  }
 });
 
 /* ============================================================
    5️⃣ TIMELINE GET
 ============================================================ */
-
 router.post("/timeline", async (req, res) => {
-  const { lead_id } = req.body;
+  try {
+    const { lead_id } = req.body;
 
-  const { data, error } = await supabase
-    .from("lead_timeline")
-    .select("*")
-    .eq("lead_id", lead_id)
-    .order("time", { ascending: false });
+    const { data, error } = await supabase
+      .from("call_timeline")
+      .select("*")
+      .eq("lead_id", lead_id)
+      .order("time", { ascending: false });
 
-  if (error) return res.json({ ok:false, error });
-  return res.json({ ok:true, timeline:data });
+    if (error) return res.json({ ok: false });
+
+    return res.json({ ok: true, timeline: data });
+
+  } catch (e) {
+    return res.json({ ok: false, error: e.message });
+  }
 });
 
 /* ============================================================
    6️⃣ TIMELINE ADD
 ============================================================ */
-
 router.post("/timeline/add", async (req, res) => {
-  const { lead_id, event_text } = req.body;
+  try {
+    const { lead_id, event_text } = req.body;
 
-  const { error } = await supabase
-    .from("lead_timeline")
-    .insert({ lead_id, event_text });
+    const ins = await supabase.from("call_timeline").insert([
+      {
+        lead_id,
+        event_text,
+        time: new Date().toISOString()
+      }
+    ]);
 
-  return res.json({ ok: !error });
+    if (ins.error) return res.json({ ok: false });
+
+    return res.json({ ok: true });
+
+  } catch (e) {
+    return res.json({ ok: false, error: e.message });
+  }
 });
+
 
 /* ============================================================
    7️⃣ UPDATE LEAD STATUS (CALLING PANEL)
 ============================================================ */
 
 router.post("/update-lead", async (req, res) => {
-  const { id, status, notes, follow_date, follow_time, recording_url } = req.body;
+  try {
+    const { id, status, notes, follow_date, follow_time } = req.body;
 
-  const { error } = await supabase
-    .from("scraped_leads")
-    .update({
-      status,
-      notes,
-      follow_date,
-      follow_time,
-      recording_url,
-      updated_at: new Date().toISOString()
-    })
-    .eq("id", id);
+    const upd = await supabase
+      .from("leads")
+      .update({
+        status,
+        notes,
+        follow_date,
+        follow_time,
+        completed_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      })
+      .eq("id", id);
 
-  return res.json({ ok: !error });
+    if (upd.error) return res.json({ ok: false });
+
+    return res.json({ ok: true });
+
+  } catch (e) {
+    return res.json({ ok: false, error: e.message });
+  }
 });
 
 /* ============================================================
@@ -277,3 +316,4 @@ router.post("/upload-recording", async (req, res) => {
 ============================================================ */
 
 export default router;
+
