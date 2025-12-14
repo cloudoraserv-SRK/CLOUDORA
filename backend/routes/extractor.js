@@ -3,7 +3,7 @@ console.log("EXTRACTOR ROUTES LOADED");
 import express from "express";
 import { supabase } from "../api/supabase.js";
 import { extract as serpExtract } from "../services/serp_worker.js";
-import { sendSalesEmail } from "../utils/mailer.js";   // NEW
+import { sendSalesEmail } from "../utils/mailer.js";
 
 const router = express.Router();
 
