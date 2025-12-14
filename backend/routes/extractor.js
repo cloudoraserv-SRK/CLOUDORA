@@ -210,5 +210,60 @@ router.post("/auto-deassign", async (req, res) => {
         return res.json({ ok: false, error: err.message });
     }
 });
+// -------------------------------------------------------
+// 6) FETCH NEXT LEAD FOR EMPLOYEE (AUTO SKIP IF NO PHONE)
+// -------------------------------------------------------
+router.get("/next-lead", async (req, res) => {
+    const empID = req.query.employee_id;
+
+    try {
+        // Fetch all assigned leads (not completed)
+        const { data, error } = await supabase
+            .from("scraped_leads_assignments")
+            .select("*, scraped_leads(*)")
+            .eq("employee_id", empID)
+            .order("created_at", { ascending: true });
+
+        if (error) return res.json({ ok: false, error });
+
+        if (!data || data.length === 0)
+            return res.json({ ok: false, message: "NO_LEADS" });
+
+        // Find first valid lead (skip empty phone)
+        let validLead = null;
+
+        for (let row of data) {
+            const lead = row.scraped_leads;
+
+            if (!lead.phone || lead.phone.trim() === "") {
+                // Auto skip: mark as skipped
+                await supabase
+                    .from("scraped_leads_assignments")
+                    .update({ status: "skipped" })
+                    .eq("id", row.id);
+
+                continue;
+            }
+
+            validLead = lead;
+            break;
+        }
+
+        if (!validLead)
+            return res.json({
+                ok: false,
+                message: "NO_VALID_LEADS"
+            });
+
+        return res.json({
+            ok: true,
+            lead: validLead
+        });
+
+    } catch (err) {
+        console.log("NEXT LEAD ERROR:", err);
+        return res.json({ ok: false, error: err.message });
+    }
+});
 
 export default router;
