@@ -211,40 +211,39 @@ router.post("/auto-deassign", async (req, res) => {
     }
 });
 // -------------------------------------------------------
-// NEXT LEAD (Only Assigned + Not Completed)
+// 6) FETCH NEXT LEAD FOR EMPLOYEE
 // -------------------------------------------------------
 router.post("/next-lead", async (req, res) => {
     const { employee_id } = req.body;
 
-    const { data, error } = await supabase
-        .from("scraped_leads_assignments")
-        .select("id, status, scraped_leads(*)")
-        .eq("employee_id", employee_id)
-        .eq("status", "pending")
-        .order("created_at", { ascending: true })
-        .limit(1);
+    try {
+        const { data, error } = await supabase
+            .from("scraped_leads_assignments")
+            .select("id, status, scraped_leads(*)")
+            .eq("employee_id", employee_id)
+            .eq("status", "pending")
+            .order("created_at", { ascending: true })
+            .limit(1);
 
-    if (error) return res.json({ ok: false, error });
+        if (error) return res.json({ ok: false, error });
 
-    if (!data || data.length === 0) {
-        return res.json({ ok: false, message: "NO_LEADS" });
-    }
+        if (!data || data.length === 0)
+            return res.json({ ok: false, message: "NO_LEADS" });
 
-    const row = data[0];
+        const row = data[0];
 
-    return res.json({
-        ok: true,
-        assignment_id: row.id,     // 🔥 MUST RETURN THIS
-        lead: row.scraped_leads
-    });
-});
-
+        return res.json({
+            ok: true,
+            assignment_id: row.id,
+            lead: row.scraped_leads
+        });
 
     } catch (err) {
         console.log("NEXT LEAD ERROR:", err);
         return res.json({ ok: false, error: err.message });
     }
 });
+
 
 
 // -------------------------------------------------------
