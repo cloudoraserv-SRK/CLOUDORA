@@ -257,15 +257,35 @@ router.post("/next-lead", async (req, res) => {
 });
 
 
+// -------------------------------------------------------
+// MARK LEAD ASSIGNMENT COMPLETED
+// -------------------------------------------------------
 router.post("/complete-lead", async (req, res) => {
-    const { assignment_id } = req.body;
+    try {
+        const { assignment_id } = req.body;
 
-    await supabase
-        .from("scraped_leads_assignments")
-        .update({ status: "completed" })
-        .eq("id", assignment_id);
+        if (!assignment_id) {
+            return res.json({ ok: false, error: "Missing assignment_id" });
+        }
 
-    return res.json({ ok: true });
+        const { error } = await supabase
+            .from("scraped_leads_assignments")
+            .update({
+                status: "completed",
+                completed_at: new Date().toISOString()
+            })
+            .eq("id", assignment_id);
+
+        if (error) {
+            console.log("COMPLETE ERROR:", error);
+            return res.json({ ok: false, error: error.message });
+        }
+
+        return res.json({ ok: true });
+
+    } catch (err) {
+        return res.json({ ok: false, error: err.message });
+    }
 });
 
 
