@@ -1,7 +1,7 @@
 console.log("EXTRACTOR ROUTES LOADED");
 
 // -------------------------------------------------------
-// Cloudora Extractor Routes (FINAL STABLE)
+// Cloudora Extractor Routes (FINAL STABLE V2)
 // -------------------------------------------------------
 
 import express from "express";
@@ -11,7 +11,7 @@ import { extract as serpExtract } from "../services/serp_worker.js";
 const router = express.Router();
 
 // -------------------------------------------------------
-// 1) LIVE EXTRACTION
+// 1) LIVE EXTRACTION (Duplicate-safe version)
 // -------------------------------------------------------
 
 router.post("/live", async (req, res) => {
@@ -25,34 +25,62 @@ router.post("/live", async (req, res) => {
 
         for (let lead of leads) {
 
-            const { data: raw, error } = await supabase
-                .from("scraped_leads")
-                .insert({
-                    name: lead.name || null,
-                    phone: lead.phone || null,
-                    email: lead.email || null,
-                    address: lead.address || null,
-                    category,
-                    city,
-                    website: lead.website || null,
-                    source: "serpapi",
-                    assigned_to: null,
-                    status: "raw"
-                })
-                .select()
-                .single();
+            // --------------------------------------------
+            // Step 1: Check duplicate website FIRST
+            // --------------------------------------------
+            let rawId = null;
 
-            if (error) {
-                console.log("RAW INSERT ERROR:", error);
-                continue;
+            if (lead.website) {
+                const { data: exists } = await supabase
+                    .from("scraped_leads")
+                    .select("id")
+                    .eq("website", lead.website)
+                    .maybeSingle();
+
+                if (exists) {
+                    // Duplicate → no insert, but still assign this lead
+                    console.log("DUPLICATE FOUND → Skipping INSERT:", lead.website);
+                    rawId = exists.id;
+                }
             }
 
-            savedCount++;
+            // --------------------------------------------
+            // Step 2: If not duplicate → INSERT new lead
+            // --------------------------------------------
+            if (!rawId) {
+                const { data: raw, error } = await supabase
+                    .from("scraped_leads")
+                    .insert({
+                        name: lead.name || null,
+                        phone: lead.phone || null,
+                        email: lead.email || null,
+                        address: lead.address || null,
+                        category,
+                        city,
+                        website: lead.website || null,
+                        source: "serpapi",
+                        assigned_to: null,
+                        status: "raw"
+                    })
+                    .select()
+                    .single();
 
+                if (error) {
+                    console.log("RAW INSERT ERROR:", error);
+                    continue;
+                }
+
+                rawId = raw.id;
+                savedCount++;
+            }
+
+            // --------------------------------------------
+            // Step 3: ASSIGN lead to employee
+            // --------------------------------------------
             const { error: assignErr } = await supabase
                 .from("scraped_leads_assignments")
                 .insert({
-                    scraped_lead_id: raw.id,
+                    scraped_lead_id: rawId,
                     employee_id,
                     status: "assigned"
                 });
@@ -206,7 +234,7 @@ router.get("/raw", async (req, res) => {
 
 
 // -------------------------------------------------------
-// FINAL EXPORT (ONLY ONE)
+// FINAL EXPORT
 // -------------------------------------------------------
 
 export default router;
