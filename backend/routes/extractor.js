@@ -1,7 +1,7 @@
 console.log("EXTRACTOR ROUTES LOADED");
 
 // -------------------------------------------------------
-// Cloudora Extractor Routes (FINAL STABLE V3 - EMPLOYEE CONTROLLED)
+// Cloudora Extractor Routes (FINAL STABLE V4 FULL FILTER ENGINE)
 // -------------------------------------------------------
 
 import express from "express";
@@ -10,23 +10,20 @@ import { extract as serpExtract } from "../services/serp_worker.js";
 
 const router = express.Router();
 
-// -------------------------------------------------------
-// 1) LIVE EXTRACTION (Duplicate-safe + No Auto Assign)
-// -------------------------------------------------------
-
+/* -------------------------------------------------------
+   1) LIVE EXTRACTION (NO AUTO ASSIGN)
+-------------------------------------------------------- */
 router.post("/live", async (req, res) => {
     const { category, city } = req.body;
 
     try {
         const leads = await serpExtract(category, city);
-
         let savedCount = 0;
 
         for (let lead of leads) {
-
             let rawId = null;
 
-            // STEP 1 — CHECK DUPLICATE BY WEBSITE
+            // Duplicate check by website
             if (lead.website) {
                 const { data: exists } = await supabase
                     .from("scraped_leads")
@@ -35,12 +32,12 @@ router.post("/live", async (req, res) => {
                     .maybeSingle();
 
                 if (exists) {
-                    console.log("DUPLICATE FOUND → SKIPPING INSERT:", lead.website);
+                    console.log("DUPLICATE FOUND:", lead.website);
                     rawId = exists.id;
                 }
             }
 
-            // STEP 2 — INSERT IF NEW LEAD
+            // Insert new lead
             if (!rawId) {
                 const { data: raw, error } = await supabase
                     .from("scraped_leads")
@@ -54,29 +51,23 @@ router.post("/live", async (req, res) => {
                         website: lead.website || null,
                         source: "serpapi",
                         assigned_to: null,
-                        status: "raw"
+                        status: "raw",
+                        country: lead.country || null
                     })
                     .select()
                     .single();
 
                 if (error) {
-                    console.log("RAW INSERT ERROR:", error);
+                    console.log("INSERT ERROR:", error);
                     continue;
                 }
 
                 rawId = raw.id;
                 savedCount++;
             }
-
-            // STEP 3 — NO AUTO ASSIGN
-            // Leads will only assign when employee selects manually
         }
 
-        return res.json({
-            ok: true,
-            saved: savedCount,
-            assigned: 0 // No auto-assign
-        });
+        return res.json({ ok: true, saved: savedCount });
 
     } catch (err) {
         console.log("LIVE ERROR:", err);
@@ -84,83 +75,66 @@ router.post("/live", async (req, res) => {
     }
 });
 
-
-// -------------------------------------------------------
-// 2) EXISTING DATABASE (RAW → ASSIGN USING FILTERS)
-// -------------------------------------------------------
-
-router.post("/from-db", async (req, res) => {
-    const { category, city, employee_id } = req.body;
+/* -------------------------------------------------------
+   2) RAW LEADS WITH FULL FILTERING (UI FILTER ENGINE)
+-------------------------------------------------------- */
+router.get("/raw", async (req, res) => {
+    const { search, category, city, country, freshness, assigned, employee_id } = req.query;
 
     try {
-        const { data: leads, error } = await supabase
+        let query = supabase
             .from("scraped_leads")
-            .select("*")
-            .eq("city", city)
-            .eq("category", category)
-            .is("assigned_to", null)
-            .limit(50);
+            .select("*");
 
-        if (error) return res.json({ ok: false, error });
+        // Assigned filter
+        if (assigned === "unassigned")
+            query = query.is("assigned_to", null);
 
-        let assignedCount = 0;
+        if (assigned === "me")
+            query = query.eq("assigned_to", employee_id);
 
-        for (let lead of leads) {
-            await supabase
-                .from("scraped_leads")
-                .update({ assigned_to: employee_id, status: "assigned" })
-                .eq("id", lead.id)
-                .is("assigned_to", null); // prevents double assignment
+        // Category
+        if (category && category.trim() !== "")
+            query = query.ilike("category", `%${category}%`);
 
-            await supabase
-                .from("scraped_leads_assignments")
-                .insert({
-                    scraped_lead_id: lead.id,
-                    employee_id,
-                    status: "assigned"
-                });
+        // City
+        if (city && city.trim() !== "")
+            query = query.ilike("city", `%${city}%`);
 
-            assignedCount++;
+        // Country
+        if (country && country.trim() !== "")
+            query = query.ilike("country", `%${country}%`);
+
+        // Freshness (X days)
+        if (freshness && freshness !== "all") {
+            const days = Number(freshness);
+            const threshold = new Date(Date.now() - days * 86400000).toISOString();
+            query = query.gte("created_at", threshold);
         }
 
-        return res.json({ ok: true, assigned: assignedCount });
+        // Search (OR query)
+        if (search && search.trim() !== "") {
+            query = query.or(
+                `name.ilike.%${search}%,phone.ilike.%${search}%,email.ilike.%${search}%,` +
+                `address.ilike.%${search}%,website.ilike.%${search}%`
+            );
+        }
 
-    } catch (err) {
-        console.log("FROM DB ERROR:", err);
-        return res.json({ ok: false, error: err.message });
-    }
-});
-
-
-// -------------------------------------------------------
-// 3) FETCH MY ASSIGNED LEADS (Calling Panel)
-// -------------------------------------------------------
-
-router.get("/my-leads", async (req, res) => {
-    const empID = req.query.employee_id;
-
-    try {
-        const { data, error } = await supabase
-            .from("scraped_leads_assignments")
-            .select("*, scraped_leads(*)")
-            .eq("employee_id", empID)
-            .order("created_at", { ascending: false });
+        const { data, error } = await query.order("created_at", { ascending: false });
 
         if (error) return res.json({ ok: false, error });
 
         return res.json({ ok: true, leads: data });
 
     } catch (err) {
-        console.log("MY LEADS ERROR:", err);
+        console.log("FILTER RAW ERROR:", err);
         return res.json({ ok: false, error: err.message });
     }
 });
 
-
-// -------------------------------------------------------
-// 4) ASSIGN SELECTED LEADS TO EMPLOYEE (MANUAL SELECTION)
-// -------------------------------------------------------
-
+/* -------------------------------------------------------
+   3) ASSIGN SELECTED LEADS
+-------------------------------------------------------- */
 router.post("/assign-selected", async (req, res) => {
     const { lead_ids, employee_id } = req.body;
 
@@ -168,20 +142,16 @@ router.post("/assign-selected", async (req, res) => {
         let assignedCount = 0;
 
         for (let id of lead_ids) {
-
-            // Update raw lead
+            // assign only if free
             const { error: updErr } = await supabase
                 .from("scraped_leads")
                 .update({ assigned_to: employee_id, status: "assigned" })
                 .eq("id", id)
                 .is("assigned_to", null);
 
-            if (updErr) {
-                console.log("UPDATE ERROR:", updErr);
-                continue;
-            }
+            if (updErr) continue;
 
-            // Insert assignment
+            // insert assignment log
             const { error: assignErr } = await supabase
                 .from("scraped_leads_assignments")
                 .insert({
@@ -190,64 +160,55 @@ router.post("/assign-selected", async (req, res) => {
                     status: "assigned"
                 });
 
-            if (assignErr) {
-                console.log("ASSIGNMENT ERROR:", assignErr);
-                continue;
-            }
-
-            assignedCount++;
+            if (!assignErr) assignedCount++;
         }
 
         return res.json({ ok: true, assigned: assignedCount });
 
     } catch (err) {
-        console.log("ASSIGN SELECTED ERROR:", err);
+        console.log("ASSIGN ERROR:", err);
         return res.json({ ok: false, error: err.message });
     }
 });
 
-
-// -------------------------------------------------------
-// 5) RAW LEADS LIST (Employees choose leads here)
-// -------------------------------------------------------
-
-router.get("/raw", async (req, res) => {
-    const { category, city, search } = req.query;
+/* -------------------------------------------------------
+   4) MY LEADS (CALL PANEL)
+-------------------------------------------------------- */
+router.get("/my-leads", async (req, res) => {
+    const employee_id = req.query.employee_id;
 
     try {
-        let query = supabase
-            .from("scraped_leads")
-            .select("*")
-            .is("assigned_to", null);
-
-        if (category) query = query.eq("category", category);
-        if (city) query = query.eq("city", city);
-
-        if (search) {
-            query = query.or(`
-                name.ilike.%${search}%,
-                phone.ilike.%${search}%,
-                email.ilike.%${search}%,
-                address.ilike.%${search}%,
-                website.ilike.%${search}%
-            `);
-        }
-
-        const { data, error } = await query.limit(200);
+        const { data, error } = await supabase
+            .from("scraped_leads_assignments")
+            .select("*, scraped_leads(*)")
+            .eq("employee_id", employee_id)
+            .order("created_at", { ascending: false });
 
         if (error) return res.json({ ok: false, error });
 
         return res.json({ ok: true, leads: data });
 
     } catch (err) {
-        console.log("RAW ERROR:", err);
+        console.log("MY LEADS ERR:", err);
         return res.json({ ok: false, error: err.message });
     }
 });
 
+/* -------------------------------------------------------
+   5) AUTO DEASSIGN IF NO PROGRESS (48 HOURS)
+-------------------------------------------------------- */
+router.post("/auto-deassign", async (req, res) => {
+    try {
+        const threshold = new Date(Date.now() - 48 * 3600000).toISOString();
 
-// -------------------------------------------------------
-// FINAL EXPORT
-// -------------------------------------------------------
+        await supabase.rpc("auto_deassign_leads", { since_time: threshold });
+
+        return res.json({ ok: true });
+
+    } catch (err) {
+        console.log("AUTO DEASSIGN ERROR:", err);
+        return res.json({ ok: false, error: err.message });
+    }
+});
 
 export default router;
