@@ -25,7 +25,6 @@ router.post("/live", async (req, res) => {
 
         for (let lead of leads) {
 
-            // INSERT RAW LEAD
             const { data: raw, error } = await supabase
                 .from("scraped_leads")
                 .insert({
@@ -50,7 +49,6 @@ router.post("/live", async (req, res) => {
 
             savedCount++;
 
-            // INSERT ASSIGNMENT
             const { error: assignErr } = await supabase
                 .from("scraped_leads_assignments")
                 .insert({
@@ -59,11 +57,7 @@ router.post("/live", async (req, res) => {
                     status: "assigned"
                 });
 
-            if (assignErr) {
-                console.log("ASSIGNMENT ERROR:", assignErr);
-            } else {
-                assignedCount++;
-            }
+            if (!assignErr) assignedCount++;
         }
 
         return res.json({
@@ -78,53 +72,50 @@ router.post("/live", async (req, res) => {
     }
 });
 
-export default router;
-
-
 
 // -------------------------------------------------------
 // 2) EXISTING DATABASE (RAW → ASSIGN)
 // -------------------------------------------------------
 
 router.post("/from-db", async (req, res) => {
-  const { category, city, employee_id } = req.body;
+    const { category, city, employee_id } = req.body;
 
-  try {
-    const { data: leads, error } = await supabase
-      .from("scraped_leads")
-      .select("*")
-      .eq("city", city)
-      .eq("category", category)
-      .is("assigned_to", null)
-      .limit(50);
+    try {
+        const { data: leads, error } = await supabase
+            .from("scraped_leads")
+            .select("*")
+            .eq("city", city)
+            .eq("category", category)
+            .is("assigned_to", null)
+            .limit(50);
 
-    if (error) return res.json({ ok: false, error });
+        if (error) return res.json({ ok: false, error });
 
-    let assignedCount = 0;
+        let assignedCount = 0;
 
-    for (let lead of leads) {
-      await supabase
-        .from("scraped_leads")
-        .update({ assigned_to: employee_id, status: "assigned" })
-        .eq("id", lead.id);
+        for (let lead of leads) {
+            await supabase
+                .from("scraped_leads")
+                .update({ assigned_to: employee_id, status: "assigned" })
+                .eq("id", lead.id);
 
-      await supabase
-        .from("scraped_leads_assignments")
-        .insert({
-          scraped_lead_id: lead.id,
-          employee_id,
-          status: "assigned"
-        });
+            await supabase
+                .from("scraped_leads_assignments")
+                .insert({
+                    scraped_lead_id: lead.id,
+                    employee_id,
+                    status: "assigned"
+                });
 
-      assignedCount++;
+            assignedCount++;
+        }
+
+        return res.json({ ok: true, assigned: assignedCount });
+
+    } catch (err) {
+        console.log("FROM DB ERROR:", err);
+        return res.json({ ok: false, error: err.message });
     }
-
-    return res.json({ ok: true, assigned: assignedCount });
-
-  } catch (err) {
-    console.log("FROM DB ERROR:", err);
-    return res.json({ ok: false, error: err.message });
-  }
 });
 
 
@@ -133,23 +124,23 @@ router.post("/from-db", async (req, res) => {
 // -------------------------------------------------------
 
 router.get("/my-leads", async (req, res) => {
-  const empID = req.query.employee_id;
+    const empID = req.query.employee_id;
 
-  try {
-    const { data, error } = await supabase
-      .from("scraped_leads_assignments")
-      .select("*, scraped_leads(*)")
-      .eq("employee_id", empID)
-      .order("created_at", { ascending: false });
+    try {
+        const { data, error } = await supabase
+            .from("scraped_leads_assignments")
+            .select("*, scraped_leads(*)")
+            .eq("employee_id", empID)
+            .order("created_at", { ascending: false });
 
-    if (error) return res.json({ ok: false, error });
+        if (error) return res.json({ ok: false, error });
 
-    return res.json({ ok: true, leads: data });
+        return res.json({ ok: true, leads: data });
 
-  } catch (err) {
-    console.log("MY LEADS ERROR:", err);
-    return res.json({ ok: false, error: err.message });
-  }
+    } catch (err) {
+        console.log("MY LEADS ERROR:", err);
+        return res.json({ ok: false, error: err.message });
+    }
 });
 
 
@@ -158,30 +149,30 @@ router.get("/my-leads", async (req, res) => {
 // -------------------------------------------------------
 
 router.post("/assign-selected", async (req, res) => {
-  const { lead_ids, employee_id } = req.body;
+    const { lead_ids, employee_id } = req.body;
 
-  try {
-    for (let id of lead_ids) {
-      await supabase
-        .from("scraped_leads")
-        .update({ assigned_to: employee_id, status: "assigned" })
-        .eq("id", id);
+    try {
+        for (let id of lead_ids) {
+            await supabase
+                .from("scraped_leads")
+                .update({ assigned_to: employee_id, status: "assigned" })
+                .eq("id", id);
 
-      await supabase
-        .from("scraped_leads_assignments")
-        .insert({
-          scraped_lead_id: id,
-          employee_id,
-          status: "assigned"
-        });
+            await supabase
+                .from("scraped_leads_assignments")
+                .insert({
+                    scraped_lead_id: id,
+                    employee_id,
+                    status: "assigned"
+                });
+        }
+
+        return res.json({ ok: true, assigned: lead_ids.length });
+
+    } catch (err) {
+        console.log("ASSIGN SELECTED ERROR:", err);
+        return res.json({ ok: false, error: err.message });
     }
-
-    return res.json({ ok: true, assigned: lead_ids.length });
-
-  } catch (err) {
-    console.log("ASSIGN SELECTED ERROR:", err);
-    return res.json({ ok: false, error: err.message });
-  }
 });
 
 
@@ -190,32 +181,32 @@ router.post("/assign-selected", async (req, res) => {
 // -------------------------------------------------------
 
 router.get("/raw", async (req, res) => {
-  const { category, city } = req.query;
+    const { category, city } = req.query;
 
-  try {
-    let query = supabase
-      .from("scraped_leads")
-      .select("*")
-      .is("assigned_to", null);
+    try {
+        let query = supabase
+            .from("scraped_leads")
+            .select("*")
+            .is("assigned_to", null);
 
-    if (category) query = query.eq("category", category);
-    if (city) query = query.eq("city", city);
+        if (category) query = query.eq("category", category);
+        if (city) query = query.eq("city", city);
 
-    const { data, error } = await query.limit(200);
+        const { data, error } = await query.limit(200);
 
-    if (error) return res.json({ ok: false, error });
+        if (error) return res.json({ ok: false, error });
 
-    return res.json({ ok: true, leads: data });
+        return res.json({ ok: true, leads: data });
 
-  } catch (err) {
-    console.log("RAW ERROR:", err);
-    return res.json({ ok: false, error: err.message });
-  }
+    } catch (err) {
+        console.log("RAW ERROR:", err);
+        return res.json({ ok: false, error: err.message });
+    }
 });
 
 
 // -------------------------------------------------------
-// EXPORT
+// FINAL EXPORT (ONLY ONE)
 // -------------------------------------------------------
 
 export default router;
