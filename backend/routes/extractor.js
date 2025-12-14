@@ -216,39 +216,29 @@ router.post("/auto-deassign", async (req, res) => {
 router.post("/next-lead", async (req, res) => {
     const { employee_id } = req.body;
 
-    try {
-        // Get the next "assigned" lead only (not completed)
-        const { data, error } = await supabase
-            .from("scraped_leads_assignments")
-            .select("*, scraped_leads(*)")
-            .eq("employee_id", employee_id)
-            .eq("status", "assigned")  // 🔥 Only pending leads
-            .order("created_at", { ascending: true })
-            .limit(1);
+    const { data, error } = await supabase
+        .from("scraped_leads_assignments")
+        .select("id, status, scraped_leads(*)")
+        .eq("employee_id", employee_id)
+        .eq("status", "pending")
+        .order("created_at", { ascending: true })
+        .limit(1);
 
-        if (error) return res.json({ ok: false, error });
+    if (error) return res.json({ ok: false, error });
 
-        if (!data || data.length === 0)
-            return res.json({ ok: false, message: "NO_LEADS" });
+    if (!data || data.length === 0) {
+        return res.json({ ok: false, message: "NO_LEADS" });
+    }
 
-        const row = data[0];
-        const lead = row.scraped_leads;
+    const row = data[0];
 
-        // Auto-skip leads with no phone
-        if (!lead.phone || lead.phone.trim() === "") {
-            await supabase
-                .from("scraped_leads_assignments")
-                .update({ status: "skipped" })
-                .eq("id", row.id);
+    return res.json({
+        ok: true,
+        assignment_id: row.id,     // 🔥 MUST RETURN THIS
+        lead: row.scraped_leads
+    });
+});
 
-            return res.json({ ok: false, message: "AUTO_SKIPPED" });
-        }
-
-        return res.json({
-            ok: true,
-            assignment_id: row.id,   // 🔥 IMPORTANT FOR MARKING COMPLETED
-            lead
-        });
 
     } catch (err) {
         console.log("NEXT LEAD ERROR:", err);
