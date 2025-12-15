@@ -194,37 +194,40 @@ router.post("/next-lead", async (req, res) => {
 /* ============================================================
    4️⃣ CALLING SCRIPT ENGINE
 ============================================================ */
+/* ============================================================
+   4️⃣ CALLING SCRIPT ENGINE
+============================================================ */
 router.post("/script", async (req, res) => {
+  try {
     let category = (req.body.category || "").toLowerCase().trim();
     category = category.replace(/[^a-z0-9]+/g, "_");
 
     const { data, error } = await supabase
-        .from("calling_scripts")
-        .select("*")
-        .eq("category", category)
-        .maybeSingle();
+      .from("calling_scripts")
+      .select("*")
+      .eq("category", category)
+      .maybeSingle();
 
     if (error) return res.json({ ok: false, error });
 
     if (!data) {
-        // return universal script fallback
-        const { data: universal } = await supabase
-            .from("calling_scripts")
-            .select("*")
-            .eq("category", "universal")
-            .maybeSingle();
+      // Fallback: universal
+      const { data: universal } = await supabase
+        .from("calling_scripts")
+        .select("*")
+        .eq("category", "universal")
+        .maybeSingle();
 
-        return res.json(universal || { opening_script: "No script available." });
+      return res.json(universal || { opening_script: "No script available." });
     }
 
     return res.json(data);
-});
-
 
   } catch (e) {
     return res.json({ ok: false, error: e.message });
   }
 });
+
 
 /* ============================================================
    5️⃣ TIMELINE GET
@@ -316,5 +319,6 @@ router.post("/upload-recording", async (req, res) => {
 ============================================================ */
 
 export default router;
+
 
 
