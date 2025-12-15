@@ -270,19 +270,18 @@ router.post("/forward-sales", async (req, res) => {
 
   // 3️⃣ PICK SALES EMPLOYEE (ARRAY SAFE)
   const { data: salesList, error } = await supabase
-    .from("employees")
-    .select("id, name, department, last_assigned_at")
-    .eq("department", salesDept)
-    .order("last_assigned_at", { ascending: true, nullsFirst: true })
-    .limit(1);
+  .from("employees")
+  .select("id, name, email")
+  .ilike("department", `%${salesDept}%`)
+  .order("last_assigned_at", { ascending: true, nullsFirst: true })
+  .limit(1);
 
-  console.log("SALES LIST:", salesList);
+if (error || !salesList || salesList.length === 0) {
+  return res.json({ ok: false, error: "No sales employee available" });
+}
 
-  if (error || !salesList || salesList.length === 0) {
-    return res.json({ ok: false, error: "No sales employee available" });
-  }
+const salesEmp = salesList[0];
 
-  const salesEmp = salesList[0];
 
   // 4️⃣ INSERT INTO SALES QUEUE
   await supabase.from("sales_queue").insert({
