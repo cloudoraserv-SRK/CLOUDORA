@@ -18,7 +18,6 @@ import adminRouter from "./routes/admin.js";
 import jobRouter from "./routes/job/job.js";
 import trainingRouter from "./routes/training.js";
 import extractorRoutes from "./routes/extractor.js";
-import forwardSalesRoute from "./routes/forward.js";
 
 // Logger
 const logger = console;
@@ -53,7 +52,6 @@ app.use(
 );
 
 app.options("*", cors());
-app.use("/api", forwardSalesRoute);
 // ---------------------------------------------
 // Body Parser
 // ---------------------------------------------
@@ -116,4 +114,5 @@ const PORT = process.env.PORT || 8787;
 app.listen(PORT, () => {
   console.log(`🔥 Cloudora Genie backend running CLEAN on ${PORT}`);
 });
+
 
