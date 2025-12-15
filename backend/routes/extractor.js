@@ -246,61 +246,45 @@ router.post("/timeline", async (req, res) => {
 router.post("/forward-sales", async (req, res) => {
   const { lead_id, source_department } = req.body;
 
-  // 1️⃣ MAP TELE → SALES (STRICT)
-  let salesDept = null;
+  const map = {
+    tele_lead_domestic: "tele_sales_domestic",
+    tele_lead_international: "tele_sales_international"
+  };
 
-  if (source_department === "tele_lead_domestic") {
-    salesDept = "tele_sales_domestic";
-  }
-
-  if (source_department === "tele_lead_international") {
-    salesDept = "tele_sales_international";
-  }
+  const salesDept = map[source_department];
 
   if (!salesDept) {
-    return res.json({
-      ok: false,
-      error: "Invalid source department",
-      received: source_department
-    });
+    return res.json({ ok: false, error: "Invalid source department" });
   }
 
-  // 2️⃣ DEBUG LOG (VERY IMPORTANT)
   console.log("FORWARD → SALES DEPT:", salesDept);
 
-  // 3️⃣ PICK SALES EMPLOYEE (ARRAY SAFE)
   const { data: salesList, error } = await supabase
-  .from("employees")
-  .select("id, name, email")
-  .eq("department", salesDept)
-  .order("last_assigned_at", { ascending: true, nullsFirst: true })
-  .limit(1);
+    .from("employees")
+    .select("id, department")
+    .eq("department", salesDept)
+    .order("last_assigned_at", { ascending: true })
+    .limit(1);
 
-if (error || !salesList || salesList.length === 0) {
-  return res.json({ ok: false, error: "No sales employee available" });
-}
+  if (error || !salesList || salesList.length === 0) {
+    return res.json({ ok: false, error: "No sales employee available" });
+  }
 
-const salesEmp = salesList[0];
+  const salesEmp = salesList[0];
 
-
-  // 4️⃣ INSERT INTO SALES QUEUE
   await supabase.from("sales_queue").insert({
     lead_id,
     assigned_to: salesEmp.id,
     status: "pending"
   });
 
-  // 5️⃣ ROUND ROBIN UPDATE
   await supabase
     .from("employees")
     .update({ last_assigned_at: new Date().toISOString() })
     .eq("id", salesEmp.id);
 
-  return res.json({
-    ok: true,
-    assigned_to: salesEmp.id,
-    sales_department: salesDept
-  });
+  return res.json({ ok: true, assigned_to: salesEmp.id });
 });
+
 
 export default router;
