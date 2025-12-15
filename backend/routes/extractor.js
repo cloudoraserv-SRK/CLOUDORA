@@ -188,14 +188,11 @@ router.post("/update-lead", async (req, res) => {
     try {
         const { error } = await supabase
             .from("scraped_leads")
-            .update({
-                status,
-                notes,
-                follow_date,
-                follow_time,
-                last_updated_at: new Date().toISOString()
-            })
-            .eq("id", id);
+  .update({
+    status,
+    notes
+  })
+  .eq("id", id);
 
         return error ? res.json({ ok: false, error }) : res.json({ ok: true });
     } catch (err) {
