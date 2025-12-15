@@ -247,48 +247,52 @@ router.post("/timeline", async (req, res) => {
    9) FORWARD TO SALES TEAM
 -------------------------------------------------------- */
 router.post("/forward-sales", async (req, res) => {
-  const { lead_id, forwarded_by } = req.body;
+  const { lead_id, forwarded_by, source_department, follow_date, follow_time } = req.body;
 
-  try {
-    // 1️⃣ Mark lead as interested
-    await supabase
-      .from("scraped_leads")
-      .update({ status: "interested" })
-      .eq("id", lead_id);
+  // 🔥 MAP TELE → SALES
+  let salesDept = null;
 
-    // 2️⃣ Pick SALES employee (auto assign – round robin lite)
-    const { data: salesEmp } = await supabase
-      .from("employees")
-      .select("id")
-      .like("department", "sales%")
-      .order("last_assigned_at", { ascending: true })
-      .limit(1)
-      .single();
-
-    if (!salesEmp) {
-      return res.json({ ok: false, error: "No sales employee available" });
-    }
-
-    // 3️⃣ Insert into sales_queue
-    await supabase.from("sales_queue").insert({
-      lead_id,
-      assigned_to: salesEmp.id,
-      status: "pending"
-    });
-
-    // 4️⃣ Update assignment timestamp
-    await supabase
-      .from("employees")
-      .update({ last_assigned_at: new Date().toISOString() })
-      .eq("id", salesEmp.id);
-
-    return res.json({ ok: true });
-
-  } catch (err) {
-    console.error("FORWARD SALES ERROR:", err);
-    return res.status(500).json({ ok: false, error: err.message });
+  if (source_department === "tele_lead_domestic") {
+    salesDept = "tele_sales_domestic";
   }
-});
 
+  if (source_department === "tele_lead_international") {
+    salesDept = "tele_sales_international";
+  }
+
+  if (!salesDept) {
+    return res.json({ ok: false, error: "Invalid source department" });
+  }
+
+  // 1️⃣ Pick SALES employee (AUTO ASSIGN)
+  const { data: salesEmp } = await supabase
+    .from("employees")
+    .select("id, name, email")
+    .eq("department", salesDept)
+    .order("last_assigned_at", { ascending: true })
+    .limit(1)
+    .single();
+
+  if (!salesEmp) {
+    return res.json({ ok: false, error: "No sales employee available" });
+  }
+
+  // 2️⃣ Insert into sales_queue
+  await supabase.from("sales_queue").insert({
+    lead_id,
+    assigned_to: salesEmp.id,
+    follow_date,
+    follow_time,
+    status: "pending"
+  });
+
+  // 3️⃣ Update round-robin
+  await supabase
+    .from("employees")
+    .update({ last_assigned_at: new Date().toISOString() })
+    .eq("id", salesEmp.id);
+
+  return res.json({ ok: true });
+});
 
 export default router;
