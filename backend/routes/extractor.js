@@ -246,30 +246,28 @@ router.post("/timeline", async (req, res) => {
 router.post("/forward-sales", async (req, res) => {
   const { lead_id, forwarded_by, source_department, follow_date, follow_time } = req.body;
 
-  // 🔥 MAP TELE → SALES
   let salesDept = null;
 
-if (source_department === "tele_lead_domestic") {
-  salesDept = "tele_sales_domestic";
-}
+  if (source_department === "tele_lead_domestic") {
+    salesDept = "tele_sales_domestic";
+  }
 
-if (source_department === "tele_lead_international") {
-  salesDept = "tele_sales_international";
-}
+  if (source_department === "tele_lead_international") {
+    salesDept = "tele_sales_international";
+  }
 
-if (!salesDept) {
-  return res.json({
-    ok: false,
-    error: "Invalid source department",
-    received: source_department
-  });
-}
+  if (!salesDept) {
+    return res.json({
+      ok: false,
+      error: "Invalid source department",
+      received: source_department
+    });
+  }
 
-  // 1️⃣ Pick SALES employee (AUTO ASSIGN)
   const { data: salesEmp } = await supabase
     .from("employees")
     .select("id, name, email")
-    .ilike("department", salesDept)
+    .eq("department", salesDept)
     .order("last_assigned_at", { ascending: true })
     .limit(1)
     .single();
@@ -278,7 +276,6 @@ if (!salesDept) {
     return res.json({ ok: false, error: "No sales employee available" });
   }
 
-  // 2️⃣ Insert into sales_queue
   await supabase.from("sales_queue").insert({
     lead_id,
     assigned_to: salesEmp.id,
@@ -287,7 +284,6 @@ if (!salesDept) {
     status: "pending"
   });
 
-  // 3️⃣ Update round-robin
   await supabase
     .from("employees")
     .update({ last_assigned_at: new Date().toISOString() })
