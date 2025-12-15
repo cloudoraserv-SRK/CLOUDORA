@@ -272,7 +272,7 @@ router.post("/forward-sales", async (req, res) => {
   const { data: salesList, error } = await supabase
   .from("employees")
   .select("id, name, email")
-  .ilike("department", `%${salesDept}%`)
+  .eq("department", salesDept)
   .order("last_assigned_at", { ascending: true, nullsFirst: true })
   .limit(1);
 
