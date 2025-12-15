@@ -1,78 +1,56 @@
 import express from "express";
 import { supabase } from "../api/supabase.js";
-import { sendMail } from "../utils/mailer.js";
 
 const router = express.Router();
 
 router.post("/forward-sales", async (req, res) => {
-  const { lead_id, forwarded_by } = req.body;
+  const { lead_id, forwarded_by, source_department } = req.body;
 
   try {
-    // 1️⃣ Fetch lead
-    const { data: lead, error: leadErr } = await supabase
-      .from("scraped_leads")
-      .select("*")
-      .eq("id", lead_id)
-      .single();
+    // 🔁 decide sales department
+    let salesDept = null;
 
-    if (leadErr || !lead) {
-      return res.json({ ok: false, error: "Lead not found" });
+    if (source_department === "tele_lead_domestic") {
+      salesDept = "tele_sales_domestic";
+    } else if (source_department === "tele_lead_international") {
+      salesDept = "tele_sales_international";
+    } else {
+      return res.json({ ok: false, error: "Invalid source department" });
     }
 
-    // 2️⃣ Mark lead as interested
-    await supabase
-      .from("scraped_leads")
-      .update({ status: "interested" })
-      .eq("id", lead_id);
-
-    // 3️⃣ Pick SALES employee (AUTO ASSIGN)
-    const { data: salesEmp, error: salesErr } = await supabase
+    // 🎯 pick sales employee
+    const { data: salesEmp } = await supabase
       .from("employees")
-      .select("id, name, email")
-      .like("department", "sales%")
-      .order("last_assigned_at", { ascending: true })
+      .select("id")
+      .eq("department", salesDept)
       .limit(1)
       .single();
 
-    if (salesErr || !salesEmp) {
+    if (!salesEmp) {
       return res.json({ ok: false, error: "No sales employee available" });
     }
 
-    // 4️⃣ Insert into sales_queue
-    await supabase.from("sales_queue").insert({
+    // 📥 insert into sales_queue
+    const { error } = await supabase.from("sales_queue").insert({
       lead_id,
       assigned_to: salesEmp.id,
+      source_department,
       status: "pending"
     });
 
-    // 5️⃣ Update sales employee load timestamp
+    if (error) throw error;
+
+    // 🔁 update lead status
     await supabase
-      .from("employees")
-      .update({ last_assigned_at: new Date().toISOString() })
-      .eq("id", salesEmp.id);
-
-    // 6️⃣ Email notification (optional but kept)
-    const html = `
-      <h3>New Interested Lead Assigned</h3>
-      <p><b>Name:</b> ${lead.name}</p>
-      <p><b>Phone:</b> ${lead.phone}</p>
-      <p><b>Category:</b> ${lead.category}</p>
-      <p><b>City:</b> ${lead.city}</p>
-      <p><b>Assigned To:</b> ${salesEmp.name}</p>
-      <p><b>Forwarded By:</b> ${forwarded_by}</p>
-    `;
-
-    await sendMail(
-      salesEmp.email || "support@cloudoraserv.cloud",
-      "New Sales Lead Assigned",
-      html
-    );
+      .from("scraped_leads")
+      .update({ status: "forwarded_to_sales" })
+      .eq("id", lead_id);
 
     return res.json({ ok: true });
 
   } catch (err) {
-    console.error("FORWARD SALES ERROR:", err);
-    return res.status(500).json({ ok: false, error: err.message });
+    console.error(err);
+    return res.json({ ok: false, error: err.message });
   }
 });
 
