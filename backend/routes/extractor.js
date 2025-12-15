@@ -285,6 +285,10 @@ router.post("/forward-sales", async (req, res) => {
 
   return res.json({ ok: true, assigned_to: salesEmp.id });
 });
+console.log(
+  "SALES QUERY CHECK:",
+  await supabase.from("employees").select("id,department")
+);
 
 
 export default router;
