@@ -249,11 +249,11 @@ router.post("/forward-sales", async (req, res) => {
   // 🔥 MAP TELE → SALES
   let salesDept = null;
 
-if (source_department?.includes("domestic")) {
+if (source_department === "tele_lead_domestic") {
   salesDept = "tele_sales_domestic";
 }
 
-if (source_department?.includes("international")) {
+if (source_department === "tele_lead_international") {
   salesDept = "tele_sales_international";
 }
 
