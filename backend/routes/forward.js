@@ -7,7 +7,7 @@ router.post("/forward-sales", async (req, res) => {
   const { lead_id, forwarded_by, source_department } = req.body;
 
   try {
-    // 🔁 decide sales department
+    // 1️⃣ MAP TELE → SALES
     let salesDept = null;
 
     if (source_department === "tele_lead_domestic") {
@@ -15,41 +15,59 @@ router.post("/forward-sales", async (req, res) => {
     } else if (source_department === "tele_lead_international") {
       salesDept = "tele_sales_international";
     } else {
-      return res.json({ ok: false, error: "Invalid source department" });
+      return res.json({
+        ok: false,
+        error: "Invalid source department",
+        received: source_department
+      });
     }
 
-    // 🎯 pick sales employee
-    const { data: salesEmp } = await supabase
+    // 2️⃣ PICK SALES EMPLOYEE (NULL SAFE)
+    const { data: salesList, error: salesErr } = await supabase
       .from("employees")
-      .select("id")
+      .select("id, name")
       .eq("department", salesDept)
-      .limit(1)
-      .single();
+      .order("last_assigned_at", { ascending: true, nullsFirst: true })
+      .limit(1);
 
-    if (!salesEmp) {
+    if (salesErr || !salesList || salesList.length === 0) {
       return res.json({ ok: false, error: "No sales employee available" });
     }
 
-    // 📥 insert into sales_queue
-    const { error } = await supabase.from("sales_queue").insert({
-      lead_id,
-      assigned_to: salesEmp.id,
-      source_department,
-      status: "pending"
-    });
+    const salesEmp = salesList[0];
 
-    if (error) throw error;
+    // 3️⃣ INSERT INTO SALES QUEUE
+    const { error: insertErr } = await supabase
+      .from("sales_queue")
+      .insert({
+        lead_id,
+        assigned_to: salesEmp.id,
+        source_department,
+        status: "pending"
+      });
 
-    // 🔁 update lead status
+    if (insertErr) throw insertErr;
+
+    // 4️⃣ UPDATE ROUND ROBIN
+    await supabase
+      .from("employees")
+      .update({ last_assigned_at: new Date().toISOString() })
+      .eq("id", salesEmp.id);
+
+    // 5️⃣ UPDATE LEAD STATUS
     await supabase
       .from("scraped_leads")
       .update({ status: "forwarded_to_sales" })
       .eq("id", lead_id);
 
-    return res.json({ ok: true });
+    return res.json({
+      ok: true,
+      assigned_to: salesEmp.id,
+      sales_department: salesDept
+    });
 
   } catch (err) {
-    console.error(err);
+    console.error("FORWARD SALES ERROR:", err);
     return res.json({ ok: false, error: err.message });
   }
 });
