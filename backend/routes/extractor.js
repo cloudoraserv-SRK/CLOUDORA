@@ -311,6 +311,38 @@ router.post("/sales/next-lead", async (req, res) => {
     lead: data[0].scraped_leads
   });
 });
+// -------------------------------------------------------
+// SALES: UPDATE STATUS
+// -------------------------------------------------------
+router.post("/sales/update-status", async (req, res) => {
+  const { queue_id, status, notes } = req.body;
+
+  await supabase
+    .from("sales_queue")
+    .update({
+      status,
+      notes,
+      updated_at: new Date().toISOString()
+    })
+    .eq("id", queue_id);
+
+  return res.json({ ok: true });
+});
+router.post("/sales/script", async (req, res) => {
+  let category = (req.body.category || "universal")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_");
+
+  const { data } = await supabase
+    .from("calling_scripts")
+    .select("*")
+    .eq("category", category)
+    .maybeSingle();
+
+  return res.json(
+    data || { opening_script: "Hello, calling from Cloudora Sales Team…" }
+  );
+});
 
 
 export default router;
