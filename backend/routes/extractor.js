@@ -269,7 +269,7 @@ if (!salesDept) {
   const { data: salesEmp } = await supabase
     .from("employees")
     .select("id, name, email")
-    .eq("department", salesDept)
+    .ilike("department", salesDept)
     .order("last_assigned_at", { ascending: true })
     .limit(1)
     .single();
