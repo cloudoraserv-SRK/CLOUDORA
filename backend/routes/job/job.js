@@ -195,31 +195,31 @@ router.post("/next-lead", async (req, res) => {
    4️⃣ CALLING SCRIPT ENGINE
 ============================================================ */
 router.post("/script", async (req, res) => {
-  try {
-    const { category } = req.body;
+    let category = (req.body.category || "").toLowerCase().trim();
+    category = category.replace(/[^a-z0-9]+/g, "_");
 
     const { data, error } = await supabase
-      .from("call_scripts")
-      .select("*")
-      .eq("category", category)
-      .maybeSingle();
+        .from("calling_scripts")
+        .select("*")
+        .eq("category", category)
+        .maybeSingle();
 
-    if (error || !data) {
-      return res.json({
-        ok: true,
-        opening_script: "Hello sir/mam, this is from Cloudora…",
-        responses: [
-          { key: "interested", label: "Interested", reply: "Great! Let me explain…" },
-          { key: "not_interested", label: "Not Interested", reply: "Can I know the reason?" }
-        ]
-      });
+    if (error) return res.json({ ok: false, error });
+
+    if (!data) {
+        // return universal script fallback
+        const { data: universal } = await supabase
+            .from("calling_scripts")
+            .select("*")
+            .eq("category", "universal")
+            .maybeSingle();
+
+        return res.json(universal || { opening_script: "No script available." });
     }
 
-    return res.json({
-      ok: true,
-      opening_script: data.opening_script,
-      responses: data.responses
-    });
+    return res.json(data);
+});
+
 
   } catch (e) {
     return res.json({ ok: false, error: e.message });
@@ -316,4 +316,5 @@ router.post("/upload-recording", async (req, res) => {
 ============================================================ */
 
 export default router;
+
 
