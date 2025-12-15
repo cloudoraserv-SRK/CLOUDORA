@@ -17,16 +17,18 @@ router.post("/login", async (req, res) => {
     }
 
     return res.json({
-      ok: true,
-      employee: {
-        employee_id: data.employee_id,
-        name: data.name,
-        department: data.department,
-        shift: data.shift
-      }
-    });
+  ok: true,
+  employee: {
+    id: emp.id,                 // 🔥 VERY IMPORTANT
+    employee_id: emp.employee_id,
+    name: emp.name,
+    department: emp.department
+  }
+});
+
 
   } catch (e) {
     return res.json({ ok: false, error: e.message });
   }
 });
+
