@@ -290,27 +290,66 @@ console.log(
 // -------------------------------------------------------
 // SALES: NEXT LEAD
 // -------------------------------------------------------
-router.post("/sales/next-lead", async (req, res) => {
-  const { employee_id } = req.body;
+router.post("/next-lead", async (req, res) => {
+  const { employee_id, department } = req.body;
 
-  const { data, error } = await supabase
-    .from("sales_queue")
+  // 1️⃣ First try assigned leads
+  const { data: assigned } = await supabase
+    .from("scraped_leads_assignments")
     .select("id, status, scraped_leads(*)")
-    .eq("assigned_to", employee_id)
+    .eq("employee_id", employee_id)
     .eq("status", "pending")
     .order("created_at", { ascending: true })
     .limit(1);
 
-  if (error || !data || data.length === 0) {
+  if (assigned && assigned.length > 0) {
+    return res.json({
+      ok: true,
+      assignment_id: assigned[0].id,
+      lead: assigned[0].scraped_leads,
+      mode: "assigned"
+    });
+  }
+
+  // 2️⃣ FALLBACK → raw scraped leads (A-layer)
+  let query = supabase
+    .from("scraped_leads")
+    .select("*")
+    .is("assigned_to", null)
+    .limit(1);
+
+  if (department?.includes("domestic")) {
+    query = query.eq("country", "India");
+  } else {
+    query = query.neq("country", "India");
+  }
+
+  const { data: raw } = await query;
+
+  if (!raw || raw.length === 0) {
     return res.json({ ok: false, message: "NO_LEADS" });
   }
 
+  // 3️⃣ Auto-assign silently (hybrid magic)
+  await supabase.from("scraped_leads_assignments").insert({
+    scraped_lead_id: raw[0].id,
+    employee_id,
+    status: "pending"
+  });
+
+  await supabase
+    .from("scraped_leads")
+    .update({ assigned_to: employee_id, status: "pending" })
+    .eq("id", raw[0].id);
+
   return res.json({
     ok: true,
-    queue_id: data[0].id,
-    lead: data[0].scraped_leads
+    assignment_id: null,
+    lead: raw[0],
+    mode: "fallback"
   });
 });
+
 // -------------------------------------------------------
 // SALES: UPDATE STATUS
 // -------------------------------------------------------
