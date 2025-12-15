@@ -252,17 +252,21 @@ router.post("/forward-sales", async (req, res) => {
   // 🔥 MAP TELE → SALES
   let salesDept = null;
 
-  if (source_department === "tele_lead_domestic") {
-    salesDept = "tele_sales_domestic";
-  }
+if (source_department?.includes("domestic")) {
+  salesDept = "tele_sales_domestic";
+}
 
-  if (source_department === "tele_lead_international") {
-    salesDept = "tele_sales_international";
-  }
+if (source_department?.includes("international")) {
+  salesDept = "tele_sales_international";
+}
 
-  if (!salesDept) {
-    return res.json({ ok: false, error: "Invalid source department" });
-  }
+if (!salesDept) {
+  return res.json({
+    ok: false,
+    error: "Invalid source department",
+    received: source_department
+  });
+}
 
   // 1️⃣ Pick SALES employee (AUTO ASSIGN)
   const { data: salesEmp } = await supabase
