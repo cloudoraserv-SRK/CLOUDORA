@@ -247,27 +247,48 @@ router.post("/timeline", async (req, res) => {
    9) FORWARD TO SALES TEAM
 -------------------------------------------------------- */
 router.post("/forward-sales", async (req, res) => {
-    const { lead_id, forwarded_by } = req.body;
+  const { lead_id, forwarded_by } = req.body;
 
-    try {
-        // Save in sales_leads table
-        const { error } = await supabase
-            .from("sales_leads")
-            .insert({
-                lead_id,
-                forwarded_by,
-                forwarded_at: new Date().toISOString()
-            });
+  try {
+    // 1️⃣ Mark lead as interested
+    await supabase
+      .from("scraped_leads")
+      .update({ status: "interested" })
+      .eq("id", lead_id);
 
-        if (error) return res.json({ ok: false, error });
+    // 2️⃣ Pick SALES employee (auto assign – round robin lite)
+    const { data: salesEmp } = await supabase
+      .from("employees")
+      .select("id")
+      .like("department", "sales%")
+      .order("last_assigned_at", { ascending: true })
+      .limit(1)
+      .single();
 
-        // Send email to sales + alert
-        await sendSalesEmail(lead_id);
-
-        return res.json({ ok: true });
-    } catch (err) {
-        return res.json({ ok: false, error: err.message });
+    if (!salesEmp) {
+      return res.json({ ok: false, error: "No sales employee available" });
     }
+
+    // 3️⃣ Insert into sales_queue
+    await supabase.from("sales_queue").insert({
+      lead_id,
+      assigned_to: salesEmp.id,
+      status: "pending"
+    });
+
+    // 4️⃣ Update assignment timestamp
+    await supabase
+      .from("employees")
+      .update({ last_assigned_at: new Date().toISOString() })
+      .eq("id", salesEmp.id);
+
+    return res.json({ ok: true });
+
+  } catch (err) {
+    console.error("FORWARD SALES ERROR:", err);
+    return res.status(500).json({ ok: false, error: err.message });
+  }
 });
+
 
 export default router;
