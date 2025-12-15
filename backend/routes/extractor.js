@@ -287,5 +287,30 @@ console.log(
   await supabase.from("employees").select("id,department")
 );
 
+// -------------------------------------------------------
+// SALES: NEXT LEAD
+// -------------------------------------------------------
+router.post("/sales/next-lead", async (req, res) => {
+  const { employee_id } = req.body;
+
+  const { data, error } = await supabase
+    .from("sales_queue")
+    .select("id, status, scraped_leads(*)")
+    .eq("assigned_to", employee_id)
+    .eq("status", "pending")
+    .order("created_at", { ascending: true })
+    .limit(1);
+
+  if (error || !data || data.length === 0) {
+    return res.json({ ok: false, message: "NO_LEADS" });
+  }
+
+  return res.json({
+    ok: true,
+    queue_id: data[0].id,
+    lead: data[0].scraped_leads
+  });
+});
+
 
 export default router;
