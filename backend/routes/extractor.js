@@ -246,24 +246,21 @@ router.post("/timeline", async (req, res) => {
 router.post("/forward-sales", async (req, res) => {
   const { lead_id, source_department } = req.body;
 
-  const map = {
-    tele_lead_domestic: "tele_sales_domestic",
-    tele_lead_international: "tele_sales_international"
-  };
+  let salesDept = null;
 
-  const salesDept = map[source_department];
-
-  if (!salesDept) {
+  if (source_department === "tele_lead_domestic") {
+    salesDept = "tele_sales_domestic";
+  } else if (source_department === "tele_lead_international") {
+    salesDept = "tele_sales_international";
+  } else {
     return res.json({ ok: false, error: "Invalid source department" });
   }
 
-  console.log("FORWARD → SALES DEPT:", salesDept);
-
+  // 🔥 NO ORDER, NO ILIKE, NO SINGLE
   const { data: salesList, error } = await supabase
     .from("employees")
-    .select("id, department")
+    .select("id, name, department")
     .eq("department", salesDept)
-    .order("last_assigned_at", { ascending: true })
     .limit(1);
 
   if (error || !salesList || salesList.length === 0) {
@@ -278,13 +275,13 @@ router.post("/forward-sales", async (req, res) => {
     status: "pending"
   });
 
-  await supabase
-    .from("employees")
-    .update({ last_assigned_at: new Date().toISOString() })
-    .eq("id", salesEmp.id);
-
-  return res.json({ ok: true, assigned_to: salesEmp.id });
+  return res.json({
+    ok: true,
+    assigned_to: salesEmp.id,
+    sales_department: salesDept
+  });
 });
+
 console.log(
   "SALES QUERY CHECK:",
   await supabase.from("employees").select("id,department")
