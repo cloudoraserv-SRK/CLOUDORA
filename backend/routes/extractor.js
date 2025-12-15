@@ -244,8 +244,9 @@ router.post("/timeline", async (req, res) => {
    9) FORWARD TO SALES TEAM
 -------------------------------------------------------- */
 router.post("/forward-sales", async (req, res) => {
-  const { lead_id, forwarded_by, source_department, follow_date, follow_time } = req.body;
+  const { lead_id, source_department } = req.body;
 
+  // 1️⃣ MAP TELE → SALES (STRICT)
   let salesDept = null;
 
   if (source_department === "tele_lead_domestic") {
@@ -264,32 +265,43 @@ router.post("/forward-sales", async (req, res) => {
     });
   }
 
-  const { data: salesEmp } = await supabase
-    .from("employees")
-    .select("id, name, email")
-    .ilike("department", `%${salesDept}%`)
-    .order("last_assigned_at", { ascending: true })
-    .limit(1)
-    .single();
+  // 2️⃣ DEBUG LOG (VERY IMPORTANT)
+  console.log("FORWARD → SALES DEPT:", salesDept);
 
-  if (!salesEmp) {
+  // 3️⃣ PICK SALES EMPLOYEE (ARRAY SAFE)
+  const { data: salesList, error } = await supabase
+    .from("employees")
+    .select("id, name, department, last_assigned_at")
+    .eq("department", salesDept)
+    .order("last_assigned_at", { ascending: true, nullsFirst: true })
+    .limit(1);
+
+  console.log("SALES LIST:", salesList);
+
+  if (error || !salesList || salesList.length === 0) {
     return res.json({ ok: false, error: "No sales employee available" });
   }
 
+  const salesEmp = salesList[0];
+
+  // 4️⃣ INSERT INTO SALES QUEUE
   await supabase.from("sales_queue").insert({
     lead_id,
     assigned_to: salesEmp.id,
-    follow_date,
-    follow_time,
     status: "pending"
   });
 
+  // 5️⃣ ROUND ROBIN UPDATE
   await supabase
     .from("employees")
     .update({ last_assigned_at: new Date().toISOString() })
     .eq("id", salesEmp.id);
 
-  return res.json({ ok: true });
+  return res.json({
+    ok: true,
+    assigned_to: salesEmp.id,
+    sales_department: salesDept
+  });
 });
 
 export default router;
