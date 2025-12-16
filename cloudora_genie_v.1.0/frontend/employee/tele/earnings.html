@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Earnings & XP</title>
+
+<link rel="stylesheet" href="./earnings.css">
+<link rel="stylesheet" href="../../style.css">
+</head>
+
+<body>
+
+<header class="e-header">
+    <button class="back-btn" onclick="goBack()">⬅ Back</button>
+    <div class="e-title">💰 Earnings & XP Dashboard</div>
+</header>
+
+<main class="e-container">
+
+    <!-- LEVEL + XP CARD -->
+    <section class="level-card">
+        <div class="level-left">
+            <h2>Level <span id="empLevel">1</span></h2>
+            <p>XP: <span id="empXP">0</span> / <span id="xpTarget">100</span></p>
+            <div class="xp-bar"><div id="xpFill"></div></div>
+        </div>
+        <div class="level-right">
+            <img src="../assets/level-badge.png" class="level-badge">
+        </div>
+    </section>
+
+
+    <!-- BHIX WALLET -->
+    <section class="wallet-card">
+        <h3>BHIX Wallet</h3>
+        <p class="wallet-amount"><span id="bhixAmount">0</span> BHIX</p>
+        <div class="wallet-actions">
+            <button onclick="openClaim()">Claim</button>
+            <button onclick="openHistory()">History</button>
+        </div>
+    </section>
+
+
+    <!-- DAILY + MONTHLY EARNINGS -->
+    <section class="earning-stats">
+        <div class="stat-box">
+            <p>Today's Earnings</p>
+            <h2 id="todayEarn">₹0</h2>
+        </div>
+
+        <div class="stat-box">
+            <p>This Month</p>
+            <h2 id="monthEarn">₹0</h2>
+        </div>
+
+        <div class="stat-box">
+            <p>Total Earnings</p>
+            <h2 id="totalEarn">₹0</h2>
+        </div>
+    </section>
+
+
+    <!-- PERFORMANCE SUMMARY -->
+    <section class="perf-card">
+        <h3>Performance Summary</h3>
+
+        <div class="perf-row">
+            <span>Qualified Leads</span>
+            <span id="qualifiedCount">0</span>
+        </div>
+
+        <div class="perf-row">
+            <span>Disqualified Leads</span>
+            <span id="disqualifiedCount">0</span>
+        </div>
+
+        <div class="perf-row">
+            <span>Follow-ups Completed</span>
+            <span id="followCount">0</span>
+        </div>
+
+        <div class="perf-row">
+            <span>Streak Days</span>
+            <span id="streakCount">0</span>
+        </div>
+    </section>
+
+</main>
+
+<script src="./earnings.js"></script>
+<script src="../../api/supabase.min.js"></script>
+<script src="../../global.js"></script>
+
+</body>
+</html>

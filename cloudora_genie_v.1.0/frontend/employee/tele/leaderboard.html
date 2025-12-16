@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leaderboard</title>
+
+<link rel="stylesheet" href="./leaderboard.css">
+<link rel="stylesheet" href="../../style.css">
+</head>
+
+<body>
+
+<header class="lb-header">
+    <button class="back-btn" onclick="goBack()">⬅ Back</button>
+    <div class="lb-title">🏆 Leaderboard</div>
+</header>
+
+<main class="lb-container">
+
+    <!-- FILTERS -->
+    <section class="lb-filters">
+        <select id="rangeFilter" onchange="loadLeaderboard()">
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+            <option value="all">All Time</option>
+        </select>
+
+        <select id="typeFilter" onchange="loadLeaderboard()">
+            <option value="xp">XP Ranking</option>
+            <option value="earnings">Earnings Ranking</option>
+        </select>
+
+        <select id="regionFilter" onchange="loadLeaderboard()">
+            <option value="global">Global</option>
+            <option value="country">My Country</option>
+            <option value="department">My Department</option>
+        </select>
+    </section>
+
+    <!-- YOUR RANK CARD -->
+    <section class="my-rank-card">
+        <h3>Your Position</h3>
+        <div id="myRankBox">Loading...</div>
+    </section>
+
+    <!-- LEADERBOARD LIST -->
+    <section class="ranking-list" id="rankingList"></section>
+
+</main>
+
+<script src="./leaderboard.js"></script>
+<script src="../../api/supabase.min.js"></script>
+<script src="../../global.js"></script>
+
+</body>
+</html>

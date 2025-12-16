@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloudora Employee Dashboard</title>
+
+<link rel="stylesheet" href="./dashboard.css" />
+<link rel="stylesheet" href="../../style.css" />
+
+</head>
+
+<body>
+
+<!-- ================= HEADER ================== -->
+<header class="top-bar">
+    <div class="logo">⚡ Cloudora Dashboard</div>
+
+    <div class="top-right">
+        <span class="coming-soon-badge">Coming Soon</span>
+        <div id="xpBarContainer">
+            <div id="xpFill"></div>
+        </div>
+        <div class="coins">
+            <span id="coinCount">0</span> 🪙 BHIX
+        </div>
+
+        <select id="langSelect"></select>
+        <button id="logoutBtn" class="logout-btn">Logout</button>
+    </div>
+</header>
+
+
+<!-- ================= MAIN CONTAINER ================== -->
+<main class="main-container">
+
+    <!-- EMPLOYEE CARD -->
+    <section class="emp-card">
+        <h2>Welcome, <span id="empName">Employee</span></h2>
+        <p><b>ID:</b> <span id="empID">-</span></p>
+        <p><b>Department:</b> <span id="empDept">-</span></p>
+        <p><b>Shift:</b> <span id="empShift">-</span></p>
+    </section>
+
+
+    <!-- ================= WORK MODE TOGGLE ================== -->
+    <section class="toggle-section">
+        <label class="switch">
+            <input type="checkbox" id="workToggle">
+            <span class="slider round"></span>
+        </label>
+        <div class="toggle-status">
+            <span id="modeLabel">FREE MODE</span>
+        </div>
+    </section>
+
+
+    <!-- ================= WORK MODE PANEL (AUTO HIDE) ================== -->
+    <section id="workModePanel" class="mode-panel hidden">
+
+        <h2 class="section-title">🚀 Work Mode</h2>
+
+        <div class="work-buttons-grid">
+            <button class="work-btn" onclick="openPage('./call-panel.html')">📞 Start Calling</button>
+            <button class="work-btn" onclick="openPage('./lead-filters.html')">📂 Search and Assign Leads</button>
+            <button class="work-btn" onclick="openPage('./extractor.html')">🧲 Extract New Leads</button>
+            <button class="work-btn disabled">
+  ⏳ Follow Ups (Coming Soon)
+</button>
+
+        </div>
+
+        <h3>Today's Performance <small>(Coming Soon)</small></h3>
+        <div class="stats-box">
+            <div class="stat">Calls: <span id="statCalls">0</span></div>
+            <div class="stat">Connected: <span id="statConnected">0</span></div>
+            <div class="stat">Interested: <span id="statInterested">0</span></div>
+            <div class="stat">Disqualified: <span id="statDisqualified">0</span></div>
+        </div>
+
+    </section>
+
+
+    <!-- ================= FREE MODE PANEL (AUTO HIDE) ================== -->
+    <section id="freeModePanel" class="mode-panel">
+
+        <h2 class="section-title">🎮 Free Mode</h2>
+
+       <div class="free-buttons-grid">
+    <button class="free-btn disabled">🎧 Training (Coming Soon)</button>
+    <button class="free-btn disabled">🕹️ Games (Coming Soon)</button>
+    <button class="free-btn disabled">💰 Earnings (Coming Soon)</button>
+    <button class="free-btn disabled">🏆 Leaderboard (Coming Soon)</button>
+    <button class="free-btn disabled">🔍 Search (Coming Soon)</button>
+    <button class="free-btn disabled">⚙️ Profile (Coming Soon)</button>
+</div>
+
+
+    </section>
+
+</main>
+
+
+<!-- Correct Script Load Order -->
+<script src="../../api/supabase.min.js"></script>
+<script src="../../global.js"></script>
+<script src="./dashboard.js"></script>
+
+</body>
+</html>

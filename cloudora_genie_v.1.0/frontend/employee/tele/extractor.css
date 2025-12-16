@@ -1,0 +1,89 @@
+body {
+    background: #0f0f1a;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+}
+
+.ext-header {
+    background: #1a1a2d;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 2px solid #7b2ff7;
+}
+
+.back-btn {
+    background: #7b2ff7;
+    padding: 8px 14px;
+    border-radius: 8px;
+}
+
+.ext-title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.ext-container {
+    padding: 20px;
+}
+
+.box {
+    background: #161625;
+    padding: 20px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+    border-left: 4px solid #7b2ff7;
+}
+
+.box input, .box select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    border-radius: 8px;
+    background: #0f0f1a;
+    border: 1px solid #33334d;
+    color: #fff;
+}
+
+.radio-row {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.extract-btn {
+    width: 100%;
+    padding: 14px;
+    background: #00d4ff;
+    color: #000;
+    border-radius: 12px;
+    font-size: 18px;
+}
+
+.progress-box, .result-box {
+    background: #141423;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 14px;
+}
+
+.hidden {
+    display: none;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    background: #33334d;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+#progressFill {
+    width: 0%;
+    height: 100%;
+    background: #00d4ff;
+    transition: width 0.4s;
+}

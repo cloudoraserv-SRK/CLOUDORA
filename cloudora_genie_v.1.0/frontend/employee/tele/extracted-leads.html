@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Extracted Leads</title>
+
+<link rel="stylesheet" href="./extracted-leads.css">
+<link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<header class="el-header">
+    <button class="back-btn" onclick="goBack()">⬅ Back</button>
+    <div class="el-title">📂 My Extracted Leads</div>
+</header>
+
+<main class="el-container">
+
+    <!-- FILTER BAR -->
+    <section class="filter-bar">
+        <select id="filterStatus">
+            <option value="all">All</option>
+            <option value="pending">Pending</option>
+            <option value="interested">Interested</option>
+            <option value="not_interested">Not Interested</option>
+            <option value="callback">Callback</option>
+            <option value="wrong_number">Wrong Number</option>
+        </select>
+
+        <select id="filterDays">
+            <option value="1">Last 24 Hours</option>
+            <option value="7">Last 7 Days</option>
+            <option value="30">Last 30 Days</option>
+            <option value="all">All Time</option>
+        </select>
+
+        <button class="refresh-btn" onclick="loadExtracted()">🔄</button>
+    </section>
+
+
+    <!-- LEAD LIST -->
+    <section id="leadList" class="lead-list"></section>
+
+</main>
+
+<script src="./extracted-leads.js"></script>
+<script src="../global.js"></script>
+<script src="../api/supabase.min.js"></script>
+</body>
+</html>

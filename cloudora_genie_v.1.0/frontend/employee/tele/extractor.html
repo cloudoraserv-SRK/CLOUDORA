@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lead Extractor</title>
+
+<link rel="stylesheet" href="./extractor.css">
+<link rel="stylesheet" href="../../style.css">
+
+</head>
+<body>
+
+<header class="ext-header">
+    <button class="back-btn" onclick="goBack()">⬅ Back</button>
+    <div class="ext-title">🧲 Lead Extractor</div>
+</header>
+
+<main class="ext-container">
+
+    <!-- CATEGORY SELECTION -->
+    <section class="box">
+        <h3>📌 Choose Category</h3>
+
+        <label>Popular Categories</label>
+        <select id="popularCategory">
+            <option value="">-- Select --</option>
+            <option>Digital Marketing</option>
+            <option>App Development</option>
+            <option>Software Company</option>
+            <option>Healthcare</option>
+            <option>Real Estate</option>
+            <option>Manufacturing</option>
+            <option>Finance</option>
+            <option>Ecommerce</option>
+            <option>Education</option>
+            <option>BPO / Call Center</option>
+        </select>
+
+        <label>Search Any Category (Global)</label>
+        <input id="customCategory" placeholder="e.g. dentist, logistic, hotels, lawyers">
+    </section>
+
+
+    <!-- CITY SELECTION -->
+    <section class="box">
+        <h3>🌍 Choose City</h3>
+
+        <label>Suggested Cities</label>
+        <select id="popularCity">
+            <option value="">-- Select --</option>
+
+            <optgroup label="India">
+                <option>Mumbai</option>
+                <option>Delhi</option>
+                <option>Bengaluru</option>
+                <option>Hyderabad</option>
+                <option>Pune</option>
+                <option>Chennai</option>
+                <option>Kolkata</option>
+            </optgroup>
+
+            <optgroup label="Global">
+                <option>Dubai</option>
+                <option>Abu Dhabi</option>
+                <option>London</option>
+                <option>New York</option>
+                <option>Singapore</option>
+                <option>Toronto</option>
+                <option>Sydney</option>
+            </optgroup>
+        </select>
+
+        <label>Enter Custom City</label>
+        <input id="customCity" placeholder="e.g. Surat, Noida, Pretoria, Berlin">
+    </section>
+
+
+    <!-- EXTRACTION MODE -->
+    <section class="box">
+        <h3>⚙️ Extraction Mode</h3>
+
+        <label class="radio-row">
+            <input type="radio" name="mode" value="live" checked>
+            Live SERP API Extraction
+        </label>
+
+        <label class="radio-row">
+            <input type="radio" name="mode" value="database">
+            Use Existing Database
+        </label>
+    </section>
+
+
+    <!-- EXTRACT BUTTON -->
+    <button class="extract-btn" onclick="startExtraction()">🚀 Extract 50 Leads</button>
+
+
+    <!-- PROGRESS -->
+    <div id="progressBox" class="progress-box hidden">
+        <div id="progressText">Starting...</div>
+        <div class="progress-bar">
+            <div id="progressFill"></div>
+        </div>
+    </div>
+
+    <!-- RESULT -->
+    <div id="resultBox" class="result-box hidden"></div>
+
+</main>
+<script src="../../api/supabase.min.js"></script>
+
+<script src="./extractor.js"></script>
+<script src="../../global.js"></script>
+
+</body>
+</html>

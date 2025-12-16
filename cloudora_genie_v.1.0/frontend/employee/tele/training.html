@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Training Center</title>
+
+<link rel="stylesheet" href="./training.css">
+<link rel="stylesheet" href="../../style.css">
+</head>
+
+<body>
+
+<header class="t-header">
+    <button class="back-btn" onclick="goBack()">⬅ Back</button>
+    <div class="t-title">🎧 Cloudora Training Center</div>
+</header>
+
+<main class="t-container">
+
+    <!-- TRAINING PROGRESS -->
+    <section class="progress-card">
+        <h3>Your Progress</h3>
+        <p><span id="completedLessons">0</span> / <span id="totalLessons">0</span> Lessons Completed</p>
+        <div class="progress-bar"><div id="progressFill"></div></div>
+    </section>
+
+
+    <!-- CATEGORY SELECT -->
+    <section class="category-section">
+        <h3>Training Categories</h3>
+
+        <div class="cat-grid">
+
+            <button class="cat-btn" onclick="openCategory('calling')">
+                📞 Calling Mastery
+            </button>
+
+            <button class="cat-btn" onclick="openCategory('sales')">
+                💼 Sales Conversion
+            </button>
+
+            <button class="cat-btn" onclick="openCategory('product')">
+                🧩 Product Knowledge
+            </button>
+
+            <button class="cat-btn" onclick="openCategory('scripts')">
+                📜 Script Reading
+            </button>
+
+            <button class="cat-btn" onclick="openCategory('ai')">
+                🤖 AI Tools Training
+            </button>
+
+            <button class="cat-btn" onclick="openCategory('communication')">
+                🗣 Communication Booster
+            </button>
+
+        </div>
+    </section>
+
+
+    <!-- LESSONS LIST -->
+    <section id="lessonList" class="lesson-list"></section>
+
+</main>
+
+<script src="./training.js"></script>
+<script src="../../api/supabase.min.js"></script>
+<script src="../../global.js"></script>
+
+</body>
+</html>

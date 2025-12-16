@@ -1,0 +1,268 @@
+/* ------------------------------------------
+   GENERAL LAYOUT
+------------------------------------------- */
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #eef2f7;
+    font-family: Arial, sans-serif;
+}
+
+.cp-header {
+    background: #0d6efd;
+    color: white;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.back-btn {
+    background: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.cp-title {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.session-timer {
+    font-size: 16px;
+    background: rgba(255,255,255,0.2);
+    padding: 5px 10px;
+    border-radius: 6px;
+}
+
+
+/* ------------------------------------------
+   MAIN CONTAINER
+------------------------------------------- */
+
+.cp-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    padding: 20px;
+}
+
+
+/* ------------------------------------------
+   LEFT SIDE — LEAD INFO
+------------------------------------------- */
+
+.lead-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.lead-info h2 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #0d6efd;
+}
+
+.lead-info p {
+    margin: 4px 0;
+    font-size: 15px;
+}
+
+
+/* ------------------------------------------
+   CALL CONTROLS
+------------------------------------------- */
+
+.call-controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.call-btn {
+    background: #28a745;
+    color: white;
+    padding: 10px 16px;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+.call-btn:hover {
+    background: #218838;
+}
+
+.skip-btn {
+    background: #dc3545;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.skip-btn:hover {
+    background: #bd2130;
+}
+
+
+/* ------------------------------------------
+   UPDATE AREA
+------------------------------------------- */
+
+.update-area {
+    margin-top: 20px;
+}
+
+.update-area label {
+    font-weight: bold;
+    margin-top: 12px;
+    display: block;
+}
+
+.update-area select,
+.update-area input,
+.update-area textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+textarea {
+    height: 70px;
+    resize: vertical;
+}
+
+/* Qualification section */
+.qual-title {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #0d6efd;
+}
+
+.finish-btn {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background: #0d6efd;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.finish-btn:hover {
+    background: #0b58c4;
+}
+
+
+/* ------------------------------------------
+   TIMELINE
+------------------------------------------- */
+
+.timeline-title {
+    margin-top: 25px;
+    font-size: 18px;
+    color: #0d6efd;
+}
+
+.timeline-box {
+    background: #f9fbff;
+    border: 1px solid #dce3f0;
+    border-radius: 8px;
+    padding: 15px;
+    height: 200px;
+    overflow-y: auto;
+    margin-top: 10px;
+}
+
+.timeline-item {
+    padding: 8px 0;
+    border-bottom: 1px solid #e6e6e6;
+    font-size: 14px;
+}
+
+.timeline-item:last-child {
+    border-bottom: none;
+}
+
+
+/* ------------------------------------------
+   RIGHT SIDE — SCRIPT ENGINE
+------------------------------------------- */
+
+.script-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.script-main {
+    background: #f6f9ff;
+    padding: 15px;
+    border-radius: 6px;
+    min-height: 120px;
+    border-left: 4px solid #0d6efd;
+}
+
+.subhead {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.dynamic-buttons {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.response-btn {
+    background: #ffc107;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.response-btn:hover {
+    background: #e0a800;
+}
+
+.reply-box {
+    background: #eaf2ff;
+    padding: 15px;
+    border-radius: 6px;
+    min-height: 80px;
+    border-left: 4px solid #0d6efd;
+    margin-top: 10px;
+}
+
+
+/* ------------------------------------------
+   MEDIA RESPONSIVE
+------------------------------------------- */
+
+@media (max-width: 900px) {
+    .cp-container {
+        grid-template-columns: 1fr;
+    }
+}
+#scriptContent,
+#replyScript {
+  white-space: pre-wrap;
+  line-height: 1.6;
+  font-size: 15px;
+  max-height: 260px;
+  overflow-y: auto;
+}

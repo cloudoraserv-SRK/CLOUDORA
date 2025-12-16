@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Attendance - Cloudora</title>
+
+<link rel="stylesheet" href="../style.css">
+
+<style>
+.card {
+  max-width: 600px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 18px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  text-align: center;
+}
+.btn-big {
+  width: 100%;
+  padding: 16px;
+  margin-top: 20px;
+  border-radius: 10px;
+  background: #4F46E5;
+  color: #fff;
+  border: none;
+  font-size: 18px;
+  font-weight: 700;
+}
+</style>
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="brand">Cloudora Attendance</div>
+  <button onclick="goBack()" class="btn-mini">← Back</button>
+</header>
+
+<main class="container fade-in">
+
+  <div class="card">
+    <h2>Your Attendance</h2>
+
+    <p><b>Date:</b> <span id="dateBox"></span></p>
+    <p><b>Status:</b> <span id="statusBox" style="font-weight:700;"></span></p>
+
+    <button id="checkInBtn" class="btn-big">Check-In</button>
+    <button id="checkOutBtn" class="btn-big" style="background:#EF4444; display:none;">
+      Check-Out
+    </button>
+  </div>
+
+</main>
+
+<script src="../api/supabase.min.js"></script>
+<script src="../global.js"></script>
+
+<script>
+// ---------------------------------------------------------
+// BASIC PAGE INITIALIZATION
+// ---------------------------------------------------------
+const empID = localStorage.getItem("employee_id");
+if (!empID) window.location.href = "./login.html";
+
+document.getElementById("dateBox").innerText =
+  new Date().toLocaleDateString();
+
+function goBack() {
+  window.location.href = "./dashboard.html";
+}
+
+// ---------------------------------------------------------
+// LOAD TODAY STATUS
+// ---------------------------------------------------------
+async function loadStatus() {
+  const res = await fetch(CONFIG.BACKEND + "/api/job/attendance-status", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({ employee_id: empID })
+  });
+
+  const j = await res.json().catch(() => null);
+
+  if (!j || !j.ok) {
+    statusBox.innerText = "Error";
+    return;
+  }
+
+  statusBox.innerText = j.status;
+
+  if (j.status === "Present" || j.status === "Completed") {
+    checkInBtn.style.display = "none";
+    checkOutBtn.style.display = "block";
+  } else {
+    checkInBtn.style.display = "block";
+    checkOutBtn.style.display = "none";
+  }
+}
+
+// ---------------------------------------------------------
+// CHECK-IN
+// ---------------------------------------------------------
+checkInBtn.onclick = async () => {
+  const res = await fetch(CONFIG.BACKEND + "/api/job/check-in", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({ employee_id: empID })
+  });
+
+  await loadStatus();
+};
+
+// ---------------------------------------------------------
+// CHECK-OUT
+// ---------------------------------------------------------
+checkOutBtn.onclick = async () => {
+  const res = await fetch(CONFIG.BACKEND + "/api/job/check-out", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({ employee_id: empID })
+  });
+
+  await loadStatus();
+};
+
+// INITIAL LOAD
+loadStatus();
+</script>
+
+</body>
+</html>

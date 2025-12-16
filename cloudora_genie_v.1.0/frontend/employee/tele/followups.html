@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Follow-Ups</title>
+
+<link rel="stylesheet" href="./followups.css">
+<link rel="stylesheet" href="../../style.css">
+</head>
+
+<body>
+
+<header class="fu-header">
+    <button class="back-btn" onclick="goBack()">⬅ Back</button>
+    <div class="fu-title">⏰ Follow-Ups</div>
+</header>
+
+<main class="fu-container">
+
+    <!-- FILTER BAR -->
+    <section class="filter-bar">
+        <select id="filterRange" onchange="loadFollowups()">
+            <option value="today">Today</option>
+            <option value="overdue">Overdue</option>
+            <option value="upcoming">Next 7 Days</option>
+            <option value="all">All</option>
+        </select>
+
+        <button class="refresh-btn" onclick="loadFollowups()">🔄</button>
+    </section>
+
+
+    <!-- FOLLOW-UP LIST -->
+    <section id="followList" class="follow-list"></section>
+
+</main>
+
+<script src="./followups.js"></script>
+<script src="../../api/supabase.min.js"></script>
+<script src="../../global.js"></script>
+
+
+</body>
+</html>

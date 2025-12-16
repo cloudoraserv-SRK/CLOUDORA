@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloudora – Calling Panel</title>
+
+<link rel="stylesheet" href="./call-panel.css">
+<link rel="stylesheet" href="../../style.css">
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="cp-header">
+    <button class="back-btn" onclick="exitPanel()">⬅ Exit</button>
+
+    <div class="cp-title">📞 Calling Panel</div>
+
+    <div class="session-timer">
+        ⏱ <span id="sessionTime">00:00</span>
+    </div>
+</header>
+
+
+<div class="cp-container">
+
+
+    <!-- LEFT SIDE : LEAD INFO -->
+    <section class="lead-box">
+
+        <div id="leadInfo" class="lead-info">Loading lead...</div>
+
+        <div class="call-controls">
+            <a id="dialBtn" class="call-btn" target="_blank">📞 Dial Now</a>
+            <button class="skip-btn" onclick="skipLead()">Skip</button>
+        </div>
+
+
+        <!-- UPDATE AREA -->
+        <div class="update-area">
+
+            <label>Status</label>
+            <select id="leadStatus">
+                <option value="pending">Pending</option>
+                <option value="interested">Interested</option>
+                <option value="not_interested">Not Interested</option>
+                <option value="callback">Callback</option>
+                <option value="wrong_number">Wrong Number</option>
+            </select>
+
+            <label>Notes</label>
+            <textarea id="leadNotes" placeholder="Type call notes..."></textarea>
+
+
+            <!-- CALLBACK FIELDS -->
+            <div id="callbackFields" style="display:none;">
+                <label>Follow-up Date</label>
+                <input type="date" id="followDate">
+
+                <label>Follow-up Time</label>
+                <input type="time" id="followTime">
+            </div>
+
+
+            <!-- QUALIFICATION SECTION -->
+            <h4 class="qual-title">Qualification Details</h4>
+
+            <label>Customer Requirement</label>
+            <input id="qualRequirement" placeholder="Website, Marketing, Branding..." />
+
+            <label>Budget Range</label>
+            <select id="qualBudget">
+                <option value="">Select</option>
+                <option value="0-5k">₹0 - ₹5,000</option>
+                <option value="5k-15k">₹5,000 - ₹15,000</option>
+                <option value="15k-50k">₹15,000 - ₹50,000</option>
+                <option value="50k+">₹50,000+</option>
+            </select>
+
+            <label>Timeline</label>
+            <select id="qualTimeline">
+                <option value="">Select</option>
+                <option value="Immediate">Immediate</option>
+                <option value="This Week">This Week</option>
+                <option value="This Month">This Month</option>
+                <option value="Not Sure">Not Sure</option>
+            </select>
+
+            <label>Decision Maker?</label>
+            <select id="qualDM">
+                <option value="">Select</option>
+                <option>Yes</option>
+                <option>No</option>
+            </select>
+
+
+            <!-- RECORDING FIELD -->
+            <label>Call Recording (Optional)</label>
+            <input type="file" id="recordingFile" accept="audio/*" />
+            <div id="recordingStatus" class="small-info"></div>
+
+
+            <button class="finish-btn" onclick="finishLead()">Finish</button>
+
+        </div>
+
+
+        <!-- TIMELINE -->
+        <h4 class="timeline-title">Timeline</h4>
+        <div id="timelineBox" class="timeline-box">Loading history...</div>
+
+    </section>
+
+
+    <!-- RIGHT SIDE : SCRIPT ENGINE -->
+    <section class="script-box">
+
+        <h3>📜 Suggested Script</h3>
+
+        <div id="scriptContent" class="script-main">Loading script...</div>
+
+        <h4 class="subhead">Customer Responses</h4>
+
+        <div id="responseButtons" class="dynamic-buttons"></div>
+
+        <div class="reply-header">
+  <h4 class="subhead">Suggested Reply</h4>
+  <button id="toggleReplyBtn" class="toggle-btn">Expand</button>
+</div>
+
+<div id="replyScript" class="reply-box collapsed">
+  Select a response to see the recommended reply...
+</div>
+
+
+    </section>
+
+</div>
+
+
+<!-- REQUIRED SCRIPTS -->
+<script src="../../api/supabase.min.js"></script>
+<script src="../../global.js"></script>
+<script src="./call-panel.js"></script>
+
+</body>
+</html>
