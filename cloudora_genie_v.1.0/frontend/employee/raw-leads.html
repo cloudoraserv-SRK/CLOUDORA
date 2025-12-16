@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cloudora – RAW Leads</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #eef2f7;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h2 {
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #0d6efd;
+    }
+
+    .search-box {
+        padding: 10px;
+        width: 300px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        margin-bottom: 15px;
+    }
+
+    table {
+        width: 100%;
+        background: white;
+        border-collapse: collapse;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0,0,0,0.08);
+    }
+
+    th, td {
+        padding: 12px;
+        border-bottom: 1px solid #ddd;
+        font-size: 14px;
+    }
+
+    th {
+        background: #0d6efd;
+        color: white;
+        position: relative;
+        user-select: none;
+        cursor: pointer;
+    }
+
+    tr:hover {
+        background: #f6f9ff;
+    }
+
+    .filter-icon {
+        margin-left: 5px;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    /* Dropdown Filter Menu */
+    .filter-menu {
+        position: absolute;
+        top: 35px;
+        left: 0;
+        width: 180px;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 10px;
+        z-index: 9999;
+        display: none;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .filter-menu label {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+        font-size: 13px;
+    }
+
+    button {
+        background: #0d6efd;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        margin-top: 15px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #084bb3;
+    }
+</style>
+
+</head>
+<body>
+
+<h2>RAW Leads (Excel Filter Enabled)</h2>
+
+<input type="text" class="search-box" id="search" placeholder="Search..." onkeyup="loadLeads()">
+
+<table>
+    <thead>
+        <tr>
+            <th>Select</th>
+
+            <th onclick="sortTable('name')">
+                Name ▼
+            </th>
+
+            <th onclick="sortTable('phone')">
+                Phone ▼
+            </th>
+
+            <th onclick="sortTable('website')">
+                Website ▼
+            </th>
+
+            <th>
+                Category 
+                <span class="filter-icon" onclick="toggleFilter(event,'category-filter')">▼</span>
+                <div class="filter-menu" id="category-filter"></div>
+            </th>
+
+            <th>
+                City 
+                <span class="filter-icon" onclick="toggleFilter(event,'city-filter')">▼</span>
+                <div class="filter-menu" id="city-filter"></div>
+            </th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<button onclick="assignSelected()">Assign Selected to Me</button>
+
+<script>
+
+const API_BASE = "https://cloudora-production.up.railway.app";
+
+let allLeads = [];
+let leads = [];
+let sortOrder = {};
+const EMPLOYEE_ID = localStorage.getItem("employee_id");
+
+// selected filter trackers
+let activeCityFilters = [];
+let activeCategoryFilters = [];
+
+// --------------------------
+// Toggle Filter Dropdown
+// --------------------------
+function toggleFilter(event, id) {
+    event.stopPropagation();
+    document.querySelectorAll(".filter-menu").forEach(m => m.style.display = "none");
+    document.getElementById(id).style.display = "block";
+}
+
+document.body.onclick = () => {
+    document.querySelectorAll(".filter-menu").forEach(m => m.style.display = "none");
+};
+
+
+// --------------------------
+// Fetch Leads
+// --------------------------
+async function loadLeads() {
+    const search = document.getElementById("search").value;
+
+    const res = await fetch(`${API_BASE}/api/extract/raw?search=${search}`);
+    const json = await res.json();
+
+    if (!json.ok) return alert("Error loading leads");
+
+    allLeads = json.leads;
+    leads = [...allLeads];
+
+    buildFilterMenus();
+    applyFilters();
+}
+
+
+// --------------------------
+// Build Filter Menus
+// --------------------------
+function buildFilterMenus() {
+
+    const catMenu = document.getElementById("category-filter");
+    const cityMenu = document.getElementById("city-filter");
+
+    const categories = [...new Set(allLeads.map(l => l.category).filter(Boolean))];
+    const cities = [...new Set(allLeads.map(l => l.city).filter(Boolean))];
+
+    catMenu.innerHTML = categories.map(c =>
+        `<label><input type="checkbox" value="${c}" onchange="filterChange('category',this)"> ${c}</label>`
+    ).join("");
+
+    cityMenu.innerHTML = cities.map(c =>
+        `<label><input type="checkbox" value="${c}" onchange="filterChange('city',this)"> ${c}</label>`
+    ).join("");
+}
+
+
+// --------------------------
+// Category/City Filter Change
+// --------------------------
+function filterChange(type, checkbox) {
+    if (type === "city") {
+        checkbox.checked
+            ? activeCityFilters.push(checkbox.value)
+            : activeCityFilters = activeCityFilters.filter(c => c !== checkbox.value);
+    }
+
+    if (type === "category") {
+        checkbox.checked
+            ? activeCategoryFilters.push(checkbox.value)
+            : activeCategoryFilters = activeCategoryFilters.filter(c => c !== checkbox.value);
+    }
+
+    applyFilters();
+}
+
+
+// --------------------------
+// APPLY FILTERS
+// --------------------------
+function applyFilters() {
+
+    leads = allLeads.filter(l => {
+
+        const cityMatch = activeCityFilters.length === 0 || activeCityFilters.includes(l.city);
+        const catMatch = activeCategoryFilters.length === 0 || activeCategoryFilters.includes(l.category);
+
+        return cityMatch && catMatch;
+    });
+
+    renderTable();
+}
+
+
+// --------------------------
+// Render Table
+// --------------------------
+function renderTable() {
+    const tbody = document.querySelector("tbody");
+    tbody.innerHTML = "";
+
+    leads.forEach(lead => {
+        tbody.innerHTML += `
+            <tr>
+                <td><input type="checkbox" class="chk" value="${lead.id}"></td>
+                <td>${lead.name || "-"}</td>
+                <td>${lead.phone || "-"}</td>
+                <td>${lead.website || "-"}</td>
+                <td>${lead.category || "-"}</td>
+                <td>${lead.city || "-"}</td>
+            </tr>
+        `;
+    });
+}
+
+
+// --------------------------
+// SORTING
+// --------------------------
+function sortTable(key) {
+    if (!sortOrder[key]) sortOrder[key] = "asc";
+
+    leads.sort((a,b) =>
+        sortOrder[key] === "asc"
+            ? (a[key] || "").localeCompare(b[key] || "")
+            : (b[key] || "").localeCompare(a[key] || "")
+    );
+
+    sortOrder[key] = sortOrder[key] === "asc" ? "desc" : "asc";
+    renderTable();
+}
+
+
+// --------------------------
+// ASSIGN SELECTED
+// --------------------------
+async function assignSelected() {
+    const selected = [...document.querySelectorAll(".chk:checked")].map(cb => cb.value);
+
+    if (selected.length === 0) return alert("Please select leads");
+
+    const res = await fetch(`${API_BASE}/api/extract/assign-selected`, {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({
+            lead_ids: selected,
+            employee_id: EMPLOYEE_ID
+        })
+    });
+
+    const json = await res.json();
+    if (!json.ok) return alert("Assignment failed");
+
+    alert(`${json.assigned} leads assigned.`);
+    loadLeads();
+}
+
+
+loadLeads();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Employee Login - Cloudora Genie</title>
+
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="./login.css">
+
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="brand">Cloudora Genie Employee</div>
+  <div class="controls">
+    <select id="langSelect"></select>
+    <button id="speakBtn" class="btn-mini">🔊</button>
+  </div>
+</header>
+
+<main class="container fade-in">
+
+  <div class="login-box">
+    <h2 class="login-title">Employee Login</h2>
+
+    <p class="login-sub">Use your Employee ID & Password</p>
+
+    <!-- Department Selection -->
+    <div class="input-group">
+      <label>Select Department</label>
+      <select id="departmentSelect">
+        <option value="">-- Select --</option>
+        <option value="tele_lead_domestic">Telecaller - Domestic</option>
+        <option value="tele_lead_international">Telecaller - International</option>
+        <option value="tele_sales_domestic">Sales - Domestic</option>
+        <option value="tele_sales_international">Sales - International</option>
+        <option value="supervisor">Supervisor / Admin</option>
+      </select>
+      <div class="error" id="errDept">Please select a department</div>
+    </div>
+
+    <div class="input-group">
+      <label>Employee ID</label>
+      <input id="empID" placeholder="EMP-XXXXX" required>
+      <div class="error" id="errID">Employee ID is required</div>
+    </div>
+
+    <div class="input-group">
+  <label>Password</label>
+  <div class="password-wrap">
+    <input type="password" id="password" placeholder="••••••••">
+    <span id="togglePass" class="toggle-eye">👁</span>
+  </div>
+  <div class="error" id="errPass">Password cannot be empty</div>
+</div>
+
+    <button id="loginBtn" class="btn-primary">Login</button>
+
+    <div id="loginError" class="error" style="text-align:center;margin-top:10px;"></div>
+
+  </div>
+
+</main>
+
+<!-- SDK FIRST -->
+<script src="../api/supabase.min.js"></script>
+<script src="../global.js"></script>
+
+<script>
+initializeLanguageSelector();
+applyTranslations();
+
+document.getElementById("speakBtn").onclick = () =>
+  speak("Please login using your employee ID, password, and department");
+
+
+// ---------------------------------------
+// Element Bindings (FIXED)
+// ---------------------------------------
+const empIDInput = document.getElementById("empID");
+const passwordInput = document.getElementById("password");
+const departmentSelect = document.getElementById("departmentSelect");
+
+const errDept = document.getElementById("errDept");
+const errID = document.getElementById("errID");
+const errPass = document.getElementById("errPass");
+const loginError = document.getElementById("loginError");
+
+
+// ---------------------------------------
+// LOGIN FUNCTION (FIXED)
+// ---------------------------------------
+document.getElementById("loginBtn").onclick = async () => {
+
+  const empID = empIDInput.value.trim();
+  const password = passwordInput.value.trim();
+  const department = departmentSelect.value;
+
+  let valid = true;
+
+  if (!department) { errDept.style.display = "block"; valid = false; }
+  else errDept.style.display = "none";
+
+  if (!empID) { errID.style.display = "block"; valid = false; }
+  else errID.style.display = "none";
+
+  if (!password) { errPass.style.display = "block"; valid = false; }
+  else errPass.style.display = "none";
+
+  if (!valid) return;
+
+
+  // BACKEND CALL
+  try {
+    const res = await fetch(CONFIG.BACKEND + "/api/job/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        employee_id: empID,
+        password,
+      })
+    });
+
+    const j = await res.json();
+
+    if (!j.ok) {
+  loginError.innerText = j.msg || "Invalid credentials";
+  return;
+}
+
+// Extract backend data properly
+const emp = j.employee;
+
+// SAVE SESSION
+localStorage.setItem("employee_id", emp.employee_id);      // EMP-XXX
+localStorage.setItem("employee_uuid", emp.id);             // 🔥 UUID (IMPORTANT)
+localStorage.setItem("employee_name", emp.name);
+localStorage.setItem("employee_department", emp.department);
+
+// ---------------- DEPARTMENT ROUTING ----------------
+
+// TELE LEAD GENERATION
+if (
+  emp.department === "tele_lead_domestic" ||
+  emp.department === "tele_lead_international"
+) {
+  localStorage.setItem("employee_department", emp.department);
+  window.location.href = "./tele/dashboard.html";
+  return;
+}
+
+// SALES (TELE SALES)
+if (emp.department.startsWith("tele_sales")) {
+  localStorage.setItem("employee_department", emp.department);
+  window.location.href = "./sales/dashboard.html";
+  return;
+}
+
+alert("Unauthorized department: " + emp.department);
+localStorage.clear();
+
+
+// SUPERVISOR / ADMIN
+if (emp.department === "supervisor" || emp.department === "admin") {
+    window.location.href = "./supervisor/dashboard.html";
+    return;
+}
+
+  } catch (err) {
+    loginError.innerText = "Network error, please try again.";
+  }
+
+};
+</script>
+
+</body>
+</html>
