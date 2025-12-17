@@ -355,12 +355,6 @@ section {
     font-family: "Poppins", sans-serif;
 }
 
-body {
-    background: #f5f8ff;
-    color: #333;
-    overflow-x: hidden;
-}
-
 /* MAIN SECTION */
 .genie-section {
     padding: 80px 20px;
