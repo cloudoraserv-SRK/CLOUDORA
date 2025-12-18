@@ -1,57 +1,83 @@
-import { supabase, insertLead, logActivity } from "./supabase/supabase.js";
+import { insertLead } from "./supabase/supabase.js";
 
-/* ================= SAFE STORAGE ================= */
-const safeGet = (k) => { try { return localStorage.getItem(k); } catch { return null; } };
-const safeSet = (k,v) => { try { localStorage.setItem(k,v); } catch {} };
+/* ========== SAFE STORAGE ========== */
+const sGet = k => { try { return localStorage.getItem(k); } catch { return null } };
+const sSet = (k,v) => { try { localStorage.setItem(k,v); } catch {} };
 
-/* ================= DOM READY ================= */
+/* ========== DOM READY ========== */
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* ---------- MOBILE NAV ---------- */
+  /* ===== MOBILE NAV ===== */
   const hamburger = document.querySelector(".hamburger");
-  const mobileMenu = document.querySelector(".mobile");
+  const mobile = document.getElementById("mobileMenu");
 
-  if (hamburger && mobileMenu) {
-    hamburger.addEventListener("click", () => {
+  if (hamburger && mobile) {
+    hamburger.onclick = () => {
       const open = hamburger.getAttribute("aria-expanded") === "true";
       hamburger.setAttribute("aria-expanded", !open);
-      mobileMenu.setAttribute("aria-modal", !open);
+      mobile.setAttribute("aria-modal", !open);
       document.body.style.overflow = open ? "auto" : "hidden";
-    });
+    };
 
-    mobileMenu.querySelectorAll("a").forEach(link => {
-      link.addEventListener("click", () => {
+    mobile.querySelectorAll("a").forEach(a =>
+      a.onclick = () => {
         hamburger.setAttribute("aria-expanded", "false");
-        mobileMenu.setAttribute("aria-modal", "false");
+        mobile.setAttribute("aria-modal", "false");
         document.body.style.overflow = "auto";
-      });
-    });
+      }
+    );
   }
 
-  /* ---------- SCROLL REVEAL ---------- */
+  /* ===== SCROLL REVEAL ===== */
   const revealEls = document.querySelectorAll("[data-reveal]");
   if ("IntersectionObserver" in window) {
-    const obs = new IntersectionObserver(entries => {
+    const io = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (e.isIntersecting) {
           e.target.classList.add("revealed");
-          obs.unobserve(e.target);
+          io.unobserve(e.target);
         }
       });
     }, { threshold: 0.15 });
-    revealEls.forEach(el => obs.observe(el));
+    revealEls.forEach(el => io.observe(el));
+  } else {
+    revealEls.forEach(el => el.classList.add("revealed"));
   }
 
-  /* ---------- SERVICES SCROLLER ---------- */
+  /* ===== SERVICES SCROLLER ===== */
   const scroller = document.getElementById("serviceScroller");
-  document.getElementById("prev")?.addEventListener("click", () =>
-    scroller?.scrollBy({ left: -350, behavior: "smooth" })
-  );
-  document.getElementById("next")?.addEventListener("click", () =>
-    scroller?.scrollBy({ left: 350, behavior: "smooth" })
-  );
+  document.getElementById("prev")?.onclick = () =>
+    scroller?.scrollBy({ left: -350, behavior: "smooth" });
+  document.getElementById("next")?.onclick = () =>
+    scroller?.scrollBy({ left: 350, behavior: "smooth" });
 
-  /* ---------- VIDEO AUTOPLAY SAFE ---------- */
+  /* ===== PORTFOLIO FILTER ===== */
+  document.querySelectorAll("#portfolio .filter-btn").forEach(btn => {
+    btn.onclick = () => {
+      const f = btn.dataset.filter;
+      btn.parentElement.querySelectorAll("button").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      document.querySelectorAll("#portfolio .card").forEach(card => {
+        card.style.display = f === "all" || card.dataset.category?.includes(f) ? "block" : "none";
+      });
+    };
+  });
+
+  /* ===== HIRING FILTER ===== */
+  document.querySelectorAll("#hiring .filter-btn").forEach(btn => {
+    btn.onclick = () => {
+      const f = btn.dataset.filter;
+      btn.parentElement.querySelectorAll("button").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      document.querySelectorAll("#hiring .job-card").forEach(card => {
+        card.style.display = card.classList.contains(f) ? "block" : "none";
+      });
+    };
+  });
+
+  /* ===== VIDEO AUTOPLAY ===== */
   const video = document.getElementById("cloudoraVideo");
   if (video) {
     window.addEventListener("scroll", () => {
@@ -60,46 +86,67 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* ---------- THEME ---------- */
-  const toggle = document.getElementById("themeToggle");
-  const root = document.documentElement;
-  const savedTheme = safeGet("cloudoraTheme") || "dark";
-  root.dataset.theme = savedTheme;
-  if (toggle) toggle.checked = savedTheme === "light";
+  /* ===== MODALS ===== */
+  document.querySelectorAll("[data-close]").forEach(btn =>
+    btn.onclick = () => btn.closest(".modal").setAttribute("aria-hidden","true")
+  );
+  document.getElementById("openPrivacy")?.onclick = e => {
+    e.preventDefault(); document.getElementById("privacyModal").setAttribute("aria-hidden","false");
+  };
+  document.getElementById("openTerms")?.onclick = e => {
+    e.preventDefault(); document.getElementById("termsModal").setAttribute("aria-hidden","false");
+  };
 
+  /* ===== THEME ===== */
+  const toggle = document.getElementById("themeToggle");
+  const theme = sGet("cloudoraTheme") || "dark";
+  document.documentElement.dataset.theme = theme;
+  if (toggle) toggle.checked = theme === "light";
   toggle?.addEventListener("change", () => {
     const t = toggle.checked ? "light" : "dark";
-    root.dataset.theme = t;
-    safeSet("cloudoraTheme", t);
+    document.documentElement.dataset.theme = t;
+    sSet("cloudoraTheme", t);
   });
 
-  /* ---------- CURRENCY ---------- */
-  const currencySelect = document.getElementById("currencySelect");
-  if (currencySelect) {
-    const init = safeGet("cloudoraCurrency") || "USD";
-    currencySelect.value = init;
-    safeSet("cloudoraCurrency", init);
+  /* ===== CONTACT FORM + AUTO ROUTING ===== */
+  const form = document.getElementById("contactForm");
+  if (form) {
+    form.onsubmit = async e => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      const service = (fd.get("service")||"").toLowerCase();
 
-    currencySelect.addEventListener("change", () =>
-      safeSet("cloudoraCurrency", currencySelect.value)
-    );
+      let lead_type = "general";
+      if (service.includes("job")) lead_type = "job";
+      else if (service.includes("marketing") || service.includes("development")) lead_type = "business";
+
+      const payload = Object.fromEntries(fd.entries());
+      payload.lead_type = lead_type;
+      payload.source = "website";
+      payload.page = "index";
+
+      try {
+        await insertLead(payload);
+        alert("✅ Submitted successfully");
+        form.reset();
+      } catch {
+        alert("❌ Submission failed");
+      }
+    };
   }
 
-  /* ---------- FOOTER YEAR ---------- */
-  document.getElementById("year")?.textContent = new Date().getFullYear();
-
-  console.log("✅ Cloudora script loaded cleanly");
+  console.log("✅ Cloudora index fully wired");
 });
 
-/* ---------- GOOGLE TRANSLATE SAFE ---------- */
+/* ===== GOOGLE TRANSLATE AUTO ===== */
 window.addEventListener("load", () => {
   setTimeout(() => {
-    if (!window.google) return;
-    const lang = navigator.language.slice(0,2);
-    const combo = document.querySelector(".goog-te-combo");
-    if (combo) {
-      combo.value = lang;
-      combo.dispatchEvent(new Event("change"));
+    const map = { hi:'hi',fr:'fr',es:'es',de:'de',zh:'zh-CN',ar:'ar',ja:'ja',ru:'ru',pt:'pt',bn:'bn',ta:'ta',mr:'mr' };
+    const lang = map[navigator.language.slice(0,2)];
+    const sel = document.querySelector(".goog-te-combo");
+    if (lang && sel) {
+      sel.value = lang;
+      sel.dispatchEvent(new Event("change"));
     }
   }, 1200);
 });
