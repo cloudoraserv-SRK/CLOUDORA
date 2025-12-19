@@ -217,6 +217,15 @@ h3 { font-size: clamp(1.4rem, 3vw, 2rem); }
 .logo {
   display: block;
 }
+.logo svg{
+  stroke:#fff;
+  width:32px;
+  height:32px;
+  display:block;
+}
+.brand b{
+  color:#fff;
+}
 
 .navlinks {
   display: none;
@@ -393,6 +402,12 @@ section {
 .stack-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 15px 40px rgba(0,120,255,0.45);
+}
+
+.nav-right{
+  display:flex;
+  gap:12px;
+  align-items:center;
 }
 
 /* IMAGES & VIDEOS */
