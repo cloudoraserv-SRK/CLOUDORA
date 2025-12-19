@@ -160,3 +160,6 @@ document.getElementById("currencySelect").addEventListener("change", e=>{
     el.innerText = (inr * rates[cur]).toFixed(0)+" "+cur;
   });
 });
+const scroller = document.getElementById("serviceScroller");
+document.getElementById("next").onclick = ()=> scroller.scrollBy({left:300,behavior:"smooth"});
+document.getElementById("prev").onclick = ()=> scroller.scrollBy({left:-300,behavior:"smooth"});
