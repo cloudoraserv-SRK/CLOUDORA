@@ -150,3 +150,13 @@ window.addEventListener("load", () => {
     }
   }, 1200);
 });
+const rates = { USD:0.012, EUR:0.011, INR:1 };
+
+document.getElementById("currencySelect").addEventListener("change", e=>{
+  const cur = e.target.value;
+  document.querySelectorAll(".new-price").forEach(el=>{
+    const inr = el.dataset.inr;
+    if(!inr) return;
+    el.innerText = (inr * rates[cur]).toFixed(0)+" "+cur;
+  });
+});
