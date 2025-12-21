@@ -1,3 +1,5 @@
+console.log("🧠 Genie routes file loaded");
+
 // -----------------------------------------------------
 // Cloudora Genie – Brain v1 (Genie Page)
 // Human-first | Flow + Free AI
@@ -108,6 +110,8 @@ Respond as Genie.
 /* =========================
    MAIN GENIE ROUTE
 ========================= */
+console.log("🧠 Genie /message HIT", req.body);
+
 router.post("/message", async (req, res) => {
   const { message, sessionId } = req.body;
   const userMessage = message || "";
@@ -197,5 +201,6 @@ router.post("/start", async (req, res) => {
 });
 
 export default router;
+
 
 
