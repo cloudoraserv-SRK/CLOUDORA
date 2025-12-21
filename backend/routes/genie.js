@@ -5,7 +5,8 @@
 
 import express from "express";
 import { askGemini } from "../lib/genieAI.js";
-import supabase from "../lib/supabaseClient.js";
+import { supabase } from "../lib/supabaseClient.js";
+
 
 const router = express.Router();
 
@@ -189,3 +190,4 @@ router.post("/start", async (req, res) => {
 });
 
 export default router;
+
