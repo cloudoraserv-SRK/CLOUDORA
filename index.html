@@ -8,9 +8,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/genie.css">
     <link rel="stylesheet" href="style.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script type="module" src="../supabase/supabase.js"></script>
 
 
    <!-- Open Graph / Social Preview -->
@@ -60,19 +60,18 @@
 </head>
     
 <body>
-    <div class="aura" aria-hidden="true"></div>
+
+  <div class="aura" aria-hidden="true"></div>
     <div class="stars" aria-hidden="true"></div>
 
     <header class="site-header">
         <div class="container nav">
-            <a class="brand" href="#top" aria-label="Cloudora home">
-                <span class="logo" aria-hidden="true">
-                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path d="M6.5 12a5.5 5.5 0 0 1 10.8-1.6A4.2 4.2 0 1 1 18 19H7.5a4.5 4.5 0 0 1-1-8.9Z" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
-                    </svg>
-                </span>
-                <b>CLOUDORA</b>
-            </a>
+
+          <!-- LEFT -->
+    <a class="brand" href="/">
+      <img src="assets/logos/cloudora.svg" alt="Cloudora Logo">
+      <span>CLOUDORA</span>
+    </a>
 
             <nav class="navlinks" aria-label="primary">
                 <a href="#services">Services</a>
@@ -81,23 +80,10 @@
                 <a href="#portfolio">Our Works</a>
                 <a href="#contact">Contact</a>
             </nav>
-
-            <button class="hamburger" aria-label="menu" aria-expanded="false" aria-controls="mobileMenu"><span></span></button>
-        </div>
-        <div class="mobile" id="mobileMenu" role="dialog" aria-modal="false">
-            <a href="#services">Services</a>
-            <a href="#why">Why Us</a>
-            <a href="#hiring">We’re Hiring</a>
-            <a href="#portfolio">Our Works</a>
-            <a href="#contact">Contact</a>
-        </div>
   
         <div class="nav-right">
           <label for="google_translate_element">🌐 Language:</label>
           <div id="google_translate_element"></div>
-        </div>  
-    
-    <div class="locale-switcher">
     <select id="currencySelect">
     <option value="INR">₹ INR</option>
     <option value="USD">$ USD</option>
@@ -109,37 +95,72 @@
     <option value="CNY">¥ CNY</option>
     <option value="AED">د.إ AED</option>
   </select>
-</div>
-</header>
-     <!--theme switcher-->
-  <div class="locale-switcher">
+  <button class="hamburger" aria-label="menu" aria-expanded="false" aria-controls="mobileMenu"><span></span></button>
+  <span></span>
+      </button>
+    </div>
+        <div class="mobile" id="mobileMenu" role="dialog" aria-modal="false">
+            <a href="#services">Services</a>
+            <a href="#why">Why Us</a>
+            <a href="#hiring">We’re Hiring</a>
+            <a href="#portfolio">Our Works</a>
+            <a href="#contact">Contact</a>
+        </div>
     <label class="theme-switch">
       <input type="checkbox" id="themeToggle" />
       <span>🌙 / ☀️</span>
     </label>
-  </div>
+ 
+      </div>
+</header>
 
+ 
 
-<!-- ================= GENIE (CLEANED) ================= -->
+<!-- ================= GENIE (EXPANDED) ================= -->
+<h1>Cloudora – AI-Powered Growth, Sales & Digital Solutions</h1>
+
 <section class="genie-section">
+
   <div class="container genie-container">
 
+    <!-- LEFT -->
     <div class="genie-left">
-      <h1>Your AI Genie</h1>
-      <p>Smart onboarding, guidance & support — powered by Cloudora.</p>
+      <span class="tag">AI CORE OF CLOUDORA</span>
+      <h1>Your Living AI Genie</h1>
+
+      <p>
+        Genie is not just support.  
+        It thinks, guides, operates & evolves with you —  
+        whether you are building, hiring, learning or scaling.
+      </p>
 
       <div class="genie-actions">
-        <a href="genie-home/index.html" class="magic-btn">Open Genie</a>
-        <a href="#contact" class="btn">Talk to Team</a>
+        <a href="genie-home/index.html" class="genie-btn primary">
+          <span class="btn-text">Summon Genie</span>
+          <span class="btn-ring"></span>
+        </a>
+
+        <a href="#contact" class="genie-btn secondary">
+          <span class="btn-text">Speak to Humans</span>
+          <span class="btn-glow"></span>
+        </a>
       </div>
     </div>
 
+    <!-- RIGHT -->
     <div class="genie-right">
-      <img src="assets/genie.png" alt="Cloudora Genie" class="genie-big"/>
+      <div class="genie-core">
+        <div class="energy-ring"></div>
+        <div class="energy-ring delay"></div>
+        <img src="assets/genie.png" class="genie-img" />
+        <div class="cursor-light"></div>
+      </div>
     </div>
 
   </div>
 </section>
+
+
     <!-- =======================
          CLOUDORA INTRO VIDEO
     ========================== -->
@@ -155,112 +176,43 @@
         </div>
     </section>
 
-     <section id="about" class="about-section" data-reveal>
+<!-- =======================
+     ABOUT SECTION
+======================= -->
+<section id="about" class="about-section" data-reveal>
   <div class="container">
-    <h2>About Us</h2>
-    <p class="sub-head">Cloudora is more than a platform — it's a movement to empower businesses with scalable tech, strategic branding, and global accessibility.</p>
+    <h2>About Cloudora</h2>
+    <p class="sub-head">
+      Cloudora is more than a platform — it's a movement empowering businesses
+      with scalable tech, branding & global reach.
+    </p>
 
     <div class="about-grid">
       <div class="about-block">
         <h3>Our Mission</h3>
-        <p>To simplify digital transformation for startups and enterprises by delivering reliable infrastructure, creative marketing, and future-proof solutions.</p>
+        <p>
+          Simplify digital transformation with reliable infrastructure,
+          marketing & future-ready solutions.
+        </p>
       </div>
+
       <div class="about-block">
         <h3>Our Vision</h3>
-        <p>To become a global catalyst for innovation, trust, and inclusive growth — bridging technology with purpose across borders.</p>
+        <p>
+          Become a global catalyst for innovation, trust & inclusive growth.
+        </p>
       </div>
     </div>
-      
-<section class="hero" id="hero">
-  <div class="hero-content">
-    <h1 class="title" data-reveal>Grow Your Business with <span class="highlight">Cloudora</span> 🚀</h1>
-    <p class="subtitle" data-reveal>
-      Digital marketing, SEO, social media & ad campaigns — all at exclusive
-      <span class="highlight">50% Launch Discount</span>.
-    </p>      
-    <div class="launch-offer" data-reveal>
-      <h2>🎉 Special Launch Offer</h2>
-      <table class="pricing-table">
-        <tbody>
-          <!-- Pricing Row Template -->
-          <tr>
-            <td>3-Day Trial</td>
-            <td>
-              <s>₹1999</s>
-              <span class="new-price" data-inr="999">₹999</span>
-              <a href="docs/3days.jpeg" class="brochure-btn" target="_blank">Download Brochure</a>
-              </a>
-            </td>
-          </tr>
-          <!-- Repeat for other plans -->
-          <tr>
-            <td>7-Day Trial</td>
-            <td>
-              <s>₹3999</s> 
-                <span class="new-price" data-inr="1999">₹1999</span>
-              <a href="docs/7days.jpeg" class="brochure-btn" target="_blank">Download Brochure</a>
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td>1 Month</td>
-            <td>
-              <s>₹19,999</s> <span class="new-price" data-inr="9999">₹9,999</span>
-              <a href="docs/1month.jpeg" class="brochure-btn" target="_blank">Download Brochure</a>
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td>3 Month</td>
-            <td>
-              <s>₹49,999</s> <span class="new-price" data-inr="24999">₹24,999</span>
-              <a href="docs/3months.jpeg" class="brochure-btn" target="_blank">Download Brochure</a>
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td>6 Month</td>
-            <td>
-              <s>₹99,999</s> <span class="new-price" data-inr="49999">₹49,999</span>
-              <a href="docs/6months.jpeg" class="brochure-btn" target="_blank">Download Brochure</a>
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td>12 Month</td>
-            <td>
-              <s>₹1,99,999</s> <span class="new-price" data-inr="99999">₹99,999</span>
-              <a href="docs/1year.jpeg" class="brochure-btn" target="_blank">Download Brochure</a>
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <p class="limited">⚡ Limited time offer for our early clients only.</p>
-    </div>
+    <a href="assets/Cloudora_Profile.pdf" class="btn" download>
+      📄 Download Company Profile
+    </a>
 
-    <div class="explore-more-container" data-reveal>
-      <a href="launchoffer/index.html" class="explore-more-btn">Explore Our Services</a>
-    </div>
   </div>
 </section>
 
-    <div class="timeline">
-      <h3>Milestones</h3>
-      <ul>
-        <li><strong>2023:</strong> Launched BHIX token ecosystem</li>
-        <li><strong>2024:</strong> Built Cloudora platform + Email Blaster</li>
-        <li><strong>2025:</strong> Delivered JFC, SKNKS, BP websites</li>
-        <li><strong>2026:</strong> Launching WhatsApp automation tools</li>
-      </ul>
-    </div>
-
-    <div class="about-cta">
-      <a href="assets/Cloudora_Profile.pdf" class="btn" download>📄 Download Company Profile</a>
-    </div>
-  </div>
-</section>
-    
+<!-- =======================
+     Services
+======================= -->
     <section id="services">
         <div class="container section-head" data-reveal>
             <h2>Services</h2>
@@ -270,7 +222,8 @@
             </div>
         </div>
         <div class="container scroller-wrap fade-mask" data-reveal>
-            <div class="scroller" id="serviceScroller" aria-label="scrollable service cards">
+          <div class="scroll-dots" id="serviceDots"></div>
+          <div class="scroller" id="serviceScroller" aria-label="scrollable service cards">
                 
                 <article class="card" data-reveal>
                     <div class="img">
@@ -468,6 +421,10 @@
         </div>
     </section>
 
+
+    <!-- =======================
+         What We Have Built
+    ========================== -->    
 <section id="portfolio" class="my-projects" data-reveal>
   <div class="container">
     <h2>What We’ve Built</h2>
@@ -557,218 +514,312 @@
   </div>
 </section>    
 
-    <section id="why">
-        <div class="container">
-            <div class="section-head" data-reveal>
-                <h2>Why choose Cloudora?</h2>
-                <p class="sub-head">We’re not just another agency — we’re your growth partner 🚀</p>
-            </div>
-            
-            <div class="grid-3">
-                
-                <div class="feature" data-reveal>
-                    <h4>🌍 Senior Talent, On-Demand</h4>
-                    <p>Elastic remote team across timezones: architects, marketers, designers & producers.</p>
-                </div>
+<!-- =======================
+     WHY CHOOSE CLOUDORA
+======================= -->
+<section id="why" class="why-section" data-reveal>
+  <div class="container">
 
-                <div class="feature" data-reveal>
-                    <h4>💡 Innovation First</h4>
-                    <p>From AI-powered campaigns to blockchain apps, we embrace the latest tech to keep you ahead.</p>
-                </div>
+    <header class="section-head">
+      <h2>Why Choose Cloudora?</h2>
+      <p class="sub-head" data-i18n="why_sub">
+        Not just an agency — your long-term growth & technology partner 🚀
+      </p>
+    </header>
 
-                <div class="feature" data-reveal>
-                    <h4>📊 Transparent Pricing</h4>
-                    <p>Clear SOWs, milestone billing, and weekly progress demos keep you in control of costs.</p>
-                </div>
+    <div class="why-grid">
 
-                <div class="feature" data-reveal>
-                    <h4>🔐 Security & Compliance</h4>
-                    <p>Secure SDLC, NDA by default, role-based access and audit-ready processes for enterprise clients.</p>
-                </div>
+      <article class="feature" data-reveal>
+        <span class="icon">🌍</span>
+        <h4 data-i18n="why_1_title">Senior Talent, On-Demand</h4>
+        <p data-i18n="why_1_desc">Global experts across architecture, marketing, design & production.</p>
+      </article>
 
-                <div class="feature" data-reveal>
-                    <h4>⚡ Fast Delivery</h4>
-                    <p>Agile workflows and a distributed team enable quick turnarounds without compromising quality.</p>
-                </div>
+      <article class="feature genie-pick" data-reveal>
+        <span class="genie-badge">🧠 Genie Recommends</span>
+        <span class="icon">💡</span>
+        <h4 data-i18n="why_2_title">Innovation First</h4>
+        <p data-i18n="why_2_desc">AI, automation & Web3 solutions to keep you ahead.</p>
+      </article>
 
-                <div class="feature" data-reveal>
-                    <h4>🤝 Client Success Stories</h4>
-                    <p>We measure our success by yours — from startups raising funds to enterprises scaling globally.</p>
-                </div>
+      <article class="feature" data-reveal>
+        <span class="icon">📊</span>
+        <h4 data-i18n="why_3_title">Transparent Pricing</h4>
+        <p data-i18n="why_3_desc">Clear SOWs, milestone billing & weekly demos.</p>
+      </article>
 
-                <div class="feature" data-reveal>
-                    <h4>📈 Data-Driven Results</h4>
-                    <p>Analytics and KPIs built into every service to ensure measurable business growth.</p>
-                </div>
+      <article class="feature" data-reveal>
+        <span class="icon">🔐</span>
+        <h4 data-i18n="why_4_title">Security & Compliance</h4>
+        <p data-i18n="why_4_desc">NDA-first culture & enterprise-grade SDLC.</p>
+      </article>
 
-                <div class="feature" data-reveal>
-                    <h4>🎨 Creative + Tech</h4>
-                    <p>A unique blend of designers, developers & storytellers who craft experiences that sell.</p>
-                </div>
+      <article class="feature" data-reveal>
+        <span class="icon">⚡</span>
+        <h4 data-i18n="why_5_title">Fast Delivery</h4>
+        <p data-i18n="why_5_desc">Agile workflows without quality compromise.</p>
+      </article>
 
-            </div>
+      <article class="feature" data-reveal>
+        <span class="icon">📈</span>
+        <h4 data-i18n="why_6_title">Data-Driven Results</h4>
+        <p data-i18n="why_6_desc">KPIs & analytics built into every service.</p>
+      </article>
 
-            <div class="why-cta" data-reveal>
-                <a href="#contact" class="btn big">Let’s Work Together</a>
-            </div>
-        </div>
-    </section>
+    </div>
 
-    <section class="testimonials" data-reveal>
+    <div class="why-cta" data-reveal>
+      <a href="#contact" class="btn big" data-i18n="why_cta">Let’s Work Together</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- =======================
+     TESTIMONIALS
+======================= -->
+<!-- ======================= TESTIMONIALS ======================= -->
+<section id="testimonials" class="testimonials">
   <div class="container">
     <h2>Client Testimonials</h2>
-    <div class="testimonial-card">
-      <p>"Cloudora helped us scale our ad campaigns 3x in 2 months. Highly recommended!"</p>
-      <span>— Marketing Lead, Fintech Startup</span>
+    <p class="sub-head">What founders & teams say about working with Cloudora</p>
+
+    <!-- Carousel -->
+    <div class="testimonial-carousel" id="testimonialCarousel">
+      <div class="testimonial-card">
+        <p>“Cloudora helped us scale our ad campaigns 3× in just 2 months. Clear strategy, fast execution.”</p>
+        <span>— Marketing Lead, Fintech Startup</span>
+      </div>
+
+      <div class="testimonial-card">
+        <p>“Their tech + marketing combo is rare. From website to automation, everything was handled professionally.”</p>
+        <span>— Founder, E-commerce Brand</span>
+      </div>
+
+      <div class="testimonial-card">
+        <p>“Transparent pricing, weekly demos, and actual results. Cloudora feels like an in-house team.”</p>
+        <span>— Operations Head, SaaS Company</span>
+      </div>
     </div>
-    <!-- Add more testimonials -->
+
+    <!-- User Reviews (JS Injected) -->
+    <div class="testimonial-grid" id="testimonialGrid"></div>
+
+    <!-- Add Review -->
+    <form id="testimonialForm" class="add-review">
+      <textarea id="reviewText" placeholder="Write your review..." required></textarea>
+      <input id="reviewAuthor" type="text" placeholder="Your name / role" required />
+
+      <select id="reviewStars" required>
+        <option value="">Rating</option>
+        <option value="5">⭐⭐⭐⭐⭐</option>
+        <option value="4">⭐⭐⭐⭐</option>
+        <option value="3">⭐⭐⭐</option>
+      </select>
+
+      <button class="btn" type="submit">Submit Review</button>
+    </form>
   </div>
 </section>
-                
-    
-    <section id="hiring" data-reveal>
-        <div class="container">
-            <div class="section-head"><h2>🚀 We’re Hiring Remote & Field Teams</h2></div>
 
-            <div class="job-filters">
-                <button class="filter-btn active" data-filter="sales">🔥 Sales & Marketing</button>
-                <button class="filter-btn" data-filter="support">📞 Support & Telecalling</button>
-                <button class="filter-btn" data-filter="dev">💻 Developers & Product</button>
-            </div>
-
-            <div class="joblist">
-
-                <div class="job-card sales">
-                    <h4>Sales Executives (Field / Cold Visits)</h4>
-                    <p>Meet clients face-to-face, pitch services & close deals. PAN India & Global.</p>
-                    <a class="btn small" href="apply/apply.html">Apply Now</a>
-                </div>
-
-                <div class="job-card sales">
-                    <h4>Inside Sales Executives (Online Cold Calls)</h4>
-                    <p>Generate leads via cold calls, LinkedIn outreach & email campaigns.</p>
-                    <a class="btn small" href="apply/apply.html">Apply Now</a>
-                </div>
-
-                <div class="job-card sales">
-                    <h4>Digital Marketing Specialist (SEO & Ads)</h4>
-                    <p>Run ROI-driven campaigns across Google, Meta & LinkedIn.</p>
-                    <a class="btn small" href="apply/apply.html">Apply Now</a>
-                </div>
-
-                <div class="job-card support">
-                    <h4>Cold Calling Associates</h4>
-                    <p>Mass call outreach for prospecting and first contact with leads.</p>
-                    <a class="btn small" href="apply/apply.html">Apply Now</a>
-                </div>
-
-                <div class="job-card support">
-                    <h4>Lead Qualification Callers</h4>
-                    <p>Engage inbound leads, qualify them and forward to sales team.</p>
-                    <a class="btn small" href="apply/apply.html">Apply Now</a>
-                </div>
-
-                <div class="job-card support">
-                    <h4>Customer Success Associates</h4>
-                    <p>Manage support tickets, onboarding, training & follow-ups.</p>
-                    <a class="btn small" href="apply/apply.html">Apply Now</a>
-                </div>
-
-                <div class="job-card dev">
-                    <h4>Frontend / Backend / Full-Stack Developers</h4>
-                    <p>React, Next.js, Node.js developers to build high-performance apps.</p>
-                    <a class="btn small" href="apply/apply.html">Apply Now</a>
-                </div>
-
-                <div class="job-card dev">
-                    <h4>Blockchain Engineers (Solidity / DApps / NFTs)</h4>
-                    <p>Work on DeFi, NFT & smart contract projects. Prior GitHub required.</p>
-                    <a class="btn small" href="apply/apply.html">Apply Now</a>
-                </div>
-
-                <div class="job-card dev">
-                    <h4>Game Developers (Unity / Unreal)</h4>
-                    <p>Design immersive 2D/3D & blockchain-integrated games.</p>
-                    <a class="btn small" href="apply/apply.html">Apply Now</a>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <section class="sr-only" id="dm-detail"><h2>Digital Marketing</h2></section>
-    <section class="sr-only" id="dev-detail"><h2>Full‑Stack Development</h2></section>
-    <section class="sr-only" id="bc-detail"><h2>Blockchain</h2></section>
-    <section class="sr-only" id="game-detail"><h2>Game Dev</h2></section>
-    <section class="sr-only" id="web-detail"><h2>Web Design</h2></section>
-    <section class="sr-only" id="video-detail"><h2>AI Video</h2></section>
-
-    <section id="contact" data-reveal>
+<!-- =======================
+     HIRING
+======================= -->
+<section id="hiring" data-reveal>
   <div class="container">
-    <div class="section-head"><h2>Start a Project</h2></div>
+    <div class="section-head">
+      <h2>🚀 We’re Hiring Remote & Field Teams</h2>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="job-filters">
+      <button class="filter-btn active" data-filter="sales">🔥 Sales & Growth</button>
+      <button class="filter-btn" data-filter="support">💬 Chat Support & Telecalling</button>
+      <button class="filter-btn" data-filter="dev">💻 Tech, Content & Creators</button>
+    </div>
+
+    <div class="joblist">
+
+      <!-- ================= SALES & GROWTH ================= -->
+      <div class="job-card sales">
+        <h4>Field Sales Executives</h4>
+        <p>On-ground client meetings, demos, deal closures. PAN India.</p>
+        <a class="btn small" href="apply/apply.html">Apply Now</a>
+      </div>
+
+      <div class="job-card sales">
+        <h4>Inside Sales Executives</h4>
+        <p>Online sales via calls, WhatsApp, email & CRM follow-ups.</p>
+        <a class="btn small" href="apply/apply.html">Apply Now</a>
+      </div>
+
+      <div class="job-card sales">
+        <h4>Digital Marketing Executives</h4>
+        <p>SEO, Google Ads, Meta Ads, funnels & growth experiments.</p>
+        <a class="btn small" href="apply/apply.html">Apply Now</a>
+      </div>
+
+      <div class="job-card sales">
+        <h4>Business Development Managers</h4>
+        <p>Partnerships, enterprise clients & revenue expansion.</p>
+        <a class="btn small" href="apply/apply.html">Apply Now</a>
+      </div>
+
+      <!-- ================= SUPPORT & TELECALLING ================= -->
+      <div class="job-card support">
+        <h4>Domestic Lead Generators</h4>
+        <p>India-based outbound calling, data validation & lead creation.</p>
+        <a class="btn small" href="apply/apply.html">Apply Now</a>
+      </div>
+
+      <div class="job-card support">
+        <h4>International Lead Generators</h4>
+        <p>US, UK, UAE & global calling campaigns (night shifts).</p>
+        <a class="btn small" href="apply/apply.html">Apply Now</a>
+      </div>
+
+      <div class="job-card support">
+        <h4>Chat Support Executives</h4>
+        <p>Website chat, WhatsApp, email & customer query handling.</p>
+        <a class="btn small" href="apply/apply.html">Apply Now</a>
+      </div>
+
+      <div class="job-card support">
+        <h4>Customer Success Coordinators</h4>
+        <p>Client onboarding, follow-ups, renewals & satisfaction.</p>
+        <a class="btn small" href="apply/apply.html">Apply Now</a>
+      </div>
+
+      <!-- ================= TECH, CONTENT & CREATORS ================= -->
+      <div class="job-card dev">
+        <h4>Frontend / Backend / Full-Stack Developers</h4>
+        <p>React, Next.js, Node, Supabase & scalable systems.</p>
+        <a class="btn small" href="apply/apply.html">Apply Now</a>
+      </div>
+
+      <div class="job-card dev">
+        <h4>UI/UX Designers</h4>
+        <p>Website, dashboards, mobile-first product design.</p>
+        <a class="btn small" href="apply/apply.html">Apply Now</a>
+      </div>
+
+      <div class="job-card dev">
+        <h4>Content Writers & Bloggers</h4>
+        <p>Blogs, landing pages, SEO content & brand storytelling.</p>
+        <a class="btn small" href="apply/apply.html">Apply Now</a>
+      </div>
+
+      <div class="job-card dev">
+        <h4>Video Editors & Social Media Creators</h4>
+        <p>Reels, ads, YouTube, motion graphics & creatives.</p>
+        <a class="btn small" href="apply/apply.html">Apply Now</a>
+      </div>
+
+      <div class="job-card dev">
+        <h4>Blockchain & Web3 Developers</h4>
+        <p>Smart contracts, DApps, NFTs & DeFi products.</p>
+        <a class="btn small" href="apply/apply.html">Apply Now</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- =======================
+     SUBMIT FORM
+======================= -->
+<!-- ======================= CONTACT / PROJECT FORM ======================= -->
+<section id="contact" data-reveal>
+  <div class="container">
+    <div class="section-head">
+      <h2>Start a Project</h2>
+    </div>
 
     <div class="contact-wrap">
-    <form id="contactForm">
-    <label>Full Name</label>
-    <input id="name" name="full_name" required>
+      <form id="contactForm">
+        <label>Full Name</label>
+        <input id="name" name="full_name" required />
 
-    <label>Email</label>
-    <input id="email" name="email" type="email" required>
+        <label>Email</label>
+        <input id="email" name="email" type="email" required />
 
-    <label>Phone</label>
-    <input id="phone" name="phone" type="tel" required>
+        <label>Phone</label>
+        <input id="phone" name="phone" type="tel" required />
 
-    <label>WhatsApp</label>
-    <input id="whatsapp" name="whatsapp" type="tel">
+        <label>WhatsApp</label>
+        <input id="whatsapp" name="whatsapp" type="tel" />
 
-    <label>Company</label>
-    <input id="company" name="company">
+        <label>Company</label>
+        <input id="company" name="company" />
 
-    <label>Address</label>
-    <textarea id="address" name="address"></textarea>
+        <label>Address</label>
+        <textarea id="address" name="address"></textarea>
 
-    <label>Service Interested</label>
-    <select id="service" name="service" required>
-        <option value="">Choose</option>
-        <option>Performance Marketing</option>
-        <option>Full-Stack Development</option>
-        <option>Blockchain / Smart Contracts</option>
-        <option>Game Development</option>
-        <option>Web Design</option>
-        <option>AI Video</option>
-        <option>Other</option>
-    </select>
+        <label>Service Interested</label>
+        <select id="service" name="service" required>
+          <option value="">Choose</option>
+          <option>Performance Marketing</option>
+          <option>Full-Stack Development</option>
+          <option>Blockchain / Smart Contracts</option>
+          <option>Game Development</option>
+          <option>Web Design</option>
+          <option>AI Video</option>
+          <option>Other</option>
+        </select>
 
-    <label>Budget</label>
-    <select id="budget" name="budget">
-        <option value="">Select</option>
-        <option>₹1,000 – ₹5,000</option>
-        <option>₹5,000 – ₹10,000</option>
-        <option>₹10,000 – ₹25,000</option>
-        <option>₹25,000 – ₹1,00,000</option>
-        <option>₹1,00,000 – ₹5,00,000</option>
-        <option>₹5,00,000+</option>
-    </select>
+        <label>Budget</label>
+        <select id="budget" name="budget">
+          <option value="">Select</option>
+          <option data-inr="1000">₹1,000 – ₹5,000</option>
+          <option data-inr="5000">₹5,000 – ₹10,000</option>
+          <option data-inr="25000">₹10,000 – ₹25,000</option>
+          <option data-inr="50000">₹25,000 – ₹1,00,000</option>
+          <option data-inr="100000">₹1,00,000 – ₹5,00,000</option>
+          <option data-inr="500000">₹5,00,000+</option>
+        </select>
 
-    <label>Timeline</label>
-    <select id="timeline" name="timeline">
-        <option value="">Select</option>
-        <option>ASAP (within 1 month)</option>
-        <option>1 – 3 months</option>
-        <option>3 – 6 months</option>
-        <option>6+ months</option>
-    </select>
+        <label>Timeline</label>
+        <select id="timeline" name="timeline">
+          <option value="">Select</option>
+          <option>ASAP (within 1 month)</option>
+          <option>1 – 3 months</option>
+          <option>3 – 6 months</option>
+          <option>6+ months</option>
+        </select>
 
-    <label>Project Details</label>
-    <textarea id="msg" name="message" required></textarea>
+        <label>Project Details</label>
+        <textarea id="msg" name="message" required></textarea>
 
-    <button type="submit">Request Proposal</button>
-    <span id="formStatus" style="display:none"></span>
-    </form>
+        <button type="submit">Request Proposal</button>
+        <span id="formStatus" hidden></span>
+      </form>
     </div>
   </div>
 </section>
 
+<!-- Genie PlaceHolder -->
+<div id="genie">
+  <button id="genieToggle" aria-label="Open Genie">
+  <img src="/assets/genie.png" alt="Genie">
+</button>
+
+
+  <div id="geniePanel">
+    <header>
+      <strong>Genie</strong>
+      <span>Your Cloudora Assistant</span>
+      <button id="genieClose">✕</button>
+    </header>
+
+    <div class="genie-body">
+      <p>👋 Hi, I’m Genie.<br>How can I help you today?</p>
+    </div>
+    <audio id="genieSound" src="/assets/sounds/genie-soft.mp3" preload="auto"></audio>
+  </div>
+</div>
+
+<!-- =======================
+     FOOTER
+======================= -->
     <footer>
         <div class="container foot">
             <div class="foot-left">
@@ -843,11 +894,8 @@ s0.parentNode.insertBefore(s1,s0);
 })();
 </script>
 <!--End of Tawk.to Script-->
-    
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-         <script type="module" src="script.js"></script>
-       
-        <script type="text/javascript">
+ <!-- Google Translate -->
+<script type="text/javascript">
   function googleTranslateElementInit() {
     new google.translate.TranslateElement({
       pageLanguage: 'en',
@@ -858,48 +906,32 @@ s0.parentNode.insertBefore(s1,s0);
 </script>
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-    <script>
-document.addEventListener("DOMContentLoaded", function () {
-  // Wait 1 second after DOM is ready so Tawk can load first
-  setTimeout(() => {
-    autoTranslateByBrowserLang();
-  }, 1000);
-});
-</script>
+<!-- CORE (ALWAYS FIRST) -->
+<script type="module" src="/js/core.js"></script>
 
-       <script>
-  function autoTranslateByBrowserLang() {
-    const langMap = {
-      hi: 'hi',
-      fr: 'fr',
-      es: 'es',
-      de: 'de',
-      zh: 'zh-CN',
-      ar: 'ar',
-      ja: 'ja',
-      ru: 'ru',
-      pt: 'pt',
-      bn: 'bn',
-      ta: 'ta',
-      mr: 'mr'
-    };
+<!-- HEADER (ALWAYS) -->
+<script type="module" src="/js/header.js"></script>
 
-    const browserLang = navigator.language.slice(0, 2);
-    const targetLang = langMap[browserLang];
+<!-- PAGE SPECIFIC -->
+<!-- Home page only -->
+<script type="module" src="/js/home.js"></script>
 
-    const tryTranslate = () => {
-      const select = document.querySelector('.goog-te-combo');
-      if (select && targetLang) {
-        select.value = targetLang;
-        select.dispatchEvent(new Event('change'));
-      } else {
-        setTimeout(tryTranslate, 500); // keep retrying until widget loads
-      }
-    };
+<!-- Forms (pages with forms) -->
+<script type="module" src="/js/forms.js"></script>
+<!-- genie js -->
+<script type="module" src="/js/genie.js"></script>
 
-    tryTranslate();
-  }
-</script>
+<!-- GSAP (only if page uses it) -->
+<script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+
+
+<!-- PROJECT MODAL -->
+<div class="project-modal" id="projectModal">
+  <div class="modal-box">
+    <span class="modal-close" id="modalClose">✕</span>
+    <div id="modalContent"></div>
+  </div>
+</div>
 
 </body>
 </html>
