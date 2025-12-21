@@ -10,6 +10,13 @@ import { supabase } from "../lib/supabaseClient.js";
 
 const router = express.Router();
 
+router.get("/start", (req, res) => {
+  res.json({
+    ok: true,
+    message: "Genie route is live",
+  });
+});
+
 /* =======================
    MEMORY
 ======================= */
@@ -190,4 +197,5 @@ router.post("/start", async (req, res) => {
 });
 
 export default router;
+
 
