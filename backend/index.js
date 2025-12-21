@@ -7,7 +7,7 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import { createClient } from "@supabase/supabase-js";
-
+import fs from "fs";
 // Routers (working modules)
 import catalogueRouter from "./routes/admin_upload.js";
 import proposalRouter from "./routes/api_proposal.js";
@@ -18,6 +18,14 @@ import adminRouter from "./routes/admin.js";
 import jobRouter from "./routes/job/job.js";
 import trainingRouter from "./routes/training.js";
 import extractorRoutes from "./routes/extractor.js";
+
+
+if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
+  fs.writeFileSync(
+    "/app/gcp-key.json",
+    process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON
+  );
+}
 
 // Logger
 const logger = console;
@@ -112,6 +120,7 @@ const PORT = process.env.PORT || 8787;
 app.listen(PORT, () => {
   console.log(`🔥 Cloudora Genie backend running CLEAN on ${PORT}`);
 });
+
 
 
 
