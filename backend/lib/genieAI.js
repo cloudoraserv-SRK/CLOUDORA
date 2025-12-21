@@ -6,20 +6,30 @@ const vertex = new VertexAI({
 });
 
 const model = vertex.preview.getGenerativeModel({
-  model: process.env.GEMINI_MODEL
+  model: process.env.GEMINI_MODEL || "gemini-1.5-pro"
 });
 
 export async function askGemini(prompt) {
   try {
     const result = await model.generateContent({
-      contents: [{ role: "user", parts: [{ text: prompt }] }]
+      contents: [
+        {
+          role: "user",
+          parts: [{ text: prompt }]
+        }
+      ]
     });
-    return result.response.candidates[0].content.parts[0].text;
+
+    const text =
+      result?.response?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    if (!text) {
+      throw new Error("Empty Gemini response");
+    }
+
+    return text;
   } catch (err) {
     console.error("🔥 GEMINI ERROR:", err);
     throw err;
   }
 }
-  return result.response.candidates[0].content.parts[0].text;
-}
-
