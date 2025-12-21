@@ -1,8 +1,13 @@
 import { VertexAI } from "@google-cloud/vertexai";
 
+const credentials = JSON.parse(
+  process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON || "{}"
+);
+
 const vertex = new VertexAI({
   project: process.env.GCP_PROJECT_ID,
-  location: process.env.GCP_LOCATION
+  location: process.env.GCP_LOCATION,
+  credentials
 });
 
 const model = vertex.preview.getGenerativeModel({
@@ -23,9 +28,7 @@ export async function askGemini(prompt) {
     const text =
       result?.response?.candidates?.[0]?.content?.parts?.[0]?.text;
 
-    if (!text) {
-      throw new Error("Empty Gemini response");
-    }
+    if (!text) throw new Error("Empty Gemini response");
 
     return text;
   } catch (err) {
