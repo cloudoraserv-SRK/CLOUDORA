@@ -92,12 +92,6 @@ app.use("/api/proposal", proposalRouter);
 // Genie media routes (images/audio upload)
 app.use("/api/genie", genieMediaRoutes);
 
-// Genie simple text route (no memory)
-app.post("/api/genie/message", async (req, res) => {
-  const msg = req.body.message || "";
-  return res.json({ reply: "Okay! (Genie basic mode active)" });
-});
-
 // Training module
 app.use("/api/training", trainingRouter);
 
@@ -114,5 +108,6 @@ const PORT = process.env.PORT || 8787;
 app.listen(PORT, () => {
   console.log(`🔥 Cloudora Genie backend running CLEAN on ${PORT}`);
 });
+
 
 
