@@ -10,14 +10,16 @@ const model = vertex.preview.getGenerativeModel({
 });
 
 export async function askGemini(prompt) {
-  const result = await model.generateContent({
-    contents: [
-      {
-        role: "user",
-        parts: [{ text: prompt }]
-      }
-    ]
-  });
-
+  try {
+    const result = await model.generateContent({
+      contents: [{ role: "user", parts: [{ text: prompt }] }]
+    });
+    return result.response.candidates[0].content.parts[0].text;
+  } catch (err) {
+    console.error("🔥 GEMINI ERROR:", err);
+    throw err;
+  }
+}
   return result.response.candidates[0].content.parts[0].text;
 }
+
