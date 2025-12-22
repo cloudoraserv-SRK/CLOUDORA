@@ -20,11 +20,14 @@ import trainingRouter from "./routes/training.js";
 import extractorRoutes from "./routes/extractor.js";
 
 
+// ---- WRITE GCP KEY FILE BEFORE ANY GOOGLE SDK LOADS ----
 if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
   fs.writeFileSync(
     "/app/gcp-key.json",
-    process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON
+    process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON,
+    { encoding: "utf8" }
   );
+  console.log("🔐 GCP key file written to /app/gcp-key.json");
 }
 
 // Logger
@@ -120,6 +123,7 @@ const PORT = process.env.PORT || 8787;
 app.listen(PORT, () => {
   console.log(`🔥 Cloudora Genie backend running CLEAN on ${PORT}`);
 });
+
 
 
 
