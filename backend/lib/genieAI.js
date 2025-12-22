@@ -19,7 +19,7 @@ const vertex = new VertexAI({
 });
 
 const model = vertex.preview.getGenerativeModel({
-  model: process.env.GEMINI_MODEL || "gemini-1.5-pro"
+  model: process.env.GEMINI_MODEL || "gemini-1.0-pro"
 });
 
 export async function askGemini(prompt) {
@@ -44,4 +44,5 @@ export async function askGemini(prompt) {
     throw err;
   }
 }
+
 
