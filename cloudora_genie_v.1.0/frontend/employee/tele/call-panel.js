@@ -186,18 +186,14 @@ function renderSurveyStep() {
 
   const isLastStep = surveyStep === SURVEY_FLOW.length - 1;
 
-  // 🔙 Back button control
+  // Back button
   qs("backBtn").style.display = surveyStep === 0 ? "none" : "inline-block";
 
-  // ▶ Next button control
-  if (isLastStep) {
-    qs("nextBtn").style.display = "none";
-  } else {
-    qs("nextBtn").style.display = "inline-block";
-    qs("nextBtn").disabled = true;
-  }
+  // Next button
+  qs("nextBtn").style.display = isLastStep ? "none" : "inline-block";
+  qs("nextBtn").disabled = true;
 
-  // conditional skip
+  // Conditional skip
   if (step.condition && !step.condition(surveyAnswers)) {
     surveyStep++;
     return renderSurveyStep();
@@ -205,31 +201,13 @@ function renderSurveyStep() {
 
   qs("questionBox").innerText = step.text || step.question;
 
+  // Info step
   if (step.type === "info") {
-    if (!isLastStep) qs("nextBtn").disabled = false;
+    qs("nextBtn").disabled = false;
     return;
   }
 
-  step.options.forEach(opt => {
-    const btn = document.createElement("button");
-    btn.innerText = opt;
-    btn.onclick = () => selectAnswer(step, opt, btn);
-    qs("optionsBox").appendChild(btn);
-  });
-}
-
-  if (step.condition && !step.condition(surveyAnswers)) {
-    surveyStep++;
-    return renderSurveyStep();
-  }
-
-  qs("questionBox").innerText = step.text || step.question;
-
-  if (step.type === "info") {
-    if (!isLastStep) qs("nextBtn").disabled = false;
-    return;
-  }
-
+  // Options
   step.options.forEach(opt => {
     const btn = document.createElement("button");
     btn.innerText = opt;
@@ -275,37 +253,6 @@ function resetSurvey() {
   surveyStep = 0;
   surveyAnswers = {};
   qs("nextBtn").disabled = false;
-}
-
-function renderSurveyStep() {
-  const step = SURVEY_FLOW[surveyStep];
-  if (!step) return;
-
-  qs("currentStep").innerText = surveyStep + 1;
-  qs("totalSteps").innerText = SURVEY_FLOW.length;
-
-  qs("optionsBox").innerHTML = "";
-  qs("nextBtn").disabled = true;
-
-  if (step.condition && !step.condition(surveyAnswers)) {
-    surveyStep++;
-    return renderSurveyStep();
-  }
-
-  qs("questionBox").innerText = step.text || step.question;
-
-  if (step.type === "info") {
-    qs("nextBtn").disabled = false;
-    return;
-  }
-
-  step.options.forEach(opt => {
-    const btn = document.createElement("button");
-    btn.innerText = opt;
-
-    btn.onclick = () => selectAnswer(step, opt, btn);
-    qs("optionsBox").appendChild(btn);
-  });
 }
 
 async function selectAnswer(step, value, btn) {
@@ -406,6 +353,7 @@ window.onload = () => {
   startTimer();
   loadNextLead();
 };
+
 
 
 
