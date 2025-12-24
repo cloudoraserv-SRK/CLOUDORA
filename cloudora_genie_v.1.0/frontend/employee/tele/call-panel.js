@@ -1,4 +1,5 @@
 console.log("Call Panel Survey JS Loaded ✓");
+let skippedSteps = new Set();
 
 /* ---------------------------------------------------------
    GLOBALS
@@ -175,6 +176,8 @@ async function loadNextLead() {
   resetSurvey();
   renderSurveyStep();
 }
+// Render Survey Steps
+
 function renderSurveyStep() {
   const step = SURVEY_FLOW[surveyStep];
   if (!step) return;
@@ -195,9 +198,11 @@ function renderSurveyStep() {
 
   // Conditional skip
   if (step.condition && !step.condition(surveyAnswers)) {
-    surveyStep++;
-    return renderSurveyStep();
-  }
+  skippedSteps.add(surveyStep);
+  surveyStep++;
+  return renderSurveyStep();
+}
+
 
   qs("questionBox").innerText = step.text || step.question;
 
@@ -298,6 +303,14 @@ qs("nextBtn").onclick = async () => {
   renderSurveyStep();
 };
 
+qs("backBtn").onclick = () => {
+  do {
+    surveyStep--;
+  } while (skippedSteps.has(surveyStep));
+
+  if (surveyStep < 0) surveyStep = 0;
+  renderSurveyStep();
+};
 
 /* ---------------------------------------------------------
    SKIP
@@ -353,7 +366,3 @@ window.onload = () => {
   startTimer();
   loadNextLead();
 };
-
-
-
-
