@@ -194,38 +194,100 @@ body {
 
 /* Navigation */
 .survey-controls {
-  margin-top: 18px;
-}
-
-.survey-controls {
   display: flex;
   justify-content: space-between;
-  gap: 12px;
-  margin-top: 20px;
+  gap: 14px;
+  margin-top: 24px;
 }
 
-/* BACK BUTTON */
+/* ===== BACK BUTTON ===== */
 .secondary-btn {
-  padding: 10px 18px;
-  background: transparent;
-  border: 1.5px solid #cfd4dc;
-  color: #444;
+  position: relative;
+  padding: 11px 22px;
+  background: linear-gradient(135deg, #f9fafb, #eef1f6);
+  border: 1px solid #d6dbe5;
+  color: #374151;
   font-size: 14px;
-  border-radius: 8px;
+  font-weight: 500;
+  border-radius: 10px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  transition: all 0.25s ease;
+}
+
+.secondary-btn::before {
+  content: "←";
+  margin-right: 6px;
+  transition: transform 0.25s ease;
 }
 
 .secondary-btn:hover {
-  background: #f4f6f9;
-  border-color: #aeb6c2;
+  background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+  border-color: #c7d2fe;
+  transform: translateY(-1px);
+}
+
+.secondary-btn:hover::before {
+  transform: translateX(-3px);
 }
 
 .secondary-btn:active {
+  transform: scale(0.96);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* ===== NEXT BUTTON ===== */
+.primary-btn {
+  position: relative;
+  padding: 12px 26px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #fff;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(37,99,235,0.35);
+  transition: all 0.25s ease;
+  overflow: hidden;
+}
+
+/* Shine animation */
+.primary-btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 120%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.4),
+    transparent
+  );
+  transition: all 0.6s ease;
+}
+
+.primary-btn:hover::after {
+  left: 120%;
+}
+
+.primary-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(37,99,235,0.45);
+}
+
+.primary-btn:active {
   transform: scale(0.97);
 }
 
-/* NEXT BUTTON (for reference consi*
+/* Disabled state */
+.primary-btn:disabled {
+  background: linear-gradient(135deg, #9ca3af, #6b7280);
+  box-shadow: none;
+  cursor: not-allowed;
+}
 
 /* ==========================================
    UPDATE AREA (OPTIONAL – KEEP)
@@ -303,4 +365,5 @@ textarea {
 .timeline-item:last-child {
   border-bottom: none;
 }
+
 
