@@ -130,11 +130,19 @@ router.post("/assign-selected", async (req, res) => {
 
       if (error) continue;
 
-      await supabase.from("scraped_leads_assignments").insert({
-        scraped_lead_id: id,
-        employee_id,
-        status: "pending"
-      });
+      const { error: insErr } = await supabase
+  .from("scraped_leads_assignments")
+  .insert({
+    scraped_lead_id: id,
+    employee_id,
+    status: "pending"
+  });
+
+if (insErr) {
+  // ❗ already assigned somewhere else
+  continue;
+}
+
 
       assigned++;
     }
