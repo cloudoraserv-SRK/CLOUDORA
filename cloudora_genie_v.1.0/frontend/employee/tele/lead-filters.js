@@ -34,8 +34,6 @@ async function searchLeads() {
         city: qs("fCity").value.trim(),
         country: qs("fCountry").value.trim(),
         freshness: qs("fFreshness").value,
-        assigned: qs("fAssigned").value,
-        employee_id: EMPLOYEE_ID
     });
 
     try {
@@ -258,3 +256,4 @@ async function assignSelected() {
 
     searchLeads(); // Refresh results
 }
+
