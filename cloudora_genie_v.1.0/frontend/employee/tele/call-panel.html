@@ -7,143 +7,121 @@
 
 <link rel="stylesheet" href="./call-panel.css">
 <link rel="stylesheet" href="../../style.css">
-
 </head>
 
 <body>
 
-<!-- HEADER -->
+<!-- ================= HEADER ================= -->
 <header class="cp-header">
-    <button class="back-btn" onclick="exitPanel()">⬅ Exit</button>
+  <button class="back-btn" onclick="exitPanel()">⬅ Exit</button>
 
-    <div class="cp-title">📞 Calling Panel</div>
+  <div class="cp-title">📞 Calling Panel</div>
+<!-- LANGUAGE SELECTOR -->
+<select id="languageSwitcher" class="lang-switcher">
+  <option value="en">English</option>
+  <option value="hi">हिंदी</option>
+  <option value="bn">বাংলা</option>
+  <option value="ta">தமிழ்</option>
+  <option value="te">తెలుగు</option>
+  <option value="mr">मराठी</option>
+  <option value="gu">ગુજરાતી</option>
+  <option value="pa">ਪੰਜਾਬੀ</option>
+</select>
 
-    <div class="session-timer">
-        ⏱ <span id="sessionTime">00:00</span>
-    </div>
+  <div class="session-timer">
+    ⏱ <span id="sessionTime">00:00</span>
+  </div>
 </header>
 
-
+<!-- ================= MAIN ================= -->
 <div class="cp-container">
 
+  <!-- ============ SINGLE PANEL ============ -->
+  <section class="lead-box">
 
-    <!-- LEFT SIDE : LEAD INFO -->
-    <section class="lead-box">
+    <!-- LEAD INFO -->
+    <div id="leadInfo" class="lead-info">Loading lead...</div>
 
-        <div id="leadInfo" class="lead-info">Loading lead...</div>
+    <div class="call-controls">
+      <a id="dialBtn" class="call-btn" target="_blank">📞 Dial Now</a>
+      <button class="skip-btn" onclick="skipLead()">Skip</button>
+    </div>
 
-        <div class="call-controls">
-            <a id="dialBtn" class="call-btn" target="_blank">📞 Dial Now</a>
-            <button class="skip-btn" onclick="skipLead()">Skip</button>
-        </div>
+    <!-- ================= SURVEY FLOW ================= -->
+    <div class="survey-wrapper">
 
+      <h3>🧠 Lead Survey</h3>
 
-        <!-- UPDATE AREA -->
-        <div class="update-area">
+      <div class="survey-step">
+        Step <span id="currentStep">1</span> of <span id="totalSteps">–</span>
+      </div>
 
-            <label>Status</label>
-            <select id="leadStatus">
-                <option value="pending">Pending</option>
-                <option value="interested">Interested</option>
-                <option value="not_interested">Not Interested</option>
-                <option value="callback">Callback</option>
-                <option value="wrong_number">Wrong Number</option>
-            </select>
+      <div id="questionBox" class="question-box">
+        Loading question...
+      </div>
 
-            <label>Notes</label>
-            <textarea id="leadNotes" placeholder="Type call notes..."></textarea>
+      <div id="optionsBox" class="options-box"></div>
 
+      <div class="survey-controls">
+        <button id="nextBtn" class="primary-btn" disabled>Next</button>
+      </div>
 
-            <!-- CALLBACK FIELDS -->
-            <div id="callbackFields" style="display:none;">
-                <label>Follow-up Date</label>
-                <input type="date" id="followDate">
+    </div>
 
-                <label>Follow-up Time</label>
-                <input type="time" id="followTime">
-            </div>
+    <!-- ================= STATUS / NOTES (OPTIONAL – KEEP FOR NOW) ================= -->
+    <div class="update-area">
 
+      <label>Status</label>
+      <select id="leadStatus">
+        <option value="pending">Pending</option>
+        <option value="interested">Interested</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="callback">Callback</option>
+        <option value="wrong_number">Wrong Number</option>
+      </select>
 
-            <!-- QUALIFICATION SECTION -->
-            <h4 class="qual-title">Qualification Details</h4>
+      <label>Notes</label>
+      <textarea id="leadNotes" placeholder="Type call notes..."></textarea>
 
-            <label>Customer Requirement</label>
-            <input id="qualRequirement" placeholder="Website, Marketing, Branding..." />
+      <div id="callbackFields" style="display:none;">
+        <label>Follow-up Date</label>
+        <input type="date" id="followDate">
 
-            <label>Budget Range</label>
-            <select id="qualBudget">
-                <option value="">Select</option>
-                <option value="0-5k">₹0 - ₹5,000</option>
-                <option value="5k-15k">₹5,000 - ₹15,000</option>
-                <option value="15k-50k">₹15,000 - ₹50,000</option>
-                <option value="50k+">₹50,000+</option>
-            </select>
+        <label>Follow-up Time</label>
+        <input type="time" id="followTime">
+      </div>
 
-            <label>Timeline</label>
-            <select id="qualTimeline">
-                <option value="">Select</option>
-                <option value="Immediate">Immediate</option>
-                <option value="This Week">This Week</option>
-                <option value="This Month">This Month</option>
-                <option value="Not Sure">Not Sure</option>
-            </select>
+      <button class="finish-btn" onclick="finishLead()">Finish</button>
 
-            <label>Decision Maker?</label>
-            <select id="qualDM">
-                <option value="">Select</option>
-                <option>Yes</option>
-                <option>No</option>
-            </select>
+    </div>
 
+    <!-- ================= TIMELINE ================= -->
+    <h4 class="timeline-title">Timeline</h4>
+    <div id="timelineBox" class="timeline-box">Loading history...</div>
 
-            <!-- RECORDING FIELD -->
-            <label>Call Recording (Optional)</label>
-            <input type="file" id="recordingFile" accept="audio/*" />
-            <div id="recordingStatus" class="small-info"></div>
-
-
-            <button class="finish-btn" onclick="finishLead()">Finish</button>
-
-        </div>
-
-
-        <!-- TIMELINE -->
-        <h4 class="timeline-title">Timeline</h4>
-        <div id="timelineBox" class="timeline-box">Loading history...</div>
-
-    </section>
-
-
-    <!-- RIGHT SIDE : SCRIPT ENGINE -->
-    <section class="script-box">
-
-        <h3>📜 Suggested Script</h3>
-
-        <div id="scriptContent" class="script-main">Loading script...</div>
-
-        <h4 class="subhead">Customer Responses</h4>
-
-        <div id="responseButtons" class="dynamic-buttons"></div>
-
-        <div class="reply-header">
-  <h4 class="subhead">Suggested Reply</h4>
-  <button id="toggleReplyBtn" class="toggle-btn">Expand</button>
-</div>
-
-<div id="replyScript" class="reply-box collapsed">
-  Select a response to see the recommended reply...
-</div>
-
-
-    </section>
+  </section>
 
 </div>
 
-
-<!-- REQUIRED SCRIPTS -->
+<!-- ================= SCRIPTS ================= -->
 <script src="../../api/supabase.min.js"></script>
 <script src="../../global.js"></script>
 <script src="./call-panel.js"></script>
+<div id="google_translate_element" style="display:none;"></div>
+
+<script>
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement(
+      {
+        pageLanguage: 'en',
+        autoDisplay: false
+      },
+      'google_translate_element'
+    );
+  }
+</script>
+
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
 </html>
