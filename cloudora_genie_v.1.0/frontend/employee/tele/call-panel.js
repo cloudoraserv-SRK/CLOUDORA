@@ -183,17 +183,40 @@ function renderSurveyStep() {
   qs("totalSteps").innerText = SURVEY_FLOW.length;
 
   qs("optionsBox").innerHTML = "";
-  qs("nextBtn").disabled = true;
 
-  // ✅ LAST STEP CHECK (ADD THIS)
   const isLastStep = surveyStep === SURVEY_FLOW.length - 1;
+
+  // 🔙 Back button control
+  qs("backBtn").style.display = surveyStep === 0 ? "none" : "inline-block";
+
+  // ▶ Next button control
   if (isLastStep) {
-    qs("nextBtn").disabled = true;
-    qs("nextBtn").style.display = "none"; // 👈 hide Next
+    qs("nextBtn").style.display = "none";
   } else {
-    qs("nextBtn").style.display = "block";
+    qs("nextBtn").style.display = "inline-block";
+    qs("nextBtn").disabled = true;
   }
-  // ✅ END ADD
+
+  // conditional skip
+  if (step.condition && !step.condition(surveyAnswers)) {
+    surveyStep++;
+    return renderSurveyStep();
+  }
+
+  qs("questionBox").innerText = step.text || step.question;
+
+  if (step.type === "info") {
+    if (!isLastStep) qs("nextBtn").disabled = false;
+    return;
+  }
+
+  step.options.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.innerText = opt;
+    btn.onclick = () => selectAnswer(step, opt, btn);
+    qs("optionsBox").appendChild(btn);
+  });
+}
 
   if (step.condition && !step.condition(surveyAnswers)) {
     surveyStep++;
@@ -352,6 +375,29 @@ document.getElementById("languageSwitcher")?.addEventListener("change", (e) => {
   }, 300);
 });
 
+async function finishLead() {
+  if (!ACTIVE_ASSIGNMENT || !ACTIVE_LEAD) {
+    alert("No active lead");
+    return;
+  }
+
+  // 🔒 Mark survey completed
+  await completeAssignment("Survey Completed", "completed");
+
+  // 🔐 Optional: mark lead status
+  await fetch(`${API}/api/extract/update-lead`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      id: ACTIVE_LEAD.id,
+      status: "interested",
+      survey_data: surveyAnswers
+    })
+  });
+
+  // ➡️ Load next lead
+  loadNextLead();
+}
 
 /* ---------------------------------------------------------
    INIT
@@ -360,5 +406,6 @@ window.onload = () => {
   startTimer();
   loadNextLead();
 };
+
 
 
