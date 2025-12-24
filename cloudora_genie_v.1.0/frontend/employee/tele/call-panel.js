@@ -38,34 +38,35 @@ const SURVEY_FLOW = [
   id: "interests_main",
   type: "multi",
   question:
-    "Which of the following areas are relevant for you or your family currently? (You may choose multiple)",
+    "Which of these areas are currently relevant for you or your family? (You can select multiple)",
   options: [
     "Healthcare & Medicines",
     "Health & Wellness",
     "Daily Home Services",
-    "Travel & Hotel Bookings",
+    "Travel & Hotels",
     "Vehicle (Car / Bike)",
     "Pets & Pet Care",
     "Education & Learning",
-    "Business & Professional Services",
+    "Job & Career",
+    "Business & Startup",
     "Events & Lifestyle",
-    "Safety & Security",
-    "Shopping & Local Services"
+    "Safety & Security"
   ]
 },
+
 {
   id: "healthcare_needs",
   type: "multi",
   condition: (a) => a.interests_main?.includes("Healthcare & Medicines"),
   question:
-    "Regarding healthcare or medicines, which of these apply to you?",
+    "Which healthcare or medicine-related needs apply to you?",
   options: [
     "Daily or regular medicines",
-    "Medicines for elderly family members",
+    "Medicines for parents or elderly family members",
     "Upcoming medical checkup",
-    "Home sample collection (blood test, reports)",
-    "Medical equipment (BP machine, sugar monitor, etc.)",
+    "Home sample collection (blood tests, reports)",
     "Doctor consultation (online or local)",
+    "Medical equipment (BP machine, sugar monitor)",
     "Emergency medicine availability"
   ]
 },
@@ -73,25 +74,31 @@ const SURVEY_FLOW = [
   id: "healthcare_timeline",
   type: "single",
   condition: (a) => a.healthcare_needs?.length > 0,
-  question:
-    "When do you think you may need these healthcare services?",
-  options: ["Immediately", "Within 1 month", "In next 3–6 months", "Not sure"]
+  question: "When do you expect to need these healthcare services?",
+  options: [
+    "Immediately",
+    "Within 1 month",
+    "In next 3–6 months",
+    "Just exploring"
+  ]
 },
+
 {
   id: "wellness_needs",
   type: "multi",
   condition: (a) => a.interests_main?.includes("Health & Wellness"),
   question:
-    "Which wellness-related services interest you?",
+    "Which health or wellness services interest you?",
   options: [
     "Online fitness or yoga",
-    "Weight management / diet plans",
+    "Weight management or diet plans",
     "Stress or mental wellness support",
-    "Physiotherapy or recovery support",
+    "Physiotherapy or recovery care",
     "Preventive health programs"
   ]
 },
-{
+
+   {
   id: "home_services",
   type: "multi",
   condition: (a) => a.interests_main?.includes("Daily Home Services"),
@@ -99,17 +106,18 @@ const SURVEY_FLOW = [
     "Which home services do you usually require?",
   options: [
     "House cleaning",
-    "Electrician / Plumber",
-    "AC servicing / repair",
-    "Carpentry or furniture work",
+    "Electrician / plumber",
+    "AC servicing or repair",
     "Appliance repair",
+    "Carpentry or furniture work",
     "Pest control"
   ]
 },
+
 {
   id: "travel_plans",
   type: "multi",
-  condition: (a) => a.interests_main?.includes("Travel & Hotel Bookings"),
+  condition: (a) => a.interests_main?.includes("Travel & Hotels"),
   question:
     "Do you have any travel or stay-related plans?",
   options: [
@@ -118,18 +126,23 @@ const SURVEY_FLOW = [
     "International travel",
     "Hotel bookings",
     "Holiday packages",
-    "Corporate or business travel"
+    "Business travel"
   ]
 },
 {
   id: "travel_timeline",
   type: "single",
   condition: (a) => a.travel_plans?.length > 0,
-  question:
-    "When are you planning this travel?",
-  options: ["Within 1 month", "1–3 months", "Later this year", "Just exploring"]
+  question: "When are you planning this travel?",
+  options: [
+    "Within 1 month",
+    "1–3 months",
+    "Later this year",
+    "Just checking options"
+  ]
 },
-{
+
+   {
   id: "vehicle_needs",
   type: "multi",
   condition: (a) => a.interests_main?.includes("Vehicle (Car / Bike)"),
@@ -143,12 +156,13 @@ const SURVEY_FLOW = [
     "Accessories or upgrades"
   ]
 },
+
+   
 {
   id: "pet_interest",
   type: "single",
   condition: (a) => a.interests_main?.includes("Pets & Pet Care"),
-  question:
-    "Do you currently have a pet?",
+  question: "Do you currently have a pet?",
   options: ["Yes", "Planning to get one", "No"]
 },
 {
@@ -165,12 +179,28 @@ const SURVEY_FLOW = [
     "Pet training"
   ]
 },
-{
+
+   {
+  id: "pet_services",
+  type: "multi",
+  condition: (a) => a.pet_interest === "Yes",
+  question:
+    "Which pet-related services would be useful?",
+  options: [
+    "Pet food delivery",
+    "Veterinary consultation",
+    "Pet grooming",
+    "Pet accessories",
+    "Pet training"
+  ]
+},
+
+   {
   id: "education_services",
   type: "multi",
   condition: (a) => a.interests_main?.includes("Education & Learning"),
   question:
-    "Which learning or education services are relevant?",
+    "Which education or learning services are relevant?",
   options: [
     "Online courses or skill learning",
     "Student tutoring",
@@ -179,6 +209,7 @@ const SURVEY_FLOW = [
     "Language learning"
   ]
 },
+
 {
   id: "business_services",
   type: "multi",
@@ -360,12 +391,19 @@ const SURVEY_FLOW = [
   },
 
   {
-    id: "pricing",
-    type: "single",
-    question:
-      "If all these services are available at better quality and lower prices than the market, would you be interested?",
-    options: ["Yes", "Maybe", "No"]
-  },
+  id: "pricing_interest",
+  type: "single",
+  question:
+    "If these services are available at better quality and lower prices, would you be interested?",
+  options: ["Yes", "Maybe", "No"]
+},
+{
+  id: "affiliate_interest",
+  type: "single",
+  question:
+    "If you ever want to offer services or grow professionally, would you like to register with Cloudora for free?",
+  options: ["Yes", "Maybe", "No"]
+},
 
   {
     id: "bhix_info",
@@ -647,5 +685,6 @@ window.onload = () => {
   startTimer();
   loadNextLead();
 };
+
 
 
