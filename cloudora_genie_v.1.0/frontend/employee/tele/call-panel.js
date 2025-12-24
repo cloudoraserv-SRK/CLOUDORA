@@ -34,22 +34,302 @@ const SURVEY_FLOW = [
     options: ["Job", "Business", "Student", "Homemaker", "Freelancer"]
   },
 
-  {
-    id: "interests",
-    type: "multi",
-    question:
-      "Which of the following services might you be interested in? (You can choose multiple)",
-    options: [
-      "Dance / Fitness (online classes)",
-      "Plants / Gardening / Vastu plants",
-      "Fire Safety (fire extinguisher, safety tools)",
-      "Tattoo services (verified studios)",
-      "Daily Home Services (cleaning, repair, etc.)",
-      "Event Management (weddings, parties, corporate events)",
-      "Tours & Travel Services (local, domestic, international)",
-      "Security Services (guards, CCTV, safety support)"
-    ]
-  },
+ {
+  id: "interests_main",
+  type: "multi",
+  question:
+    "Which of the following areas are relevant for you or your family currently? (You may choose multiple)",
+  options: [
+    "Healthcare & Medicines",
+    "Health & Wellness",
+    "Daily Home Services",
+    "Travel & Hotel Bookings",
+    "Vehicle (Car / Bike)",
+    "Pets & Pet Care",
+    "Education & Learning",
+    "Business & Professional Services",
+    "Events & Lifestyle",
+    "Safety & Security",
+    "Shopping & Local Services"
+  ]
+},
+{
+  id: "healthcare_needs",
+  type: "multi",
+  condition: (a) => a.interests_main?.includes("Healthcare & Medicines"),
+  question:
+    "Regarding healthcare or medicines, which of these apply to you?",
+  options: [
+    "Daily or regular medicines",
+    "Medicines for elderly family members",
+    "Upcoming medical checkup",
+    "Home sample collection (blood test, reports)",
+    "Medical equipment (BP machine, sugar monitor, etc.)",
+    "Doctor consultation (online or local)",
+    "Emergency medicine availability"
+  ]
+},
+{
+  id: "healthcare_timeline",
+  type: "single",
+  condition: (a) => a.healthcare_needs?.length > 0,
+  question:
+    "When do you think you may need these healthcare services?",
+  options: ["Immediately", "Within 1 month", "In next 3–6 months", "Not sure"]
+},
+{
+  id: "wellness_needs",
+  type: "multi",
+  condition: (a) => a.interests_main?.includes("Health & Wellness"),
+  question:
+    "Which wellness-related services interest you?",
+  options: [
+    "Online fitness or yoga",
+    "Weight management / diet plans",
+    "Stress or mental wellness support",
+    "Physiotherapy or recovery support",
+    "Preventive health programs"
+  ]
+},
+{
+  id: "home_services",
+  type: "multi",
+  condition: (a) => a.interests_main?.includes("Daily Home Services"),
+  question:
+    "Which home services do you usually require?",
+  options: [
+    "House cleaning",
+    "Electrician / Plumber",
+    "AC servicing / repair",
+    "Carpentry or furniture work",
+    "Appliance repair",
+    "Pest control"
+  ]
+},
+{
+  id: "travel_plans",
+  type: "multi",
+  condition: (a) => a.interests_main?.includes("Travel & Hotel Bookings"),
+  question:
+    "Do you have any travel or stay-related plans?",
+  options: [
+    "Local travel",
+    "Domestic travel",
+    "International travel",
+    "Hotel bookings",
+    "Holiday packages",
+    "Corporate or business travel"
+  ]
+},
+{
+  id: "travel_timeline",
+  type: "single",
+  condition: (a) => a.travel_plans?.length > 0,
+  question:
+    "When are you planning this travel?",
+  options: ["Within 1 month", "1–3 months", "Later this year", "Just exploring"]
+},
+{
+  id: "vehicle_needs",
+  type: "multi",
+  condition: (a) => a.interests_main?.includes("Vehicle (Car / Bike)"),
+  question:
+    "Which vehicle-related services are relevant for you?",
+  options: [
+    "Buying a new car or bike",
+    "Buying a used car or bike",
+    "Vehicle servicing or repair",
+    "Insurance renewal",
+    "Accessories or upgrades"
+  ]
+},
+{
+  id: "pet_interest",
+  type: "single",
+  condition: (a) => a.interests_main?.includes("Pets & Pet Care"),
+  question:
+    "Do you currently have a pet?",
+  options: ["Yes", "Planning to get one", "No"]
+},
+{
+  id: "pet_services",
+  type: "multi",
+  condition: (a) => a.pet_interest === "Yes",
+  question:
+    "Which pet-related services would be useful?",
+  options: [
+    "Pet food delivery",
+    "Veterinary consultation",
+    "Pet grooming",
+    "Pet accessories",
+    "Pet training"
+  ]
+},
+{
+  id: "education_services",
+  type: "multi",
+  condition: (a) => a.interests_main?.includes("Education & Learning"),
+  question:
+    "Which learning or education services are relevant?",
+  options: [
+    "Online courses or skill learning",
+    "Student tutoring",
+    "Career guidance",
+    "Professional certifications",
+    "Language learning"
+  ]
+},
+{
+  id: "business_services",
+  type: "multi",
+  condition: (a) => a.interests_main?.includes("Business & Professional Services"),
+  question:
+    "From a business or professional perspective, what would help you?",
+  options: [
+    "Digital marketing",
+    "Website or app development",
+    "Lead generation",
+    "Business listing & promotion",
+    "Accounting or compliance support",
+    "CRM or automation tools"
+  ]
+},
+{
+  id: "events_security",
+  type: "multi",
+  condition: (a) =>
+    a.interests_main?.includes("Events & Lifestyle") ||
+    a.interests_main?.includes("Safety & Security"),
+  question:
+    "Any of these services useful for you?",
+  options: [
+    "Wedding or event management",
+    "Birthday or private events",
+    "Corporate events",
+    "Security guards",
+    "CCTV or safety systems",
+    "Fire safety equipment"
+  ]
+},
+{
+  id: "career_interest",
+  type: "single",
+  question:
+    "Are you currently looking for any job or career-related opportunities?",
+  options: [
+    "Yes, full-time job",
+    "Yes, part-time or freelance work",
+    "Exploring better opportunities",
+    "Not at the moment"
+  ]
+},
+{
+  id: "job_preferences",
+  type: "multi",
+  condition: (a) =>
+    a.career_interest !== "Not at the moment",
+  question:
+    "What kind of work opportunities are you interested in?",
+  options: [
+    "Office / corporate jobs",
+    "Remote or work-from-home jobs",
+    "Field or on-ground work",
+    "Skill-based freelance work",
+    "Internship or training-based roles",
+    "Customer support / sales roles"
+  ]
+},
+{
+  id: "job_support",
+  type: "multi",
+  condition: (a) => a.job_preferences?.length > 0,
+  question:
+    "Which kind of support would help you in your job search?",
+  options: [
+    "Job listings and alerts",
+    "Resume or profile improvement",
+    "Interview preparation",
+    "Skill training or upskilling",
+    "Career guidance or mentoring",
+    "Local job opportunities"
+  ]
+},
+{
+  id: "business_stage",
+  type: "single",
+  question:
+    "Which best describes your current business situation?",
+  options: [
+    "I already run a business",
+    "I am planning to start a business",
+    "I am exploring startup ideas",
+    "I am not interested in business currently"
+  ]
+},
+{
+  id: "business_plans",
+  type: "multi",
+  condition: (a) =>
+    a.business_stage === "I am planning to start a business" ||
+    a.business_stage === "I am exploring startup ideas",
+  question:
+    "What kind of business are you thinking of starting?",
+  options: [
+    "Service-based business",
+    "Online or digital business",
+    "Local shop or franchise",
+    "Manufacturing or trading",
+    "Startup or tech-based business",
+    "Not decided yet"
+  ]
+},
+{
+  id: "business_expansion",
+  type: "multi",
+  condition: (a) => a.business_stage === "I already run a business",
+  question:
+    "What would you like to improve or expand in your existing business?",
+  options: [
+    "Getting more customers or leads",
+    "Online presence (website, social media)",
+    "Digital marketing or advertising",
+    "Operations or process improvement",
+    "Hiring staff or freelancers",
+    "Business automation or CRM tools"
+  ]
+},
+{
+  id: "business_support",
+  type: "multi",
+  condition: (a) =>
+    a.business_stage !== "I am not interested in business currently",
+  question:
+    "Which type of support would be useful for your business or startup?",
+  options: [
+    "Business registration or compliance guidance",
+    "Website or app development",
+    "Marketing and promotion",
+    "Customer management (CRM)",
+    "AI tools for planning and growth",
+    "Local visibility and partnerships"
+  ]
+},
+{
+  id: "business_timeline",
+  type: "single",
+  condition: (a) =>
+    a.business_stage === "I already run a business" ||
+    a.business_stage === "I am planning to start a business",
+  question:
+    "When are you planning to take action on this?",
+  options: [
+    "Immediately",
+    "Within 1–3 months",
+    "In next 6 months",
+    "Just exploring for now"
+  ]
+},
+
 
   {
     id: "business_services",
@@ -367,4 +647,5 @@ window.onload = () => {
   startTimer();
   loadNextLead();
 };
+
 
