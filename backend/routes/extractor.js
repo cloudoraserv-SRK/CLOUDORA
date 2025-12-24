@@ -7,23 +7,6 @@ import { sendSalesEmail } from "../utils/mailer.js";
 
 const router = express.Router();
 
-// -------------------------------------------------------
-// MAX 300 ACTIVE LEADS CHECK
-// -------------------------------------------------------
-const { count } = await supabase
-  .from("scraped_leads_assignments")
-  .select("*", { count: "exact", head: true })
-  .eq("employee_id", employee_id)
-  .eq("status", "pending");
-
-if (count >= 300) {
-  return res.json({
-    ok: false,
-    error: "LEAD_LIMIT_REACHED",
-    message: "You already have 300 active leads"
-  });
-}
-
 /* -------------------------------------------------------
    1) LIVE EXTRACTION
 -------------------------------------------------------- */
@@ -116,33 +99,51 @@ router.get("/raw", async (req, res) => {
    3) ASSIGN SELECTED LEADS → status = pending
 -------------------------------------------------------- */
 router.post("/assign-selected", async (req, res) => {
-    const { lead_ids, employee_id } = req.body;
+  const { lead_ids, employee_id } = req.body;
 
-    try {
-        let count = 0;
+  try {
+    // ✅ CHECK CURRENT ACTIVE LEADS
+    const { count } = await supabase
+      .from("scraped_leads_assignments")
+      .select("*", { count: "exact", head: true })
+      .eq("employee_id", employee_id)
+      .eq("status", "pending");
 
-        for (let id of lead_ids) {
-            const { error: updErr } = await supabase
-                .from("scraped_leads")
-                .update({ assigned_to: employee_id, status: "pending" })
-                .eq("id", id)
-                .is("assigned_to", null);
-
-            if (updErr) continue;
-
-            await supabase.from("scraped_leads_assignments").insert({
-                scraped_lead_id: id,
-                employee_id,
-                status: "pending"
-            });
-
-            count++;
-        }
-
-        return res.json({ ok: true, assigned: count });
-    } catch (err) {
-        return res.json({ ok: false, error: err.message });
+    if (count >= 300) {
+      return res.json({
+        ok: false,
+        error: "LEAD_LIMIT_REACHED",
+        message: "You already have 300 active leads"
+      });
     }
+
+    let assigned = 0;
+
+    for (let id of lead_ids) {
+      if (count + assigned >= 300) break;
+
+      const { error } = await supabase
+        .from("scraped_leads")
+        .update({ assigned_to: employee_id, status: "pending" })
+        .eq("id", id)
+        .is("assigned_to", null);
+
+      if (error) continue;
+
+      await supabase.from("scraped_leads_assignments").insert({
+        scraped_lead_id: id,
+        employee_id,
+        status: "pending"
+      });
+
+      assigned++;
+    }
+
+    return res.json({ ok: true, assigned });
+
+  } catch (err) {
+    return res.json({ ok: false, error: err.message });
+  }
 });
 
 /* -------------------------------------------------------
