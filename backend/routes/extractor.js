@@ -69,7 +69,11 @@ router.get("/raw", async (req, res) => {
     const { search, category, city, country, freshness, assigned, employee_id } = req.query;
 
     try {
-        let query = supabase.from("scraped_leads").select("*");
+        let query = supabase
+  .from("scraped_leads")
+  .select("*")
+  .is("assigned_to", null)        // ✅ HARD RULE
+  .eq("status", "raw");           // ✅ ONLY RAW
 
         if (assigned === "unassigned") query = query.is("assigned_to", null);
         if (assigned === "me") query = query.eq("assigned_to", employee_id);
