@@ -257,6 +257,7 @@ function renderLead() {
 function resetSurvey() {
   surveyStep = 0;
   surveyAnswers = {};
+  skippedSteps.clear(); // ✅ ADD THIS
   qs("nextBtn").disabled = false;
 }
 
@@ -366,3 +367,4 @@ window.onload = () => {
   startTimer();
   loadNextLead();
 };
+
