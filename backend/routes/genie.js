@@ -1,192 +1,195 @@
 // -----------------------------------------------------
-// Cloudora Genie – Brain v1 (Genie Page)
-// Human-first | Flow + Free AI
+// Cloudora Genie – Brain v1 (PRODUCTION FINAL)
+// Guide-first | Jobs | Business | CRM | Memory-safe
 // -----------------------------------------------------
 
 import express from "express";
-import { askGemini } from "../lib/genieAI.js";
 import { supabase } from "../lib/supabaseClient.js";
-
-console.log("🧠 Genie routes file loaded");
+import { queryGenieKB } from "../lib/genieKB.js";
 
 const router = express.Router();
 
 /* =======================
-   START CHECK
+   STATIC CLOUDORA AUTHORITY
 ======================= */
-router.get("/start", (req, res) => {
-  res.json({
-    ok: true,
-    message: "Genie route is live",
-  });
-});
+const CLOUDORA_CORE = {
+  about:
+    "Cloudora is an AI-powered growth ecosystem that helps businesses generate leads, manage CRM, grow sales, and helps individuals find jobs and career opportunities."
+};
+
+/* =======================
+   HELPERS
+======================= */
+function isHomeGenie(context) {
+  return context === "home";
+}
+
+function detectIntent(msg = "") {
+  msg = msg.toLowerCase().trim();
+
+  if (msg.includes("entertain") || msg.includes("joke") || msg.includes("fun"))
+    return "entertainment";
+
+  if (["wait", "ok", "hmm"].includes(msg)) return "idle";
+
+  if (msg.includes("apply")) return "job_apply";
+  if (msg.includes("job")) return "job_info";
+
+  if (msg.includes("business") || msg.includes("crm") || msg.includes("leads"))
+    return "business";
+
+  if (msg.includes("sad") || msg.includes("tired")) return "emotional";
+  if (msg.includes("hi") || msg.includes("hello")) return "companion";
+
+  return "free";
+}
 
 /* =======================
    MEMORY
 ======================= */
 async function getMemory(sessionId) {
-  if (!sessionId) return null;
-
+  if (!sessionId) return {};
   const { data } = await supabase
     .from("genie_memory")
-    .select("intent, summary")
+    .select("stage")
     .eq("session_id", sessionId)
     .single();
-
-  return data || null;
+  return data || {};
 }
 
-async function saveMemory({ sessionId, intent, summary }) {
+async function saveStage(sessionId, stage) {
   if (!sessionId) return;
-
   await supabase.from("genie_memory").upsert({
     session_id: sessionId,
-    intent,
-    summary,
-    updated_at: new Date(),
+    stage,
+    updated_at: new Date()
   });
 }
 
-function buildSummary(prev = "", message = "", intent = "") {
-  if (intent === "business")
-    return "User is looking for business clarity and growth support.";
-
-  if (intent === "jobs")
-    return "User is exploring jobs or earning opportunities.";
-
-  if (intent === "emotional")
-    return "User seems emotionally tired or low.";
-
-  return prev || `User asked about: ${message.slice(0, 60)}`;
-}
-
 /* =======================
-   INTENT & MODE
+   LEADS
 ======================= */
-function detectIntent(message = "") {
-  const m = message.toLowerCase();
-
-  if (m.includes("business") || m.includes("crm")) return "business";
-  if (m.includes("job") || m.includes("career")) return "jobs";
-  if (m.includes("sad") || m.includes("tired")) return "emotional";
-  if (m.includes("hi") || m.includes("hello")) return "companion";
-
-  return "free";
-}
-
-function selectMode(intent) {
-  if (intent === "business") return "advisor";
-  if (intent === "jobs") return "assistant";
-  if (intent === "emotional") return "companion";
-  if (intent === "companion") return "companion";
-  return "free_ai";
+async function saveLead(payload) {
+  const { error } = await supabase
+    .from("leads")
+    .insert([{ ...payload, source: "genie_chat" }]);
+  return !error;
 }
 
 /* =======================
-   PROMPT
-======================= */
-function buildPrompt({ intent, mode, message, memory }) {
-  return `
-You are Genie, a calm, human-first AI assistant.
-
-Rules:
-- Be clear, short, practical
-- No hallucination
-- No sales pitch
-- Respect emotions
-
-Previous context:
-Intent: ${memory?.intent || "unknown"}
-Summary: ${memory?.summary || "none"}
-
-Current intent: ${intent}
-Genie mode: ${mode}
-
-User message:
-"${message}"
-
-Reply as Genie.
-`;
-}
-
-/* =======================
-   MAIN MESSAGE ROUTE
+   MAIN CHAT
 ======================= */
 router.post("/message", async (req, res) => {
-  console.log("🧠 Genie /message HIT", req.body);
+  const { message, sessionId, context } = req.body;
+  const userMsg = message || "";
 
-  const { message, sessionId } = req.body;
-  const userMessage = message || "";
+  /* ---- HOME PAGE ---- */
+  if (isHomeGenie(context)) {
+    return res.json({
+      reply:
+        "I can guide you here.\n\n• Explore jobs\n• Understand Cloudora\n• See how Genie helps\n\nFor full assistance, open the Genie page.",
+      mode: "guide"
+    });
+  }
 
-  const intent = detectIntent(userMessage);
-  const mode = selectMode(intent);
+  const intent = detectIntent(userMsg);
   const memory = await getMemory(sessionId);
 
-  /* ---- Guided replies ---- */
-  if (mode === "advisor") {
-    const reply =
-      "I can help you think this through calmly. What part feels most confusing right now?";
+  /* ---- INTRO (ONLY ONCE) ---- */
+  if (memory.stage !== "active") {
+    await saveStage(sessionId, "active");
 
-    await saveMemory({
-      sessionId,
-      intent,
-      summary: buildSummary(memory?.summary, userMessage, intent),
+    return res.json({
+      reply: `
+Hi 👋 I’m Genie, Cloudora’s AI assistant.
+
+I can help you with:
+• Jobs & hiring
+• Business growth, CRM & leads
+• Guidance across this website
+
+What would you like to explore?
+👉 Jobs
+👉 Business
+`.trim(),
+      mode: "assistant"
     });
-
-    return res.json({ reply, intent, mode });
   }
 
-  if (mode === "assistant") {
-    const reply =
-      "I can guide you with jobs or planning. What are you trying to move towards?";
+  /* ---- JOB INFO ---- */
+  if (intent === "job_info") {
+    return res.json({
+      reply: `
+Cloudora currently hires for roles like:
+• Telecaller
+• Sales Executive
+• CRM Support
+• Operations Assistant
 
-    await saveMemory({
-      sessionId,
-      intent,
-      summary: buildSummary(memory?.summary, userMessage, intent),
+Say 👉 "I want to apply for a job" to continue.
+`.trim(),
+      mode: "assistant"
     });
-
-    return res.json({ reply, intent, mode });
   }
 
-  if (mode === "companion") {
-    const reply =
-      "That sounds heavy. Do you want to talk it out or take your mind off it for a bit?";
-
-    await saveMemory({
-      sessionId,
-      intent,
-      summary: buildSummary(memory?.summary, userMessage, intent),
+  /* ---- JOB APPLY ---- */
+  if (intent === "job_apply") {
+    return res.json({
+      reply:
+        "Please send ONE message with:\n1️⃣ Full name\n2️⃣ Phone number\n3️⃣ City\n4️⃣ Job role",
+      mode: "assistant"
     });
-
-    return res.json({ reply, intent, mode });
   }
 
-  /* ---- Free AI ---- */
-  let aiReply;
-  try {
-    const prompt = buildPrompt({
-      intent,
-      mode,
-      message: userMessage,
-      memory,
+  /* ---- BUSINESS ---- */
+  if (intent === "business") {
+    return res.json({
+      reply:
+        "I can help your business with leads and CRM.\n\nSend:\n1️⃣ Name\n2️⃣ Phone\n3️⃣ Business type",
+      mode: "advisor"
     });
-    aiReply = await askGemini(prompt);
-  } catch (e) {
-    console.error("🔥 Gemini failed", e);
-    aiReply = "I’m here, but my thinking engine is a bit busy right now.";
   }
 
-  await saveMemory({
-    sessionId,
-    intent,
-    summary: buildSummary(memory?.summary, userMessage, intent),
+  /* ---- ENTERTAINMENT ---- */
+  if (intent === "entertainment") {
+    return res.json({
+      reply:
+        "Sure 😄\nWhy did the startup hire Cloudora?\nBecause it had leads but no follow-up 😉",
+      mode: "companion"
+    });
+  }
+
+  /* ---- IDLE ---- */
+  if (intent === "idle") {
+    return res.json({
+      reply: "No worries 🙂 I’m here when you’re ready.",
+      mode: "idle"
+    });
+  }
+
+  /* ---- EMOTIONAL ---- */
+  if (intent === "emotional") {
+    return res.json({
+      reply:
+        "I’m here with you. Want to talk, or should I distract your mind a bit?",
+      mode: "companion"
+    });
+  }
+
+  /* ---- KB / SMART FALLBACK ---- */
+  const kbAnswer = await queryGenieKB({
+    message: userMsg,
+    site: context || "cloudora"
   });
 
+  if (kbAnswer) {
+    return res.json({ reply: kbAnswer, mode: "assistant" });
+  }
+
   return res.json({
-    reply: aiReply,
-    intent,
-    mode: "free_ai",
+    reply:
+      "Got it 👍 I can help with jobs, business growth, CRM, or keep things light. What next?",
+    mode: "assistant"
   });
 });
 
@@ -196,9 +199,7 @@ router.post("/message", async (req, res) => {
 router.post("/start", (req, res) => {
   res.json({
     ok: true,
-    message:
-      "Hi, I’m Genie. I help people think clearly, plan better, and move forward.",
-    sessionId: "sess_" + Math.random().toString(36).slice(2, 10),
+    sessionId: "sess_" + Math.random().toString(36).slice(2, 10)
   });
 });
 

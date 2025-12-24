@@ -7,6 +7,23 @@ import { sendSalesEmail } from "../utils/mailer.js";
 
 const router = express.Router();
 
+// -------------------------------------------------------
+// MAX 300 ACTIVE LEADS CHECK
+// -------------------------------------------------------
+const { count } = await supabase
+  .from("scraped_leads_assignments")
+  .select("*", { count: "exact", head: true })
+  .eq("employee_id", employee_id)
+  .eq("status", "pending");
+
+if (count >= 300) {
+  return res.json({
+    ok: false,
+    error: "LEAD_LIMIT_REACHED",
+    message: "You already have 300 active leads"
+  });
+}
+
 /* -------------------------------------------------------
    1) LIVE EXTRACTION
 -------------------------------------------------------- */
@@ -161,23 +178,37 @@ router.post("/next-lead", async (req, res) => {
 /* -------------------------------------------------------
    5) COMPLETE LEAD
 -------------------------------------------------------- */
+/* -------------------------------------------------------
+   COMPLETE LEAD
+-------------------------------------------------------- */
 router.post("/complete-lead", async (req, res) => {
-    const { assignment_id, mark_status } = req.body;
+  const { assignment_id, mark_status } = req.body;
 
-    try {
-        const { error } = await supabase
-            .from("scraped_leads_assignments")
-            .update({
-                status: mark_status || "completed",
-                completed_at: new Date().toISOString()
-            })
-            .eq("id", assignment_id);
+  try {
+    const { data } = await supabase
+      .from("scraped_leads_assignments")
+      .update({
+        status: mark_status,
+        completed_at: new Date().toISOString()
+      })
+      .eq("id", assignment_id)
+      .select("scraped_lead_id")
+      .single();
 
-        return error ? res.json({ ok: false, error }) : res.json({ ok: true });
-    } catch (err) {
-        return res.json({ ok: false, error: err.message });
+    // 🔁 SKIP = FREE AGAIN
+    if (mark_status === "skipped" && data?.scraped_lead_id) {
+      await supabase
+        .from("scraped_leads")
+        .update({ assigned_to: null, status: "raw" })
+        .eq("id", data.scraped_lead_id);
     }
+
+    return res.json({ ok: true });
+  } catch (err) {
+    return res.json({ ok: false, error: err.message });
+  }
 });
+
 
 /* -------------------------------------------------------
    6) UPDATE LEAD DETAILS (scraped_leads)
@@ -310,6 +341,7 @@ router.post("/next-lead", async (req, res) => {
       mode: "assigned"
     });
   }
+await supabase.rpc("expire_old_assignments");
 
   // 2️⃣ FALLBACK → raw scraped leads (A-layer)
   let query = supabase
