@@ -30,7 +30,7 @@ const SURVEY_FLOW = [
   {
     id: "profession",
     type: "single",
-    question: "What do you currently do?",
+    question: "“Just to understand better, what do you currently do?",
     options: ["Job", "Business", "Student", "Homemaker", "Freelancer"]
   },
 
@@ -38,7 +38,7 @@ const SURVEY_FLOW = [
   id: "interests_main",
   type: "multi",
   question:
-    "Which of these areas are currently relevant for you or your family? (You can select multiple)",
+    "“I’ll mention a few areas. Please tell me what’s relevant for you or your family. Which of these areas are currently relevant for you or your family? (You can select multiple)",
   options: [
     "Healthcare & Medicines",
     "Health & Wellness",
@@ -59,7 +59,7 @@ const SURVEY_FLOW = [
   type: "multi",
   condition: (a) => a.interests_main?.includes("Healthcare & Medicines"),
   question:
-    "Which healthcare or medicine-related needs apply to you?",
+   "So is this mostly for you or for parents? When do you think you’ll need this? Which healthcare or medicine-related needs apply to you?",
   options: [
     "Daily or regular medicines",
     "Medicines for parents or elderly family members",
@@ -119,7 +119,7 @@ const SURVEY_FLOW = [
   type: "multi",
   condition: (a) => a.interests_main?.includes("Travel & Hotels"),
   question:
-    "Do you have any travel or stay-related plans?",
+    "Family trip or work-related? Do you have any travel or stay-related plans? Any timeframe in mind?",
   options: [
     "Local travel",
     "Domestic travel",
@@ -246,7 +246,7 @@ const SURVEY_FLOW = [
   id: "career_interest",
   type: "single",
   question:
-    "Are you currently looking for any job or career-related opportunities?",
+    "Are you open to better opportunities or learning new skills? Are you currently looking for any job or career-related opportunities?",
   options: [
     "Yes, full-time job",
     "Yes, part-time or freelance work",
@@ -685,6 +685,7 @@ window.onload = () => {
   startTimer();
   loadNextLead();
 };
+
 
 
 
