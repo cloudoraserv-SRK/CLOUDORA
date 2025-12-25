@@ -601,6 +601,7 @@ async function selectAnswer(step, value, btn) {
   qs("nextBtn").disabled = false;
 
   // 🔥 AUTO SAVE EACH STEP
+  try {
   await fetch(`${API}/api/extract/update-lead`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -609,8 +610,10 @@ async function selectAnswer(step, value, btn) {
       survey_data: surveyAnswers
     })
   });
+} catch (err) {
+  console.warn("Auto-save failed (offline). Will retry later.");
 }
-
+}
 /* ---------------------------------------------------------
    NEXT
 --------------------------------------------------------- */
@@ -660,24 +663,27 @@ async function finishLead() {
     return;
   }
 
-  // 🔒 Mark survey completed
-  await completeAssignment("Survey Completed", "completed");
+  try {
+    // 🔒 Mark survey completed (ONLY ONCE)
+    await completeAssignment("Survey Completed", "completed");
 
-  // 🔐 Optional: mark lead status
-  await fetch(`${API}/api/extract/update-lead`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      id: ACTIVE_LEAD.id,
-      status: "interested",
-      survey_data: surveyAnswers
-    })
-  });
+    // 🔐 Update lead data
+    await fetch(`${API}/api/extract/update-lead`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: ACTIVE_LEAD.id,
+        status: "interested",
+        survey_data: surveyAnswers
+      })
+    });
+  } catch (err) {
+    alert("Internet issue. Please check connection and retry.");
+    return;
+  }
 
-  // ➡️ Load next lead
   loadNextLead();
 }
-
 /* ---------------------------------------------------------
    INIT
 --------------------------------------------------------- */
@@ -685,7 +691,3 @@ window.onload = () => {
   startTimer();
   loadNextLead();
 };
-
-
-
-
