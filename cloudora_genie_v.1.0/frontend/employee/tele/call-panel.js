@@ -1,9 +1,9 @@
-console.log("Call Panel Survey JS Loaded ✓");
-let skippedSteps = new Set();
-
 /* ---------------------------------------------------------
    GLOBALS
 --------------------------------------------------------- */
+console.log("Call Panel Survey JS Loaded ✓");
+
+let skippedSteps = new Set();
 let ACTIVE_LEAD = null;
 let ACTIVE_ASSIGNMENT = null;
 let sessionSeconds = 0;
@@ -469,68 +469,92 @@ function startTimer() {
    LOAD NEXT LEAD
 --------------------------------------------------------- */
 async function loadNextLead() {
-  const res = await fetch(`${API}/api/extract/next-lead`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ employee_id: EMPLOYEE_ID })
-  });
+  try {
+    const res = await fetch(`${API}/api/extract/next-lead`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ employee_id: EMPLOYEE_ID })
+    });
 
-  const json = await res.json();
+    const json = await res.json();
 
-  if (!json.ok || !json.lead) {
-    qs("leadInfo").innerHTML = "<h2>No leads assigned</h2>";
-    return;
+    if (!json.ok || !json.lead) {
+      qs("leadInfo").innerHTML = "<h2>No leads assigned</h2>";
+      return;
+    }
+
+    ACTIVE_LEAD = json.lead;
+    ACTIVE_ASSIGNMENT = json.assignment_id;
+
+    if (!ACTIVE_LEAD.phone) {
+      await completeAssignment("No phone", "skipped");
+      return loadNextLead();
+    }
+
+    renderLead();
+    resetSurvey();
+    renderSurveyStep();
+  } catch (err) {
+    console.error("Load lead failed", err);
   }
-
-  ACTIVE_LEAD = json.lead;
-  ACTIVE_ASSIGNMENT = json.assignment_id;
-
-  if (!ACTIVE_LEAD.phone) {
-    await completeAssignment("No phone", "skipped");
-    return loadNextLead();
-  }
-
-  renderLead();
-  resetSurvey();
-  renderSurveyStep();
 }
-// Render Survey Steps
 
+/* ---------------------------------------------------------
+   RENDER LEAD
+--------------------------------------------------------- */
+function renderLead() {
+  qs("leadInfo").innerHTML = `
+    <h2>${ACTIVE_LEAD.name || "-"}</h2>
+    <p><b>Phone:</b> ${ACTIVE_LEAD.phone || "-"}</p>
+    <p><b>City:</b> ${ACTIVE_LEAD.city || "-"}</p>
+    <p><b>Source:</b> ${ACTIVE_LEAD.source || "-"}</p>
+  `;
+  qs("dialBtn").href = `tel:${ACTIVE_LEAD.phone}`;
+}
+
+/* ---------------------------------------------------------
+   SURVEY ENGINE
+--------------------------------------------------------- */
+let surveyStep = 0;
+let surveyAnswers = {};
+
+function resetSurvey() {
+  surveyStep = 0;
+  surveyAnswers = {};
+  skippedSteps.clear();
+  qs("nextBtn").disabled = false;
+}
+
+/* ---------------------------------------------------------
+   RENDER SURVEY STEP
+--------------------------------------------------------- */
 function renderSurveyStep() {
   const step = SURVEY_FLOW[surveyStep];
   if (!step) return;
 
   qs("currentStep").innerText = surveyStep + 1;
   qs("totalSteps").innerText = SURVEY_FLOW.length;
-
   qs("optionsBox").innerHTML = "";
 
-  const isLastStep = surveyStep === SURVEY_FLOW.length - 1;
-
-  // Back button
   qs("backBtn").style.display = surveyStep === 0 ? "none" : "inline-block";
-
-  // Next button
-  qs("nextBtn").style.display = isLastStep ? "none" : "inline-block";
+  qs("nextBtn").style.display =
+    surveyStep === SURVEY_FLOW.length - 1 ? "none" : "inline-block";
   qs("nextBtn").disabled = true;
 
   // Conditional skip
   if (step.condition && !step.condition(surveyAnswers)) {
-  skippedSteps.add(surveyStep);
-  surveyStep++;
-  return renderSurveyStep();
-}
-
+    skippedSteps.add(surveyStep);
+    surveyStep++;
+    return renderSurveyStep();
+  }
 
   qs("questionBox").innerText = step.text || step.question;
 
-  // Info step
   if (step.type === "info") {
     qs("nextBtn").disabled = false;
     return;
   }
 
-  // Options
   step.options.forEach(opt => {
     const btn = document.createElement("button");
     btn.innerText = opt;
@@ -540,45 +564,8 @@ function renderSurveyStep() {
 }
 
 /* ---------------------------------------------------------
-   COMPLETE ASSIGNMENT
+   SELECT ANSWER + AUTO SAVE
 --------------------------------------------------------- */
-async function completeAssignment(reason, status = "completed") {
-  if (!ACTIVE_ASSIGNMENT) return;
-
-  await fetch(`${API}/api/extract/complete-lead`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      assignment_id: ACTIVE_ASSIGNMENT,
-      mark_status: status,
-      reason
-    })
-  });
-}
-
-/* ---------------------------------------------------------
-   RENDER LEAD
---------------------------------------------------------- */
-function renderLead() {
-  qs("leadInfo").innerHTML = `
-    <h2>${ACTIVE_LEAD.name || "-"}</h2>
-    <p><b>Phone:</b> ${ACTIVE_LEAD.phone}</p>
-    <p><b>City:</b> ${ACTIVE_LEAD.city || "-"}</p>
-    <p><b>Category:</b> ${ACTIVE_LEAD.category || "-"}</p>
-  `;
-  qs("dialBtn").href = `tel:${ACTIVE_LEAD.phone}`;
-}
-
-/* ---------------------------------------------------------
-   SURVEY ENGINE
---------------------------------------------------------- */
-function resetSurvey() {
-  surveyStep = 0;
-  surveyAnswers = {};
-  skippedSteps.clear(); // ✅ ADD THIS
-  qs("nextBtn").disabled = false;
-}
-
 async function selectAnswer(step, value, btn) {
   if (step.type === "multi") {
     surveyAnswers[step.id] = surveyAnswers[step.id] || [];
@@ -600,28 +587,26 @@ async function selectAnswer(step, value, btn) {
 
   qs("nextBtn").disabled = false;
 
-  // 🔥 AUTO SAVE EACH STEP
+  // 🔥 AUTO SAVE (SCRAPED LEAD)
   try {
-  await fetch(`${API}/api/extract/update-scraped-lead`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    scraped_lead_id: ACTIVE_LEAD.id,
-    survey_data: surveyAnswers
-  })
-});
+    await fetch(`${API}/api/extract/update-scraped-lead`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        scraped_lead_id: ACTIVE_LEAD.id,
+        survey_data: surveyAnswers
+      })
+    });
+  } catch {
+    console.warn("Auto-save failed (offline)");
+  }
+}
 
-} catch (err) {
-  console.warn("Auto-save failed (offline). Will retry later.");
-}
-}
 /* ---------------------------------------------------------
-   NEXT
+   NEXT / BACK
 --------------------------------------------------------- */
-qs("nextBtn").onclick = async () => {
-  // 🔒 LAST STEP PAR NEXT DISABLED
+qs("nextBtn").onclick = () => {
   if (surveyStep >= SURVEY_FLOW.length - 1) return;
-
   surveyStep++;
   renderSurveyStep();
 };
@@ -630,20 +615,64 @@ qs("backBtn").onclick = () => {
   do {
     surveyStep--;
   } while (skippedSteps.has(surveyStep));
-
   if (surveyStep < 0) surveyStep = 0;
   renderSurveyStep();
 };
 
 /* ---------------------------------------------------------
-   SKIP
+   COMPLETE / SKIP
 --------------------------------------------------------- */
+async function completeAssignment(reason, status) {
+  if (!ACTIVE_ASSIGNMENT) return;
+
+  await fetch(`${API}/api/extract/complete-lead`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      assignment_id: ACTIVE_ASSIGNMENT,
+      mark_status: status,
+      reason
+    })
+  });
+}
+
 async function skipLead() {
   await completeAssignment("Skipped by agent", "skipped");
   loadNextLead();
 }
 
-// language slector // 
+/* ---------------------------------------------------------
+   FINISH LEAD
+--------------------------------------------------------- */
+async function finishLead() {
+  if (!ACTIVE_ASSIGNMENT || !ACTIVE_LEAD) {
+    alert("No active lead");
+    return;
+  }
+
+  try {
+    await completeAssignment("Survey Completed", "completed");
+
+    await fetch(`${API}/api/extract/update-scraped-lead`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        scraped_lead_id: ACTIVE_LEAD.id,
+        status: "interested",
+        survey_data: surveyAnswers,
+        survey_completed_at: new Date().toISOString()
+      })
+    });
+
+    loadNextLead();
+  } catch {
+    alert("Internet issue. Retry.");
+  }
+}
+
+/* ---------------------------------------------------------
+   LANGUAGE SWITCHER
+--------------------------------------------------------- */
 document.getElementById("languageSwitcher")?.addEventListener("change", (e) => {
   const lang = e.target.value;
   if (!lang) return;
@@ -658,35 +687,6 @@ document.getElementById("languageSwitcher")?.addEventListener("change", (e) => {
   }, 300);
 });
 
-async function finishLead() {
-  if (!ACTIVE_ASSIGNMENT || !ACTIVE_LEAD) {
-    alert("No active lead");
-    return;
-  }
-
-  try {
-    // 🔒 Mark survey completed (ONLY ONCE)
-    await completeAssignment("Survey Completed", "completed");
-
-    // 🔐 Update lead data
-   await fetch(`${API}/api/extract/update-scraped-lead`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    scraped_lead_id: ACTIVE_LEAD.id,
-    status: "interested",
-    survey_data: surveyAnswers,
-    survey_completed_at: new Date().toISOString()
-  })
-});
-
-  } catch (err) {
-    alert("Internet issue. Please check connection and retry.");
-    return;
-  }
-
-  loadNextLead();
-}
 /* ---------------------------------------------------------
    INIT
 --------------------------------------------------------- */
@@ -694,4 +694,3 @@ window.onload = () => {
   startTimer();
   loadNextLead();
 };
-
