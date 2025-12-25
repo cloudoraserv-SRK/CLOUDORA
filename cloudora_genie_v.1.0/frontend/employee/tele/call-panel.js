@@ -515,9 +515,6 @@ function renderLead() {
 /* ---------------------------------------------------------
    SURVEY ENGINE
 --------------------------------------------------------- */
-let surveyStep = 0;
-let surveyAnswers = {};
-
 function resetSurvey() {
   surveyStep = 0;
   surveyAnswers = {};
@@ -694,3 +691,4 @@ window.onload = () => {
   startTimer();
   loadNextLead();
 };
+
