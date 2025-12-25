@@ -74,14 +74,15 @@ if (!window.supabase) {
   console.log("✅ Supabase SDK loaded");
 }
 
-// CREATE CLIENT SAFELY
-const supabase = window.supabase.createClient(
-  CONFIG.SUPA_URL,
-  CONFIG.SUPA_ANON
-);
+// CREATE SUPABASE CLIENT SAFELY (DO NOT OVERWRITE SDK)
+if (!window._supabaseClient) {
+  window._supabaseClient = window.supabase.createClient(
+    CONFIG.SUPA_URL,
+    CONFIG.SUPA_ANON
+  );
+}
 
-// expose supabase globally
-window.supabase = supabase;
+window.supabaseClient = window._supabaseClient;
 
 
 // -----------------------------------------
@@ -149,6 +150,7 @@ window.speak = speak;
 window.startListening = startListening;
 window.applyTranslations = applyTranslations;
 window.initializeLanguageSelector = initializeLanguageSelector;
+
 
 
 
