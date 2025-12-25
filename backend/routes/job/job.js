@@ -49,8 +49,15 @@ router.post("/apply", async (req, res) => {
       agreement_status: false
     });
 
-    if (error) return res.json({ ok:false, error:error.message });
-    return res.json({ ok:true, lead_uid });
+  if (error) return res.json({ ok:false, error:error.message });
+
+return res.json({
+  ok: true,
+  lead: {
+    lead_uid
+  }
+});
+
 
   } catch (e) {
     return res.json({ ok:false, error:e.message });
@@ -319,6 +326,7 @@ router.post("/upload-recording", async (req, res) => {
 ============================================================ */
 
 export default router;
+
 
 
 
