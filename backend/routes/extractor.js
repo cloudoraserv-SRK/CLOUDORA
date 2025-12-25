@@ -226,24 +226,39 @@ router.post("/complete-lead", async (req, res) => {
 /* -------------------------------------------------------
    6) UPDATE LEAD DETAILS (scraped_leads)
 -------------------------------------------------------- */
-router.post("/update-lead", async (req, res) => {
-    const { id, status, notes, follow_date, follow_time } = req.body;
+router.post("/update-scraped-lead", async (req, res) => {
+  try {
+    const {
+      scraped_lead_id,
+      survey_data,
+      status,
+      survey_completed_at
+    } = req.body;
 
-    try {
-        const { error } = await supabase
-            .from("scraped_leads")
-  .update({
-    status,
-    notes
-  })
-  .eq("id", id);
-
-        return error ? res.json({ ok: false, error }) : res.json({ ok: true });
-    } catch (err) {
-        return res.json({ ok: false, error: err.message });
+    if (!scraped_lead_id) {
+      return res.status(400).json({ error: "scraped_lead_id required" });
     }
-});
 
+    const { error } = await supabase
+      .from("scraped_lead_intents")
+      .upsert({
+        scraped_lead_id,
+        survey_data,
+        survey_completed_at: survey_completed_at || new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }, { onConflict: "scraped_lead_id" });
+
+    if (error) {
+      console.error("supabase upsert error", error);
+      return res.status(500).json({ error: error.message });
+    }
+
+    return res.json({ ok: true });
+  } catch (err) {
+    console.error("update-scraped-lead exception", err);
+    return res.status(500).json({ error: "server error" });
+  }
+});
 /* -------------------------------------------------------
    7) TIMELINE → ADD ENTRY
 -------------------------------------------------------- */
