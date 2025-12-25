@@ -602,14 +602,15 @@ async function selectAnswer(step, value, btn) {
 
   // 🔥 AUTO SAVE EACH STEP
   try {
-  await fetch(`${API}/api/extract/update-lead`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      id: ACTIVE_LEAD.id,
-      survey_data: surveyAnswers
-    })
-  });
+  await fetch(`${API}/api/extract/update-scraped-lead`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    scraped_lead_id: ACTIVE_LEAD.id,
+    survey_data: surveyAnswers
+  })
+});
+
 } catch (err) {
   console.warn("Auto-save failed (offline). Will retry later.");
 }
@@ -668,15 +669,17 @@ async function finishLead() {
     await completeAssignment("Survey Completed", "completed");
 
     // 🔐 Update lead data
-    await fetch(`${API}/api/extract/update-lead`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        id: ACTIVE_LEAD.id,
-        status: "interested",
-        survey_data: surveyAnswers
-      })
-    });
+   await fetch(`${API}/api/extract/update-scraped-lead`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    scraped_lead_id: ACTIVE_LEAD.id,
+    status: "interested",
+    survey_data: surveyAnswers,
+    survey_completed_at: new Date().toISOString()
+  })
+});
+
   } catch (err) {
     alert("Internet issue. Please check connection and retry.");
     return;
@@ -691,3 +694,4 @@ window.onload = () => {
   startTimer();
   loadNextLead();
 };
+
