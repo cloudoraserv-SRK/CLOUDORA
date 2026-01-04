@@ -7,7 +7,7 @@ import express from "express";
 import { supabase } from "../lib/supabaseClient.js";
 import { queryGenieKB } from "../lib/genieKB.js";
 import { askGemini } from "../lib/genieAI.js";
-import { autoAssignLead } from "../services/autoAssignLead.js";
+import { autoAssignLead } from "../lib/autoAssignLead.js";
 
 const router = express.Router();
 
@@ -220,3 +220,4 @@ router.post("/start", (req, res) => {
 });
 
 export default router;
+
