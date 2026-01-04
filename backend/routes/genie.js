@@ -1,11 +1,6 @@
-// -----------------------------------------------------
-// Cloudora Genie – Brain v2.0 (FREE + SMART)
-// -----------------------------------------------------
-
 import express from "express";
 import { supabase } from "../lib/supabaseClient.js";
 import { askGenie } from "../lib/genieAI.js";
-import { autoAssignLead } from "../lib/autoAssignLead.js";
 
 const router = express.Router();
 
@@ -18,12 +13,12 @@ async function getChat(sessionId) {
     .select("role, content")
     .eq("session_id", sessionId)
     .order("created_at", { ascending: true })
-    .limit(8);
+    .limit(10);
+
   return data || [];
 }
 
 async function saveChat(sessionId, role, content) {
-  if (!sessionId) return;
   await supabase.from("genie_chat").insert({
     session_id: sessionId,
     role,
@@ -41,30 +36,28 @@ router.post("/message", async (req, res) => {
   await saveChat(sessionId, "user", message);
 
   const history = await getChat(sessionId);
-  const chatContext = history
-    .map(m => `${m.role}: ${m.content}`)
-    .join("\n");
 
-  const systemPrompt = `
-You are Genie, Cloudora's AI assistant.
+  const messages = [
+    {
+      role: "system",
+      content:
+        "You are Genie, Cloudora's AI assistant. Do NOT repeat introductions. Talk naturally like ChatGPT. Answer clearly and directly."
+    },
+    ...history.map(m => ({
+      role: m.role,
+      content: m.content
+    }))
+  ];
 
-About you:
-- You help with jobs, CRM, business growth, sales, tech & general questions
-- You can answer ANY normal question like ChatGPT
-- If asked about yourself: explain you are Genie from Cloudora
-- If asked about company: Cloudora builds CRM, lead systems & automation
-- Be friendly, clear, human-like
+  let reply = "Something went wrong. Try again 🙂";
+  try {
+    reply = await askGenie(messages);
+  } catch (e) {
+    console.error("GENIE AI ERROR:", e.message);
+  }
 
-Conversation:
-${chatContext}
-assistant:
-`;
-
-  const aiReply = await askGenie(systemPrompt);
-
-  await saveChat(sessionId, "assistant", aiReply);
-
-  res.json({ reply: aiReply, mode: "assistant" });
+  await saveChat(sessionId, "assistant", reply);
+  res.json({ reply });
 });
 
 /* =======================
@@ -78,5 +71,3 @@ router.post("/start", (req, res) => {
 });
 
 export default router;
-
-
