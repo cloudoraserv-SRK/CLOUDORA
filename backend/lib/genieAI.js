@@ -1,14 +1,16 @@
 import OpenAI from "openai";
 
-const client = new OpenAI({
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
-export async function askGemini(prompt) {
-  const res = await client.chat.completions.create({
-    model: process.env.MODEL_NAME,
-    messages: [{ role: "user", content: prompt }],
-    temperature: 0.6
+export async function askGenie(prompt) {
+  const res = await openai.chat.completions.create({
+    model: "gpt-4o-mini",
+    messages: [
+      { role: "system", content: "You are Genie, Cloudora's AI assistant." },
+      { role: "user", content: prompt }
+    ]
   });
 
   return res.choices[0].message.content;
