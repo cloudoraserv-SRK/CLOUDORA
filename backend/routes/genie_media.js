@@ -2,6 +2,7 @@
 import express from "express";
 import multer from "multer";
 import { createClient } from "@supabase/supabase-js";
+import { autoAssignLead } from "../lib/autoAssignLead.js";
 import "dotenv/config";
 
 const router = express.Router();
