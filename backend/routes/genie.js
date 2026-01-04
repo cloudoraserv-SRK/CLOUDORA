@@ -10,7 +10,7 @@ const router = express.Router();
 ======================= */
 async function getChat(sessionId) {
   const { data } = await supabase
-    .from("genie_chat")
+    .from("genie_conversations")
     .select("role, content")
     .eq("session_id", sessionId)
     .order("created_at", { ascending: true })
@@ -20,7 +20,7 @@ async function getChat(sessionId) {
 }
 
 async function saveChat(sessionId, role, content) {
-  await supabase.from("genie_chat").insert({
+  await supabase.from("genie_conversations").insert({
     session_id: sessionId,
     role,
     content,
@@ -73,6 +73,7 @@ router.post("/start", (req, res) => {
 });
 
 export default router;
+
 
 
 
