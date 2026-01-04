@@ -1,6 +1,7 @@
 import express from "express";
 import { supabase } from "../lib/supabaseClient.js";
 import { askGenie } from "../lib/genieAI.js";
+import { queryGenieKB } from "../lib/genieKB.js";
 
 const router = express.Router();
 
@@ -38,11 +39,11 @@ router.post("/message", async (req, res) => {
   const history = await getChat(sessionId);
 
   const messages = [
-    {
-      role: "system",
-      content:
-        "You are Genie, Cloudora's AI assistant. Do NOT repeat introductions. Talk naturally like ChatGPT. Answer clearly and directly."
-    },
+   {
+  role: "system",
+  content:
+    "You are Genie, Cloudora's AI assistant. Answer the user's question directly. NEVER repeat greetings or say 'How can I assist you today'."
+},
     ...history.map(m => ({
       role: m.role,
       content: m.content
@@ -71,3 +72,4 @@ router.post("/start", (req, res) => {
 });
 
 export default router;
+
