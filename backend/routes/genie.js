@@ -19,38 +19,38 @@ function isHomeGenie(context) {
 }
 
 function detectIntent(msg = "") {
-  msg = msg.toLowerCase().trim();
+  const text = msg.toLowerCase().trim();
 
-  if (msg.includes("apply")) return "job_apply";
-  if (msg.includes("job")) return "job_info";
-  if (msg.includes("business") || msg.includes("crm") || msg.includes("leads"))
+  if (text.includes("apply")) return "job_apply";
+  if (text.includes("job")) return "job_info";
+  if (text.includes("business") || text.includes("crm") || text.includes("leads"))
     return "business";
-  if (msg.includes("joke") || msg.includes("fun")) return "entertainment";
-  if (["ok", "wait", "hmm"].includes(msg)) return "idle";
-  if (msg.includes("sad") || msg.includes("tired")) return "emotional";
-  if (msg.includes("hi") || msg.includes("hello")) return "companion";
+  if (text.includes("joke") || text.includes("fun")) return "entertainment";
+  if (["ok", "wait", "hmm"].includes(text)) return "idle";
+  if (text.includes("sad") || text.includes("tired")) return "emotional";
+  if (text.includes("hi") || text.includes("hello")) return "companion";
 
   return "free";
 }
 
 /* =======================
-   MEMORY
+   MEMORY (SAFE)
 ======================= */
 async function getMemory(sessionId) {
   if (!sessionId) return null;
 
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from("genie_memory")
     .select("stage")
     .eq("session_id", sessionId)
     .maybeSingle();
 
-  if (error) return null;
   return data;
 }
 
 async function saveStage(sessionId, stage) {
   if (!sessionId) return;
+
   await supabase.from("genie_memory").upsert({
     session_id: sessionId,
     stage,
@@ -59,29 +59,25 @@ async function saveStage(sessionId, stage) {
 }
 
 /* =======================
-   EVENT LOGGING (SAFE)
+   EVENT LOGGING
 ======================= */
-async function logGenieEvent({
-  sessionId,
-  action,
-  message = null,
-  page = null
-}) {
+async function logGenieEvent({ sessionId, action, message, page }) {
   await supabase.from("genie_events").insert([
     {
+      session_id: sessionId,
       source: "genie",
       action,
-      label: message,
-      page,
+      label: message || null,
+      page: page || null,
       created_at: new Date()
     }
   ]);
 }
 
 /* =======================
-   LEAD CAPTURE (INTENT ONLY)
+   LEAD INTENT CAPTURE
 ======================= */
-async function createIntentLead({ lead_type }) {
+async function createIntentLead(lead_type) {
   const { data } = await supabase
     .from("leads")
     .insert([
@@ -119,23 +115,22 @@ router.post("/message", async (req, res) => {
   if (isHomeGenie(context)) {
     return res.json({
       reply:
-        "I can guide you here.\n• Jobs\n• Business\n• Genie features\n\nOpen Genie for full help.",
+        "Hi 👋 I’m Genie.\nExplore Jobs, Business & CRM.\nOpen Genie page for full help.",
       mode: "guide"
     });
   }
 
   const memory = await getMemory(sessionId);
 
-  /* INTRO ONCE */
+  /* INTRO (ONLY ONCE PER SESSION) */
   if (!memory) {
-  await saveStage(sessionId, "active");
-  return res.json({
-    reply:
-      "Hi 👋 I’m Genie.\n\nI help with jobs, CRM & business growth.\nWhat would you like to explore?",
-    mode: "assistant"
-  });
-}
-
+    await saveStage(sessionId, "active");
+    return res.json({
+      reply:
+        "Hi 👋 I’m Genie.\n\nI help with jobs, CRM & business growth.\nWhat would you like to explore?",
+      mode: "assistant"
+    });
+  }
 
   /* JOB INFO */
   if (intent === "job_info") {
@@ -148,7 +143,7 @@ router.post("/message", async (req, res) => {
 
   /* JOB APPLY */
   if (intent === "job_apply") {
-    await createIntentLead({ lead_type: "job" });
+    await createIntentLead("job");
 
     return res.json({
       reply:
@@ -159,7 +154,7 @@ router.post("/message", async (req, res) => {
 
   /* BUSINESS */
   if (intent === "business") {
-    await createIntentLead({ lead_type: "business" });
+    await createIntentLead("business");
 
     return res.json({
       reply:
@@ -189,7 +184,7 @@ router.post("/message", async (req, res) => {
   if (intent === "emotional") {
     return res.json({
       reply:
-        "I’m here for you. Want to talk or get distracted a bit?",
+        "I’m here for you. Want to talk or distract your mind a bit?",
       mode: "companion"
     });
   }
@@ -206,7 +201,7 @@ router.post("/message", async (req, res) => {
 
   /* AI FALLBACK */
   const aiReply = await askGemini(
-    `You are Genie, Cloudora's assistant.\nUser: ${message}`
+    `You are Genie, Cloudora's helpful assistant.\nUser: ${message}`
   );
 
   return res.json({ reply: aiReply, mode: "assistant" });
@@ -223,5 +218,3 @@ router.post("/start", (req, res) => {
 });
 
 export default router;
-
-
