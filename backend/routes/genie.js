@@ -41,8 +41,7 @@ router.post("/message", async (req, res) => {
   const messages = [
    {
   role: "system",
-  content:
-    "You are Genie, Cloudora's AI assistant. Answer the user's question directly. NEVER repeat greetings or say 'How can I assist you today'."
+  content: "Answer directly. Do not repeat greetings or introductions."
 },
     ...history
   .filter(m => m.role === "user")
@@ -74,5 +73,6 @@ router.post("/start", (req, res) => {
 });
 
 export default router;
+
 
 
