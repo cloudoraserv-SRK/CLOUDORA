@@ -44,10 +44,12 @@ router.post("/message", async (req, res) => {
   content:
     "You are Genie, Cloudora's AI assistant. Answer the user's question directly. NEVER repeat greetings or say 'How can I assist you today'."
 },
-    ...history.map(m => ({
-      role: m.role,
-      content: m.content
-    }))
+    ...history
+  .filter(m => m.role === "user")
+  .map(m => ({
+    role: "user",
+    content: m.content
+  }))
   ];
 
   let reply = "Something went wrong. Try again 🙂";
@@ -72,4 +74,5 @@ router.post("/start", (req, res) => {
 });
 
 export default router;
+
 
