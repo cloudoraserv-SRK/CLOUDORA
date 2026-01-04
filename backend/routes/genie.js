@@ -1,12 +1,13 @@
 // -----------------------------------------------------
-// Cloudora Genie – Brain v1.3 (FINAL CLEAN)
-// Learning + Lead Capture + KB + AI Ready
+// Cloudora Genie – Brain v1.4 (CLEAN & STABLE)
+// Chat + Memory + Lead Intent + KB + AI
 // -----------------------------------------------------
 
 import express from "express";
 import { supabase } from "../lib/supabaseClient.js";
 import { queryGenieKB } from "../lib/genieKB.js";
 import { askGemini } from "../lib/genieAI.js";
+import { autoAssignLead } from "../services/autoAssignLead.js";
 
 const router = express.Router();
 
@@ -42,6 +43,7 @@ async function getMemory(sessionId) {
     .select("stage")
     .eq("session_id", sessionId)
     .single();
+
   return data || {};
 }
 
@@ -55,54 +57,47 @@ async function saveStage(sessionId, stage) {
 }
 
 /* =======================
-   EVENT LOGGING
+   EVENT LOGGING (SAFE)
 ======================= */
 async function logGenieEvent({
   sessionId,
-  event_type,
-  intent = null,
+  action,
   message = null,
-  context = null,
-  lead_id = null,
-  metadata = {}
+  page = null
 }) {
   await supabase.from("genie_events").insert([
     {
-      session_id: sessionId,
-      event_type,
-      intent,
-      message,
-      context,
-      lead_id,
-      metadata,
+      source: "genie",
+      action,
+      label: message,
+      page,
       created_at: new Date()
     }
   ]);
 }
 
 /* =======================
-   LEAD CAPTURE
+   LEAD CAPTURE (INTENT ONLY)
 ======================= */
-async function saveLead(payload, sessionId) {
-  const { data, error } = await supabase
+async function createIntentLead({ lead_type }) {
+  const { data } = await supabase
     .from("leads")
-    .insert([{ ...payload, source: "genie" }])
+    .insert([
+      {
+        lead_type,
+        source: "genie",
+        status: "new"
+      }
+    ])
     .select()
     .single();
 
-  if (!error && data) {
-    await logGenieEvent({
-      sessionId,
-      event_type: "lead_created",
-      lead_id: data.id,
-      metadata: payload
-    });
+  if (data) {
+    await autoAssignLead(data);
   }
 
   return data;
 }
-const lead = await saveLead(payload, sessionId);
-await autoAssignLead(lead);
 
 /* =======================
    MAIN CHAT
@@ -111,16 +106,14 @@ router.post("/message", async (req, res) => {
   const { message = "", sessionId, context } = req.body;
   const intent = detectIntent(message);
 
-  // log every user message
   await logGenieEvent({
     sessionId,
-    event_type: "message",
-    intent,
+    action: "user_message",
     message,
-    context
+    page: context
   });
 
-  /* HOME PAGE MINI GENIE */
+  /* HOME MINI GENIE */
   if (isHomeGenie(context)) {
     return res.json({
       reply:
@@ -131,58 +124,48 @@ router.post("/message", async (req, res) => {
 
   const memory = await getMemory(sessionId);
 
-  /* INTRO (ONCE) */
+  /* INTRO ONCE */
   if (memory.stage !== "active") {
     await saveStage(sessionId, "active");
     return res.json({
       reply:
-        "Hi 👋 I’m Genie.\n\nI help with jobs, CRM, business growth & guidance.\nWhat would you like to explore?",
+        "Hi 👋 I’m Genie.\n\nI help with jobs, CRM & business growth.\nWhat would you like to explore?",
       mode: "assistant"
     });
   }
 
-  /* HARD FLOWS */
+  /* JOB INFO */
   if (intent === "job_info") {
     return res.json({
       reply:
-        "Cloudora is hiring for Telecaller, Sales & CRM Support.\nSay: *I want to apply*",
+        "We’re hiring for Telecaller, Sales & CRM Support.\nSay: *I want to apply*",
       mode: "assistant"
     });
   }
 
-  /* ---- JOB APPLY ---- */
-if (intent === "job_apply") {
-  const lead = await saveLead(
-    { lead_type: "job", source: "genie" },
-    sessionId
-  );
+  /* JOB APPLY */
+  if (intent === "job_apply") {
+    await createIntentLead({ lead_type: "job" });
 
-  await autoAssignLead(lead);
+    return res.json({
+      reply:
+        "Please send:\n1️⃣ Name\n2️⃣ Phone\n3️⃣ City\n4️⃣ Job role",
+      mode: "assistant"
+    });
+  }
 
-  return res.json({
-    reply:
-      "Please send:\n1️⃣ Name\n2️⃣ Phone\n3️⃣ City\n4️⃣ Job role",
-    mode: "assistant"
-  });
-}
+  /* BUSINESS */
+  if (intent === "business") {
+    await createIntentLead({ lead_type: "business" });
 
+    return res.json({
+      reply:
+        "Send:\n1️⃣ Name\n2️⃣ Phone\n3️⃣ Business type",
+      mode: "advisor"
+    });
+  }
 
- /* ---- BUSINESS ---- */
-if (intent === "business") {
-  const lead = await saveLead(
-    { lead_type: "business", source: "genie" },
-    sessionId
-  );
-
-  await autoAssignLead(lead);
-
-  return res.json({
-    reply:
-      "Send:\n1️⃣ Name\n2️⃣ Phone\n3️⃣ Business type",
-    mode: "advisor"
-  });
-}
-
+  /* ENTERTAINMENT */
   if (intent === "entertainment") {
     return res.json({
       reply:
@@ -191,44 +174,37 @@ if (intent === "business") {
     });
   }
 
+  /* IDLE */
   if (intent === "idle") {
     return res.json({
-      reply: "No worries 🙂 I’m here when you’re ready.",
+      reply: "No worries 🙂 I’m here.",
       mode: "idle"
     });
   }
 
+  /* EMOTIONAL */
   if (intent === "emotional") {
     return res.json({
       reply:
-        "I’m here for you. Want to talk, or should I distract you a bit?",
+        "I’m here for you. Want to talk or get distracted a bit?",
       mode: "companion"
     });
   }
 
-  /* ===== KB FIRST ===== */
+  /* KB FIRST */
   const kbAnswer = await queryGenieKB({
     message,
     site: context || "cloudora"
   });
 
   if (kbAnswer) {
-    await logGenieEvent({
-      sessionId,
-      event_type: "kb_answer"
-    });
     return res.json({ reply: kbAnswer, mode: "assistant" });
   }
 
-  /* ===== AI FALLBACK ===== */
+  /* AI FALLBACK */
   const aiReply = await askGemini(
     `You are Genie, Cloudora's assistant.\nUser: ${message}`
   );
-
-  await logGenieEvent({
-    sessionId,
-    event_type: "ai_answer"
-  });
 
   return res.json({ reply: aiReply, mode: "assistant" });
 });
