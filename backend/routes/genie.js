@@ -1,210 +1,70 @@
 // -----------------------------------------------------
-// Cloudora Genie – Brain v1.4 (CLEAN & STABLE)
-// Chat + Memory + Lead Intent + KB + AI
+// Cloudora Genie – Brain v2.0 (FREE + SMART)
 // -----------------------------------------------------
 
 import express from "express";
 import { supabase } from "../lib/supabaseClient.js";
-import { queryGenieKB } from "../lib/genieKB.js";
 import { askGemini } from "../lib/genieAI.js";
 import { autoAssignLead } from "../lib/autoAssignLead.js";
 
 const router = express.Router();
 
 /* =======================
-   HELPERS
+   CHAT MEMORY
 ======================= */
-function isHomeGenie(context) {
-  return context === "home";
-}
-
-function detectIntent(msg = "") {
-  const text = msg.toLowerCase().trim();
-
-  if (text.includes("apply")) return "job_apply";
-  if (text.includes("job")) return "job_info";
-  if (text.includes("business") || text.includes("crm") || text.includes("leads"))
-    return "business";
-  if (text.includes("joke") || text.includes("fun")) return "entertainment";
-  if (["ok", "wait", "hmm"].includes(text)) return "idle";
-  if (text.includes("sad") || text.includes("tired")) return "emotional";
-  if (text.includes("hi") || text.includes("hello")) return "companion";
-
-  return "free";
-}
-
-/* =======================
-   MEMORY (SAFE)
-======================= */
-async function getMemory(sessionId) {
-  if (!sessionId) return null;
-
+async function getChat(sessionId) {
   const { data } = await supabase
-    .from("genie_memory")
-    .select("stage")
+    .from("genie_chat")
+    .select("role, content")
     .eq("session_id", sessionId)
-    .maybeSingle();
-
-  return data;
+    .order("created_at", { ascending: true })
+    .limit(8);
+  return data || [];
 }
 
-async function saveStage(sessionId, stage) {
+async function saveChat(sessionId, role, content) {
   if (!sessionId) return;
-
-  await supabase.from("genie_memory").upsert({
+  await supabase.from("genie_chat").insert({
     session_id: sessionId,
-    stage,
-    updated_at: new Date()
+    role,
+    content,
+    created_at: new Date()
   });
-}
-
-/* =======================
-   EVENT LOGGING
-======================= */
-async function logGenieEvent({ sessionId, action, message, page }) {
-  await supabase.from("genie_events").insert([
-    {
-      session_id: sessionId,
-      source: "genie",
-      action,
-      label: message || null,
-      page: page || null,
-      created_at: new Date()
-    }
-  ]);
-}
-
-/* =======================
-   LEAD INTENT CAPTURE
-======================= */
-async function createIntentLead(lead_type) {
-  const { data } = await supabase
-    .from("leads")
-    .insert([
-      {
-        lead_type,
-        source: "genie",
-        status: "new"
-      }
-    ])
-    .select()
-    .single();
-
-  if (data) {
-    await autoAssignLead(data);
-  }
-
-  return data;
 }
 
 /* =======================
    MAIN CHAT
 ======================= */
 router.post("/message", async (req, res) => {
-  const { message = "", sessionId, context } = req.body;
-  const intent = detectIntent(message);
+  const { message = "", sessionId } = req.body;
 
-  await logGenieEvent({
-    sessionId,
-    action: "user_message",
-    message,
-    page: context
-  });
+  await saveChat(sessionId, "user", message);
 
-  /* HOME MINI GENIE */
-  if (isHomeGenie(context)) {
-    return res.json({
-      reply:
-        "Hi 👋 I’m Genie.\nExplore Jobs, Business & CRM.\nOpen Genie page for full help.",
-      mode: "guide"
-    });
-  }
+  const history = await getChat(sessionId);
+  const chatContext = history
+    .map(m => `${m.role}: ${m.content}`)
+    .join("\n");
 
-  const memory = await getMemory(sessionId);
+  const systemPrompt = `
+You are Genie, Cloudora's AI assistant.
 
-  /* INTRO (ONLY ONCE PER SESSION) */
-  if (!memory) {
-    await saveStage(sessionId, "active");
-    return res.json({
-      reply:
-        "Hi 👋 I’m Genie.\n\nI help with jobs, CRM & business growth.\nWhat would you like to explore?",
-      mode: "assistant"
-    });
-  }
+About you:
+- You help with jobs, CRM, business growth, sales, tech & general questions
+- You can answer ANY normal question like ChatGPT
+- If asked about yourself: explain you are Genie from Cloudora
+- If asked about company: Cloudora builds CRM, lead systems & automation
+- Be friendly, clear, human-like
 
-  /* JOB INFO */
-  if (intent === "job_info") {
-    return res.json({
-      reply:
-        "We’re hiring for Telecaller, Sales & CRM Support.\nSay: *I want to apply*",
-      mode: "assistant"
-    });
-  }
+Conversation:
+${chatContext}
+assistant:
+`;
 
-  /* JOB APPLY */
-  if (intent === "job_apply") {
-    await createIntentLead("job");
+  const aiReply = await askGemini(systemPrompt);
 
-    return res.json({
-      reply:
-        "Please send:\n1️⃣ Name\n2️⃣ Phone\n3️⃣ City\n4️⃣ Job role",
-      mode: "assistant"
-    });
-  }
+  await saveChat(sessionId, "assistant", aiReply);
 
-  /* BUSINESS */
-  if (intent === "business") {
-    await createIntentLead("business");
-
-    return res.json({
-      reply:
-        "Send:\n1️⃣ Name\n2️⃣ Phone\n3️⃣ Business type",
-      mode: "advisor"
-    });
-  }
-
-  /* ENTERTAINMENT */
-  if (intent === "entertainment") {
-    return res.json({
-      reply:
-        "😄 Why Cloudora?\nBecause leads without follow-up don’t grow!",
-      mode: "companion"
-    });
-  }
-
-  /* IDLE */
-  if (intent === "idle") {
-    return res.json({
-      reply: "No worries 🙂 I’m here.",
-      mode: "idle"
-    });
-  }
-
-  /* EMOTIONAL */
-  if (intent === "emotional") {
-    return res.json({
-      reply:
-        "I’m here for you. Want to talk or distract your mind a bit?",
-      mode: "companion"
-    });
-  }
-
-  /* KB FIRST */
-  const kbAnswer = await queryGenieKB({
-    message,
-    site: context || "cloudora"
-  });
-
-  if (kbAnswer) {
-    return res.json({ reply: kbAnswer, mode: "assistant" });
-  }
-
-  /* AI FALLBACK */
-  const aiReply = await askGemini(
-    `You are Genie, Cloudora's helpful assistant.\nUser: ${message}`
-  );
-
-  return res.json({ reply: aiReply, mode: "assistant" });
+  res.json({ reply: aiReply, mode: "assistant" });
 });
 
 /* =======================
