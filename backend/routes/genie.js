@@ -60,7 +60,7 @@ ${chatContext}
 assistant:
 `;
 
-  const aiReply = await askGemini(systemPrompt);
+  const aiReply = await askGenie(systemPrompt);
 
   await saveChat(sessionId, "assistant", aiReply);
 
@@ -78,4 +78,5 @@ router.post("/start", (req, res) => {
 });
 
 export default router;
+
 
