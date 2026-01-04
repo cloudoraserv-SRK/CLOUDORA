@@ -37,14 +37,16 @@ function detectIntent(msg = "") {
    MEMORY
 ======================= */
 async function getMemory(sessionId) {
-  if (!sessionId) return {};
-  const { data } = await supabase
+  if (!sessionId) return null;
+
+  const { data, error } = await supabase
     .from("genie_memory")
     .select("stage")
     .eq("session_id", sessionId)
-    .single();
+    .maybeSingle();
 
-  return data || {};
+  if (error) return null;
+  return data;
 }
 
 async function saveStage(sessionId, stage) {
@@ -125,14 +127,15 @@ router.post("/message", async (req, res) => {
   const memory = await getMemory(sessionId);
 
   /* INTRO ONCE */
-  if (memory.stage !== "active") {
-    await saveStage(sessionId, "active");
-    return res.json({
-      reply:
-        "Hi 👋 I’m Genie.\n\nI help with jobs, CRM & business growth.\nWhat would you like to explore?",
-      mode: "assistant"
-    });
-  }
+  if (!memory) {
+  await saveStage(sessionId, "active");
+  return res.json({
+    reply:
+      "Hi 👋 I’m Genie.\n\nI help with jobs, CRM & business growth.\nWhat would you like to explore?",
+    mode: "assistant"
+  });
+}
+
 
   /* JOB INFO */
   if (intent === "job_info") {
@@ -220,4 +223,5 @@ router.post("/start", (req, res) => {
 });
 
 export default router;
+
 
