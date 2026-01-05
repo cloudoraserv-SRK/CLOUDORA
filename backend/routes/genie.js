@@ -95,7 +95,7 @@ router.post("/stream", async (req, res) => {
   const kb = await queryGenieKB(message);
 
   const messages = [
-    { role: "system", content: "You are Jini. Think and respond naturally." },
+{ role: "system", content: `Use the following company knowledge to answer. If relevant, prefer it:\n${kb}`},
     ...(kb ? [{ role: "system", content: `Knowledge: ${kb}` }] : []),
     { role: "user", content: message }
   ];
@@ -157,6 +157,7 @@ router.post("/start", (req, res) => {
 });
 
 export default router;
+
 
 
 
