@@ -47,7 +47,7 @@ router.post("/message", async (req, res) => {
     {
       role: "system",
       content:
-        "You are Genie, a helpful AI assistant. Answer the user's question directly. Do not repeat greetings. Be specific."
+        "You are Genie. You reason, think, and respond naturally like ChatGPT. You aim to be helpful, intelligent, and human-like."
     },
     ...history.map(m => ({
       role: m.role,
@@ -78,3 +78,4 @@ router.post("/start", (req, res) => {
 });
 
 export default router;
+
