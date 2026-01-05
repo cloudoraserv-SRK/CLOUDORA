@@ -72,6 +72,7 @@ router.post("/message", async (req, res) => {
   res.json({ reply });
 });
 
+// ===== STREAM =====
 router.post("/stream", async (req, res) => {
   const { message, sessionId } = req.body;
 
@@ -125,6 +126,26 @@ router.post("/stream", async (req, res) => {
   res.end();
 });
 
+
+// ===== TTS (SEPARATE ROUTE) =====
+router.post("/tts", async (req, res) => {
+  const { text, voice = "alloy" } = req.body;
+
+  try {
+    const audio = await openai.audio.speech.create({
+      model: "gpt-4o-mini-tts",
+      voice,
+      input: text
+    });
+
+    res.setHeader("Content-Type", "audio/mpeg");
+    audio.body.pipe(res);
+  } catch (e) {
+    console.error("TTS ERROR:", e);
+    res.status(500).end();
+  }
+});
+
 /* =======================
    SESSION START
 ======================= */
@@ -136,5 +157,6 @@ router.post("/start", (req, res) => {
 });
 
 export default router;
+
 
 
