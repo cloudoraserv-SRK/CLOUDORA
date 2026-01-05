@@ -92,13 +92,21 @@ router.post("/stream", async (req, res) => {
     content: message
   });
 
-  const kb = await queryGenieKB(message);
+const kb = await queryGenieKB(message);
 
-  const messages = [
-{ role: "system", content: `Use the following company knowledge to answer. If relevant, prefer it:\n${kb}`},
-    ...(kb ? [{ role: "system", content: `Knowledge: ${kb}` }] : []),
-    { role: "user", content: message }
-  ];
+const messages = [
+  {
+    role: "system",
+    content: `You are Jini, an AI assistant for Cloudora.
+If company knowledge is provided, you MUST use it first.
+If not found, answer normally like ChatGPT.`
+  },
+  ...(kb ? [{
+    role: "system",
+    content: `Company Knowledge:\n${kb}`
+  }] : []),
+  { role: "user", content: message }
+];
 
   const stream = await openai.chat.completions.create({
     model: "gpt-4o-mini",
@@ -157,6 +165,7 @@ router.post("/start", (req, res) => {
 });
 
 export default router;
+
 
 
 
