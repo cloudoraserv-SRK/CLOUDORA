@@ -1,8 +1,13 @@
 import express from "express";
+import OpenAI from "openai";
+import { queryGenieKB } from "../lib/genieKB.js";
 import { supabase } from "../lib/supabaseClient.js";
 import { askGenie } from "../lib/genieAI.js";
 
 const router = express.Router();
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
 
 /* =======================
    CHAT MEMORY
@@ -67,6 +72,59 @@ router.post("/message", async (req, res) => {
   res.json({ reply });
 });
 
+router.post("/stream", async (req, res) => {
+  const { message, sessionId } = req.body;
+
+  if (!message || !sessionId) {
+    res.end();
+    return;
+  }
+
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+  res.flushHeaders?.();
+
+  await supabase.from("genie_conversations").insert({
+    session_id: sessionId,
+    role: "user",
+    content: message
+  });
+
+  const kb = await queryGenieKB(message);
+
+  const messages = [
+    { role: "system", content: "You are Jini. Think and respond naturally." },
+    ...(kb ? [{ role: "system", content: `Knowledge: ${kb}` }] : []),
+    { role: "user", content: message }
+  ];
+
+  const stream = await openai.chat.completions.create({
+    model: "gpt-4o-mini",
+    messages,
+    stream: true
+  });
+
+  let fullReply = "";
+
+  for await (const chunk of stream) {
+    const token = chunk.choices[0]?.delta?.content;
+    if (token) {
+      fullReply += token;
+      res.write(`data: ${token}\n\n`);
+    }
+  }
+
+  await supabase.from("genie_conversations").insert({
+    session_id: sessionId,
+    role: "assistant",
+    content: fullReply
+  });
+
+  res.write("data: [DONE]\n\n");
+  res.end();
+});
+
 /* =======================
    SESSION START
 ======================= */
@@ -78,4 +136,5 @@ router.post("/start", (req, res) => {
 });
 
 export default router;
+
 
