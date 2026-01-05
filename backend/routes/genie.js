@@ -1,7 +1,6 @@
 import express from "express";
 import { supabase } from "../lib/supabaseClient.js";
 import { askGenie } from "../lib/genieAI.js";
-import { queryGenieKB } from "../lib/genieKB.js";
 
 const router = express.Router();
 
@@ -9,23 +8,25 @@ const router = express.Router();
    CHAT MEMORY
 ======================= */
 async function getChat(sessionId) {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("genie_conversations")
     .select("role, content")
     .eq("session_id", sessionId)
     .order("created_at", { ascending: true })
-    .limit(10);
+    .limit(8);
 
+  if (error) console.error("GET CHAT ERROR:", error);
   return data || [];
 }
 
 async function saveChat(sessionId, role, content) {
-  await supabase.from("genie_conversations").insert({
+  const { error } = await supabase.from("genie_conversations").insert({
     session_id: sessionId,
     role,
     content,
     created_at: new Date()
   });
+  if (error) console.error("SAVE CHAT ERROR:", error);
 }
 
 /* =======================
@@ -34,28 +35,32 @@ async function saveChat(sessionId, role, content) {
 router.post("/message", async (req, res) => {
   const { message = "", sessionId } = req.body;
 
+  if (!message || !sessionId) {
+    return res.json({ reply: "Invalid request." });
+  }
+
   await saveChat(sessionId, "user", message);
 
   const history = await getChat(sessionId);
 
   const messages = [
-   {
-  role: "system",
-  content: "Answer directly. Do not repeat greetings or introductions."
-},
-    ...history
-  .filter(m => m.role === "user")
-  .map(m => ({
-    role: "user",
-    content: m.content
-  }))
+    {
+      role: "system",
+      content:
+        "You are Genie, a helpful AI assistant. Answer the user's question directly. Do not repeat greetings. Be specific."
+    },
+    ...history.map(m => ({
+      role: m.role,
+      content: m.content
+    }))
   ];
 
-  let reply = "Something went wrong. Try again 🙂";
+  let reply;
   try {
     reply = await askGenie(messages);
   } catch (e) {
-    console.error("GENIE AI ERROR:", e.message);
+    console.error("AI FAILURE:", e);
+    reply = "AI error. Please try again.";
   }
 
   await saveChat(sessionId, "assistant", reply);
@@ -73,7 +78,3 @@ router.post("/start", (req, res) => {
 });
 
 export default router;
-
-
-
-
