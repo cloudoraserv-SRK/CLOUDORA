@@ -97,16 +97,22 @@ const kb = await queryGenieKB(message);
 const messages = [
   {
     role: "system",
-    content: `You are Jini, an AI assistant for Cloudora.
-If company knowledge is provided, you MUST use it first.
-If not found, answer normally like ChatGPT.`
+    content: `
+You are Jini, Cloudora's official AI assistant.
+
+RULES:
+- Cloudora refers ONLY to the company Cloudora (this project).
+- If company knowledge is provided, you MUST use it.
+- NEVER say you don't know Cloudora if knowledge is present.
+`
   },
   ...(kb ? [{
     role: "system",
-    content: `Company Knowledge:\n${kb}`
+    content: `COMPANY KNOWLEDGE (TRUST THIS SOURCE):\n${kb}`
   }] : []),
   { role: "user", content: message }
 ];
+
 
   const stream = await openai.chat.completions.create({
     model: "gpt-4o-mini",
@@ -165,6 +171,7 @@ router.post("/start", (req, res) => {
 });
 
 export default router;
+
 
 
 
