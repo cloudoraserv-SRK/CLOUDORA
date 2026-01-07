@@ -1,67 +1,40 @@
+// MENU TOGGLE
+const menuToggle = document.getElementById("menuToggle");
+const nav = document.getElementById("mainNav");
+
+menuToggle.onclick = () => nav.classList.toggle("show");
+
+// SMOOTH SCROLL
 document.querySelectorAll('a[href^="#"]').forEach(link=>{
-link.addEventListener('click',e=>{
-e.preventDefault();
-document.querySelector(link.getAttribute('href'))
-.scrollIntoView({behavior:'smooth'});
+  link.onclick=e=>{
+    e.preventDefault();
+    document.querySelector(link.getAttribute("href"))
+    .scrollIntoView({behavior:"smooth"});
+  };
 });
-});
+
+// GOOGLE TRANSLATE TOGGLE
 const langBtn = document.getElementById("langBtn");
 const langBox = document.getElementById("google_translate_element");
 
-langBtn.addEventListener("click", () => {
-  langBox.classList.toggle("show");
-});
-const menuToggle = document.getElementById("menuToggle");
-const nav = document.querySelector("nav");
+langBtn.onclick = () => langBox.classList.toggle("show");
 
-menuToggle.addEventListener("click",()=>{
-  nav.classList.toggle("show");
-});
-const images = document.querySelectorAll(".gallery-grid img");
-const lightbox = document.getElementById("lightbox");
-const lightboxImg = document.getElementById("lightboxImg");
-
-images.forEach(img=>{
-  img.onclick=()=>{
-    lightboxImg.src = img.src;
-    lightbox.classList.add("show");
-  }
-});
-
-lightbox.onclick=()=>{
-  lightbox.classList.remove("show");
-};
+// GSAP
 gsap.registerPlugin(ScrollTrigger);
 
-// Hero text
-gsap.from(".hero-content",{
-  opacity:0,
-  y:80,
-  duration:1.2,
-  ease:"power3.out"
-});
+gsap.from(".hero-content",{y:80,opacity:0,duration:1});
 
-// Sections
 gsap.utils.toArray("section").forEach(sec=>{
   gsap.from(sec,{
-    scrollTrigger:{
-      trigger:sec,
-      start:"top 80%",
-    },
-    opacity:0,
-    y:60,
-    duration:1,
-    ease:"power2.out"
+    scrollTrigger:{trigger:sec,start:"top 80%"},
+    y:60,opacity:0,duration:0.8
   });
 });
 
-// Cards
-gsap.from(".card",{
-  scrollTrigger:{
-    trigger:".products",
-    start:"top 75%"
-  },
-  y:60,
-  opacity:0,
-  stagger:0.15
-});
+// GOOGLE TRANSLATE INIT
+function googleTranslateElementInit(){
+  new google.translate.TranslateElement(
+    {pageLanguage:'hi',includedLanguages:'hi,en'},
+    'google_translate_element'
+  );
+}
