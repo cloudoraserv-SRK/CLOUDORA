@@ -83,11 +83,19 @@ a {
 .site-header {
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
+  height: 72px;
   z-index: 1000;
-  background: linear-gradient(90deg,#020617,#020617cc);
+
+  background: linear-gradient(90deg, #020617, #020617cc);
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid #ffffff10;
+  -webkit-backdrop-filter: blur(12px);
+
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+main {
+  padding-top: 72px;
 }
 
 .nav {
@@ -186,6 +194,7 @@ a {
   gap: 2rem;
   transform: translateX(-100%);
   transition: 0.4s ease;
+   z-index: 1200;
 }
 .mobile.open { transform: translateX(0); }
 
@@ -250,6 +259,7 @@ a {
 /* ================= GENIE SECTION ================= */
 
 .genie-section {
+  padding-top: calc(72px + 40px);
   padding: 120px 0;
   background:
     radial-gradient(circle at 70% 50%, rgba(110,247,255,0.12), transparent 45%),
@@ -502,11 +512,6 @@ a {
 /* =======================
    COMMON
 ======================= */
-.container {
-  max-width: 1100px;
-  margin: auto;
-  padding: 0 20px;
-}
 
 .highlight {
   color: #6cf;
@@ -703,6 +708,13 @@ h2, h3 {
 
 .scroller::-webkit-scrollbar {
   display: none;
+}
+.scroller .card {
+  opacity: .85;
+}
+
+.scroller .card:hover {
+  opacity: 1;
 }
 
 /* card */
@@ -1810,5 +1822,44 @@ footer {
   .cookie-banner {
     left: 16px;
     bottom: 80px;
+  }
+}
+
+
+#geniePanel {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+@media (max-width: 480px) {
+  #geniePanel {
+    width: calc(100vw - 24px);
+    right: 12px;
+    bottom: 12px;
+  }
+}
+@media (max-width: 1024px) {
+  .genie-core {
+    width: 340px;
+    height: 340px;
+  }
+
+  .genie-img {
+    width: 240px;
+  }
+}
+@media (max-width: 360px) {
+  .genie-left h1 {
+    font-size: 30px;
+  }
+
+  .genie-actions {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .genie-btn {
+    width: 100%;
+    text-align: center;
   }
 }
