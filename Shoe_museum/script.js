@@ -11,6 +11,9 @@ const BRAND_IDS = {
 document.addEventListener("DOMContentLoaded", () => {
   loadBrand(BRAND_IDS.liberty, "libertyProducts");
   loadBrand(BRAND_IDS.woodland, "woodlandProducts");
+  loadBrand(BRAND_IDS["pierre-cardin"], "pierreCardinProducts");
+  loadBrand(BRAND_IDS["red-tape"], "redTapeProducts");
+  loadBrand(BRAND_IDS.medifeet, "medifeetProducts");
   initSliders();
   updateCartCount();
 });
@@ -138,5 +141,6 @@ document.getElementById("sortSelect").onchange = e => {
 document.getElementById("filterBtn").onclick = () => {
   location.href = "products/index.html";
 };
+
 
 
