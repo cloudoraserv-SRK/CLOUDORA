@@ -62,18 +62,26 @@
   <section class="card">
     <h2>Variants (Size / Color / Stock)</h2>
 
-    <label>Size</label>
-    <select id="size"></select>
+    <!-- ADD COLOR -->
+  <div class="row">
+    <input id="newColor" placeholder="Add new color (eg: Black)">
+    <button id="addColor" type="button">Add Color</button>
+  </div>
 
-    <label>Color</label>
-    <select id="color"></select>
+  <!-- SELECT COLOR -->
+  <label>Select Color</label>
+  <select id="colorSelect"></select>
+  <!-- ADD SIZE -->
+  <div class="row">
+    <input id="newSize" placeholder="Size (eg: 7, 8, 9)">
+    <input id="newStock" type="number" placeholder="Stock">
+    <button id="addSize" type="button">Add / Update Size</button>
+  </div>
 
-    <label>Stock</label>
-    <input id="stock" type="number">
+  <!-- SIZE LIST -->
+  <div id="sizeList"></div>
 
-    <button id="addVariant" class="btn-outline">Add Variant</button>
-
-    <div id="variants"></div>
+   
   </section>
 
   <!-- IMAGES (SUPABASE STORAGE) -->
