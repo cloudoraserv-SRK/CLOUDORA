@@ -2,18 +2,12 @@ import { supabase } from "./admin/supabaseClient.js";
 
 const BRAND_IDS = {
   liberty: "dce9420f-a42c-4732-a3c6-577ca05c0c91",
-  woodland: "088b3745-49c1-4758-94ee-89620865a9d2",
-  "pierre-cardin": "6e499e55-a97e-4904-a2a3-328f83e6155d",
-  "red-tape": "c292b420-168e-468f-a6f2-21d57e5d0f3a",
-  medifeet: "7baeefbc-deb0-4fc4-92f5-189fa87af30a"
+  woodland: "088b3745-49c1-4758-94ee-89620865a9d2"
 };
 
 document.addEventListener("DOMContentLoaded", () => {
   loadBrand(BRAND_IDS.liberty, "libertyProducts");
   loadBrand(BRAND_IDS.woodland, "woodlandProducts");
-  loadBrand(BRAND_IDS["pierre-cardin"], "pierreCardinProducts");
-  loadBrand(BRAND_IDS["red-tape"], "redTapeProducts");
-  loadBrand(BRAND_IDS.medifeet, "medifeetProducts");
   initSliders();
   updateCartCount();
 });
@@ -141,6 +135,4 @@ document.getElementById("sortSelect").onchange = e => {
 document.getElementById("filterBtn").onclick = () => {
   location.href = "products/index.html";
 };
-
-
 
