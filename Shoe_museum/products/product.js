@@ -20,11 +20,16 @@ async function loadProduct() {
     .select(`
       id,
       name,
+      slug,
+      mrp,
       price,
-      image_gallery,
+      short_description,
+      long_description,
+      sizes,
       colors,
-      brands!products_brand_id_fkey ( slug ),
-      categories!products_category_id_fkey ( slug )
+      image_gallery,
+      brands!products_brand_id_fkey ( name, slug ),
+      categories!products_category_id_fkey ( name, slug )
     `)
     .eq("slug", slug)
     .eq("active", true)
@@ -36,11 +41,35 @@ async function loadProduct() {
   }
 
   /* TEXT */
-  document.getElementById("productName").innerText = product.name;
-  document.getElementById("productPrice").innerText = `₹${product.price}`;
+  productName.innerText = product.name;
+  productDesc.innerText = product.short_description || "";
+  productPrice.innerText = `₹${product.price}`;
 
-  /* IMAGES (SUPABASE STORAGE) */
-  const main = document.querySelector(".gallery-main");
+  if (product.mrp) {
+    document.getElementById("productMrp").innerText = `₹${product.mrp}`;
+  }
+
+  document.getElementById("longDesc").innerText =
+    product.long_description || "";
+
+  /* SIZES */
+  const sizeBox = document.getElementById("sizes");
+  if (Array.isArray(product.sizes)) {
+    sizeBox.innerHTML = product.sizes
+      .map(s => `<span class="size">${s}</span>`)
+      .join("");
+  }
+
+  /* COLORS */
+  const colorBox = document.getElementById("colors");
+  if (Array.isArray(product.colors)) {
+    colorBox.innerHTML = product.colors
+      .map(c => `<span class="color" style="background:${c}"></span>`)
+      .join("");
+  }
+
+  /* IMAGES */
+  const main = document.getElementById("galleryMain");
   const thumbs = document.getElementById("thumbs");
 
   main.innerHTML = "";
@@ -56,19 +85,17 @@ async function loadProduct() {
       .getPublicUrl(path).data.publicUrl;
 
     if (i === 0) {
-      main.innerHTML = `<img src="${url}" />`;
+      main.innerHTML = `<img src="${url}">`;
     }
 
     const t = document.createElement("img");
     t.src = url;
-    t.onclick = () => (main.innerHTML = `<img src="${url}" />`);
+    t.onclick = () => (main.innerHTML = `<img src="${url}">`);
     thumbs.appendChild(t);
   });
 
   /* ADD TO CART */
-  document.getElementById("addToCartBtn").onclick = () => {
-    addToCart(product);
-  };
+  addToCartBtn.onclick = () => addToCart(product);
 
   loadRelated(product.id);
 }
@@ -86,21 +113,18 @@ async function loadRelated(currentId) {
     .eq("active", true)
     .limit(4);
 
-  const grid = document.getElementById("relatedGrid");
-  grid.innerHTML = "";
+  relatedGrid.innerHTML = "";
 
   data?.forEach(p => {
-    let imgUrl = "";
+    const img =
+      p.image_gallery?.[0]
+        ? supabase.storage.from("products")
+            .getPublicUrl(p.image_gallery[0]).data.publicUrl
+        : "";
 
-    if (Array.isArray(p.image_gallery) && p.image_gallery.length > 0) {
-      imgUrl = supabase.storage
-        .from("products")
-        .getPublicUrl(p.image_gallery[0]).data.publicUrl;
-    }
-
-    grid.innerHTML += `
-      <a href="product.html?slug=${p.slug}" class="product-card">
-        <img src="${imgUrl}">
+    relatedGrid.innerHTML += `
+      <a href="product.html?slug=${p.slug}" class="related-card">
+        <img src="${img}">
         <h4>${p.name}</h4>
         <span>₹${p.price}</span>
       </a>
@@ -114,13 +138,17 @@ async function loadRelated(currentId) {
 function addToCart(product) {
   const cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
-  cart.push({
-    id: product.id,
-    name: product.name,
-    price: product.price,
-    slug,
-    qty: 1
-  });
+  const existing = cart.find(i => i.id === product.id);
+  if (existing) existing.qty += 1;
+  else {
+    cart.push({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      slug: product.slug,
+      qty: 1
+    });
+  }
 
   localStorage.setItem("cart", JSON.stringify(cart));
   alert("Added to cart");
