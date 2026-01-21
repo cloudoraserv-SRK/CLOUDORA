@@ -138,3 +138,80 @@ body {
     font-size: 14px;
   }
 }
+
+
+.filter-panel {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  width: 260px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+.filter-group {
+  margin-bottom: 14px;
+}
+
+.filter-group h4 {
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.filter-group label {
+  display: block;
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: 4px;
+}
+
+#clearFilters {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  background: #000;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#filterBtn {
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: none;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+}
+.nav-actions {
+  position: relative;
+}
+@media (max-width: 768px) {
+  .filter-panel {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-height: 70vh;
+    overflow-y: auto;
+    border-radius: 16px 16px 0 0;
+  }
+}
+@media (hover: none) {
+  .product-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}
+@media (max-width: 480px) {
+  .product-card img {
+    padding: 8px;
+  }
+}

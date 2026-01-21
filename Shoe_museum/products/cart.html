@@ -29,10 +29,10 @@
 <!-- ================= HEADER ================= -->
 <header class="site-header">
   <nav class="nav">
-    <div class="logo">
+<a href="index.html" class="logo">
       <img src="../assets/images/logo.jpeg" alt="Shoe Museum">
       <span>Shoe Museum</span>
-    </div>
+    </a>
        <ul class="nav-links">
       <li><a href="../index.html">Home</a></li>
       <li><a href="#contact">Contact us</a></li>
@@ -162,52 +162,67 @@
 </footer>
 <script type="module" src="../script.js"></script>
 <!-- ================= JS ================= -->
-<script>
-/* =========================
-   LOAD CART
-========================= */
-const cart = JSON.parse(localStorage.getItem("cart")) || [];
+<script type="module">
+import { supabase } from "../admin/supabaseClient.js";
+
 const itemsEl = document.getElementById("cartItems");
 const totalEl = document.getElementById("cartTotal");
 const countEl = document.getElementById("cartCount");
 
-let total = 0;
-let count = 0;
+let cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
-if (cart.length === 0) {
-  itemsEl.innerHTML = "<p>Your cart is empty 🌿</p>";
-} else {
-  cart.forEach((item, index) => {
+/* ========== RENDER CART ========== */
+function renderCart() {
+  itemsEl.innerHTML = "";
+  let total = 0;
+  let count = 0;
+
+  if (cart.length === 0) {
+    itemsEl.innerHTML = "<p>Your cart is empty 🛒</p>";
+    totalEl.innerText = "₹0";
+    if (countEl) countEl.innerText = "0";
+    return;
+  }
+
+  cart.forEach((item, i) => {
     total += item.price * item.qty;
     count += item.qty;
 
-    const row = document.createElement("div");
-    row.className = "cart-row";
-    row.innerHTML = `
-      <div>
-        <strong>${item.name}</strong>
-        <span>₹${item.price} × ${item.qty}</span>
+    itemsEl.innerHTML += `
+      <div class="cart-row">
+        <img src="${item.image || ""}" class="cart-img">
+
+        <div class="cart-info">
+          <h4>${item.name}</h4>
+          <p>Color: ${item.color}</p>
+          <p>Size: ${item.size}</p>
+          <div class="price-row">
+            <strong>₹${item.price}</strong>
+            <span>× ${item.qty}</span>
+          </div>
+        </div>
+
+        <button class="remove-btn" onclick="removeItem(${i})">✕</button>
       </div>
-      <button data-index="${index}">✕</button>
     `;
-    itemsEl.appendChild(row);
   });
+
+  totalEl.innerText = `₹${total}`;
+  if (countEl) countEl.innerText = count;
 }
 
-totalEl.textContent = `₹${total}`;
-countEl.textContent = count;
-
-/* =========================
-   REMOVE ITEM
-========================= */
-itemsEl.addEventListener("click", e => {
-  if (!e.target.dataset.index) return;
-
-  cart.splice(e.target.dataset.index, 1);
+/* ========== REMOVE ITEM (GLOBAL) ========== */
+window.removeItem = function (i) {
+  cart.splice(i, 1);
   localStorage.setItem("cart", JSON.stringify(cart));
-  location.reload();
-});
+  renderCart();
+};
+
+/* ========== INIT ========== */
+renderCart();
+
 </script>
+
 
 </body>
 </html>

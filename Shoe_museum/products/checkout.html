@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="./checkout.css" />
   <link rel="stylesheet" href="../main.css"/>
 </head>
 
@@ -29,10 +29,10 @@
 <!-- ================= HEADER ================= -->
 <header class="site-header">
   <nav class="nav">
-    <div class="logo">
+<a href="index.html" class="logo">
       <img src="../assets/images/logo.jpeg" alt="Shoe Museum">
       <span>Shoe Museum</span>
-    </div>
+    </a>
        <ul class="nav-links">
       <li><a href="../index.html">Home</a></li>
       <li><a href="#contact">Contact us</a></li>
@@ -46,32 +46,56 @@
 <main class="checkout">
   <div class="checkout-container">
 
-    <h1>Complete Your Sanctuary Order</h1>
+    <h1>Secure Checkout</h1>
 
     <!-- ================= ORDER SUMMARY ================= -->
     <div class="checkout-box">
       <h3>Order Summary</h3>
 
-      <div id="orderSummary" class="order-summary"></div>
+      <div id="orderSummary" class="order-summary">
+        <!-- JS will inject items -->
+      </div>
 
       <div class="total-row">
-        <span>Total</span>
+        <span>Total Amount</span>
         <strong id="orderTotal">₹0</strong>
       </div>
     </div>
 
     <!-- ================= CUSTOMER DETAILS ================= -->
     <div class="checkout-box">
-      <h3>Your Details</h3>
+      <h3>Customer Details</h3>
 
-      <input type="text" id="name" placeholder="Full Name" required>
-      <input type="tel" id="phone" placeholder="Phone Number" required>
-      <textarea id="address" placeholder="Delivery Address" required></textarea>
+      <input type="text" id="customerName" placeholder="Full Name" required>
+
+      <input type="email" id="customerEmail" placeholder="Email Address" required>
+
+      <input type="tel" id="customerPhone" placeholder="Mobile Number" required>
+
+      <textarea id="customerAddress" placeholder="Full Delivery Address" required></textarea>
+
+      <input type="text" id="customerCity" placeholder="City" required>
+
+      <input type="text" id="customerPincode" placeholder="Pincode" required>
+    </div>
+
+    <!-- ================= PAYMENT DETAILS ================= -->
+    <div class="checkout-box">
+      <h3>Payment Details</h3>
+
+      <!-- Cashfree required hidden fields -->
+      <input type="hidden" id="orderId">
+      <input type="hidden" id="orderAmount">
+      <input type="hidden" id="orderCurrency" value="INR">
+
+      <p class="secure-note">
+        You will be redirected to Cashfree to complete payment securely.
+      </p>
     </div>
 
     <!-- ================= PLACE ORDER ================= -->
-    <button id="placeOrderBtn" class="checkout-btn">
-      Place Order via WhatsApp
+    <button id="payNowBtn" class="checkout-btn">
+      Pay Securely
     </button>
 
   </div>
@@ -160,65 +184,67 @@
 /* =========================
    LOAD CART
 ========================= */
-const cart = JSON.parse(localStorage.getItem("cart")) || [];
-const summary = document.getElementById("orderSummary");
-const totalEl = document.getElementById("orderTotal");
+// LOAD CART
+const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+const orderSummary = document.getElementById("orderSummary");
+const orderTotal = document.getElementById("orderTotal");
+const payBtn = document.getElementById("payNowBtn");
 
 let total = 0;
 
-if (cart.length === 0) {
-  summary.innerHTML = "<p>Your cart is empty 🌿</p>";
-} else {
-  cart.forEach(item => {
-    total += item.price * item.qty;
+// RENDER SUMMARY
+cart.forEach(item => {
+  const row = document.createElement("div");
+  row.className = "order-item";
+  row.innerHTML = `
+    <span>${item.name} × ${item.qty}</span>
+    <span>₹${item.price * item.qty}</span>
+  `;
+  orderSummary.appendChild(row);
+  total += item.price * item.qty;
+});
 
-    const row = document.createElement("div");
-    row.className = "summary-item";
-    row.innerHTML = `
-      <span>${item.name} × ${item.qty}</span>
-      <span>₹${item.price * item.qty}</span>
-    `;
-    summary.appendChild(row);
-  });
-}
+orderTotal.innerText = `₹${total}`;
 
-totalEl.textContent = `₹${total}`;
+// PAY BUTTON
+payBtn.addEventListener("click", async () => {
+  const name = document.getElementById("customerName").value.trim();
+  const email = document.getElementById("customerEmail").value.trim();
+  const phone = document.getElementById("customerPhone").value.trim();
+  const address = document.getElementById("customerAddress").value.trim();
+  const city = document.getElementById("customerCity").value.trim();
+  const pincode = document.getElementById("customerPincode").value.trim();
 
-/* =========================
-   PLACE ORDER (WHATSAPP)
-========================= */
-document.getElementById("placeOrderBtn").addEventListener("click", () => {
-  if (cart.length === 0) {
-    alert("Your cart is empty");
-    return;
-  }
-
-  const name = document.getElementById("name").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const address = document.getElementById("address").value.trim();
-
-  if (!name || !phone || !address) {
+  if (!name || !email || !phone || !address || !city || !pincode) {
     alert("Please fill all details");
     return;
   }
 
-  let message = `🙏 *New Order – Shoe Museum*\n\n`;
-  message += `👤 Name: ${name}\n`;
-  message += `📞 Phone: ${phone}\n`;
-  message += `🏠 Address: ${address}\n\n`;
-  message += `🪴 *Order Details:*\n`;
+  // 🔒 BACKEND INTEGRATION POINT
+  // POST to backend → create Cashfree order
+  // backend returns payment_session_id
 
-  cart.forEach(item => {
-    message += `• ${item.name} × ${item.qty} = ₹${item.price * item.qty}\n`;
+  /*
+  const res = await fetch("/api/create-cashfree-order", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      customer: { name, email, phone, address, city, pincode },
+      amount: total,
+      cart
+    })
   });
+  const { payment_session_id } = await res.json();
+  */
 
-  message += `\n💰 *Total: ₹${total}*`;
+  // 🔁 TEMP PLACEHOLDER
+  alert("Cashfree integration ready. Backend connect pending.");
 
-  const whatsappNumber = "917022858889"; // your WhatsApp number
-  const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-
-  window.open(whatsappURL, "_blank");
+  // AFTER BACKEND:
+  // Cashfree.checkout({ paymentSessionId: payment_session_id });
 });
+
 </script>
 
 <script type="module" src="../script.js"></script>

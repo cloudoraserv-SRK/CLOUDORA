@@ -29,10 +29,10 @@
 <!-- ================= HEADER ================= -->
 <header class="site-header">
   <nav class="nav">
-    <div class="logo">
+    <a href="index.html" class="logo">
       <img src="../assets/images/logo.jpeg" alt="Shoe Museum">
       <span>Shoe Museum</span>
-    </div>
+    </a>
        <ul class="nav-links">
       <li><a href="../index.html">Home</a></li>
       <li><a href="#contact">Contact us</a></li>
@@ -45,20 +45,6 @@
       </li>
     </ul>
   </nav>
-  <div class="nav-actions">
-<div class="search-bar">
-  <input type="text" id="searchInput" placeholder="Search shoes…">
-
-  <select id="sortSelect">
-    <option value="">Sort</option>
-    <option value="price_low">Price: Low to High</option>
-    <option value="price_high">Price: High to Low</option>
-    <option value="newest">Newest</option>
-  </select>
-
-  <button id="filterBtn">Filter</button>
-</div>
-
 
 </header>
 <!-- ================= PRODUCT PAGE ================= -->
@@ -68,35 +54,51 @@
   <section class="product-media">
     <div class="gallery-wrap">
       <div id="thumbs" class="gallery-thumbs"></div>
-      <div class="gallery-main" id="galleryMain"></div>
+      <div id="galleryMain" class="gallery-main"></div>
     </div>
   </section>
 
   <!-- RIGHT : INFO -->
   <section class="product-info">
+
     <h1 id="productName">Loading...</h1>
+
     <p id="productDesc" class="product-desc"></p>
 
+    <!-- PRICE -->
     <div class="product-actions">
-      <span id="productPrice" class="price">₹0</span>
+      <div>
+        <span id="productMrp"></span>
+        <span id="productPrice" class="price">₹0</span>
+      </div>
       <button id="addToCartBtn">Add to Cart</button>
     </div>
 
+    <!-- TRUST -->
     <div class="product-trust">
       <span>100% Original</span>
       <span>Quality Checked</span>
       <span>Best Price</span>
     </div>
-<p id="productDesc"></p>
-<p id="longDesc"></p>
 
-<span id="productMrp"></span>
+    <!-- COLORS -->
+    <div class="option-block">
+      <h4>Color</h4>
+      <div id="colors" class="color-box"></div>
+    </div>
 
-<div id="sizes"></div>
-<div id="colors"></div>
+    <!-- SIZES -->
+    <div class="option-block">
+      <h4>Size</h4>
+      <div id="sizes" class="size-box"></div>
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div class="product-long-desc">
+      <p id="longDesc"></p>
+    </div>
 
   </section>
-
 </main>
 
 <!-- ================= RELATED PRODUCTS ================= -->
@@ -186,5 +188,7 @@
 </footer>
 <script type="module" src="../script.js"></script>
 <script type="module" src="./product.js"></script>
+<script type="module" src="related-product.js"></script>
+
 </body>
 </html>

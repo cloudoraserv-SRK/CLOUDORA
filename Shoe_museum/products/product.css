@@ -299,13 +299,8 @@
   from{opacity:0;transform:translateY(24px)}
   to{opacity:1;transform:none}
 }
-.product-page > *{
-  animation:fadeUp .6s ease both;
-}
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(24px)}
-  to{opacity:1;transform:none}
-}
+.product-price { font-size: 26px; font-weight: 700; }
+
 .gallery-main{
   cursor:zoom-in;
 }
@@ -407,4 +402,25 @@
 
 #colors .color:hover {
   border-color: #000;
+}
+#colors .color.active {
+  outline: 3px solid #000;
+  transform: scale(1.1);
+}
+.color.active, .size.active {
+  border: 2px solid #000;
+}
+
+#sizes .size.active {
+  border: 2px solid #000;
+  background: #000;
+  color: #fff;
+}
+@media (max-width: 360px) {
+  .gallery-main {
+    height: 260px;
+  }
+}
+@media (hover: none) {
+  .gallery-main { cursor: default; }
 }
