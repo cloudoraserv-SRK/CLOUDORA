@@ -18,10 +18,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const category = document.getElementById("category");
   const saveBtn = document.getElementById("saveProduct");
 
-  /* ===== VARIANTS UI ===== */
+  /* ===== VARIANTS ===== */
   const newColor = document.getElementById("newColor");
   const addColor = document.getElementById("addColor");
   const colorSelect = document.getElementById("colorSelect");
+
   const newSize = document.getElementById("newSize");
   const newStock = document.getElementById("newStock");
   const addSize = document.getElementById("addSize");
@@ -31,7 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const imageInput = document.getElementById("images");
   const imageGallery = document.getElementById("imageGallery");
 
-  let product = { variants: [], image_gallery: [] };
+  let variants = [];
+  let currentVariant = null;
 
   /* ================= LOAD PRODUCT ================= */
   async function loadProduct() {
@@ -41,153 +43,163 @@ document.addEventListener("DOMContentLoaded", () => {
       .eq("id", id)
       .single();
 
-    if (error) {
-      alert("Product not found");
-      return;
-    }
+    if (error || !data) return alert("Product not found");
 
-    product = data;
-    product.variants ||= [];
-    product.image_gallery ||= [];
+    name.value = data.name ?? "";
+    slug.value = data.slug ?? "";
+    mrp.value = data.mrp ?? "";
+    price.value = data.price ?? "";
+    discount.value = data.discount ?? "";
+    shortDesc.value = data.short_description ?? "";
+    longDesc.value = data.long_description ?? "";
+    active.checked = !!data.active;
 
-    name.value = data.name || "";
-    slug.value = data.slug || "";
-    mrp.value = data.mrp || "";
-    price.value = data.price || "";
-    discount.value = data.discount || "";
-    shortDesc.value = data.short_description || "";
-    longDesc.value = data.long_description || "";
-    active.checked = data.active;
-
-    await loadBrands();
-    await loadCategories();
-
-    brand.value = data.brand_id || "";
-    category.value = data.category_id || "";
-
-    renderColors();
-    renderImages();
+    await loadBrands(data.brand_id);
+    await loadCategories(data.category_id);
+    await loadVariants();
   }
 
   /* ================= VARIANTS ================= */
+  async function loadVariants() {
+    const { data } = await supabase
+      .from("product_variants")
+      .select("*")
+      .eq("product_id", id);
 
-  addColor.onclick = () => {
-    if (!newColor.value.trim()) return;
-
-    product.variants.push({
-      color: newColor.value.trim(),
-      sizes: []
-    });
-
-    newColor.value = "";
+    variants = data || [];
     renderColors();
-  };
+  }
 
   function renderColors() {
     colorSelect.innerHTML = "";
-    product.variants.forEach((v, i) => {
-      colorSelect.innerHTML += `<option value="${i}">${v.color}</option>`;
+
+    variants.forEach((v, i) => {
+      colorSelect.innerHTML += `<option value="${i}">${v.color_name}</option>`;
     });
-    renderSizes();
+
+    if (variants.length) {
+      colorSelect.value = 0;
+      selectVariant();
+    }
   }
 
-  addSize.onclick = () => {
-    const ci = colorSelect.value;
-    if (ci === "") return;
+  function selectVariant() {
+    currentVariant = variants[colorSelect.value];
+    if (!currentVariant) return;
 
-    const size = newSize.value;
-    const stock = Number(newStock.value);
-    if (!size || !stock) return;
-
-    const sizes = product.variants[ci].sizes;
-    const existing = sizes.find(s => s.size === size);
-
-    if (existing) {
-      existing.stock = stock;
-    } else {
-      sizes.push({ size, stock });
+    // 🔥 MAIN FIX
+    if (!Array.isArray(currentVariant.image_gallery)) {
+      currentVariant.image_gallery = [];
     }
 
-    newSize.value = "";
-    newStock.value = "";
-    renderSizes();
+    renderImages();
+    loadSizes();
+  }
+
+  colorSelect.onchange = selectVariant;
+
+  /* ================= ADD COLOR ================= */
+  addColor.onclick = async () => {
+    if (!newColor.value.trim()) return;
+
+    await supabase.from("product_variants").insert({
+      product_id: id,
+      color_name: newColor.value.trim(),
+      image_gallery: []
+    });
+
+    newColor.value = "";
+    loadVariants();
   };
 
-  function renderSizes() {
-    sizeList.innerHTML = "";
-    const v = product.variants[colorSelect.value];
-    if (!v) return;
+  /* ================= IMAGES ================= */
+  function renderImages() {
+    imageGallery.innerHTML = "";
 
-    v.sizes.forEach((s, i) => {
-      sizeList.innerHTML += `
-        <div>
-          Size ${s.size} | Stock ${s.stock}
-          <button data-i="${i}" class="delSize">✕</button>
+    currentVariant.image_gallery.forEach((path, i) => {
+      imageGallery.innerHTML += `
+        <div class="img-box">
+          <img src="${img(path)}">
+          <button class="remove-img" data-i="${i}">✕</button>
         </div>
       `;
     });
 
-    sizeList.querySelectorAll(".delSize").forEach(btn => {
-      btn.onclick = () => {
-        v.sizes.splice(btn.dataset.i, 1);
-        renderSizes();
-      };
+    document.querySelectorAll(".remove-img").forEach(btn => {
+      btn.onclick = () => removeImage(Number(btn.dataset.i));
     });
   }
 
-  colorSelect.onchange = renderSizes;
+  async function removeImage(i) {
+    if (!confirm("Remove image?")) return;
 
-  /* ================= IMAGES (OLD SYSTEM) ================= */
+    const path = currentVariant.image_gallery[i];
 
-  function renderImages() {
-    imageGallery.innerHTML = "";
-
-    product.image_gallery.forEach((path, index) => {
-      const div = document.createElement("div");
-      div.className = "img-box";
-      div.innerHTML = `
-        <img src="${img(path)}">
-        <button data-i="${index}">✕</button>
-      `;
-      div.querySelector("button").onclick = () => deleteImage(index);
-      imageGallery.appendChild(div);
-    });
-  }
-
-  async function deleteImage(index) {
-    const path = product.image_gallery[index];
     await supabase.storage.from("products").remove([path]);
-    product.image_gallery.splice(index, 1);
+
+    currentVariant.image_gallery.splice(i, 1);
 
     await supabase
-      .from("products")
-      .update({ image_gallery: product.image_gallery })
-      .eq("id", id);
+      .from("product_variants")
+      .update({ image_gallery: currentVariant.image_gallery })
+      .eq("id", currentVariant.id);
 
     renderImages();
   }
 
   imageInput.onchange = async () => {
-    if (!slug.value) {
-      alert("Slug required before uploading images");
-      return;
-    }
+    if (!currentVariant || !slug.value) return;
 
     for (let file of imageInput.files) {
-      const path = `${slug.value}/${Date.now()}-${file.name}`;
-      await supabase.storage.from("products").upload(path, file, { upsert: true });
-      product.image_gallery.push(path);
+      const safe = file.name.replace(/\s+/g, "-");
+      const path = `${slug.value}/${currentVariant.color_name}/${Date.now()}-${safe}`;
+
+      await supabase.storage
+        .from("products")
+        .upload(path, file, { upsert: true });
+
+      currentVariant.image_gallery.push(path);
     }
 
     await supabase
-      .from("products")
-      .update({ image_gallery: product.image_gallery })
-      .eq("id", id);
+      .from("product_variants")
+      .update({ image_gallery: currentVariant.image_gallery })
+      .eq("id", currentVariant.id);
 
+    imageInput.value = "";
     renderImages();
   };
 
-  /* ================= SAVE PRODUCT ================= */
+  /* ================= SIZE + STOCK ================= */
+  async function loadSizes() {
+    sizeList.innerHTML = "";
+
+    const { data } = await supabase
+      .from("variant_stock")
+      .select("*")
+      .eq("variant_id", currentVariant.id)
+      .order("size");
+
+    data?.forEach(s => {
+      sizeList.innerHTML += `<div>Size ${s.size} | Stock ${s.stock}</div>`;
+    });
+  }
+
+  addSize.onclick = async () => {
+    if (!newSize.value || !newStock.value) return;
+
+    await supabase.from("variant_stock").upsert({
+      variant_id: currentVariant.id,
+      size: newSize.value,
+      stock: Number(newStock.value)
+    });
+
+    newSize.value = "";
+    newStock.value = "";
+    loadSizes();
+  };
+
+  /* ================= SAVE ================= */
   saveBtn.onclick = async () => {
     await supabase.from("products").update({
       name: name.value,
@@ -199,9 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
       long_description: longDesc.value,
       active: active.checked,
       brand_id: brand.value || null,
-      category_id: category.value || null,
-      variants: product.variants,
-      image_gallery: product.image_gallery
+      category_id: category.value || null
     }).eq("id", id);
 
     alert("Product saved");
@@ -209,17 +219,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ================= HELPERS ================= */
   function img(path) {
-    return supabase.storage.from("products").getPublicUrl(path).data.publicUrl;
+    return supabase.storage.from("products")
+      .getPublicUrl(path).data.publicUrl;
   }
 
-  async function loadBrands() {
+  async function loadBrands(selected) {
     const { data } = await supabase.from("brands").select("*");
-    brand.innerHTML = data.map(b => `<option value="${b.id}">${b.name}</option>`).join("");
+    brand.innerHTML = data.map(b =>
+      `<option value="${b.id}" ${b.id === selected ? "selected" : ""}>${b.name}</option>`
+    ).join("");
   }
 
-  async function loadCategories() {
+  async function loadCategories(selected) {
     const { data } = await supabase.from("categories").select("*");
-    category.innerHTML = data.map(c => `<option value="${c.id}">${c.name}</option>`).join("");
+    category.innerHTML = data.map(c =>
+      `<option value="${c.id}" ${c.id === selected ? "selected" : ""}>${c.name}</option>`
+    ).join("");
   }
 
   loadProduct();

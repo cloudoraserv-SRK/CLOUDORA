@@ -272,3 +272,22 @@ body{
     grid-template-columns:1fr;
   }
 }
+.img-box{
+  position:relative;
+  display:inline-block;
+  margin:6px;
+}
+
+.remove-img{
+  position:absolute;
+  top:-6px;
+  right:-6px;
+  background:#ff4d4f;
+  color:#fff;
+  border:none;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  cursor:pointer;
+  font-size:12px;
+}
