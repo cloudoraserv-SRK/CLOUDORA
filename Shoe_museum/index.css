@@ -227,3 +227,29 @@
   }
 }
 .hidden{display:none;}
+.hero-overlay { padding: 0 8%; }
+@media (max-width: 480px) {
+  .hero-overlay {
+    padding: 0 5%;
+  }
+}
+@media (max-width: 480px) {
+  .hero-actions {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+@media (max-width: 768px) {
+  .scroll-btn.left { left: 6px; }
+  .scroll-btn.right { right: 6px; }
+}
+@media (max-width: 480px) {
+  .product-card img {
+    height: 150px;
+  }
+}

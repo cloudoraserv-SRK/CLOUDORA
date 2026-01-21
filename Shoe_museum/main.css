@@ -413,3 +413,43 @@ html, body {
   .hero-text p{ margin:auto; }
   .hero-actions{ justify-content:center; }
 }
+.search-bar input {
+  min-width: 220px;
+}
+@media (max-width: 768px) {
+  .filter-panel {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    top: auto;
+    width: 100%;
+    max-height: 75vh;
+    overflow-y: auto;
+    border-radius: 16px 16px 0 0;
+  }
+}
+@media (max-width: 768px) {
+  .search-bar {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .search-bar input {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .search-bar select,
+  .search-bar button {
+    width: 100%;
+  }
+}
+@media (max-width: 768px) {
+  .nav-actions {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 0;
+  }
+}
+

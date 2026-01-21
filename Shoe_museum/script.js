@@ -1,35 +1,34 @@
 import { supabase } from "./admin/supabaseClient.js";
 
-const BRAND_IDS = {
-  liberty: "dce9420f-a42c-4732-a3c6-577ca05c0c91",
-  woodland: "088b3745-49c1-4758-94ee-89620865a9d2",
-  "pierre-cardin": "6e499e55-a97e-4904-a2a3-328f83e6155d",
-  "red-tape": "c292b420-168e-468f-a6f2-21d57e5d0f3a",
-  medifeet: "7baeefbc-deb0-4fc4-92f5-189fa87af30a"
-};
+const BRANDS = [
+  { id: "dce9420f-a42c-4732-a3c6-577ca05c0c91", target: "libertyProducts" },
+  { id: "088b3745-49c1-4758-94ee-89620865a9d2", target: "woodlandProducts" },
+  { id: "6e499e55-a97e-4904-a2a3-328f83e6155d", target: "pierreCardinProducts" },
+  { id: "c292b420-168e-468f-a6f2-21d57e5d0f3a", target: "redTapeProducts" },
+  { id: "7baeefbc-deb0-4fc4-92f5-189fa87af30a", target: "medifeetProducts" }
+];
 
 document.addEventListener("DOMContentLoaded", () => {
-  loadBrand(BRAND_IDS.liberty, "libertyProducts");
-  loadBrand(BRAND_IDS.woodland, "woodlandProducts");
-  loadBrand(BRAND_IDS["pierre-cardin"], "pierreCardinProducts");
-  loadBrand(BRAND_IDS["red-tape"], "redTapeProducts");
-  loadBrand(BRAND_IDS.medifeet, "medifeetProducts");
-  initSliders();
+  BRANDS.forEach(b => loadBrand(b.id, b.target));
   updateCartCount();
 });
 
-/* ================= LOAD BRAND ================= */
 async function loadBrand(brandId, targetId) {
-  const { data, error } = await supabase
+  const { data: products, error } = await supabase
     .from("products")
-    .select("id,name,slug,price,short_description,image_gallery")
+    .select(`
+      id,name,slug,price,short_description,
+      product_variants!product_variants_product_id_fkey (
+        image_gallery
+      )
+    `)
     .eq("brand_id", brandId)
     .eq("active", true)
     .order("created_at", { ascending: false })
     .limit(10);
 
   if (error) {
-    console.error(error);
+    console.error("ERROR:", error);
     return;
   }
 
@@ -37,13 +36,15 @@ async function loadBrand(brandId, targetId) {
   if (!container) return;
   container.innerHTML = "";
 
-  data.forEach(p => {
-    const img =
-      Array.isArray(p.image_gallery) && p.image_gallery.length
-        ? supabase.storage
-            .from("products")
-            .getPublicUrl(p.image_gallery[0]).data.publicUrl
-        : "";
+  products.forEach(p => {
+    const variant = (p.product_variants || []).find(
+      v => Array.isArray(v.image_gallery) && v.image_gallery.length
+    );
+
+    const img = variant
+      ? supabase.storage.from("products")
+          .getPublicUrl(variant.image_gallery[0]).data.publicUrl
+      : "assets/images/placeholder.png";
 
     container.insertAdjacentHTML(
       "beforeend",
@@ -54,40 +55,35 @@ async function loadBrand(brandId, targetId) {
         <p class="desc">${p.short_description || ""}</p>
         <div class="card-footer">
           <span class="price">₹${p.price}</span>
-          <button 
-            class="add-btn"
+          <button class="add-btn"
             data-id="${p.id}"
             data-name="${p.name}"
             data-price="${p.price}">
             Add to Cart
           </button>
         </div>
-      </div>
-    `
+      </div>`
     );
   });
 
-  /* PRODUCT CLICK */
+  /* ✅ CLICK HANDLERS (AFTER RENDER) */
   container.querySelectorAll(".product-card").forEach(card => {
     card.onclick = () => {
-      location.href = `products/product.html?slug=${card.dataset.slug}`;
+      const slug = card.dataset.slug;
+      if (!slug) return alert("Slug missing");
+      location.href = `products/product.html?slug=${slug}`;
     };
   });
 
-  /* ADD TO CART (STOP CARD CLICK) */
   container.querySelectorAll(".add-btn").forEach(btn => {
     btn.onclick = e => {
       e.stopPropagation();
-      addToCart(
-        btn.dataset.id,
-        btn.dataset.name,
-        Number(btn.dataset.price)
-      );
+      addToCart(btn.dataset.id, btn.dataset.name, +btn.dataset.price);
     };
   });
 }
 
-/* ================= CART ================= */
+/* CART */
 function addToCart(id, name, price) {
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
   cart.push({ id, name, price, qty: 1 });
@@ -98,49 +94,5 @@ function addToCart(id, name, price) {
 function updateCartCount() {
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
   const el = document.getElementById("cartCount");
-  if (el)
-    el.textContent = cart.reduce((sum, i) => sum + (i.qty || 1), 0);
+  if (el) el.textContent = cart.reduce((s, i) => s + i.qty, 0);
 }
-
-/* ================= SLIDER ================= */
-function initSliders() {
-  document.querySelectorAll(".scroll-btn").forEach(btn => {
-    btn.onclick = () => {
-      const row = btn.closest(".brand-slider")
-        ?.querySelector(".brand-products");
-      if (!row) return;
-      row.scrollBy({
-        left: btn.classList.contains("right") ? 320 : -320,
-        behavior: "smooth"
-      });
-    };
-  });
-}
-
-// SEARCH
-const searchInput = document.getElementById("searchInput");
-
-searchInput.addEventListener("keydown", e => {
-  if (e.key === "Enter") {
-    const q = searchInput.value.trim();
-    if (q)
-      location.href = `products/index.html?search=${encodeURIComponent(q)}`;
-  }
-});
-
-
-// SORT
-document.getElementById("sortSelect").onchange = e => {
-  const sort = e.target.value;
-  const url = new URL(location.href);
-  url.searchParams.set("sort", sort);
-  location.href = url;
-};
-
-// FILTER (for now open products page)
-document.getElementById("filterBtn").onclick = () => {
-  location.href = "products/index.html";
-};
-
-
-
