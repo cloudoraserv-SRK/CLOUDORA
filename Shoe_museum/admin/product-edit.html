@@ -20,10 +20,12 @@
     <h2>Product Details</h2>
 
     <label>Name</label>
-    <input id="name">
+    <input id="name" type="text">
+
+
 
     <label>Slug</label>
-    <input id="slug">
+<input id="slug" type="text">
 
     <label>MRP</label>
     <input id="mrp" type="number">
@@ -44,7 +46,7 @@
       <input type="checkbox" id="active"> Active
     </label>
 
-    <button id="saveProduct" class="btn-primary">Save Product</button>
+    
   </section>
 
   <!-- BRAND & CATEGORY -->
@@ -58,31 +60,22 @@
     <select id="category"></select>
   </section>
 
-  <!-- VARIANTS -->
-  <section class="card">
-    <h2>Variants (Size / Color / Stock)</h2>
+<!-- VARIANTS (READ ONLY) -->
+<section class="card" id="variantsSection">
+  <h2>Variants (Read Only)</h2>
 
-    <!-- ADD COLOR -->
-  <div class="row">
-    <input id="newColor" placeholder="Add new color (eg: Black)">
-    <button id="addColor" type="button">Add Color</button>
-  </div>
+  <!-- COLOR SELECT -->
+  <label>Color</label>
+ <select id="colorSelect"></select>
 
-  <!-- SELECT COLOR -->
-  <label>Select Color</label>
-  <select id="colorSelect"></select>
-  <!-- ADD SIZE -->
-  <div class="row">
-    <input id="newSize" placeholder="Size (eg: 7, 8, 9)">
-    <input id="newStock" type="number" placeholder="Stock">
-    <button id="addSize" type="button">Add / Update Size</button>
-  </div>
 
   <!-- SIZE LIST -->
-  <div id="sizeList"></div>
+  <div id="sizeList" class="size-readonly"></div>
 
-   
-  </section>
+  <p class="note">
+    Colors & sizes are managed from separate admin pages.
+  </p>
+</section>
 
   <!-- IMAGES (SUPABASE STORAGE) -->
   <section class="card">
@@ -96,9 +89,12 @@
     <input type="file" id="images" multiple>
 
     <!-- Existing images from image_gallery -->
-    <div id="imageGallery"></div>
+    <div id="imageGallery" class="image-gallery"></div>
+<button id="syncImagesBtn" class="btn-outline">
+  🔄 Sync Images from Bucket
+</button>
   </section>
-
+<button id="saveProduct" class="btn-primary">Save Product</button>
 </main>
 
 <script type="module" src="product-edit.js"></script>

@@ -1,67 +1,81 @@
 import { supabase } from "./supabaseClient.js";
 
-const name = document.getElementById("name");
-const slug = document.getElementById("slug");
-const mrp = document.getElementById("mrp");
-const price = document.getElementById("price");
-const discount = document.getElementById("discount");
-const shortDesc = document.getElementById("shortDesc");
-const longDesc = document.getElementById("longDesc");
-const active = document.getElementById("active");
-const brand = document.getElementById("brand");
-const category = document.getElementById("category");
+/* ===== ELEMENTS ===== */
+const nameInput = document.getElementById("name");
+const slugInput = document.getElementById("slug");
+const mrpInput = document.getElementById("mrp");
+const priceInput = document.getElementById("price");
+const discountInput = document.getElementById("discount");
+const shortDescInput = document.getElementById("shortDesc");
+const longDescInput = document.getElementById("longDesc");
+const activeInput = document.getElementById("active");
+
+const brandSelect = document.getElementById("brand");
+const categorySelect = document.getElementById("category");
 const addBtn = document.getElementById("addProduct");
 
-// load brands
-async function loadBrands(){
-  const { data } = await supabase.from("brands").select("*");
-  brand.innerHTML = `<option value="">Select Brand</option>`;
-  data.forEach(b=>{
-    brand.innerHTML += `<option value="${b.id}">${b.name}</option>`;
-  });
-}
-
-// load categories
-async function loadCategories(){
-  const { data } = await supabase.from("categories").select("*");
-  category.innerHTML = `<option value="">Select Category</option>`;
-  data.forEach(c=>{
-    category.innerHTML += `<option value="${c.id}">${c.name}</option>`;
-  });
-}
-
-// create product
-addBtn.onclick = async () => {
-  if(!name.value || !slug.value){
-    alert("Name & Slug required");
-    return;
-  }
-
+/* ===== LOAD BRANDS ===== */
+async function loadBrands() {
   const { data, error } = await supabase
-    .from("products")
-    .insert({
-      name: name.value,
-      slug: slug.value,
-      mrp: mrp.value,
-      price: price.value,
-      discount: discount.value || null,
-      short_description: shortDesc.value,
-      long_description: longDesc.value,
-      active: active.checked,
-      brand_id: brand.value || null,
-      category_id: category.value || null,
-      image_gallery: []
-    })
-    .select()
-    .single();
+    .from("brands")
+    .select("id,name")
+    .order("name");
 
-  if(error){
+  if (error) return alert(error.message);
+
+  brandSelect.innerHTML =
+    `<option value="">Select Brand</option>` +
+    data.map(b => `<option value="${b.id}">${b.name}</option>`).join("");
+}
+
+/* ===== LOAD CATEGORIES ===== */
+async function loadCategories() {
+  const { data, error } = await supabase
+    .from("categories")
+    .select("id,name")
+    .order("name");
+
+  if (error) return alert(error.message);
+
+  categorySelect.innerHTML =
+    `<option value="">Select Category</option>` +
+    data.map(c => `<option value="${c.id}">${c.name}</option>`).join("");
+}
+
+/* ===== CREATE PRODUCT ===== */
+addBtn.onclick = async () => {
+
+  if (!nameInput.value.trim()) return alert("Name required");
+  if (!slugInput.value.trim()) return alert("Slug required");
+  if (!brandSelect.value) return alert("Select brand");
+  if (!categorySelect.value) return alert("Select category");
+
+  const payload = {
+    name: nameInput.value.trim(),
+    slug: slugInput.value.trim(),
+    mrp: Number(mrpInput.value) || null,
+    price: Number(priceInput.value) || null,
+    discount: Number(discountInput.value) || 0,
+    short_description: shortDescInput.value || null,
+    long_description: longDescInput.value || null,
+    brand_id: brandSelect.value,
+    category_id: categorySelect.value,
+    active: activeInput.checked
+  };
+
+  const { error } = await supabase
+    .from("products")
+    .insert(payload);
+
+  if (error) {
     alert(error.message);
     return;
   }
 
-  location.href = `product-edit.html?id=${data.id}`;
+  alert("✅ Product created");
+  location.href = "products.html";
 };
 
+/* ===== INIT ===== */
 loadBrands();
 loadCategories();
