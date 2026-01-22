@@ -15,17 +15,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function loadBrand(brandId, targetId) {
   const { data: products, error } = await supabase
-    .from("products")
-    .select(`
-      id,name,slug,price,short_description,
-      product_variants!product_variants_product_id_fkey (
-        image_gallery
-      )
-    `)
-    .eq("brand_id", brandId)
-    .eq("active", true)
-    .order("created_at", { ascending: false })
-    .limit(10);
+  .from("products")
+  .select(`
+    id,name,slug,price,short_description,
+    product_variants (
+      image_gallery
+    )
+  `)
+  .eq("brand_id", brandId)
+  .eq("active", true)
+  .order("created_at", { ascending: false })
+  .limit(10);
+
 
   if (error) {
     console.error("ERROR:", error);
@@ -86,10 +87,15 @@ async function loadBrand(brandId, targetId) {
 /* CART */
 function addToCart(id, name, price) {
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
-  cart.push({ id, name, price, qty: 1 });
+  const found = cart.find(i => i.id === id);
+
+  if (found) found.qty++;
+  else cart.push({ id, name, price, qty: 1 });
+
   localStorage.setItem("cart", JSON.stringify(cart));
   updateCartCount();
 }
+
 
 function updateCartCount() {
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
