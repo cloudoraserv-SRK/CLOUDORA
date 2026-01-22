@@ -58,7 +58,12 @@ async function loadVariants() {
   variants = data || [];
   renderColors();
 
-  if (variants.length) setVariant(variants[0]);
+  // ✅ FIX: pick first variant WITH images
+  const withImages = variants.find(
+    v => Array.isArray(v.image_gallery) && v.image_gallery.length
+  );
+
+  setVariant(withImages || variants[0]);
 }
 
 function renderColors() {
