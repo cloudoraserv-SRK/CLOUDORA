@@ -252,6 +252,11 @@ document.getElementById("syncImagesBtn").onclick = async () => {
   // reload variant data
   await loadVariants();
 };
+const variantsBtn = document.getElementById("variantsBtn");
+const productId = new URLSearchParams(window.location.search).get("id");
+
+variantsBtn.href = `variants.html?product=${productId}`;
 
   loadProduct();
 });
+
