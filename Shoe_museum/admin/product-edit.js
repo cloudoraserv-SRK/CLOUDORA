@@ -260,3 +260,4 @@ variantsBtn.href = `variants.html?product=${productId}`;
   loadProduct();
 });
 
+
