@@ -15,21 +15,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function loadBrand(brandId, targetId) {
   const { data: products, error } = await supabase
-  .from("products")
-  .select(`
-    id,name,slug,price,short_description,
-    product_variants (
-      image_gallery
-    )
-  `)
-  .eq("brand_id", brandId)
-  .eq("active", true)
-  .order("created_at", { ascending: false })
-  .limit(10);
-
+    .from("products")
+    .select(`
+      id,
+      name,
+      slug,
+      price,
+      short_description
+    `)
+    .eq("brand_id", brandId)
+    .eq("active", true)
+    .order("created_at", { ascending: false })
+    .limit(10);
 
   if (error) {
-    console.error("ERROR:", error);
+    console.error(error);
     return;
   }
 
@@ -38,20 +38,11 @@ async function loadBrand(brandId, targetId) {
   container.innerHTML = "";
 
   products.forEach(p => {
-    const variant = (p.product_variants || []).find(
-      v => Array.isArray(v.image_gallery) && v.image_gallery.length
-    );
-
-    const img = variant
-      ? supabase.storage.from("products")
-          .getPublicUrl(variant.image_gallery[0]).data.publicUrl
-      : "assets/images/placeholder.png";
-
     container.insertAdjacentHTML(
       "beforeend",
       `
       <div class="product-card" data-slug="${p.slug}">
-        <img src="${img}" alt="${p.name}">
+        <img src="assets/images/placeholder.png" alt="${p.name}">
         <h4>${p.name}</h4>
         <p class="desc">${p.short_description || ""}</p>
         <div class="card-footer">
@@ -63,16 +54,14 @@ async function loadBrand(brandId, targetId) {
             Add to Cart
           </button>
         </div>
-      </div>`
+      </div>
+      `
     );
   });
 
-  /* ✅ CLICK HANDLERS (AFTER RENDER) */
   container.querySelectorAll(".product-card").forEach(card => {
     card.onclick = () => {
-      const slug = card.dataset.slug;
-      if (!slug) return alert("Slug missing");
-      location.href = `products/product.html?slug=${slug}`;
+      location.href = `products/product.html?slug=${card.dataset.slug}`;
     };
   });
 
@@ -95,7 +84,6 @@ function addToCart(id, name, price) {
   localStorage.setItem("cart", JSON.stringify(cart));
   updateCartCount();
 }
-
 
 function updateCartCount() {
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
