@@ -22,7 +22,7 @@ async function loadBrand(brandId, targetId) {
       slug,
       price,
       short_description,
-      product_variants (
+      product_variants!product_variants_product_id_fkey (
         image_gallery
       )
     `)
@@ -53,9 +53,7 @@ async function loadBrand(brandId, targetId) {
         .getPublicUrl(v.image_gallery[0]).data.publicUrl;
     }
 
-    container.insertAdjacentHTML(
-      "beforeend",
-      `
+    container.insertAdjacentHTML("beforeend", `
       <div class="product-card" data-slug="${p.slug}">
         <img src="${img}" alt="${p.name}">
         <h4>${p.name}</h4>
@@ -70,8 +68,7 @@ async function loadBrand(brandId, targetId) {
           </button>
         </div>
       </div>
-      `
-    );
+    `);
   });
 
   container.querySelectorAll(".product-card").forEach(card => {
