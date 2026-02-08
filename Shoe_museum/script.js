@@ -21,7 +21,10 @@ async function loadBrand(brandId, targetId) {
       name,
       slug,
       price,
-      short_description
+      short_description,
+      product_variants (
+        image_gallery
+      )
     `)
     .eq("brand_id", brandId)
     .eq("active", true)
@@ -38,11 +41,23 @@ async function loadBrand(brandId, targetId) {
   container.innerHTML = "";
 
   products.forEach(p => {
+    let img = "assets/images/placeholder.png";
+
+    const v = (p.product_variants || []).find(
+      x => Array.isArray(x.image_gallery) && x.image_gallery.length
+    );
+
+    if (v) {
+      img = supabase.storage
+        .from("products")
+        .getPublicUrl(v.image_gallery[0]).data.publicUrl;
+    }
+
     container.insertAdjacentHTML(
       "beforeend",
       `
       <div class="product-card" data-slug="${p.slug}">
-        <img src="assets/images/placeholder.png" alt="${p.name}">
+        <img src="${img}" alt="${p.name}">
         <h4>${p.name}</h4>
         <p class="desc">${p.short_description || ""}</p>
         <div class="card-footer">
