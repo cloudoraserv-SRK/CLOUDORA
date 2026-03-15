@@ -4,6 +4,7 @@
 
 import express from "express";
 import { supabase } from "../../api/supabase.js";
+import { loginEmployee } from "../../lib/employeeAuth.js";
 
 const router = express.Router();
 
@@ -150,27 +151,8 @@ router.post("/create-employee", async (req, res) => {
 ============================================================ */
 
 router.post("/login", async (req, res) => {
-  const { employee_id, password } = req.body;
-
-  const { data, error } = await supabase
-    .from("employees")
-    .select("*")
-    .eq("employee_id", employee_id)
-    .eq("password", password)
-    .maybeSingle();
-
-  if (error || !data) {
-    return res.json({ ok:false, error:"Invalid Employee ID or Password" });
-  }
-
-  return res.json({
-    ok:true,
-    employee:{
-      employee_id: data.employee_id,
-      name: data.name,
-      department: data.department
-    }
-  });
+  const result = await loginEmployee(req.body || {});
+  return res.status(result.status).json(result);
 });
 
 /* ============================================================
