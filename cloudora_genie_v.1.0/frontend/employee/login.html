@@ -126,7 +126,7 @@ document.getElementById("loginBtn").onclick = async () => {
     const j = await res.json();
 
     if (!j.ok) {
-  loginError.innerText = j.msg || "Invalid credentials";
+  loginError.innerText = j.error || j.msg || "Invalid credentials";
   return;
 }
 
@@ -138,6 +138,8 @@ localStorage.setItem("employee_id", emp.employee_id);      // EMP-XXX
 localStorage.setItem("employee_uuid", emp.id);             // 🔥 UUID (IMPORTANT)
 localStorage.setItem("employee_name", emp.name);
 localStorage.setItem("employee_department", emp.department);
+if (j.token) localStorage.setItem("employee_token", j.token);
+if (j.token_expiry) localStorage.setItem("employee_token_expiry", j.token_expiry);
 
 // ---------------- DEPARTMENT ROUTING ----------------
 
