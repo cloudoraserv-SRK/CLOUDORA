@@ -1,983 +1,431 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Cloudora — Digital Innovation Studio</title>
-    <meta name="description" content="Cloudora: Digital marketing, software/app development, blockchain, game design, video generation & web design. Global remote delivery."/>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/genie.css">
-    <link rel="stylesheet" href="style.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-
-
-   <!-- Open Graph / Social Preview -->
-<meta property="og:type" content="website" />
-<meta property="og:site_name" content="Cloudora" />
-
-<meta property="og:title" content="Cloudora — Digital Innovation Studio" />
-<meta property="og:description" content="Digital marketing, software development, blockchain, AI video & web solutions. Global remote delivery by Cloudora." />
-<meta property="og:image" content="https://cloudoraserv.cloud/assets/og/og-home.png" />
-<meta property="og:url" content="https://cloudoraserv.cloud/" />
-
-<!-- Twitter / X -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Cloudora — Digital Innovation Studio" />
-<meta name="twitter:description" content="Global digital services in marketing, apps, blockchain & AI." />
-<meta name="twitter:image" content="https://cloudoraserv.cloud/assets/og/og-home.png" />
-
-<!-- Favicon for most browsers -->
-<link rel="icon" type="image/x-icon" href="assets/favicon/favicon.ico" />
-
-<!-- PNG versions for modern browsers -->
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
-
-<!-- Apple and Android icons -->
-<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
-<link rel="manifest" href="assets/favicon/site.webmanifest"> 
-
-<!-- Android icons for home screen and PWA -->
-<link rel="icon" type="image/png" sizes="192x192" href="assets/favicon/android-chrome-192x192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="assets/favicon/android-chrome-512x512.png">
-    
-<!-- JSON-LD Schema -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Cloudora",
-  "url": "https://cloudoraserv.cloud",
-  "logo": "https://cloudoraserv.cloud/assets/logo.png",
-  "sameAs": [
-    "https://www.linkedin.com/company/cloudora",
-    "https://www.instagram.com/cloudora"
-  ]
-}
-</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cloudora | Global IT, Software & Marketing Solutions</title>
+  <meta
+    name="description"
+    content="Cloudora helps businesses worldwide with websites, apps, software, automation, digital marketing, branding, and blockchain solutions."
+  >
+  <meta property="og:title" content="Cloudora | IT + Marketing Company">
+  <meta
+    property="og:description"
+    content="Build websites, apps, software, digital campaigns, automation systems, and blockchain products with Cloudora."
+  >
+  <meta property="og:image" content="assets/og-home.png">
+  <link rel="icon" href="assets/favicon/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@400;500;700;800&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="style.css">
 </head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-6J171NYX3F"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-6J171NYX3F');
-</script>
 <body>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="#top" class="brand">
+        <img src="assets/logos/cloudora.svg" alt="Cloudora">
+        <span>Cloudora</span>
+      </a>
 
-  <div class="aura" aria-hidden="true"></div>
-    <div class="stars" aria-hidden="true"></div>
+      <nav class="nav-links">
+        <a href="#about">About</a>
+        <a href="#paths">Paths</a>
+        <a href="#services">Services</a>
+        <a href="#careers">Jobs</a>
+        <a href="#genie">Genie AI</a>
+        <a href="#contact">Contact</a>
+      </nav>
 
-    <header class="site-header">
-        <div class="container nav">
-
-          <!-- LEFT -->
-    <a class="brand" href="/">
-      <img src="assets/logos/cloudora.svg" alt="Cloudora Logo">
-      <span>CLOUDORA</span>
-    </a>
-
-            <nav class="navlinks" aria-label="primary">
-                <a href="#services">Services</a>
-                <a href="#why">Why Us</a>
-                <a href="#hiring">We’re Hiring</a>
-                <a href="#portfolio">Our Works</a>
-                <a href="#contact">Contact</a>
-            </nav>
-  
-        <div class="nav-right">
-          <label for="google_translate_element">🌐 Language:</label>
-          <div id="google_translate_element"></div>
-    <select id="currencySelect">
-    <option value="INR">₹ INR</option>
-    <option value="USD">$ USD</option>
-    <option value="EUR">€ EUR</option>
-    <option value="GBP">£ GBP</option>
-    <option value="CAD">$ CAD</option>
-    <option value="AUD">$ AUD</option>
-    <option value="JPY">¥ JPY</option>
-    <option value="CNY">¥ CNY</option>
-    <option value="AED">د.إ AED</option>
-  </select>
-  <button class="hamburger" aria-label="menu" aria-expanded="false" aria-controls="mobileMenu"><span></span></button>
-  <span></span>
-      </button>
+      <div class="nav-actions">
+        <a class="nav-link-muted" href="assets/Cloudora_Profile.pdf">Presentation</a>
+        <a class="btn btn-small" href="#contact">Get Proposal</a>
+      </div>
     </div>
-        <div class="mobile" id="mobileMenu" role="dialog" aria-modal="false">
-            <a href="#services">Services</a>
-            <a href="#why">Why Us</a>
-            <a href="#hiring">We’re Hiring</a>
-            <a href="#portfolio">Our Works</a>
-            <a href="#contact">Contact</a>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">IT Company + Marketing Partner + Work From Home Opportunities</p>
+          <h1>Cloudora builds digital products, grows brands, and creates remote work systems.</h1>
+          <p class="hero-text">
+            If you need a website, app, software, blockchain build, branding, or digital marketing,
+            Cloudora can deliver it. If you want to work with us, Cloudora also runs a work-from-home
+            employment and operations system powered by Genie AI.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn" href="#contact">Start Your Project</a>
+            <a class="btn btn-ghost" href="#careers">Explore Jobs</a>
+            <a class="btn btn-ghost" href="assets/Cloudora_Profile.pdf">View Presentation</a>
+          </div>
+
+          <div class="hero-metrics">
+            <div>
+              <strong>3 Core Systems</strong>
+              <span>Website, Ops, Genie</span>
+            </div>
+            <div>
+              <strong>Global Delivery</strong>
+              <span>IT, Marketing, Automation</span>
+            </div>
+            <div>
+              <strong>Role-Based Teams</strong>
+              <span>Sales to Delivery</span>
+            </div>
+          </div>
         </div>
-    <label class="theme-switch">
-      <input type="checkbox" id="themeToggle" />
-      <span>🌙 / ☀️</span>
-    </label>
- 
-      </div>
-</header>
 
- 
+        <div class="hero-panel">
+          <div class="hero-card glow-card">
+            <p class="card-label">Cloudora Platform</p>
+            <h2>Three clear parts inside one Cloudora ecosystem</h2>
+            <ul class="feature-list">
+              <li>Presentation side for clients who want IT and marketing work done</li>
+              <li>Employment side for work-from-home hiring, employee ops, and task execution</li>
+              <li>Genie AI side for customer guidance, training, and internal assistance</li>
+            </ul>
+          </div>
 
-<!-- ================= GENIE (EXPANDED) ================= -->
-<h1>Cloudora – AI-Powered Growth, Sales & Digital Solutions</h1>
-
-<section class="genie-section">
-
-  <div class="container genie-container">
-
-    <!-- LEFT -->
-    <div class="genie-left">
-      <span class="tag">AI CORE OF CLOUDORA</span>
-      <h1>Your Living AI Genie</h1>
-
-      <p>
-        Genie is not just support.  
-        It thinks, guides, operates & evolves with you —  
-        whether you are building, hiring, learning or scaling.
-      </p>
-
-      <div class="genie-actions">
-        <a href="genie-home/index.html" class="genie-btn primary">
-          <span class="btn-text">Summon Genie</span>
-          <span class="btn-ring"></span>
-        </a>
-
-        <a href="#contact" class="genie-btn secondary">
-          <span class="btn-text">Speak to Humans</span>
-          <span class="btn-glow"></span>
-        </a>
-      </div>
-    </div>
-
-    <!-- RIGHT -->
-    <div class="genie-right">
-      <div class="genie-core">
-        <div class="energy-ring"></div>
-        <div class="energy-ring delay"></div>
-        <img src="assets/genie.png" class="genie-img" />
-        <div class="cursor-light"></div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-
-    <!-- =======================
-         CLOUDORA INTRO VIDEO
-    ========================== -->
-    <section class="cloudora-video">
-        <h2>About Cloudora</h2>
-        <p class="info">Discover the world of solutions — Marketing, IT, CRM, Global Support & Opportunities.</p>
-
-        <div class="video-box">
-            <video id="cloudoraVideo" controls>
-                <source src="cloudoraintro.mp4" type="video/mp4" />
-                Your browser does not support video.
-            </video>
+          <div class="hero-media">
+            <img src="assets/genieimage.png" alt="Cloudora Genie">
+          </div>
         </div>
+      </div>
     </section>
 
-<!-- =======================
-     ABOUT SECTION
-======================= -->
-<section id="about" class="about-section" data-reveal>
-  <div class="container">
-    <h2>About Cloudora</h2>
-    <p class="sub-head">
-      Cloudora is more than a platform — it's a movement empowering businesses
-      with scalable tech, branding & global reach.
-    </p>
-
-    <div class="about-grid">
-      <div class="about-block">
-        <h3>Our Mission</h3>
+    <section class="section" id="about">
+      <div class="container section-head">
+        <p class="eyebrow">About Cloudora</p>
+        <h2>Built for companies that want technology and growth under one roof.</h2>
         <p>
-          Simplify digital transformation with reliable infrastructure,
-          marketing & future-ready solutions.
+          Cloudora is not just a brochure website. It is designed to become a live business platform:
+          client acquisition on the front, an operations engine in the middle, and an AI layer across both.
         </p>
       </div>
 
-      <div class="about-block">
-        <h3>Our Vision</h3>
-        <p>
-          Become a global catalyst for innovation, trust & inclusive growth.
-        </p>
+      <div class="container info-grid">
+        <article class="info-card">
+          <h3>Cloudora Website</h3>
+          <p>
+            Public-facing experience for service discovery, lead capture, proposal requests,
+            and client qualification across IT and marketing services.
+          </p>
+        </article>
+        <article class="info-card">
+          <h3>Cloudora Ops</h3>
+          <p>
+            Internal system for telecalling, field sales, management, IT delivery, digital marketing,
+            employee reporting, and auto task assignment.
+          </p>
+        </article>
+        <article class="info-card">
+          <h3>Cloudora Genie</h3>
+          <p>
+            AI assistant with multiple roles including guide, trainer, support assistant,
+            and service explainer with avatar-style interaction.
+          </p>
+        </article>
       </div>
-    </div>
-    <a href="assets/Cloudora_Profile.pdf" class="btn" download>
-      📄 Download Company Profile
-    </a>
-
-  </div>
-</section>
-
-<!-- =======================
-     Services
-======================= -->
-    <section id="services">
-        <div class="container section-head" data-reveal>
-            <h2>Services</h2>
-            <div class="ctrls">
-                <button class="btn small" id="prev">◀</button>
-                <button class="btn small" id="next">▶</button>
-            </div>
-        </div>
-        <div class="container scroller-wrap fade-mask" data-reveal>
-          <div class="scroll-dots" id="serviceDots"></div>
-          <div class="scroller" id="serviceScroller" aria-label="scrollable service cards">
-                
-                <article class="card" data-reveal>
-                    <div class="img">
-                        <img alt="Digital Marketing" src="assets/digitalmarketing.png"/>
-                        <span class="badge pill">Digital Marketing</span>
-                        <span class="ribbon">50% OFF</span>
-                    </div>
-                    <div class="body">
-                        <h3><a href="services/digitalmarketing.html">Social Media & Ads</a></h3>
-                        <p>Boost your brand with ROI-driven ads, content strategy & growth campaigns across Google, Meta & LinkedIn.</p>
-                        <div class="price">
-                            <s>₹19,999</s> <span class="new-price" data-inr="9999">₹9,999</span> <small>/mo</small>
-                        </div>
-                        <a class="btn small" href="#contact">Get Proposal</a>
-                        <a class="explore-link" href="services/digital-marketing.html">Explore More →</a>
-                    </div>
-                </article>
-
-                <article class="card" data-reveal>
-                    <div class="img">
-                        <img alt="App Development" src="assets/apk&software.png"/>
-                        <span class="badge pill">App / Software</span>
-                        <span class="ribbon">50% OFF</span>
-                    </div>
-                    <div class="body">
-                        <h3><a href="services/app-development.html">Custom Apps & Software</a></h3>
-                        <p>Build powerful mobile & web apps using React, Next.js, Node & Flutter with secure cloud-native backends.</p>
-                        <div class="price">
-                            <s>₹1,50,000</s> <span class="new-price" data-inr="75000">₹75,000</span> <small>/project</small>
-                        </div>
-                        <a class="btn small" href="#contact">Build My App</a>
-                        <a class="explore-link" href="services/app-development.html">Explore More →</a>
-                    </div>
-                </article>
-
-                <article class="card" data-reveal>
-                    <div class="img">
-                        <img alt="Blockchain" src="assets/blockchain.png"/>
-                        <span class="badge pill">Blockchain</span>
-                        <span class="ribbon">50% OFF</span>
-                    </div>
-                    <div class="body">
-                        <h3><a href="services/blockchain.html">Smart Contracts & dApps</a></h3>
-                        <p>Deploy secure & audited smart contracts, wallets, tokens, and decentralized dashboards with Solidity.</p>
-                        <div class="price">
-                            <s>₹2,20,000</s> <span class="new-price" data-inr="110000">₹1,10,000</span> <small>/project</small>
-                        </div>
-                        <a class="btn small" href="#contact">Discuss Use-Case</a>
-                        <a class="explore-link" href="services/blockchain.html">Explore More →</a>
-                    </div>
-                </article>
-
-                <article class="card" data-reveal>
-                    <div class="img">
-                        <img alt="Game Development" src="assets/game.png"/>
-                        <span class="badge pill">Game Dev</span>
-                        <span class="ribbon">50% OFF</span>
-                    </div>
-                    <div class="body">
-                        <h3><a href="services/game-development.html">Games with Unity & Unreal</a></h3>
-                        <p>Create immersive games from concept to launch with stunning visuals, monetization & publishing support.</p>
-                        <div class="price">
-                            <s>₹3,00,000</s> <span class="new-price" data-inr="150000">₹1,50,000</span> <small>/project</small>
-                        </div>
-                        <a class="btn small" href="#contact">Start a Game</a>
-                        <a class="explore-link" href="services/game-development.html">Explore More →</a>
-                    </div>
-                </article>
-
-                <article class="card" data-reveal>
-                    <div class="img">
-                        <img alt="Web Design" src="assets/websites.png"/>
-                        <span class="badge pill">Web Design</span>
-                        <span class="ribbon">50% OFF</span>
-                    </div>
-                    <div class="body">
-                        <h3><a href="services/web-design.html">High-Performance Websites</a></h3>
-                        <p>Next.js & WordPress sites optimized for SEO, schema, lightning speed & brand-first experiences.</p>
-                        <div class="price">
-                            <s>₹49,999</s> <span class="new-price" data-inr="24999">₹24,999</span> <small>/site</small>
-                        </div>
-                        <a class="btn small" href="#contact">Design My Site</a>
-                        <a class="explore-link" href="services/web-design.html">Explore More →</a>
-                    </div>
-                </article>
-
-                <article class="card" data-reveal>
-                    <div class="img">
-                        <img alt="Video Generation" src="assets/aivideo.png"/>
-                        <span class="badge pill">AI Video</span>
-                        <span class="ribbon">50% OFF</span>
-                    </div>
-                    <div class="body">
-                        <h3><a href="services/ai-video.html">AI Videos & Motion Graphics</a></h3>
-                        <p>Studio-grade ads, reels & explainers made with AI tools + professional editing for premium quality.</p>
-                        <div class="price">
-                            <s>₹24,999</s> <span class="new-price" data-inr="12499">₹12,499</span> <small>/video</small>
-                        </div>
-                        <a class="btn small" href="#contact">Create a Video</a>
-                        <a class="explore-link" href="services/ai-video.html">Explore More →</a>
-                    </div>
-                </article>
-                
-    <article class="card" data-reveal>
-        <div class="img">
-          <img alt="Brand Strategy" src="assets/brand-strategy.png" />
-          <span class="badge pill">Brand Strategy</span>
-          <span class="ribbon">NEW</span>
-        </div>
-        <div class="body">
-          <h3><a href="services/brand-strategy.html">Identity & Positioning</a></h3>
-          <p>Craft your brand’s voice, visuals, and messaging with clarity, consistency, and emotional impact.</p>
-          <div class="price"><span class="new-price">Custom Quote</span></div>
-          <a class="btn small" href="#contact">Request Strategy</a>
-          <a class="explore-link" href="services/brand-strategy.html">Explore More →</a>
-        </div>
-      </article>
-
-      <article class="card" data-reveal>
-        <div class="img">
-          <img alt="UI/UX Design" src="assets/UI-UX.jpg" />
-          <span class="badge pill">UI/UX</span>
-          <span class="ribbon">NEW</span>
-        </div>
-        <div class="body">
-          <h3><a href="services/ui-ux.html">User Experience Design</a></h3>
-          <p>Design intuitive interfaces and conversion-optimized flows for apps, websites, and dashboards.</p>
-          <div class="price"><span class="new-price" data-inr="14999">₹14,999</span> <small>/screen</small></div>
-          <a class="btn small" href="#contact">Design My UI</a>
-          <a class="explore-link" href="services/ui-ux.html">Explore More →</a>
-        </div>
-      </article>
-
-      <article class="card" data-reveal>
-        <div class="img">
-          <img alt="Email Marketing" src="assets/Emailmareting.png" />
-          <span class="badge pill">Email Marketing</span>
-          <span class="ribbon">NEW</span>
-        </div>
-        <div class="body">
-          <h3><a href="services/email-marketing.html">Campaigns & Automation</a></h3>
-          <p>Engage leads with personalized emails, drip sequences, and conversion-focused copywriting.</p>
-          <div class="price"><span class="new-price" data-inr="4999">₹4,999</span> <small>/campaign</small></div>
-          <a class="btn small" href="#contact">Plan Campaign</a>
-          <a class="explore-link" href="services/email-marketing.html">Explore More →</a>
-        </div>
-      </article>
-
-      <article class="card" data-reveal>
-        <div class="img">
-          <img alt="SEO Services" src="assets/SEO.png" />
-          <span class="badge pill">SEO</span>
-          <span class="ribbon">NEW</span>
-        </div>
-        <div class="body">
-          <h3><a href="services/seo.html">Search Optimization</a></h3>
-          <p>Rank higher with technical audits, keyword research, schema, backlinks, and content strategy.</p>
-          <div class="price"><span class="new-price" data-inr="9999">₹9,999</span> <small>/month</small></div>
-          <a class="btn small" href="#contact">Boost My SEO</a>
-          <a class="explore-link" href="services/seo.html">Explore More →</a>
-        </div>
-      </article>
-
-      <article class="card" data-reveal>
-        <div class="img">
-          <img alt="Video Editing" src="assets/VideoEditing.webp" />
-          <span class="badge pill">Video Editing</span>
-          <span class="ribbon">NEW</span>
-        </div>
-        <div class="body">
-          <h3><a href="services/video-editing.html">Reels & Explainers</a></h3>
-          <p>Professional editing for ads, reels, tutorials, and product demos with motion graphics & sound.</p>
-          <div class="price"><span class="new-price" data-inr="7999">₹7,999</span> <small>/video</small></div>
-          <a class="btn small" href="#contact">Edit My Video</a>
-          <a class="explore-link" href="services/video-editing.html">Explore More →</a>
-        </div>
-      </article>
-
-      <article class="card" data-reveal>
-        <div class="img">
-          <img alt="Landing Pages" src="assets/LandingPages.jpg" />
-          <span class="badge pill">Landing Pages</span>
-          <span class="ribbon">NEW</span>
-        </div>
-        <div class="body">
-          <h3><a href="services/landing-pages.html">Conversion Funnels</a></h3>
-          <p>Design and deploy high-converting landing pages with A/B testing, analytics, and lead capture.</p>
-          <div class="price"><span class="new-price" data-inr="6999">₹6,999</span> <small>/page</small></div>
-          <a class="btn small" href="#contact">Launch a Funnel</a>
-          <a class="explore-link" href="services/landing-pages.html">Explore More →</a>
-        </div>
-      </article>
-
-            </div>
-        </div>
     </section>
 
+    <section class="section alt-section" id="paths">
+      <div class="container section-head">
+        <p class="eyebrow">Choose Your Path</p>
+        <h2>Cloudora should be understood in three separate tracks.</h2>
+        <p>
+          This is the clearest way to understand the platform: one side for client presentation,
+          one side for jobs and operations, and one side for Genie AI.
+        </p>
+      </div>
 
-    <!-- =======================
-         What We Have Built/ Our Partners.
-    ========================== -->    
-<section id="portfolio" class="my-projects" data-reveal>
-  <div class="container">
-    <h2>What We’ve Built/ Our Partners</h2>
-    <p class="sub-head">From blockchain ecosystems to client platforms and internal tools — here’s a glimpse of my work.</p>
+      <div class="container path-grid">
+        <article class="path-card">
+          <p class="path-tag">01</p>
+          <h3>Cloudora Presentation</h3>
+          <p>
+            For business owners, founders, and brands who want websites, apps, software,
+            marketing, branding, automation, or blockchain solutions.
+          </p>
+          <div class="path-actions">
+            <a class="btn btn-small" href="assets/Cloudora_Profile.pdf">Open Company Profile</a>
+            <a class="btn btn-ghost btn-small" href="#services">See Services</a>
+          </div>
+        </article>
 
-    <!-- Filter Buttons -->
-    <div class="job-filters">
-      <button class="filter-btn active" data-filter="all">All</button>
-      <button class="filter-btn" data-filter="web3">Web3</button>
-      <button class="filter-btn" data-filter="saas">SaaS</button>
-      <button class="filter-btn" data-filter="client">Client Project</button>
-      <button class="filter-btn" data-filter="internal">Internal Tool</button>
-    </div>
+        <article class="path-card">
+          <p class="path-tag">02</p>
+          <h3>Employment & Work From Home</h3>
+          <p>
+            For telecalling, sales, management, IT, and digital marketing roles.
+            This side includes hiring, employee login, dashboards, task assignment, and reporting.
+          </p>
+          <div class="path-actions">
+            <a class="btn btn-small" href="apply/apply.html">Apply for Jobs</a>
+            <a class="btn btn-ghost btn-small" href="cloudora_genie_v.1.0/frontend/employee/login.html">Employee Login</a>
+          </div>
+        </article>
 
-    <!-- Project Grid -->
-    <div class="grid-3 project-grid">
-      <!-- Cloudora -->
-      <div class="card" data-category="client">
-        <div class="img"><img src="assets/logos/cloudora.svg" alt="Cloudora logo" /></div>
-        <div class="body">
-          <h3><a href="https://cloudoraserv.cloud" target="_blank">Cloudora</a></h3>
-          <p>My flagship IT & marketing platform offering global hosting, branding, and conversion-optimized solutions.</p>
-          <div class="pill">Full-stack</div> <div class="pill">Branding</div> <div class="pill">Client Platform</div>
+        <article class="path-card">
+          <p class="path-tag">03</p>
+          <h3>Genie AI</h3>
+          <p>
+            For users who want an AI guide and for employees who need scripts, training,
+            support, and role-based assistance through an interactive AI layer.
+          </p>
+          <div class="path-actions">
+            <a class="btn btn-small" href="cloudora_genie_v.1.0/frontend/index.html">Open Genie</a>
+            <a class="btn btn-ghost btn-small" href="#genie">How Genie Works</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section alt-section" id="services">
+      <div class="container section-head">
+        <p class="eyebrow">Services</p>
+        <h2>What clients can hire Cloudora for</h2>
+        <p>
+          These are the main service tracks your website should actively convert into qualified business enquiries.
+        </p>
+      </div>
+
+      <div class="container services-grid">
+        <a class="service-card" href="services/web-design.html">
+          <span>01</span>
+          <h3>Website Design & Development</h3>
+          <p>Corporate websites, landing pages, portfolio sites, CMS builds, and custom business websites.</p>
+        </a>
+        <a class="service-card" href="services/app-development.html">
+          <span>02</span>
+          <h3>Apps & Software</h3>
+          <p>Custom web apps, mobile apps, internal dashboards, CRM systems, and automation software.</p>
+        </a>
+        <a class="service-card" href="services/digital-marketing.html">
+          <span>03</span>
+          <h3>Digital Marketing</h3>
+          <p>Lead generation, paid ads, SEO, social media execution, and conversion-focused marketing systems.</p>
+        </a>
+        <a class="service-card" href="services/blockchain.html">
+          <span>04</span>
+          <h3>Blockchain Projects</h3>
+          <p>Smart contracts, dApps, token utilities, dashboards, and blockchain product consulting.</p>
+        </a>
+        <a class="service-card" href="services/ai-video.html">
+          <span>05</span>
+          <h3>AI Content & Video</h3>
+          <p>AI-assisted media production, explainers, promo videos, and branded content systems.</p>
+        </a>
+        <a class="service-card" href="services/index.html">
+          <span>06</span>
+          <h3>Integrated Growth Packages</h3>
+          <p>Combine design, development, automation, branding, and marketing into one execution pipeline.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="section" id="careers">
+      <div class="container split-grid">
+        <div>
+          <p class="eyebrow">Work From Home & Employment</p>
+          <h2>Cloudora is not only a service company. It also runs a remote work and employee system.</h2>
+          <p class="section-copy">
+            We hire and manage telecallers, field sales, managers, IT teams, and digital marketing staff.
+            The operations side handles employee login, lead assignment, reporting, follow-ups, and delivery workflows.
+          </p>
+          <div class="inline-actions">
+            <a class="btn" href="apply/apply.html">Apply Now</a>
+            <a class="btn btn-ghost" href="cloudora_genie_v.1.0/frontend/employee/login.html">Open Employee Area</a>
+          </div>
+        </div>
+
+        <div class="ops-grid">
+          <article class="mini-card">
+            <h3>Work From Home Telecalling</h3>
+            <p>Lead scraping, assignment, CRM updates, call follow-ups, and qualification tracking.</p>
+          </article>
+          <article class="mini-card">
+            <h3>Sales & Client Closing</h3>
+            <p>Qualified leads move forward for proposal follow-up, closure support, and client handoff.</p>
+          </article>
+          <article class="mini-card">
+            <h3>Management & Supervision</h3>
+            <p>Visibility into workloads, conversions, team reporting, and project handoff control.</p>
+          </article>
+          <article class="mini-card">
+            <h3>IT & Marketing Delivery</h3>
+            <p>Client requirements become delivery tasks for websites, software, ads, SEO, branding, and campaigns.</p>
+          </article>
         </div>
       </div>
+    </section>
 
-      <!-- BHIX -->
-      <div class="card" data-category="web3">
-        <div class="img"><img src="assets/logos/bhix.svg" alt="BHIX logo" /></div>
-        <div class="body">
-          <h3><a href="https://bhix.cloud" target="_blank">BHIX</a></h3>
-          <p>Beggar Index Token ecosystem with smart contracts for staking, airdrops, rewards, and Web3 integration.</p>
-          <div class="pill">Web3</div> <div class="pill">Smart Contracts</div> <div class="pill">Tokenomics</div>
+    <section class="section alt-section" id="genie">
+      <div class="container split-grid">
+        <div>
+          <p class="eyebrow">Cloudora Genie</p>
+          <h2>An AI assistant for both visitors and employees.</h2>
+          <p class="section-copy">
+            Genie is designed to be the platform's interactive intelligence layer. Publicly it can explain services
+            and guide enquiries. Internally it can train employees, support scripts, explain SOPs, and assist teams.
+          </p>
+          <div class="inline-actions">
+            <a class="btn" href="cloudora_genie_v.1.0/frontend/index.html">Open Genie Interface</a>
+            <a class="btn btn-ghost" href="cloudora_genie_v.1.0/frontend/employee/login.html">Employee Login</a>
+          </div>
+        </div>
+
+        <div class="genie-grid">
+          <article class="mini-card">
+            <h3>Public Guide</h3>
+            <p>Explains Cloudora, collects interest, and guides users to the right next step.</p>
+          </article>
+          <article class="mini-card">
+            <h3>Sales Assistant</h3>
+            <p>Helps with qualification, messaging, and objection-handling logic.</p>
+          </article>
+          <article class="mini-card">
+            <h3>Trainer</h3>
+            <p>Supports onboarding, knowledge retrieval, scripts, and internal workflow guidance.</p>
+          </article>
+          <article class="mini-card">
+            <h3>Avatar Experience</h3>
+            <p>Animated AI presence with voice and role-based interactions through backend-controlled APIs.</p>
+          </article>
         </div>
       </div>
+    </section>
 
-       <!-- BHIXU Auto-Bot -->
-      <div class="card" data-category="client">
-        <div class="img"><img src="assets/logos/bhixbot.svg" alt="BP Consultancy logo" /></div>
-        <div class="body">
-          <h3><a href="https://beggardefi.github.io/bhix-bot-demo/" target="_blank">BHIX Auto-Bot</a></h3>
-          <p>Beggar Index Presenting Auto Bot to trade on Crypto do auto trades. Undel Development</p>
-          <div class="pill">AI</div> <div class="pill">Auto Bot Site</div>
+    <section class="section" id="presentation">
+      <div class="container hiring-banner">
+        <div>
+          <p class="eyebrow">Cloudora Presentation</p>
+          <h2>Need a quick company overview, proposal angle, or service presentation?</h2>
+          <p>
+            Use the company profile when you want to understand Cloudora as a business presentation:
+            what we do, what we build, and how clients can work with us.
+          </p>
         </div>
+        <a class="btn" href="assets/Cloudora_Profile.pdf">Open Profile PDF</a>
       </div>
+    </section>
 
-      <!-- NBSKK -->
-<div class="card" data-category="client">
-  <div class="img"><img src="assets/logos/nbskk.svg" alt="NBSKK logo" /></div>
-  <div class="body">
-    <h3><a href="https://nbskk.cloud" target="_blank">NBSKK</a></h3>
-    <p>Engineering and construction services platform showcasing industrial expertise and projects.</p>
-    <div class="pill">Client Project</div> <div class="pill">Construction</div> <div class="pill">Corporate</div>
-  </div>
-</div>
-
-<!-- AMCO Fabrications -->
-<div class="card" data-category="client">
-  <div class="img"><img src="assets/logos/amco.svg" alt="AMCO Fabrications logo" /></div>
-  <div class="body">
-    <h3><a href="https://cloudoraserv.cloud/amco/index.html" target="_blank">AMCO Fabrications</a></h3>
-    <p>Metal fabrication and industrial manufacturing website focused on strength and precision.</p>
-    <div class="pill">Client Project</div> <div class="pill">Industrial</div> <div class="pill">Manufacturing</div>
-  </div>
-</div>
-
-<!-- Secret Sanctuary -->
-<div class="card" data-category="brand">
-  <div class="img"><img src="assets/logos/secret-sanctuary.svg" alt="Secret Sanctuary logo" /></div>
-  <div class="body">
-    <h3><a href="https://cloudoraserv-srk.github.io/Secret-Sanctuary/" target="_blank">Secret Sanctuary</a></h3>
-    <p>A premium wellness and lifestyle brand designed around calm, privacy, and experience.</p>
-    <div class="pill">Client Project</div> <div class="pill">Lifestyle</div> <div class="pill">Brand</div>
-  </div>
-</div>
- <!-- JFC -->
-      <div class="card" data-category="client">
-        <div class="img"><img src="assets/logos/jfc.svg" alt="JFC logo" /></div>
-        <div class="body">
-          <h3><a href="https://bhix.cloud/JFC/index.html" target="_blank">Jhansi First Corporation</a></h3>
-          <p>Website for markets and local vendors, built with responsive design and elegant presentation.</p>
-          <div class="pill">Client Project</div> <div class="pill">Design</div>
-        </div>
-      </div>
-
-      <!-- SKNKS -->
-      <div class="card" data-category="client">
-        <div class="img"><img src="assets/logos/jhankar.svg" alt="SKNKS logo" /></div>
-        <div class="body">
-          <h3><a href="https://shaguftakathak-netizen.github.io/SKNKS/" target="_blank">JHANKAR Dance Academy</a></h3>
-          <p>Simple, clean website for Kathak dance school, showcasing classes and contact info.</p>
-          <div class="pill">Client Project</div> <div class="pill">Static Site</div>
-        </div>
-      </div>
-      
-<!-- Shoe Museum -->
-<div class="card" data-category="creative">
-  <div class="img"><img src="assets/logos/shoe-museum.svg" alt="Shoe Museum logo" /></div>
-  <div class="body">
-    <h3><a href="https://cloudoraserv.cloud/Shoe_museum/index.html" target="_blank">Shoe Museum</a></h3>
-    <p>A creative archive and showcase celebrating iconic footwear, design, and culture.</p>
-    <div class="pill">Client Project</div> <div class="pill">E-commerce</div> <div class="pill">Archive</div>
-  </div>
-</div>
-
-<!-- Coming Soon -->
-      <!-- Email Blaster -->
-      <div class="card" data-category="saas internal">
-        <div class="img"><img src="assets/logos/email.svg" alt="Email Blaster logo" /></div>
-        <div class="body">
-          <h3>Cloudora_Email_blaster_v1.0.0</h3>
-          <p>Internal SaaS tool for bulk email campaigns, lead nurturing, and client onboarding automation.</p>
-          <div class="pill">SaaS</div> <div class="pill">Email Automation</div> <div class="pill">Internal Tool</div>
-        </div>
-      </div>
-     
-      <!-- Coming Soon -->
-      <div class="card" data-category="internal">
-        <div class="img"><img src="assets/logos/whatsapp.svg" alt="WhatsApp Tools" /></div>
-        <div class="body">
-          <h3>Coming Soon…</h3>
-          <p>WhatsApp automation tools for scraping, filtering, and bulk messaging — launching after BHIX.</p>
-          <div class="pill">Future Tools</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>    
-
-<!-- =======================
-     WHY CHOOSE CLOUDORA
-======================= -->
-<section id="why" class="why-section" data-reveal>
-  <div class="container">
-
-    <header class="section-head">
-      <h2>Why Choose Cloudora?</h2>
-      <p class="sub-head" data-i18n="why_sub">
-        Not just an agency — your long-term growth & technology partner 🚀
-      </p>
-    </header>
-
-    <div class="why-grid">
-
-      <article class="feature" data-reveal>
-        <span class="icon">🌍</span>
-        <h4 data-i18n="why_1_title">Senior Talent, On-Demand</h4>
-        <p data-i18n="why_1_desc">Global experts across architecture, marketing, design & production.</p>
-      </article>
-
-      <article class="feature genie-pick" data-reveal>
-        <span class="genie-badge">🧠 Genie Recommends</span>
-        <span class="icon">💡</span>
-        <h4 data-i18n="why_2_title">Innovation First</h4>
-        <p data-i18n="why_2_desc">AI, automation & Web3 solutions to keep you ahead.</p>
-      </article>
-
-      <article class="feature" data-reveal>
-        <span class="icon">📊</span>
-        <h4 data-i18n="why_3_title">Transparent Pricing</h4>
-        <p data-i18n="why_3_desc">Clear SOWs, milestone billing & weekly demos.</p>
-      </article>
-
-      <article class="feature" data-reveal>
-        <span class="icon">🔐</span>
-        <h4 data-i18n="why_4_title">Security & Compliance</h4>
-        <p data-i18n="why_4_desc">NDA-first culture & enterprise-grade SDLC.</p>
-      </article>
-
-      <article class="feature" data-reveal>
-        <span class="icon">⚡</span>
-        <h4 data-i18n="why_5_title">Fast Delivery</h4>
-        <p data-i18n="why_5_desc">Agile workflows without quality compromise.</p>
-      </article>
-
-      <article class="feature" data-reveal>
-        <span class="icon">📈</span>
-        <h4 data-i18n="why_6_title">Data-Driven Results</h4>
-        <p data-i18n="why_6_desc">KPIs & analytics built into every service.</p>
-      </article>
-
-    </div>
-
-    <div class="why-cta" data-reveal>
-      <a href="#contact" class="btn big" data-i18n="why_cta">Let’s Work Together</a>
-    </div>
-
-  </div>
-</section>
-
-<!-- =======================
-     TESTIMONIALS
-======================= -->
-<!-- ======================= TESTIMONIALS ======================= -->
-<section id="testimonials" class="testimonials">
-  <div class="container">
-    <h2>Client Testimonials</h2>
-    <p class="sub-head">What founders & teams say about working with Cloudora</p>
-
-    <!-- Carousel -->
-    <div class="testimonial-carousel" id="testimonialCarousel">
-      <div class="testimonial-card">
-        <p>“Cloudora helped us scale our ad campaigns 3× in just 2 months. Clear strategy, fast execution.”</p>
-        <span>— Marketing Lead, Fintech Startup</span>
-      </div>
-
-      <div class="testimonial-card">
-        <p>“Their tech + marketing combo is rare. From website to automation, everything was handled professionally.”</p>
-        <span>— Founder, E-commerce Brand</span>
-      </div>
-
-      <div class="testimonial-card">
-        <p>“Transparent pricing, weekly demos, and actual results. Cloudora feels like an in-house team.”</p>
-        <span>— Operations Head, SaaS Company</span>
-      </div>
-    </div>
-
-    <!-- User Reviews (JS Injected) -->
-    <div class="testimonial-grid" id="testimonialGrid"></div>
-
-    <!-- Add Review -->
-    <form id="testimonialForm" class="add-review">
-      <textarea id="reviewText" placeholder="Write your review..." required></textarea>
-      <input id="reviewAuthor" type="text" placeholder="Your name / role" required />
-
-      <select id="reviewStars" required>
-        <option value="">Rating</option>
-        <option value="5">⭐⭐⭐⭐⭐</option>
-        <option value="4">⭐⭐⭐⭐</option>
-        <option value="3">⭐⭐⭐</option>
-      </select>
-
-      <button class="btn" type="submit">Submit Review</button>
-    </form>
-  </div>
-</section>
-
-<!-- =======================
-     HIRING
-======================= -->
-<section id="hiring" data-reveal>
-  <div class="container">
-    <div class="section-head">
-      <h2>🚀 We’re Hiring Remote & Field Teams</h2>
-    </div>
-
-    <!-- FILTERS -->
-    <div class="job-filters">
-      <button class="filter-btn active" data-filter="sales">🔥 Sales & Growth</button>
-      <button class="filter-btn" data-filter="support">💬 Chat Support & Telecalling</button>
-      <button class="filter-btn" data-filter="dev">💻 Tech, Content & Creators</button>
-    </div>
-
-    <div class="joblist">
-
-      <!-- ================= SALES & GROWTH ================= -->
-      <div class="job-card sales">
-        <h4>Field Sales Executives</h4>
-        <p>On-ground client meetings, demos, deal closures. PAN India.</p>
-        <a class="btn small" href="apply/apply.html">Apply Now</a>
-      </div>
-
-      <div class="job-card sales">
-        <h4>Inside Sales Executives</h4>
-        <p>Online sales via calls, WhatsApp, email & CRM follow-ups.</p>
-        <a class="btn small" href="apply/apply.html">Apply Now</a>
-      </div>
-
-      <div class="job-card sales">
-        <h4>Digital Marketing Executives</h4>
-        <p>SEO, Google Ads, Meta Ads, funnels & growth experiments.</p>
-        <a class="btn small" href="apply/apply.html">Apply Now</a>
-      </div>
-
-      <div class="job-card sales">
-        <h4>Business Development Managers</h4>
-        <p>Partnerships, enterprise clients & revenue expansion.</p>
-        <a class="btn small" href="apply/apply.html">Apply Now</a>
-      </div>
-
-      <!-- ================= SUPPORT & TELECALLING ================= -->
-      <div class="job-card support">
-        <h4>Domestic Lead Generators</h4>
-        <p>India-based outbound calling, data validation & lead creation.</p>
-        <a class="btn small" href="apply/apply.html">Apply Now</a>
-      </div>
-
-      <div class="job-card support">
-        <h4>International Lead Generators</h4>
-        <p>US, UK, UAE & global calling campaigns (night shifts).</p>
-        <a class="btn small" href="apply/apply.html">Apply Now</a>
-      </div>
-
-      <div class="job-card support">
-        <h4>Chat Support Executives</h4>
-        <p>Website chat, WhatsApp, email & customer query handling.</p>
-        <a class="btn small" href="apply/apply.html">Apply Now</a>
-      </div>
-
-      <div class="job-card support">
-        <h4>Customer Success Coordinators</h4>
-        <p>Client onboarding, follow-ups, renewals & satisfaction.</p>
-        <a class="btn small" href="apply/apply.html">Apply Now</a>
-      </div>
-
-      <!-- ================= TECH, CONTENT & CREATORS ================= -->
-      <div class="job-card dev">
-        <h4>Frontend / Backend / Full-Stack Developers</h4>
-        <p>React, Next.js, Node, Supabase & scalable systems.</p>
-        <a class="btn small" href="apply/apply.html">Apply Now</a>
-      </div>
-
-      <div class="job-card dev">
-        <h4>UI/UX Designers</h4>
-        <p>Website, dashboards, mobile-first product design.</p>
-        <a class="btn small" href="apply/apply.html">Apply Now</a>
-      </div>
-
-      <div class="job-card dev">
-        <h4>Content Writers & Bloggers</h4>
-        <p>Blogs, landing pages, SEO content & brand storytelling.</p>
-        <a class="btn small" href="apply/apply.html">Apply Now</a>
-      </div>
-
-      <div class="job-card dev">
-        <h4>Video Editors & Social Media Creators</h4>
-        <p>Reels, ads, YouTube, motion graphics & creatives.</p>
-        <a class="btn small" href="apply/apply.html">Apply Now</a>
-      </div>
-
-      <div class="job-card dev">
-        <h4>Blockchain & Web3 Developers</h4>
-        <p>Smart contracts, DApps, NFTs & DeFi products.</p>
-        <a class="btn small" href="apply/apply.html">Apply Now</a>
-      </div>
-
-    </div>
-  </div>
-</section>
-<!-- =======================
-     SUBMIT FORM
-======================= -->
-<!-- ======================= CONTACT / PROJECT FORM ======================= -->
-<section id="contact" data-reveal>
-  <div class="container">
-    <div class="section-head">
-      <h2>Start a Project</h2>
-    </div>
-
-    <div class="contact-wrap">
-      <form id="contactForm">
-        <label>Full Name</label>
-        <input id="name" name="full_name" required />
-
-        <label>Email</label>
-        <input id="email" name="email" type="email" required />
-
-        <label>Phone</label>
-        <input id="phone" name="phone" type="tel" required />
-
-        <label>WhatsApp</label>
-        <input id="whatsapp" name="whatsapp" type="tel" />
-
-        <label>Company</label>
-        <input id="company" name="company" />
-
-        <label>Address</label>
-        <textarea id="address" name="address"></textarea>
-
-        <label>Service Interested</label>
-        <select id="service" name="service" required>
-          <option value="">Choose</option>
-          <option>Performance Marketing</option>
-          <option>Full-Stack Development</option>
-          <option>Blockchain / Smart Contracts</option>
-          <option>Game Development</option>
-          <option>Web Design</option>
-          <option>AI Video</option>
-          <option>Other</option>
-        </select>
-
-        <label>Budget</label>
-        <select id="budget" name="budget">
-          <option value="">Select</option>
-          <option data-inr="1000">₹1,000 – ₹5,000</option>
-          <option data-inr="5000">₹5,000 – ₹10,000</option>
-          <option data-inr="25000">₹10,000 – ₹25,000</option>
-          <option data-inr="50000">₹25,000 – ₹1,00,000</option>
-          <option data-inr="100000">₹1,00,000 – ₹5,00,000</option>
-          <option data-inr="500000">₹5,00,000+</option>
-        </select>
-
-        <label>Timeline</label>
-        <select id="timeline" name="timeline">
-          <option value="">Select</option>
-          <option>ASAP (within 1 month)</option>
-          <option>1 – 3 months</option>
-          <option>3 – 6 months</option>
-          <option>6+ months</option>
-        </select>
-
-        <label>Project Details</label>
-        <textarea id="msg" name="message" required></textarea>
-
-        <button type="submit">Request Proposal</button>
-        <span id="formStatus" hidden></span>
-      </form>
-    </div>
-  </div>
-</section>
-
-<!-- Genie PlaceHolder -->
-<div id="genie">
-  <button id="genieToggle" aria-label="Open Genie">
-  <img src="/assets/genie.png" alt="Genie">
-</button>
-
-
-  <div id="geniePanel">
-    <header>
-      <strong>Genie</strong>
-      <span>Your Cloudora Assistant</span>
-      <button id="genieClose">✕</button>
-    </header>
-
-    <div class="genie-body">
-      <p>👋 Hi, I’m Genie.<br>How can I help you today?</p>
-    </div>
-    <audio id="genieSound" src="/assets/sounds/genie-soft.mp3" preload="auto"></audio>
-  </div>
-</div>
-
-<!-- =======================
-     FOOTER
-======================= -->
-    <footer>
-        <div class="container foot">
-            <div class="foot-left">
-               <div class="contact-info">
-                    <div class="contact-row">📞 <a href="tel:+918423210335">+91-84232-10335</a></div>
-                    <div class="contact-row">✉️ <a href="mailto:support@Cloudoraserv.com">support@Cloudoraerv.com</a></div>
-                    <div class="contact-row">🌍 Serving clients in India, US, EU & MEA</div>
-                    <div class="contact-row">🕒 Mon–Fri • 9:30 AM – 7:00 PM IST</div>
-                </div>
-                <span class="copyright">© <span id="year"></span> All rights reserved</span>
+    <section class="section contact-section" id="contact">
+      <div class="container contact-grid">
+        <div class="contact-copy">
+          <p class="eyebrow">Start a Project</p>
+          <h2>Tell Cloudora what you want to build.</h2>
+          <p>
+            Share your business requirement and the system can later route it to the correct team for sales,
+            development, marketing, or consultation.
+          </p>
+          <div class="contact-points">
+            <div>
+              <strong>Email</strong>
+              <span>hello@cloudora.in</span>
             </div>
-    <a href="https://wa.me/919532153763" class="btn whatsapp" aria-label="WhatsApp us">WhatsApp</a>
-    <div id="cookieConsent" class="cookie-banner">
-  <p>We use cookies to improve your experience. By using our site, you agree to our Privacy Policy.</p>
-  <button onclick="document.getElementById('cookieConsent').style.display='none'">Accept</button>
-</div>
-            
-            <div class="social">
-                
-                <a class="icon" href="https://www.instagram.com/cloudora_services?igsh=MXUzZWlqNnkxbGk0YQ==" aria-label="Instagram" title="Instagram">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm10 2c1.7 0 3 1.3 3 3v10c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V7c0-1.7 1.3-3 3-3h10zm-5 3.5A5.5 5.5 0 1 0 17.5 13 5.5 5.5 0 0 0 12 7.5zm0 2A3.5 3.5 0 1 1 8.5 13 3.5 3.5 0 0 1 12 9.5zm5.8-3.6a1 1 0 1 0 1 1 1 1 0 0 0-1-1z"/></svg>
-                </a>
-                <a class="icon" href="https://www.facebook.com/share/1FtH8Xcd8b/" aria-label="facebook" title="Facebook">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"> <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm3 8h-1.35c-.522 0-.65.234-.65.65v1.35h2l-.246 2h-1.754v6h-3v-6h-2v-2h2v-1.157c0-1.789.97-2.843 2.866-2.843h1.134v3z"/> </svg>
-                </a>
-                <a class="icon" href="https://cloudoraserv.cloud" aria-label="GitHub" title="GitHub">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.17c-3.34.73-4.04-1.44-4.04-1.44-.55-1.4-1.35-1.77-1.35-1.77-1.1-.77.08-.75.08-.75 1.22.09 1.87 1.25 1.87 1.25 1.08 1.85 2.83 1.32 3.52 1.01.11-.79.42-1.32.76-1.62-2.67-.3-5.48-1.34-5.48-5.97 0-1.32.47-2.41 1.24-3.26-.12-.3-.54-1.52.12-3.16 0 0 1.01-.32 3.3 1.24a11.4 11.4 0 0 1 6 0c2.29-1.56 3.3-1.24 3.3-1.24.66 1.64.24 2.86.12 3.16.77.85 1.23 1.94 1.23 3.26 0 4.64-2.81 5.67-5.49 5.97.43.37.8 1.1.8 2.22v3.3c0 .32.21.7.82.58A12 12 0 0 0 12 .5z"/></svg>
-                </a>
+            <div>
+              <strong>WhatsApp</strong>
+              <span>+91 70228 58889</span>
             </div>
-            <div class="legal">
-                <a href="#" id="openPrivacy">Privacy Policy</a>
-                <span>•</span>
-                <a href="#" id="openTerms">Terms & Conditions</a>
+            <div>
+              <strong>Use Cases</strong>
+              <span>Website, software, blockchain, branding, growth, automation</span>
             </div>
+          </div>
         </div>
-    </footer>
 
-    <div class="modal" id="privacyModal" aria-hidden="true" role="dialog" aria-labelledby="privacyTitle">
-        <div class="modal-card">
-            <div class="modal-head">
-                <h3 id="privacyTitle">Privacy Policy</h3>
-                <button class="close" data-close>✕</button>
-            </div>
-            <div class="modal-body">
-                <p>We collect only necessary information (name, email, project details) submitted through our form to reply to your inquiry. We do not sell your data. You may request deletion anytime at <a href="mailto:privacy@cloudora.studio">privacy@cloudora.studio</a>.</p>
-            </div>
-        </div>
+        <form class="contact-form glow-card" id="contactForm">
+          <label>
+            <span>Name</span>
+            <input id="name" name="name" type="text" placeholder="Your full name" required>
+          </label>
+          <label>
+            <span>Service Needed</span>
+            <select id="service" name="service" required>
+              <option value="">Select a service</option>
+              <option value="website">Website Design & Development</option>
+              <option value="app_software">App / Software Development</option>
+              <option value="digital_marketing">Digital Marketing</option>
+              <option value="automation_ai">Automation / AI Integration</option>
+              <option value="blockchain">Blockchain Project</option>
+              <option value="branding_media">Branding / Creative / Video</option>
+              <option value="general">Not Sure Yet</option>
+            </select>
+          </label>
+          <label>
+            <span>Email</span>
+            <input id="email" name="email" type="email" placeholder="you@company.com" required>
+          </label>
+          <label>
+            <span>Phone</span>
+            <input id="phone" name="phone" type="tel" placeholder="+91 ..." required>
+          </label>
+          <label>
+            <span>Country</span>
+            <input id="country" name="country" type="text" placeholder="India, UAE, US..." value="IN">
+          </label>
+          <label>
+            <span>Company / Brand</span>
+            <input id="company" name="company" type="text" placeholder="Business name">
+          </label>
+          <label>
+            <span>Project Requirement</span>
+            <textarea id="msg" name="msg" placeholder="What do you want Cloudora to build or grow?" required></textarea>
+          </label>
+          <div class="form-row">
+            <label>
+              <span>Budget</span>
+              <input id="budget" name="budget" type="text" placeholder="Approx budget">
+            </label>
+            <label>
+              <span>Timeline</span>
+              <input id="timeline" name="timeline" type="text" placeholder="Expected timeline">
+            </label>
+          </div>
+          <button class="btn" type="submit">Send Enquiry</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-row">
+      <div>
+        <img class="footer-logo" src="assets/logos/cloudora.svg" alt="Cloudora">
+        <p>Cloudora now has three clear fronts: Presentation, Employment/Ops, and Genie AI.</p>
+      </div>
+      <div class="footer-links">
+        <a href="assets/Cloudora_Profile.pdf">Presentation</a>
+        <a href="#services">Services</a>
+        <a href="cloudora_genie_v.1.0/frontend/employee/login.html">Employee Login</a>
+        <a href="apply/apply.html">Careers</a>
+      </div>
     </div>
+  </footer>
 
-    <div class="modal" id="termsModal" aria-hidden="true" role="dialog" aria-labelledby="termsTitle">
-        <div class="modal-card">
-            <div class="modal-head">
-                <h3 id="termsTitle">Terms & Conditions</h3>
-                <button class="close" data-close>✕</button>
-            </div>
-            <div class="modal-body">
-                <p>All estimates are subject to a formal SOW. Work starts post‑advance. IP transfers upon full payment. Confidentiality/NDA available on request.</p>
-            </div>
-        </div>
+  <audio id="genieSound" preload="auto">
+    <source src="assets/sounds/genie-soft.mp3" type="audio/mpeg">
+  </audio>
+
+  <button id="genieToggle" class="genie-toggle" type="button" aria-label="Open Genie">
+    <img src="assets/genie.png" alt="">
+  </button>
+
+  <aside id="geniePanel" class="genie-panel" aria-label="Cloudora Genie">
+    <div class="genie-panel-head">
+      <strong>Cloudora Genie</strong>
+      <button id="genieClose" type="button" aria-label="Close Genie">x</button>
     </div>
-    
-    <!--Start of Tawk.to Script-->
-    
-    <script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/68fc219a511129194ce142ca/1j8ce6h9c';
-s1.charset='UTF-8';
-s0.parentNode.insertBefore(s1,s0);
-})();
-</script>
-<!--End of Tawk.to Script-->
- <!-- Google Translate -->
-<script type="text/javascript">
-  function googleTranslateElementInit() {
-    new google.translate.TranslateElement({
-      pageLanguage: 'en',
-      includedLanguages: 'en,hi,fr,es,de,zh-CN,ar,ja,ru,pt,bn,ta,mr',
-      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-    }, 'google_translate_element');
-  }
-</script>
-<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <div class="genie-body"></div>
+  </aside>
 
-<!-- CORE (ALWAYS FIRST) -->
-<script type="module" src="/js/core.js"></script>
-
-<!-- HEADER (ALWAYS) -->
-<script type="module" src="/js/header.js"></script>
-
-<!-- PAGE SPECIFIC -->
-<!-- Home page only -->
-<script type="module" src="/js/home.js"></script>
-
-<!-- Forms (pages with forms) -->
-<script type="module" src="/js/forms.js"></script>
-<!-- genie js -->
-<script type="module" src="/js/genie.js"></script>
-
-
-
-<!-- PROJECT MODAL -->
-<div class="project-modal" id="projectModal">
-  <div class="modal-box">
-    <span class="modal-close" id="modalClose">✕</span>
-    <div id="modalContent"></div>
-  </div>
-</div>
-
+  <script type="module" src="js/forms.js"></script>
+  <script type="module" src="js/genie.js"></script>
 </body>
 </html>
