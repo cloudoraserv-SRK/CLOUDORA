@@ -7,6 +7,33 @@ import { sendSalesEmail } from "../utils/mailer.js";
 
 const router = express.Router();
 
+async function getAssignedPendingLead(employee_id) {
+  return supabase
+    .from("scraped_leads_assignments")
+    .select("id, status, scraped_leads(*)")
+    .eq("employee_id", employee_id)
+    .eq("status", "pending")
+    .order("created_at", { ascending: true })
+    .limit(1);
+}
+
+async function getFallbackRawLead(department) {
+  let query = supabase
+    .from("scraped_leads")
+    .select("*")
+    .is("assigned_to", null)
+    .eq("status", "raw")
+    .limit(1);
+
+  if (department?.includes("domestic")) {
+    query = query.eq("country", "India");
+  } else if (department) {
+    query = query.neq("country", "India");
+  }
+
+  return query;
+}
+
 /* -------------------------------------------------------
    1) LIVE EXTRACTION
 -------------------------------------------------------- */
@@ -162,30 +189,86 @@ if (insErr) {
    4) NEXT LEAD (pending only, sorted by creation time)
 -------------------------------------------------------- */
 router.post("/next-lead", async (req, res) => {
-    const { employee_id } = req.body;
+  const { employee_id, department } = req.body;
 
-    try {
-        const { data, error } = await supabase
-            .from("scraped_leads_assignments")
-            .select("id, status, scraped_leads(*)")
-            .eq("employee_id", employee_id)
-            .eq("status", "pending")
-            .order("created_at", { ascending: true })
-            .limit(1);
+  if (!employee_id) {
+    return res.status(400).json({ ok: false, error: "employee_id required" });
+  }
 
-        if (error) return res.json({ ok: false, error });
-        if (!data || data.length === 0)
-            return res.json({ ok: false, message: "NO_LEADS" });
+  try {
+    const { data: assigned, error } = await getAssignedPendingLead(employee_id);
 
-        return res.json({
-            ok: true,
-            assignment_id: data[0].id,
-            lead: data[0].scraped_leads
-        });
+    if (error) return res.json({ ok: false, error });
 
-    } catch (err) {
-        return res.json({ ok: false, error: err.message });
+    if (assigned && assigned.length > 0) {
+      return res.json({
+        ok: true,
+        assignment_id: assigned[0].id,
+        lead: assigned[0].scraped_leads,
+        mode: "assigned"
+      });
     }
+
+    // Telecalling flow should not silently auto-pull fresh raw leads.
+    if (!department) {
+      return res.json({ ok: false, message: "NO_LEADS" });
+    }
+
+    await supabase.rpc("expire_old_assignments");
+
+    const { data: raw, error: rawError } = await getFallbackRawLead(department);
+
+    if (rawError) {
+      return res.json({ ok: false, error: rawError });
+    }
+
+    if (!raw || raw.length === 0) {
+      return res.json({ ok: false, message: "NO_LEADS" });
+    }
+
+    const lead = raw[0];
+
+    const { error: assignmentError } = await supabase
+      .from("scraped_leads_assignments")
+      .insert({
+        scraped_lead_id: lead.id,
+        employee_id,
+        status: "pending"
+      });
+
+    if (assignmentError) {
+      return res.json({ ok: false, error: assignmentError });
+    }
+
+    await supabase
+      .from("scraped_leads")
+      .update({ assigned_to: employee_id, status: "pending" })
+      .eq("id", lead.id);
+
+    const { data: hydrated, error: hydratedError } = await getAssignedPendingLead(employee_id);
+
+    if (hydratedError) {
+      return res.json({ ok: false, error: hydratedError });
+    }
+
+    if (!hydrated || hydrated.length === 0) {
+      return res.json({
+        ok: true,
+        assignment_id: null,
+        lead,
+        mode: "fallback"
+      });
+    }
+
+    return res.json({
+      ok: true,
+      assignment_id: hydrated[0].id,
+      lead: hydrated[0].scraped_leads,
+      mode: "fallback"
+    });
+  } catch (err) {
+    return res.json({ ok: false, error: err.message });
+  }
 });
 
 /* -------------------------------------------------------
@@ -338,75 +421,6 @@ router.post("/forward-sales", async (req, res) => {
     ok: true,
     assigned_to: salesEmp.id,
     sales_department: salesDept
-  });
-});
-
-console.log(
-  "SALES QUERY CHECK:",
-  await supabase.from("employees").select("id,department")
-);
-
-// -------------------------------------------------------
-// SALES: NEXT LEAD
-// -------------------------------------------------------
-router.post("/next-lead", async (req, res) => {
-  const { employee_id, department } = req.body;
-
-  // 1️⃣ First try assigned leads
-  const { data: assigned } = await supabase
-    .from("scraped_leads_assignments")
-    .select("id, status, scraped_leads(*)")
-    .eq("employee_id", employee_id)
-    .eq("status", "pending")
-    .order("created_at", { ascending: true })
-    .limit(1);
-
-  if (assigned && assigned.length > 0) {
-    return res.json({
-      ok: true,
-      assignment_id: assigned[0].id,
-      lead: assigned[0].scraped_leads,
-      mode: "assigned"
-    });
-  }
-await supabase.rpc("expire_old_assignments");
-
-  // 2️⃣ FALLBACK → raw scraped leads (A-layer)
-  let query = supabase
-    .from("scraped_leads")
-    .select("*")
-    .is("assigned_to", null)
-    .limit(1);
-
-  if (department?.includes("domestic")) {
-    query = query.eq("country", "India");
-  } else {
-    query = query.neq("country", "India");
-  }
-
-  const { data: raw } = await query;
-
-  if (!raw || raw.length === 0) {
-    return res.json({ ok: false, message: "NO_LEADS" });
-  }
-
-  // 3️⃣ Auto-assign silently (hybrid magic)
-  await supabase.from("scraped_leads_assignments").insert({
-    scraped_lead_id: raw[0].id,
-    employee_id,
-    status: "pending"
-  });
-
-  await supabase
-    .from("scraped_leads")
-    .update({ assigned_to: employee_id, status: "pending" })
-    .eq("id", raw[0].id);
-
-  return res.json({
-    ok: true,
-    assignment_id: null,
-    lead: raw[0],
-    mode: "fallback"
   });
 });
 

@@ -10,10 +10,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-// ----------------------------
-// VIEW ALL LEADS (manager/admin)
-// ----------------------------
-router.get("/admin/leads", checkRole(["view_all_leads"]), async (req, res) => {
+async function getLeads(req, res) {
   try {
     const { data, error } = await supabase
       .from("leads")
@@ -27,12 +24,9 @@ router.get("/admin/leads", checkRole(["view_all_leads"]), async (req, res) => {
   } catch (e) {
     return res.status(500).json({ error: e.message });
   }
-});
+}
 
-// ----------------------------
-// VIEW UNASSIGNED TASKS
-// ----------------------------
-router.get("/admin/unassigned_tasks", checkRole(["assign_tasks"]), async (req, res) => {
+async function getUnassignedTasks(req, res) {
   try {
     const { data, error } = await supabase
       .from("employee_tasks")
@@ -46,12 +40,9 @@ router.get("/admin/unassigned_tasks", checkRole(["assign_tasks"]), async (req, r
   } catch (e) {
     return res.status(500).json({ error: e.message });
   }
-});
+}
 
-// ----------------------------
-// INSERT LEAD (ADMIN)
-// ----------------------------
-router.post("/insert-lead", async (req, res) => {
+async function insertLead(req, res) {
   try {
     const data = req.body;
 
@@ -61,12 +52,10 @@ router.post("/insert-lead", async (req, res) => {
         phone: data.phone,
         email: data.email,
         city: data.city,
-
         company_name: data.company_name || "",
         interest: data.interest || "",
         source: data.source || "",
         temperature: data.temperature || "",
-
         assigned_to: data.assigned_to || null,
         status: "pending",
         created_at: new Date().toISOString()
@@ -81,6 +70,24 @@ router.post("/insert-lead", async (req, res) => {
   } catch (e) {
     return res.status(500).json({ ok: false, error: e.message });
   }
-});
+}
+
+// ----------------------------
+// VIEW ALL LEADS (manager/admin)
+// ----------------------------
+router.get("/leads", checkRole(["view_all_leads"]), getLeads);
+router.get("/admin/leads", checkRole(["view_all_leads"]), getLeads);
+
+// ----------------------------
+// VIEW UNASSIGNED TASKS
+// ----------------------------
+router.get("/unassigned_tasks", checkRole(["assign_tasks"]), getUnassignedTasks);
+router.get("/admin/unassigned_tasks", checkRole(["assign_tasks"]), getUnassignedTasks);
+
+// ----------------------------
+// INSERT LEAD (ADMIN)
+// ----------------------------
+router.post("/leads", insertLead);
+router.post("/insert-lead", insertLead);
 
 export default router;
