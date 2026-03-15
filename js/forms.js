@@ -2,6 +2,8 @@ import { supabase } from "../supabase/supabase.js";
 
 console.log("✅ forms.js loaded");
 
+const PUBLIC_API = window.CONFIG?.BACKEND || "https://cloudora-production.up.railway.app";
+
 /* =========================
    CONTACT FORM
 ========================= */
@@ -14,8 +16,10 @@ if (contact) {
 
     const payload = {
       name: document.getElementById("name")?.value || null,
+      product: document.getElementById("service")?.value || null,
       email: document.getElementById("email")?.value || null,
       phone: document.getElementById("phone")?.value || null,
+      country: document.getElementById("country")?.value || "IN",
       business_name: document.getElementById("company")?.value || null,
       requirement: document.getElementById("msg")?.value || null,
       budget_range: document.getElementById("budget")?.value || null,
@@ -28,10 +32,16 @@ if (contact) {
       status: "new"
     };
 
-    const { error } = await supabase.from("leads").insert([payload]);
+    const res = await fetch(`${PUBLIC_API}/api/public/enquiries`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
 
-    if (error) {
-      console.error("❌ Lead insert error:", error);
+    const json = await res.json();
+
+    if (!res.ok || !json.ok) {
+      console.error("❌ Lead pipeline error:", json);
       alert("❌ Form submit failed");
       return;
     }

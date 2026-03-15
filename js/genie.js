@@ -222,7 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
     cta.onclick = () => {
       playGenieSound();
       trackGenieEvent("cta_click", "explore_genie_full_ai");
-      window.location.href = "/genie.html";
+      window.location.href = "/cloudora_genie_v.1.0/frontend/index.html";
     };
 
     wrap.appendChild(cta);
