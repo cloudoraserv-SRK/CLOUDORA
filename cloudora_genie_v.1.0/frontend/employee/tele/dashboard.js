@@ -31,6 +31,7 @@ function openPage(url) {
 
 // --------------- LOAD EMPLOYEE SESSION --------------
 const empID = localStorage.getItem("employee_id");
+const empUUID = localStorage.getItem("employee_uuid");
 const empName = localStorage.getItem("employee_name");
 const empDept = localStorage.getItem("employee_department");
 const empShift = localStorage.getItem("employee_shift");
@@ -49,6 +50,99 @@ document.getElementById("logoutBtn").onclick = () => {
     localStorage.clear();
     window.location.href = "../login.html";
 };
+
+const taskSummary = document.getElementById("taskSummary");
+const taskList = document.getElementById("taskList");
+const refreshTasksBtn = document.getElementById("refreshTasksBtn");
+const TASK_API = (window.CONFIG?.BACKEND || "https://cloudora-production.up.railway.app") + "/api/tasks/list";
+
+async function loadAssignedTasks() {
+    if (!taskSummary || !taskList) return;
+
+    if (!empUUID) {
+        taskSummary.innerText = "Employee session is missing UUID. Please login again.";
+        taskList.innerHTML = "";
+        return;
+    }
+
+    taskSummary.innerText = "Loading assigned tasks...";
+
+    try {
+        const res = await fetch(`${TASK_API}?employee_id=${encodeURIComponent(empUUID)}`);
+        const json = await res.json();
+
+        if (!res.ok || !json.ok) {
+            taskSummary.innerText = "Could not load assigned tasks.";
+            taskList.innerHTML = "";
+            return;
+        }
+
+        const tasks = json.tasks || [];
+        const activeTasks = tasks.filter(t => t.status !== "completed").slice(0, 6);
+
+        taskSummary.innerText = activeTasks.length
+            ? `${activeTasks.length} active tasks linked to your current queue`
+            : "No active tasks assigned right now.";
+
+        if (!activeTasks.length) {
+            taskList.innerHTML = "";
+            return;
+        }
+
+        taskList.innerHTML = activeTasks.map(task => `
+            <article class="task-card">
+                <div class="task-chip">${task.status || "pending"}</div>
+                <h3>${formatProduct(task.product)}</h3>
+                <p><b>Task Type:</b> ${task.task_type || "call"}</p>
+                <p><b>Lead ID:</b> ${task.lead_id || "-"}</p>
+                <p><b>Queue:</b> ${task.department || empDept || "-"}</p>
+                <p><b>Country:</b> ${task.country || "-"}</p>
+            </article>
+        `).join("");
+
+        taskList.querySelectorAll(".task-card").forEach((card, index) => {
+            const task = activeTasks[index];
+            const button = document.createElement("button");
+            button.className = "task-open-btn";
+            button.innerText = task.task_type === "call" ? "Open In Calling Panel" : "Open Task Context";
+            button.onclick = () => openTaskCallPanel(task);
+            card.appendChild(button);
+        });
+    } catch (err) {
+        taskSummary.innerText = "Task service unreachable right now.";
+        taskList.innerHTML = "";
+    }
+}
+
+function openTaskCallPanel(task) {
+    localStorage.setItem("active_task_context", JSON.stringify({
+        id: task.id || null,
+        lead_id: task.lead_id || null,
+        product: task.product || "general",
+        department: task.department || empDept || null,
+        country: task.country || null,
+        task_type: task.task_type || "call"
+    }));
+
+    window.location.href = "./call-panel.html";
+}
+
+function formatProduct(product) {
+    const map = {
+        website: "Website Project",
+        app_software: "App / Software Project",
+        digital_marketing: "Digital Marketing Project",
+        automation_ai: "Automation / AI Project",
+        blockchain: "Blockchain Project",
+        branding_media: "Branding / Media Project",
+        general: "General Enquiry"
+    };
+
+    return map[product] || product || "General Enquiry";
+}
+
+refreshTasksBtn?.addEventListener("click", loadAssignedTasks);
+loadAssignedTasks();
 
 
 // =====================================================

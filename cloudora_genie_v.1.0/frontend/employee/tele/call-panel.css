@@ -69,6 +69,25 @@ body {
   box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 
+.task-brief {
+  margin-bottom: 14px;
+  padding: 14px;
+  border-radius: 10px;
+  background: #eef4ff;
+  border: 1px solid #cfe0ff;
+}
+
+.task-brief h3 {
+  margin: 0 0 8px 0;
+  color: #0d4ecf;
+  font-size: 16px;
+}
+
+.task-brief p {
+  margin: 4px 0;
+  font-size: 13px;
+}
+
 /* Lead info */
 .lead-info h2 {
   margin: 0 0 6px 0;

@@ -106,6 +106,94 @@ body {
     color: #4f46e5;
 }
 
+.task-snapshot {
+    margin-top: 20px;
+    background: linear-gradient(180deg, #ffffff, #f8faff);
+    padding: 20px;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 10px 22px rgba(15,23,42,0.08);
+}
+
+.snapshot-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.snapshot-head h2 {
+    margin: 0;
+    color: #4338ca;
+    font-size: 20px;
+}
+
+.mini-refresh-btn {
+    border: 1px solid #c7d2fe;
+    background: #eef2ff;
+    color: #4338ca;
+    border-radius: 10px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.task-summary {
+    color: #6b7280;
+    margin-bottom: 16px;
+    font-size: 14px;
+}
+
+.task-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+}
+
+.task-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 14px;
+    background: #ffffff;
+}
+
+.task-card h3 {
+    margin: 0 0 8px 0;
+    color: #312e81;
+    font-size: 16px;
+}
+
+.task-card p {
+    margin: 5px 0;
+    font-size: 13px;
+    color: #4b5563;
+}
+
+.task-open-btn {
+    margin-top: 12px;
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 12px;
+    background: linear-gradient(135deg, #6366f1, #818cf8);
+    color: #ffffff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.task-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: #eef2ff;
+    color: #4338ca;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
 /* ==============================
    WORK MODE TOGGLE
    ============================== */

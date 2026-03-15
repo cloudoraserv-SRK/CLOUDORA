@@ -6,11 +6,74 @@ console.log("Call Panel Survey JS Loaded ✓");
 let skippedSteps = new Set();
 let ACTIVE_LEAD = null;
 let ACTIVE_ASSIGNMENT = null;
+let ACTIVE_TASK_ID = null;
 let sessionSeconds = 0;
 
 const API = "https://cloudora-production.up.railway.app";
 const EMPLOYEE_ID = localStorage.getItem("employee_id");
+const EMPLOYEE_UUID = localStorage.getItem("employee_uuid");
+const ACTIVE_TASK_CONTEXT = (() => {
+  try {
+    return JSON.parse(localStorage.getItem("active_task_context") || "null");
+  } catch {
+    return null;
+  }
+})();
 const qs = (id) => document.getElementById(id);
+
+function formatTaskProduct(product) {
+  const map = {
+    website: "Website Project",
+    app_software: "App / Software Project",
+    digital_marketing: "Digital Marketing Project",
+    automation_ai: "Automation / AI Project",
+    blockchain: "Blockchain Project",
+    branding_media: "Branding / Media Project",
+    general: "General Enquiry"
+  };
+
+  return map[product] || product || "General Enquiry";
+}
+
+function renderTaskBrief() {
+  const box = qs("taskBrief");
+  if (!box || !ACTIVE_TASK_CONTEXT) return;
+
+  box.style.display = "block";
+  box.innerHTML = `
+    <h3>Task Brief</h3>
+    <p><b>Service:</b> ${formatTaskProduct(ACTIVE_TASK_CONTEXT.product)}</p>
+    <p><b>Queue:</b> ${ACTIVE_TASK_CONTEXT.department || "-"}</p>
+    <p><b>Country:</b> ${ACTIVE_TASK_CONTEXT.country || "-"}</p>
+    <p><b>Task Type:</b> ${ACTIVE_TASK_CONTEXT.task_type || "call"}</p>
+    <p><b>Lead Ref:</b> ${ACTIVE_TASK_CONTEXT.lead_id || "-"}</p>
+  `;
+}
+
+async function loadTaskLeadByContext() {
+  if (!ACTIVE_TASK_CONTEXT?.lead_id || !EMPLOYEE_UUID) return null;
+
+  const params = new URLSearchParams({
+    employee_id: EMPLOYEE_UUID,
+    lead_id: ACTIVE_TASK_CONTEXT.lead_id
+  });
+
+  const res = await fetch(`${API}/api/tasks/lead-context?${params.toString()}`);
+  const json = await res.json();
+  return res.ok && json.ok ? json : null;
+}
+
+async function loadNextCallTask() {
+  if (!EMPLOYEE_UUID) return null;
+
+  const params = new URLSearchParams({
+    employee_id: EMPLOYEE_UUID
+  });
+
+  const res = await fetch(`${API}/api/tasks/next-call?${params.toString()}`);
+  const json = await res.json();
+  return res.ok && json.ok ? json : null;
+}
 
 /* ---------------------------------------------------------
    SURVEY FLOW (ENGLISH MASTER – EXPANDED SERVICES)
@@ -470,6 +533,30 @@ function startTimer() {
 --------------------------------------------------------- */
 async function loadNextLead() {
   try {
+    const contextResult = await loadTaskLeadByContext();
+
+    if (contextResult?.lead) {
+      ACTIVE_LEAD = contextResult.lead;
+      ACTIVE_TASK_ID = contextResult.task?.id || null;
+      ACTIVE_ASSIGNMENT = null;
+      renderLead();
+      resetSurvey();
+      renderSurveyStep();
+      return;
+    }
+
+    const taskResult = await loadNextCallTask();
+
+    if (taskResult?.lead) {
+      ACTIVE_LEAD = taskResult.lead;
+      ACTIVE_TASK_ID = taskResult.task?.id || null;
+      ACTIVE_ASSIGNMENT = null;
+      renderLead();
+      resetSurvey();
+      renderSurveyStep();
+      return;
+    }
+
     const res = await fetch(`${API}/api/extract/next-lead`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -485,6 +572,7 @@ async function loadNextLead() {
 
     ACTIVE_LEAD = json.lead;
     ACTIVE_ASSIGNMENT = json.assignment_id;
+    ACTIVE_TASK_ID = null;
 
     if (!ACTIVE_LEAD.phone) {
       await completeAssignment("No phone", "skipped");
@@ -503,11 +591,26 @@ async function loadNextLead() {
    RENDER LEAD
 --------------------------------------------------------- */
 function renderLead() {
+  const inferredService =
+    ACTIVE_TASK_CONTEXT?.product ||
+    ACTIVE_LEAD?.product ||
+    ACTIVE_LEAD?.category ||
+    ACTIVE_LEAD?.service_category ||
+    "general";
+
+  const queueContext =
+    ACTIVE_TASK_CONTEXT?.department ||
+    ACTIVE_LEAD?.target_team ||
+    ACTIVE_LEAD?.department ||
+    "-";
+
   qs("leadInfo").innerHTML = `
     <h2>${ACTIVE_LEAD.name || "-"}</h2>
     <p><b>Phone:</b> ${ACTIVE_LEAD.phone || "-"}</p>
     <p><b>City:</b> ${ACTIVE_LEAD.city || "-"}</p>
     <p><b>Source:</b> ${ACTIVE_LEAD.source || "-"}</p>
+    <p><b>Service:</b> ${formatTaskProduct(inferredService)}</p>
+    <p><b>Queue Context:</b> ${queueContext}</p>
   `;
   qs("dialBtn").href = `tel:${ACTIVE_LEAD.phone}`;
 }
@@ -584,18 +687,20 @@ async function selectAnswer(step, value, btn) {
 
   qs("nextBtn").disabled = false;
 
-  // 🔥 AUTO SAVE (SCRAPED LEAD)
-  try {
-    await fetch(`${API}/api/extract/update-scraped-lead`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        scraped_lead_id: ACTIVE_LEAD.id,
-        survey_data: surveyAnswers
-      })
-    });
-  } catch {
-    console.warn("Auto-save failed (offline)");
+  // 🔥 AUTO SAVE only for scraped-lead survey mode
+  if (!ACTIVE_TASK_ID) {
+    try {
+      await fetch(`${API}/api/extract/update-scraped-lead`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          scraped_lead_id: ACTIVE_LEAD.id,
+          survey_data: surveyAnswers
+        })
+      });
+    } catch {
+      console.warn("Auto-save failed (offline)");
+    }
   }
 }
 
@@ -620,6 +725,18 @@ qs("backBtn").onclick = () => {
    COMPLETE / SKIP
 --------------------------------------------------------- */
 async function completeAssignment(reason, status) {
+  if (ACTIVE_TASK_ID) {
+    const endpoint = status === "skipped" ? "stop" : "complete";
+    await fetch(`${API}/api/tasks/${endpoint}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        taskId: ACTIVE_TASK_ID
+      })
+    });
+    return;
+  }
+
   if (!ACTIVE_ASSIGNMENT) return;
 
   await fetch(`${API}/api/extract/complete-lead`, {
@@ -634,6 +751,7 @@ async function completeAssignment(reason, status) {
 }
 
 async function skipLead() {
+  localStorage.removeItem("active_task_context");
   await completeAssignment("Skipped by agent", "skipped");
   loadNextLead();
 }
@@ -642,25 +760,42 @@ async function skipLead() {
    FINISH LEAD
 --------------------------------------------------------- */
 async function finishLead() {
-  if (!ACTIVE_ASSIGNMENT || !ACTIVE_LEAD) {
+  if ((!ACTIVE_ASSIGNMENT && !ACTIVE_TASK_ID) || !ACTIVE_LEAD) {
     alert("No active lead");
     return;
   }
 
   try {
+    if (ACTIVE_TASK_ID && ACTIVE_LEAD?.id) {
+      await fetch(`${API}/api/job/update-lead`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: ACTIVE_LEAD.id,
+          status: qs("leadStatus")?.value || "interested",
+          notes: qs("leadNotes")?.value || "",
+          follow_date: qs("followDate")?.value || null,
+          follow_time: qs("followTime")?.value || null
+        })
+      });
+    }
+
     await completeAssignment("Survey Completed", "completed");
 
-    await fetch(`${API}/api/extract/update-scraped-lead`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        scraped_lead_id: ACTIVE_LEAD.id,
-        status: "interested",
-        survey_data: surveyAnswers,
-        survey_completed_at: new Date().toISOString()
-      })
-    });
+    if (!ACTIVE_TASK_ID) {
+      await fetch(`${API}/api/extract/update-scraped-lead`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          scraped_lead_id: ACTIVE_LEAD.id,
+          status: "interested",
+          survey_data: surveyAnswers,
+          survey_completed_at: new Date().toISOString()
+        })
+      });
+    }
 
+    localStorage.removeItem("active_task_context");
     loadNextLead();
   } catch {
     alert("Internet issue. Retry.");
@@ -688,6 +823,7 @@ document.getElementById("languageSwitcher")?.addEventListener("change", (e) => {
    INIT
 --------------------------------------------------------- */
 window.onload = () => {
+  renderTaskBrief();
   startTimer();
   loadNextLead();
 };
