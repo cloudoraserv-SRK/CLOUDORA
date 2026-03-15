@@ -18,6 +18,8 @@ import adminRouter from "./routes/admin.js";
 import jobRouter from "./routes/job/job.js";
 import trainingRouter from "./routes/training.js";
 import extractorRoutes from "./routes/extractor.js";
+import authRouter from "./routes/auth.js";
+import publicRouter from "./routes/public.js";
 
 
 // ---- WRITE GCP KEY FILE BEFORE ANY GOOGLE SDK LOADS ----
@@ -82,6 +84,12 @@ app.use("/api/job", jobRouter);
 
 // Admin area
 app.use("/api/admin", adminRouter);
+
+// Employee auth
+app.use("/api/auth", authRouter);
+
+// Public website lead capture
+app.use("/api/public", publicRouter);
 
 // Task manager
 app.use("/api/tasks", tasksRouter);
