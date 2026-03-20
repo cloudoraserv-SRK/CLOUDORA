@@ -600,3 +600,72 @@ img {
     padding-top: 44px;
   }
 }
+
+
+.portfolio-section {
+  background: radial-gradient(circle at top, #0f0f1a, #050508);
+}
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+  gap: 25px;
+}
+
+.portfolio-card {
+  position: relative;
+  padding: 30px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: 0.4s;
+  overflow: hidden;
+}
+
+.portfolio-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent, rgba(108,92,255,0.3));
+  opacity: 0;
+  transition: 0.4s;
+}
+
+.portfolio-card:hover::before {
+  opacity: 1;
+}
+
+.portfolio-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 40px rgba(108,92,255,0.35);
+  border-color: #6c5cff;
+}
+
+.portfolio-card h3 {
+  font-size: 20px;
+  margin: 10px 0;
+}
+
+.portfolio-card p {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.tag {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 50px;
+  background: rgba(108,92,255,0.2);
+  color: #a89bff;
+}
+
+.view {
+  display: inline-block;
+  margin-top: 15px;
+  font-size: 13px;
+  color: #6c5cff;
+}
+
+.portfolio-card.static {
+  cursor: default;
+}
