@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cloudora Launch Hub</title>
+<meta name="theme-color" content="#cc5a17">
+<link rel="icon" href="/assets/favicon/favicon.ico">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html">Cloudora Launch Hub</a>
+    <div class="controls">
+      <a class="btn-mini secondary" href="assistant.html">Open Genie</a>
+      <a class="btn-mini secondary" href="/index.html">Cloudora Home</a>
+    </div>
+  </header>
+
+  <main class="launch-shell">
+    <section class="launch-hero fade-in">
+      <div class="hero-copy">
+        <p class="eyebrow">Release Center</p>
+        <h1>One place to launch Genie, Ops, and ML Blaster workflows.</h1>
+        <p class="subtitle">
+          Use this hub during final deployment, testing, APK packaging, and daily launch operations.
+        </p>
+        <div class="hero-actions">
+          <a class="primary-btn" href="assistant.html">Open Genie Assistant</a>
+          <a class="ghost-btn" href="client/auth.html">Open Client Access</a>
+          <a class="ghost-btn" href="admin/login.html">Open Admin Login</a>
+          <a class="ghost-btn" href="admin/admin.html">Open Admin Panel</a>
+          <a class="ghost-btn" href="job/job.html">Open Jobs Flow</a>
+        </div>
+      </div>
+      <div class="hero-panel">
+        <div class="preview-card">
+          <p class="preview-label">Launch Tracks</p>
+          <ul>
+            <li>Genie assistant and access flow</li>
+            <li>Employee and job application system</li>
+            <li>ML Blaster local dashboard and email operations</li>
+            <li>APK-ready install and mobile packaging path</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-grid">
+      <article class="launch-card">
+        <p class="card-kicker">Genie</p>
+        <h2>Assistant launch path</h2>
+        <p>Trial, approval, workspace unlock, business memory, and premium actions.</p>
+        <a class="primary-btn" href="assistant.html">Launch Genie</a>
+      </article>
+      <article class="launch-card">
+        <p class="card-kicker">Clients</p>
+        <h2>Client login and local task board</h2>
+        <p>Client signup, Genie-linked dashboard, local task memory, and reminder scheduler.</p>
+        <a class="primary-btn" href="client/auth.html">Open Client Access</a>
+      </article>
+      <article class="launch-card">
+        <p class="card-kicker">ML Blaster</p>
+        <h2>Email dashboard access</h2>
+        <p>Use local ML Blaster for manual review, delivery, and campaign history.</p>
+        <button id="hubBlasterBtn" class="ghost-btn" type="button">Open ML Blaster</button>
+      </article>
+      <article class="launch-card">
+        <p class="card-kicker">APK</p>
+        <h2>Mobile compile prep</h2>
+        <p>Use the documented shell and build flow to package Genie for Android.</p>
+        <a class="ghost-btn" href="/APK_BUILD_NEXT_STEPS.md">View APK Steps</a>
+      </article>
+    </section>
+  </main>
+
+  <script src="global.js"></script>
+  <script>
+    document.getElementById("hubBlasterBtn").onclick = () => {
+      const saved = JSON.parse(localStorage.getItem("genie_assistant_local_memory") || "{}");
+      const url = saved.mlblasterUrl || "http://localhost:5000";
+      window.open(url, "_blank", "noopener");
+    };
+  </script>
+</body>
+</html>

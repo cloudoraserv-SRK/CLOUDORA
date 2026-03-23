@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Cloudora Genie Assistant</title>
+<meta
+  name="description"
+  content="Cloudora Genie is a mobile-first AI assistant for business planning, content systems, outreach strategy, and guided execution."
+/>
+<meta name="theme-color" content="#f2682a">
+<link rel="icon" href="/assets/favicon/favicon.ico">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/images/genie.png">
+<link rel="stylesheet" href="assistant.css">
+</head>
+<body>
+  <header class="assistant-header">
+    <a class="brand" href="index.html">Cloudora Genie</a>
+    <div class="header-actions">
+      <button id="listenBtn" class="chip-btn" type="button">Speak</button>
+      <button id="voiceToggleBtn" class="chip-btn" type="button">Voice On</button>
+      <button id="openBlasterBtn" class="chip-btn" type="button">ML Blaster</button>
+      <a class="chip-btn secondary" href="client/auth.html">Client Login</a>
+      <a class="chip-btn secondary" href="admin/login.html">Admin Login</a>
+      <a class="chip-btn secondary" href="launch-hub.html">Launch Hub</a>
+      <a class="chip-btn secondary" href="/index.html">Cloudora Home</a>
+    </div>
+  </header>
+
+  <main class="assistant-shell">
+    <section class="assistant-left">
+      <div class="avatar-card premium-card">
+        <div id="avatarWrap" class="avatar-wrap" data-role="assistant">
+          <div class="avatar-aura aura-a"></div>
+          <div class="avatar-aura aura-b"></div>
+          <img id="avatarImage" src="assets/images/genie.png" alt="Genie avatar" class="avatar-image">
+          <div class="avatar-role-markers" aria-hidden="true">
+            <span id="avatarRoleTag" class="avatar-role-tag">Assistant Core</span>
+            <span id="avatarRoleSignal" class="avatar-role-signal">Live</span>
+          </div>
+          <span class="pulse pulse-a"></span>
+          <span class="pulse pulse-b"></span>
+          <div class="voice-bars" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div class="avatar-overlay">
+            <div class="overlay-top">
+              <span id="roleBadge" class="role-badge">Assistant</span>
+              <span id="modeBadge" class="mode-badge">Trial</span>
+            </div>
+            <strong id="roleTitle">Business Growth Mode</strong>
+            <p id="roleCaption">Marketing planning, outreach drafting, and execution guidance.</p>
+          </div>
+        </div>
+
+        <div class="avatar-copy">
+          <p class="eyebrow">Genie OS</p>
+          <h1>Assistant-first launch for business owners</h1>
+          <p>
+            Genie pehle aapko guided assistant experience deta hai. Full access milne ke baad
+            business memory, campaign workspace, premium planning tools, aur automation controls unlock hote hain.
+          </p>
+        </div>
+
+        <div id="roleSelector" class="role-selector">
+          <button class="role-chip active" data-role="assistant" type="button">Assistant</button>
+          <button class="role-chip" data-role="sales" type="button">Sales</button>
+          <button class="role-chip" data-role="trainer" type="button">Trainer</button>
+          <button class="role-chip" data-role="support" type="button">Support</button>
+        </div>
+
+        <div class="status-strip">
+          <div>
+            <span class="status-label">Approval</span>
+            <strong id="approvalState">Cloudora Admin Approval Required</strong>
+          </div>
+          <div>
+            <span class="status-label">Daily Trial</span>
+            <strong id="trialUsageText">0 / 8 used</strong>
+          </div>
+          <div>
+            <span class="status-label">Workspace</span>
+            <strong id="workspaceState">Locked</strong>
+          </div>
+        </div>
+      </div>
+
+      <form id="accessForm" class="profile-card gate-card">
+        <div class="section-title">
+          <h2>Get Genie Access</h2>
+          <p>
+            Free trial sabko mil sakta hai. Full Genie access sirf Cloudora admin ya approved supervisor panel se approve kiya jata hai.
+          </p>
+        </div>
+
+        <div class="access-grid">
+          <label>
+            <span>Member ID</span>
+            <input id="memberId" name="memberId" type="text" placeholder="Approved Genie member ID">
+          </label>
+          <label>
+            <span>Membership Tier</span>
+            <select id="membershipTier" name="membershipTier">
+              <option value="free">Free Trial</option>
+              <option value="pro">Pro</option>
+              <option value="business">Business</option>
+              <option value="elite">Elite</option>
+            </select>
+          </label>
+        </div>
+
+        <label>
+          <span>Access Code</span>
+          <input id="accessCode" name="accessCode" type="password" placeholder="Enter code only if Cloudora approved your account">
+        </label>
+
+        <div class="profile-actions">
+          <button class="primary-btn" type="submit">Verify Access</button>
+          <div id="accessBadge" class="inline-badge">Trial Mode</div>
+        </div>
+
+        <div class="approval-note">
+          <strong>Who approves full access?</strong>
+          <p>Cloudora admin panel se member create ya activate kiya jata hai. Approval ke baad hi workspace, blasts, aur deeper assistant memory unlock hoti hai.</p>
+        </div>
+      </form>
+
+      <section id="workspaceSection" class="workspace-stack is-locked" aria-live="polite">
+        <div class="workspace-lock premium-card">
+          <div>
+            <p class="eyebrow">Locked Workspace</p>
+            <h2 id="workspaceHeading">Unlock full Genie workspace</h2>
+            <p id="workspaceCopy">
+              Business profile, local device channels, campaign memory, aur premium planning tools sirf approved members ke liye khulte hain.
+            </p>
+          </div>
+          <div class="workspace-lock-actions">
+            <span id="workspaceTierBadge" class="inline-badge">Trial</span>
+          </div>
+        </div>
+
+        <form id="profileForm" class="profile-card workspace-card">
+          <div class="section-title">
+            <h2>Business Workspace Setup</h2>
+            <p>Approved access ke baad yahan business memory save hoti hai jo Genie ko smarter banati hai.</p>
+          </div>
+
+          <label>
+            <span>Business Name</span>
+            <input id="businessName" name="businessName" type="text" placeholder="Example StudioX Media">
+          </label>
+          <label>
+            <span>Owner Name</span>
+            <input id="ownerName" name="ownerName" type="text" placeholder="Your name">
+          </label>
+          <label>
+            <span>Industry</span>
+            <input id="industry" name="industry" type="text" placeholder="Real estate, salon, coaching, ecommerce">
+          </label>
+          <label>
+            <span>Target Audience</span>
+            <input id="targetAudience" name="targetAudience" type="text" placeholder="Who do you want to reach?">
+          </label>
+          <label>
+            <span>Main Goal</span>
+            <textarea id="goals" name="goals" placeholder="Leads, sales, brand awareness, local reach, online growth"></textarea>
+          </label>
+          <label>
+            <span>Platforms</span>
+            <input id="platforms" name="platforms" type="text" placeholder="Instagram, Facebook, WhatsApp, LinkedIn">
+          </label>
+          <label>
+            <span>Brand Tone</span>
+            <input id="tone" name="tone" type="text" placeholder="Premium, friendly, bold, educational">
+          </label>
+          <label>
+            <span>Posting Frequency</span>
+            <input id="postingFrequency" name="postingFrequency" type="text" placeholder="Daily, 5 posts/week, 2 reels/week">
+          </label>
+
+          <div class="profile-actions">
+            <button class="primary-btn" type="submit">Save Business Profile</button>
+            <button class="ghost-btn" id="resetProfileBtn" type="button">Reset</button>
+          </div>
+        </form>
+
+        <form id="memoryForm" class="profile-card workspace-card">
+          <div class="section-title">
+            <h2>Local Mobile / Device Memory</h2>
+            <p>APK ya phone browser me chalne par yeh details isi device ki local memory me rehti hain.</p>
+          </div>
+
+          <label>
+            <span>Local ML Blaster URL</span>
+            <input id="mlblasterUrl" name="mlblasterUrl" type="text" placeholder="http://localhost:5000">
+          </label>
+          <label>
+            <span>Email Account ID</span>
+            <input id="emailAccountId" name="emailAccountId" type="text" placeholder="support@yourdomain.com">
+          </label>
+          <label>
+            <span>Email App Password</span>
+            <input id="emailPassword" name="emailPassword" type="password" placeholder="Stored on this device only">
+          </label>
+          <label>
+            <span>Instagram Handle</span>
+            <input id="instagramHandle" name="instagramHandle" type="text" placeholder="@yourbrand">
+          </label>
+          <label>
+            <span>Facebook Page</span>
+            <input id="facebookPage" name="facebookPage" type="text" placeholder="Your page name">
+          </label>
+          <label>
+            <span>WhatsApp Number</span>
+            <input id="whatsappNumber" name="whatsappNumber" type="text" placeholder="+91 ...">
+          </label>
+
+          <div class="profile-actions">
+            <button class="primary-btn" type="submit">Save Local Memory</button>
+            <button class="ghost-btn" id="resetMemoryBtn" type="button">Clear</button>
+          </div>
+        </form>
+      </section>
+    </section>
+
+    <section class="assistant-right">
+      <div class="chat-card premium-card">
+        <div class="chat-head">
+          <div>
+            <p class="eyebrow">Genie Chat</p>
+            <h2>Ask for plans, content, strategy, or schedules</h2>
+            <p class="chat-subcopy">Trial users get limited daily guidance. Approved users unlock full workspace and premium actions.</p>
+          </div>
+          <div class="chat-head-actions">
+            <div id="sessionTierBadge" class="inline-badge">Free Trial</div>
+            <button id="newSessionBtn" class="ghost-btn small" type="button">New Session</button>
+          </div>
+        </div>
+
+        <div class="usage-panel">
+          <div class="usage-meta">
+            <strong id="usageHeadline">Trial active</strong>
+            <span id="usageHint">You can test Genie before requesting full access.</span>
+          </div>
+          <div class="usage-bar">
+            <span id="usageFill"></span>
+          </div>
+        </div>
+
+        <div id="quickPrompts" class="quick-prompts">
+          <button class="prompt-chip" data-prompt="Create a 30 day Instagram and Facebook marketing plan for my business.">30-Day Marketing Plan</button>
+          <button class="prompt-chip" data-prompt="Give me 7 daily post ideas, captions, and short reel concepts.">Daily Posts + Reels</button>
+          <button class="prompt-chip" data-prompt="Prepare an outreach plan using email, WhatsApp, and telecalling follow-ups.">Outreach Workflow</button>
+          <button class="prompt-chip" data-prompt="Make me a founder task schedule for the next 7 days.">7-Day Task Schedule</button>
+          <button class="prompt-chip" data-action="openMlBlaster" type="button">Open ML Blaster</button>
+          <button class="prompt-chip premium-action" data-action="prepareBlast" type="button">Prepare Email Blast</button>
+          <button class="prompt-chip premium-action" data-action="runBlast" type="button">Run Blast via ML Blaster</button>
+        </div>
+
+        <div class="chat-ops-strip">
+          <a class="ghost-btn small" href="client/dashboard.html">Client Task Board</a>
+          <a class="ghost-btn small" href="admin/admin.html">Genie Admin</a>
+        </div>
+
+        <div id="chatLog" class="chat-log" aria-live="polite"></div>
+
+        <form id="chatForm" class="chat-form">
+          <textarea id="messageInput" placeholder="Tell Genie what you need for your business..." required></textarea>
+          <div class="chat-actions">
+            <span id="statusText" class="status-text">Ready</span>
+            <button class="primary-btn" type="submit">Send</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
+  <script src="global.js"></script>
+  <script src="assistant.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("./sw.js").catch(console.error);
+    }
+  </script>
+</body>
+</html>

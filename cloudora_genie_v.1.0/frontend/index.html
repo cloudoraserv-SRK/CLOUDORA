@@ -3,57 +3,228 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Cloudora Genie - Home</title>
+<title>Genie | Personal Operating System</title>
+<meta
+  name="description"
+  content="Genie is a personal operating system and AI assistant system for life, planning, business, reflection, reminders, and role-based guidance."
+/>
+<meta name="theme-color" content="#cc5a17" />
+<link rel="icon" href="/assets/favicon/favicon.ico">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/images/genie.png">
 <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+  <header class="site-header">
+    <a class="brand" href="/index.html">Genie</a>
 
-<header class="site-header">
-  <div class="brand">🌈 Cloudora Genie</div>
+    <div class="controls">
+      <select id="langSelect"></select>
+      <button id="speakBtn" class="btn-mini" type="button">Voice</button>
+      <button id="installBtn" class="btn-mini" type="button" hidden>Install</button>
+      <a class="btn-mini secondary" href="launch-hub.html">Launch Hub</a>
+      <a class="btn-mini secondary" href="assistant.html">Open Genie</a>
+    </div>
+  </header>
 
-  <div class="controls">
-    <select id="langSelect"></select>
-    <select id="currencySelect"></select>
-    <button id="speakBtn" class="btn-mini">🔊</button>
-    <button id="listenBtn" class="btn-mini">🎤</button>
-  </div>
-</header>
+  <main class="launch-shell">
+    <section class="launch-hero fade-in">
+      <div class="hero-copy">
+        <p class="eyebrow">Your Personal Operating System</p>
+        <h1>Not just an app. Not just a chatbot. A living intelligence that supports your life.</h1>
+        <p class="subtitle">
+          Genie is built as a calm, role-based AI companion that remembers context, helps with planning,
+          gives direction, and supports business, work, learning, and daily life without taking control away from you.
+        </p>
 
-<main class="container fade-in">
-  <h1 data-translate="welcome">Welcome to Cloudora Genie</h1>
+        <div class="hero-actions">
+          <a class="primary-btn" href="assistant.html">Start Free Trial</a>
+          <a class="ghost-btn" href="launch-hub.html">Open Launch Hub</a>
+          <a class="ghost-btn" href="client/auth.html">Client Login</a>
+          <a class="ghost-btn" href="admin/login.html">Admin Login</a>
+          <a class="ghost-btn" href="/index.html#genie">See Cloudora Integration</a>
+        </div>
 
-  <p class="subtitle" data-translate="subtitle">
-    Your multilingual AI assistant for job, business & automation.
-  </p>
+        <div class="hero-points">
+          <div class="point-card">
+            <strong>Shared Intelligence</strong>
+            <span>Same brain, same ethics, same calm core for everyone.</span>
+          </div>
+          <div class="point-card">
+            <strong>Private Memory</strong>
+            <span>Your goals, habits, conversations, and direction feel personal to you.</span>
+          </div>
+          <div class="point-card">
+            <strong>Mobile-First Presence</strong>
+            <span>Built to become a light widget-orb experience on phone and APK.</span>
+          </div>
+        </div>
+      </div>
 
-  <div class="card-grid">
-    <a class="card" href="./job/job.html" data-translate="apply_job">Apply for Job / Lead</a>
-    <a class="card" href="./employee/login.html" data-translate="emp_login">Employee Login</a>
-    <a class="card" href="./client/client.html" data-translate="client_login">Customer Login</a>
-    <a class="card" href="./partner/partner.html" data-translate="partner_login">Partner Login</a>
-    <a class="card" href="./admin/admin.html" data-translate="admin_panel">Admin Panel</a>
-  </div>
+      <div class="hero-panel">
+        <div class="assistant-preview">
+          <img src="assets/images/genie.png" alt="Genie avatar" class="preview-avatar">
+          <div class="preview-card">
+            <p class="preview-label">Genie Roles</p>
+            <ul>
+              <li>Mentor when clarity is needed</li>
+              <li>Planner when structure is missing</li>
+              <li>Guide when direction feels confusing</li>
+              <li>Companion when life feels fragmented</li>
+              <li>Business assistant when execution matters</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
 
-</main>
+    <section class="section-grid">
+      <article class="launch-card">
+        <p class="card-kicker">What Genie Solves</p>
+        <h2>Life is fragmented. Genie brings clarity back.</h2>
+        <p>
+          Calendar alag, notes alag, goals alag, reminders alag. Genie is designed to become the calm layer
+          that helps you think, plan, remember, and decide better.
+        </p>
+      </article>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
-<script src="global.js"></script>
+      <article class="launch-card">
+        <p class="card-kicker">How It Works</p>
+        <h2>Human x Intelligence</h2>
+        <p>
+          Genie does not control you. It suggests, remembers, structures, and supports.
+          Decisions stay yours.
+        </p>
+      </article>
 
+      <article class="launch-card">
+        <p class="card-kicker">Current Launch</p>
+        <h2>Assistant-first Genie</h2>
+        <p>
+          The first active experience focuses on assistant use cases, business planning, role switching,
+          voice chat, and guided execution.
+        </p>
+      </article>
+    </section>
 
-<script>
-  initializeLanguageSelector();
+    <section class="tiers-grid">
+      <article class="tier-card">
+        <p class="card-kicker">Free</p>
+        <h2>Experience Genie</h2>
+        <ul>
+          <li>Basic guidance</li>
+          <li>Short-term context</li>
+          <li>Assistant presence trial</li>
+        </ul>
+      </article>
+      <article class="tier-card">
+        <p class="card-kicker">Pro</p>
+        <h2>Planning + Memory</h2>
+        <ul>
+          <li>Daily planning support</li>
+          <li>Longer continuity</li>
+          <li>Reminder-style assistance</li>
+        </ul>
+      </article>
+      <article class="tier-card">
+        <p class="card-kicker">Business</p>
+        <h2>Execution Thinking</h2>
+        <ul>
+          <li>Business planning</li>
+          <li>Growth and decision support</li>
+          <li>Work and outreach systems</li>
+        </ul>
+      </article>
+      <article class="tier-card elite">
+        <p class="card-kicker">Elite</p>
+        <h2>Founder-level Depth</h2>
+        <ul>
+          <li>Mentor-style reflection</li>
+          <li>Life + business clarity</li>
+          <li>High-context support</li>
+        </ul>
+      </article>
+    </section>
 
-  // TTS button
-  document.getElementById("speakBtn").onclick = () => {
-    speak("Welcome to Cloudora Genie!");
-  };
+    <section class="audience-grid">
+      <article class="launch-card">
+        <p class="card-kicker">Businessman / Founder</p>
+        <h2>CRM, accountant, reminders, diary, strategy</h2>
+        <p>Genie can feel like five assistants in one for planning, follow-ups, money clarity, and execution support.</p>
+      </article>
+      <article class="launch-card">
+        <p class="card-kicker">Job Professionals</p>
+        <h2>Planner, salary assistant, career mentor, balance helper</h2>
+        <p>Genie supports structured workdays, expense awareness, growth direction, and reflection.</p>
+      </article>
+      <article class="launch-card">
+        <p class="card-kicker">Students</p>
+        <h2>Study planner, learning diary, skills guide</h2>
+        <p>Genie becomes a steady learning companion instead of just a one-time answer machine.</p>
+      </article>
+      <article class="launch-card">
+        <p class="card-kicker">Families & Self-employed</p>
+        <h2>Budgeting, family reminders, work diary, earning support</h2>
+        <p>Genie adapts by role, not by one generic chatbot template.</p>
+      </article>
+    </section>
 
-  // STT button
-  document.getElementById("listenBtn").onclick = () => {
-    startListening((text) => alert("You said: " + text));
-  };
-</script>
+    <section class="readiness-strip">
+      <div class="readiness-card">
+        <h3>Trusted Core Promise</h3>
+        <ul>
+          <li>Genie will not manipulate or control</li>
+          <li>It suggests, not hijacks</li>
+          <li>It supports clarity, confidence, and conscious decisions</li>
+        </ul>
+      </div>
+      <div class="readiness-card">
+        <h3>Product Access</h3>
+        <ul>
+          <li>Free users get trial access</li>
+          <li>Approved users unlock full Genie</li>
+          <li>Role switching and deeper workflows open with access</li>
+        </ul>
+      </div>
+    </section>
 
+    <section class="ops-links">
+      <a class="ghost-btn small" href="assistant.html#member">Member Access</a>
+      <a class="ghost-btn small" href="assistant.html">Genie Assistant</a>
+      <a class="ghost-btn small" href="client/auth.html">Client Login</a>
+      <a class="ghost-btn small" href="client/dashboard.html">Client Dashboard</a>
+      <a class="ghost-btn small" href="job/job.html">Jobs & Apply</a>
+      <a class="ghost-btn small" href="employee/login.html">Employee Login</a>
+      <a class="ghost-btn small" href="admin/login.html">Admin Login</a>
+      <a class="ghost-btn small" href="admin/admin.html">Admin Panel</a>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
+  <script src="global.js"></script>
+  <script>
+    initializeLanguageSelector();
+    applyTranslations();
+    document.getElementById("speakBtn").onclick = () => {
+      speak("Genie is a personal operating system that supports life, planning, and business with calm intelligence.");
+    };
+    let deferredPrompt = null;
+    const installBtn = document.getElementById("installBtn");
+    window.addEventListener("beforeinstallprompt", (event) => {
+      event.preventDefault();
+      deferredPrompt = event;
+      installBtn.hidden = false;
+    });
+    installBtn.onclick = async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      installBtn.hidden = true;
+    };
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("./sw.js").catch(console.error);
+    }
+  </script>
 </body>
 </html>

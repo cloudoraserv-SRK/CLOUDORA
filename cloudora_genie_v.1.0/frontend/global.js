@@ -3,8 +3,8 @@
 // -----------------------------------------
 
 const CONFIG = {
-  SUPA_URL: "https://gnihhujwqxkigwwnksgw.supabase.co",
-  SUPA_ANON: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImduaWhodWp3cXhraWd3d25rc2d3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ4OTc2MjcsImV4cCI6MjA4MDQ3MzYyN30.tOYXHySzEQ2py-NUNBmlpp7QWciaGSSD_NeWpLbeRaw",
+  SUPA_URL: "https://ohxvxhorsqsgyvvfhaul.supabase.co",
+  SUPA_ANON: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9oeHZ4aG9yc3FzZ3l2dmZoYXVsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxMTM0MDIsImV4cCI6MjA4OTY4OTQwMn0.frhUToxtMiHHL6IzY5hxYwaGiNIZgagMDEGzcYU8iNg",
   BACKEND: "https://cloudora-production.up.railway.app",
 
   LANG: localStorage.getItem("lang") || "en",
