@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Department Dashboard | Cloudora Genie</title>
+  <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">Cloudora Department Hub</div>
+    <div class="controls">
+      <a class="btn-mini secondary" href="../login.html">Employee Login</a>
+    </div>
+  </header>
+
+  <main class="container fade-in">
+    <div class="launch-card">
+      <p class="card-kicker" id="deptLabel">Department</p>
+      <h2 id="deptTitle">Department Dashboard</h2>
+      <p id="deptCopy">This hub is used for departments that are connected but do not yet have a separate custom interface.</p>
+    </div>
+
+    <div class="section-grid" id="deptCards">
+      <div class="launch-card">
+        <h2>Shared Task View</h2>
+        <p>Open the shared task dashboard while department-specific tools continue to expand.</p>
+        <a class="ghost-btn small" href="../tele/dashboard.html">Shared Dashboard</a>
+      </div>
+      <div class="launch-card">
+        <h2>Training & SOP</h2>
+        <p>Use Genie-supported training and workflows.</p>
+        <a class="ghost-btn small" href="../tele/training.html">Training</a>
+      </div>
+      <div class="launch-card">
+        <h2>Genie Assistant</h2>
+        <p>Open Genie for scripts, planning, and workflow support.</p>
+        <a class="ghost-btn small" href="../../assistant.html">Open Genie</a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const dept = localStorage.getItem("employee_department") || "Connected Department";
+    document.getElementById("deptLabel").textContent = dept.replaceAll("_", " ");
+    document.getElementById("deptTitle").textContent = `${dept.replaceAll("_", " ")} Dashboard`;
+    const copyMap = {
+      digital_marketing: "This hub supports campaign planning, content execution, approvals, and reporting workflows.",
+      it_department: "This hub supports development delivery, technical tasks, QA, and project execution.",
+      support: "This hub supports issue resolution, customer handling, follow-up, and internal escalation support.",
+      management: "This hub supports oversight, team coordination, reporting, and decision visibility."
+    };
+    document.getElementById("deptCopy").textContent = copyMap[dept] || document.getElementById("deptCopy").textContent;
+
+    const cards = document.getElementById("deptCards");
+    const extraMap = {
+      digital_marketing: `
+        <div class="launch-card">
+          <h2>Marketing Planning</h2>
+          <p>Use Genie for campaign calendars, content planning, and execution structure.</p>
+          <a class="ghost-btn small" href="../../assistant.html">Open Genie</a>
+        </div>
+        <div class="launch-card">
+          <h2>Creative & Outreach</h2>
+          <p>Connect planning with email and social execution workflows.</p>
+          <a class="ghost-btn small" href="../../assistant.html">Campaign Assistant</a>
+        </div>
+      `,
+      it_department: `
+        <div class="launch-card">
+          <h2>Technical Delivery</h2>
+          <p>Use training and workflow support while dedicated IT tools expand.</p>
+          <a class="ghost-btn small" href="../tele/training.html">Open Training</a>
+        </div>
+        <div class="launch-card">
+          <h2>Client Requirement Context</h2>
+          <p>Reuse shared lead and task context until project boards are added.</p>
+          <a class="ghost-btn small" href="../tele/dashboard.html">Shared Dashboard</a>
+        </div>
+      `,
+      support: `
+        <div class="launch-card">
+          <h2>Issue Guidance</h2>
+          <p>Use Genie for support response drafting and structured resolution help.</p>
+          <a class="ghost-btn small" href="../../assistant.html">Open Genie</a>
+        </div>
+        <div class="launch-card">
+          <h2>Customer Follow-up</h2>
+          <p>Use shared follow-up and call tools for active support workflows.</p>
+          <a class="ghost-btn small" href="../tele/followups.html">Open Follow-ups</a>
+        </div>
+      `,
+      management: `
+        <div class="launch-card">
+          <h2>Operations Oversight</h2>
+          <p>Use supervisor and admin tools for cross-team monitoring.</p>
+          <a class="ghost-btn small" href="../supervisor/dashboard.html">Supervisor Hub</a>
+        </div>
+        <div class="launch-card">
+          <h2>Admin Controls</h2>
+          <p>Move into Genie member and lead management controls.</p>
+          <a class="ghost-btn small" href="../../admin/admin.html">Admin Panel</a>
+        </div>
+      `
+    };
+
+    if (extraMap[dept]) {
+      cards.insertAdjacentHTML("beforeend", extraMap[dept]);
+    }
+  </script>
+</body>
+</html>
