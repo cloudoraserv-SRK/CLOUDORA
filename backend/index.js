@@ -20,6 +20,8 @@ import trainingRouter from "./routes/training.js";
 import extractorRoutes from "./routes/extractor.js";
 import authRouter from "./routes/auth.js";
 import publicRouter from "./routes/public.js";
+import genieCampaignRoutes from "./routes/genie_campaigns.js";
+import clientRouter from "./routes/client.js";
 
 
 // ---- WRITE GCP KEY FILE BEFORE ANY GOOGLE SDK LOADS ----
@@ -91,6 +93,9 @@ app.use("/api/auth", authRouter);
 // Public website lead capture
 app.use("/api/public", publicRouter);
 
+// Client area
+app.use("/api/client", clientRouter);
+
 // Task manager
 app.use("/api/tasks", tasksRouter);
 
@@ -105,6 +110,9 @@ app.use("/api/genie", genieMediaRoutes);
 
 // Genie Brain routes (TEXT + AI)
 app.use("/api/genie", genieRoutes);
+
+// Genie campaign orchestration
+app.use("/api/genie", genieCampaignRoutes);
 
 
 // Training module
