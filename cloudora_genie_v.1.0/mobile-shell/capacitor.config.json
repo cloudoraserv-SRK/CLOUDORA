@@ -1,0 +1,8 @@
+{
+  "appId": "cloudora.genie.app",
+  "appName": "Genie",
+  "webDir": "../frontend",
+  "server": {
+    "androidScheme": "https"
+  }
+}
