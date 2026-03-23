@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Cloudora Client Dashboard</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="./client.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../index.html">Client Workspace</a>
+    <div class="controls">
+      <a class="btn-mini secondary" href="../assistant.html">Open Genie</a>
+      <a class="btn-mini secondary" href="../launch-hub.html">Launch Hub</a>
+      <button id="clientLogoutBtn" class="btn-mini secondary" type="button">Logout</button>
+    </div>
+  </header>
+
+  <main class="client-shell">
+    <section class="client-hero launch-card">
+      <p class="card-kicker">Client Admin Panel</p>
+      <h1 id="clientWelcome">Your Genie-connected client workspace</h1>
+      <p>
+        Yahan saved tasks local device memory me rehte hain. Reminder scheduler app/browser active hone par
+        background check karta hai aur due task par notification deta hai.
+      </p>
+      <div class="ops-links">
+        <a class="ghost-btn small" href="../assistant.html">Talk to Genie</a>
+        <button id="requestNotifBtn" class="ghost-btn small" type="button">Enable Notifications</button>
+        <button id="openMlBlasterClientBtn" class="ghost-btn small" type="button">Open ML Blaster</button>
+      </div>
+    </section>
+
+    <section class="client-grid">
+      <form id="clientTaskForm" class="launch-card">
+        <p class="card-kicker">Save a task</p>
+        <h2>Genie task scheduler</h2>
+        <label><span>Task Title</span><input id="taskTitle" type="text" required placeholder="Post real estate reel"></label>
+        <label><span>Role</span>
+          <select id="taskRole">
+            <option value="assistant">Assistant</option>
+            <option value="sales">Sales</option>
+            <option value="trainer">Trainer</option>
+            <option value="support">Support</option>
+          </select>
+        </label>
+        <label><span>Schedule</span><input id="taskSchedule" type="datetime-local" required></label>
+        <label><span>Notes</span><textarea id="taskNotes" placeholder="What should Genie remind or prepare?"></textarea></label>
+        <button class="primary-btn" type="submit">Save Task</button>
+      </form>
+
+      <section class="launch-card">
+        <p class="card-kicker">How scheduler works</p>
+        <h2>Local reminder engine</h2>
+        <ul class="client-list">
+          <li>Tasks are saved in this device's local memory.</li>
+          <li>Every 60 seconds the dashboard checks for due tasks.</li>
+          <li>If browser or installed PWA/APK is open, a notification is shown.</li>
+          <li>Due tasks are marked completed locally after notification.</li>
+        </ul>
+      </section>
+    </section>
+
+    <section class="launch-card">
+      <div class="client-board-head">
+        <div>
+          <p class="card-kicker">Saved Tasks</p>
+          <h2>Client task board</h2>
+        </div>
+        <button id="clearClientTasksBtn" class="ghost-btn small" type="button">Clear All Local Tasks</button>
+      </div>
+      <div id="clientTaskList" class="client-task-list">No local tasks saved yet.</div>
+    </section>
+  </main>
+
+  <script src="../global.js"></script>
+  <script src="./dashboard.js"></script>
+</body>
+</html>

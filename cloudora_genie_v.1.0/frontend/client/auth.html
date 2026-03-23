@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Cloudora Client Access</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="./client.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../index.html">Cloudora Client</a>
+    <div class="controls">
+      <a class="btn-mini secondary" href="../launch-hub.html">Launch Hub</a>
+      <a class="btn-mini secondary" href="../assistant.html">Genie</a>
+      <a class="btn-mini secondary" href="../admin/login.html">Admin Login</a>
+    </div>
+  </header>
+
+  <main class="client-shell">
+    <section class="client-hero launch-card">
+      <p class="card-kicker">Client Workspace</p>
+      <h1>Client login, signup, and local task memory for Genie-assisted execution.</h1>
+      <p>
+        Clients apna account bana sakte hain, Genie-guided tasks local device memory me save kar sakte hain,
+        aur scheduled reminders ke through follow-ups track kar sakte hain.
+      </p>
+    </section>
+
+    <section class="client-grid">
+      <form id="clientLoginForm" class="launch-card">
+        <p class="card-kicker">Client Login</p>
+        <h2>Open your workspace</h2>
+        <label><span>Email</span><input id="loginEmail" type="email" required placeholder="client@brand.com"></label>
+        <label><span>Password</span><input id="loginPassword" type="password" required placeholder="Enter password"></label>
+        <button class="primary-btn" type="submit">Login</button>
+      </form>
+
+      <form id="clientSignupForm" class="launch-card">
+        <p class="card-kicker">Client Signup</p>
+        <h2>Create a client account</h2>
+        <label><span>Name</span><input id="signupName" type="text" required placeholder="Founder or manager"></label>
+        <label><span>Business Name</span><input id="signupBusiness" type="text" placeholder="Brand / company"></label>
+        <label><span>Email</span><input id="signupEmail" type="email" required placeholder="client@brand.com"></label>
+        <label><span>Phone</span><input id="signupPhone" type="text" placeholder="+91 ..."></label>
+        <label><span>Password</span><input id="signupPassword" type="password" required placeholder="Create password"></label>
+        <button class="primary-btn" type="submit">Create Client Account</button>
+      </form>
+    </section>
+
+    <section class="launch-card">
+      <p class="card-kicker">What unlocks after login</p>
+      <div class="ops-links">
+        <span class="ghost-btn small">Local task board</span>
+        <span class="ghost-btn small">Genie role-wise task planning</span>
+        <span class="ghost-btn small">Reminder scheduler</span>
+        <span class="ghost-btn small">Client-side memory</span>
+      </div>
+      <div id="clientAuthStatus" class="client-status">Ready</div>
+    </section>
+  </main>
+
+  <script src="../global.js"></script>
+  <script src="./auth.js"></script>
+</body>
+</html>
