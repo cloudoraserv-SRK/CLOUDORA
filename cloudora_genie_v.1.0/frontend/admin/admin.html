@@ -1,20 +1,109 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Panel</title><link rel="stylesheet" href="/style.css"></head>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Cloudora Genie Admin</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
 <body>
-<main class="container">
-<h2>Admin</h2>
-<div class="card">
-<h3>Upload Leads CSV</h3>
-<input type="file" id="csvfile" accept=".csv" />
-<button id="uploadBtn">Upload & Create Leads</button>
-</div>
-<div class="card">
-<h3>Assign Leads to Shift</h3>
-<select id="shiftSelect"><option value="morning">Morning</option><option value="evening">Evening</option><option value="night">Night</option></select>
-<button id="assignBtn">Assign Selected</button>
-</div>
-</main>
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-<script src="/global.js"></script>
-<script src="/admin/admin.js"></script>
-</body></html>
+  <header class="site-header">
+    <div class="brand">Cloudora Genie Admin</div>
+    <div class="controls">
+      <a class="btn-mini secondary" href="./login.html">Admin Login</a>
+      <a class="btn-mini secondary" href="../client/auth.html">Client Access</a>
+      <a class="btn-mini secondary" href="../index.html">Genie Home</a>
+      <button id="adminLogoutBtn" class="btn-mini secondary" type="button">Logout</button>
+    </div>
+  </header>
+
+  <main class="container fade-in">
+    <div class="launch-card">
+      <p class="card-kicker">Admin Panel</p>
+      <h2>Genie approvals, member controls, and ops tools</h2>
+      <p>Yahin se full Genie access approve hoga, members edit honge, aur usage visibility milegi.</p>
+    </div>
+
+    <div class="section-grid">
+      <div class="launch-card">
+        <h2>Upload Leads CSV</h2>
+        <p>Import lead sheets for the CRM and task pipeline.</p>
+        <input type="file" id="csvfile" accept=".csv" />
+        <div style="margin-top:14px">
+          <button id="uploadBtn" class="primary-btn" type="button">Upload & Create Leads</button>
+        </div>
+      </div>
+
+      <div class="launch-card">
+        <h2>Assign Leads to Shift</h2>
+        <p>Push unassigned leads into the correct team rhythm.</p>
+        <select id="shiftSelect">
+          <option value="morning">Morning</option>
+          <option value="evening">Evening</option>
+          <option value="night">Night</option>
+        </select>
+        <div style="margin-top:14px">
+          <button id="assignBtn" class="primary-btn" type="button">Assign Selected</button>
+        </div>
+      </div>
+
+      <div class="launch-card">
+        <h2>Quick Navigation</h2>
+        <p>Move between the important Genie Ops areas.</p>
+        <div class="ops-links">
+          <a class="ghost-btn small" href="../employee/login.html">Employee Login</a>
+          <a class="ghost-btn small" href="../job/job.html">Job Applications</a>
+          <a class="ghost-btn small" href="../assistant.html">Genie Assistant</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-grid" style="margin-top:18px">
+      <div class="launch-card">
+        <h2>Create / Approve Genie Member</h2>
+        <p>Member create karke active, paused, ya revoked state me rakh sakte ho.</p>
+
+        <label><span>Member ID</span><input id="memberId" type="text" placeholder="founder001"></label>
+        <label><span>Access Code</span><input id="memberCode" type="text" placeholder="secret-code"></label>
+        <label><span>Name</span><input id="memberName" type="text" placeholder="Founder Name"></label>
+        <label>
+          <span>Tier</span>
+          <select id="memberTier">
+            <option value="pro">Pro</option>
+            <option value="business" selected>Business</option>
+            <option value="elite">Elite</option>
+          </select>
+        </label>
+        <label>
+          <span>Status</span>
+          <select id="memberStatus">
+            <option value="active" selected>Active</option>
+            <option value="paused">Paused</option>
+            <option value="revoked">Revoked</option>
+          </select>
+        </label>
+        <div style="margin-top:14px">
+          <button id="createMemberBtn" class="primary-btn" type="button">Save Member</button>
+        </div>
+      </div>
+
+      <div class="launch-card" style="grid-column: span 2">
+        <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap">
+          <div>
+            <h2>Genie Members</h2>
+            <p>Approval, profile state, usage, aur campaign history ek jagah.</p>
+          </div>
+          <button id="refreshMembersBtn" class="ghost-btn small" type="button">Refresh Members</button>
+        </div>
+        <div id="membersList" style="margin-top:16px;color:#6f6860">No members loaded yet.</div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="../api/supabase.min.js"></script>
+  <script src="../global.js"></script>
+  <script src="./login.js"></script>
+  <script src="./admin.js"></script>
+</body>
+</html>

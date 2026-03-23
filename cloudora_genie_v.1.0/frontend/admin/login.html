@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Cloudora Admin Login</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../client/client.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../index.html">Cloudora Admin Access</a>
+    <div class="controls">
+      <a class="btn-mini secondary" href="../launch-hub.html">Launch Hub</a>
+      <a class="btn-mini secondary" href="../client/auth.html">Client Access</a>
+    </div>
+  </header>
+
+  <main class="client-shell">
+    <section class="client-grid">
+      <form id="bootstrapAdminForm" class="launch-card">
+        <p class="card-kicker">Create Admin</p>
+        <h2>Create local admin access</h2>
+        <label><span>Name</span><input id="adminCreateName" type="text" required placeholder="Cloudora admin"></label>
+        <label><span>Email</span><input id="adminCreateEmail" type="email" required placeholder="admin@cloudora.com"></label>
+        <label><span>Password</span><input id="adminCreatePassword" type="password" required placeholder="Create password"></label>
+        <button class="primary-btn" type="submit">Create Admin</button>
+      </form>
+
+      <form id="adminLoginForm" class="launch-card">
+        <p class="card-kicker">Admin Login</p>
+        <h2>Open admin panel</h2>
+        <label><span>Email</span><input id="adminLoginEmail" type="email" required placeholder="admin@cloudora.com"></label>
+        <label><span>Password</span><input id="adminLoginPassword" type="password" required placeholder="Password"></label>
+        <button class="primary-btn" type="submit">Login</button>
+      </form>
+    </section>
+
+    <section class="launch-card">
+      <p class="card-kicker">How it works</p>
+      <p>
+        Yeh bootstrap admin layer frontend-side access gate hai. Login ke baad aap Genie approvals, member controls,
+        aur ops actions वाले admin panel par redirect ho jaoge.
+      </p>
+      <div id="adminAuthStatus" class="client-status">Ready</div>
+    </section>
+  </main>
+
+  <script src="./login.js"></script>
+</body>
+</html>
