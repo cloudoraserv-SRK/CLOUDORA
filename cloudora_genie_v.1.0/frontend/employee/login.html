@@ -17,6 +17,9 @@
   <div class="controls">
     <select id="langSelect"></select>
     <button id="speakBtn" class="btn-mini">🔊</button>
+    <a class="btn-mini secondary" href="../index.html">Genie Home</a>
+    <a class="btn-mini secondary" href="../launch-hub.html">Launch Hub</a>
+    <a class="btn-mini secondary" href="../admin/login.html">Admin Login</a>
   </div>
 </header>
 
@@ -36,6 +39,10 @@
         <option value="tele_lead_international">Telecaller - International</option>
         <option value="tele_sales_domestic">Sales - Domestic</option>
         <option value="tele_sales_international">Sales - International</option>
+        <option value="digital_marketing">Digital Marketing</option>
+        <option value="it_department">IT Department</option>
+        <option value="support">Support</option>
+        <option value="management">Management</option>
         <option value="supervisor">Supervisor / Admin</option>
       </select>
       <div class="error" id="errDept">Please select a department</div>
@@ -160,15 +167,15 @@ if (emp.department.startsWith("tele_sales")) {
   return;
 }
 
-alert("Unauthorized department: " + emp.department);
-localStorage.clear();
-
-
 // SUPERVISOR / ADMIN
 if (emp.department === "supervisor" || emp.department === "admin") {
-    window.location.href = "./supervisor/dashboard.html";
-    return;
+  window.location.href = "./supervisor/dashboard.html";
+  return;
 }
+
+// GENERIC DEPARTMENT HUB
+window.location.href = "./department/dashboard.html";
+return;
 
   } catch (err) {
     loginError.innerText = "Network error, please try again.";
