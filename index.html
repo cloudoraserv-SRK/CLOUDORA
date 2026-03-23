@@ -23,15 +23,6 @@
   >
   <link rel="stylesheet" href="style.css">
 </head>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-6J171NYX3F"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-6J171NYX3F');
-</script>
 <body>
   <header class="site-header">
     <div class="container nav">
@@ -44,13 +35,16 @@
         <a href="#about">About</a>
         <a href="#paths">Paths</a>
         <a href="#services">Services</a>
+        <a href="#portfolio">Portfolio</a>
         <a href="#careers">Jobs</a>
-        <a href="#genie">Genie AI</a>
+        <a href="#genie">Genie Assistant</a>
         <a href="#contact">Contact</a>
       </nav>
 
       <div class="nav-actions">
         <a class="nav-link-muted" href="assets/Cloudora_Profile.pdf">Presentation</a>
+        <a class="nav-link-muted" href="cloudora_genie_v.1.0/frontend/client/auth.html">Client Login</a>
+        <a class="nav-link-muted" href="cloudora_genie_v.1.0/frontend/admin/login.html">Admin Login</a>
         <a class="btn btn-small" href="#contact">Get Proposal</a>
       </div>
     </div>
@@ -72,6 +66,8 @@
             <a class="btn" href="#contact">Start Your Project</a>
             <a class="btn btn-ghost" href="#careers">Explore Jobs</a>
             <a class="btn btn-ghost" href="assets/Cloudora_Profile.pdf">View Presentation</a>
+            <a class="btn btn-ghost" href="cloudora_genie_v.1.0/frontend/assistant.html">Launch Genie Assistant</a>
+            <a class="btn btn-ghost" href="cloudora_genie_v.1.0/frontend/client/auth.html">Client Login</a>
           </div>
 
           <div class="hero-metrics">
@@ -93,12 +89,12 @@
         <div class="hero-panel">
           <div class="hero-card glow-card">
             <p class="card-label">Cloudora Platform</p>
-            <h2>Three clear parts inside one Cloudora ecosystem</h2>
-            <ul class="feature-list">
-              <li>Presentation side for clients who want IT and marketing work done</li>
-              <li>Employment side for work-from-home hiring, employee ops, and task execution</li>
-              <li>Genie AI side for customer guidance, training, and internal assistance</li>
-            </ul>
+          <h2>Three clear parts inside one Cloudora ecosystem</h2>
+          <ul class="feature-list">
+            <li>Presentation side for clients who want IT and marketing work done</li>
+            <li>Employment side for work-from-home hiring, employee ops, and task execution</li>
+            <li>Genie assistant side for business planning, customer guidance, training, and internal assistance</li>
+          </ul>
           </div>
 
           <div class="hero-media">
@@ -134,10 +130,10 @@
           </p>
         </article>
         <article class="info-card">
-          <h3>Cloudora Genie</h3>
+          <h3>Cloudora Genie Assistant</h3>
           <p>
-            AI assistant with multiple roles including guide, trainer, support assistant,
-            and service explainer with avatar-style interaction.
+            AI layer with an assistant-first launch path for business planning, guidance,
+            training, support, and avatar-style interaction.
           </p>
         </article>
       </div>
@@ -175,7 +171,7 @@
             This side includes hiring, employee login, dashboards, task assignment, and reporting.
           </p>
           <div class="path-actions">
-            <a class="btn btn-small" href="apply/apply.html">Apply for Jobs</a>
+            <a class="btn btn-small" href="cloudora_genie_v.1.0/frontend/job/job.html">Apply for Jobs</a>
             <a class="btn btn-ghost btn-small" href="cloudora_genie_v.1.0/frontend/employee/login.html">Employee Login</a>
           </div>
         </article>
@@ -184,11 +180,13 @@
           <p class="path-tag">03</p>
           <h3>Genie AI</h3>
           <p>
-            For users who want an AI guide and for employees who need scripts, training,
-            support, and role-based assistance through an interactive AI layer.
+            For business owners who want planning help right now, and for employees who need scripts,
+            training, support, and role-based assistance through an interactive AI layer.
           </p>
           <div class="path-actions">
-            <a class="btn btn-small" href="cloudora_genie_v.1.0/frontend/index.html">Open Genie</a>
+            <a class="btn btn-small" href="cloudora_genie_v.1.0/frontend/assistant.html">Launch Assistant</a>
+            <a class="btn btn-ghost btn-small" href="cloudora_genie_v.1.0/frontend/client/auth.html">Client Access</a>
+            <a class="btn btn-ghost btn-small" href="cloudora_genie_v.1.0/frontend/admin/login.html">Admin Login</a>
             <a class="btn btn-ghost btn-small" href="#genie">How Genie Works</a>
           </div>
         </article>
@@ -238,75 +236,98 @@
       </div>
     </section>
 
-    <section class="section portfolio-section" id="portfolio">
-  <div class="container section-head">
-    <p class="eyebrow">Portfolio</p>
-    <h2>Premium Products & Systems by Cloudora</h2>
-    <p>कुछ selected high-value builds जो Cloudora ने develop किए हैं.</p>
-  </div>
+    <section class="section" id="portfolio">
+      <div class="container section-head">
+        <p class="eyebrow">Portfolio Focus</p>
+        <h2>Cloudora works across product building, branding, automation, and growth execution.</h2>
+        <p>
+          This portfolio block is designed to quickly show the kind of transformation Cloudora can drive for clients,
+          from websites and software to campaigns, AI systems, and internal operations.
+        </p>
+      </div>
 
-  <div class="container portfolio-grid">
+      <div class="container portfolio-grid">
+        <article class="portfolio-card glow-card">
+          <div class="portfolio-top">
+            <span class="portfolio-tag">Web + Brand</span>
+            <strong>Launch-ready digital presence</strong>
+          </div>
+          <h3>High-conversion websites with brand positioning</h3>
+          <p>
+            Corporate sites, landing pages, trust-building service pages, and brand-led web experiences
+            for companies that want better visibility and stronger first impressions.
+          </p>
+          <ul class="portfolio-points">
+            <li>Clear offer positioning</li>
+            <li>Lead capture and enquiry flow</li>
+            <li>Responsive design and visual polish</li>
+          </ul>
+        </article>
 
-    <!-- Portfolio Item -->
-    <a href="https://nbskk.cloud/index.html" target="_blank" class="portfolio-card">
-      <div class="portfolio-overlay"></div>
-      <h3>NBSKK Platform</h3>
-      <p>Advanced business + system website</p>
-    </a>
+        <article class="portfolio-card">
+          <div class="portfolio-top">
+            <span class="portfolio-tag">Software + Ops</span>
+            <strong>Internal systems that move teams faster</strong>
+          </div>
+          <h3>CRM, task routing, dashboards, and business workflows</h3>
+          <p>
+            Cloudora builds systems that help companies manage enquiries, employees, follow-ups,
+            reporting, and execution in one connected workflow.
+          </p>
+          <ul class="portfolio-points">
+            <li>Lead-to-task automation</li>
+            <li>Role-based dashboards</li>
+            <li>Operational visibility for teams</li>
+          </ul>
+        </article>
 
-    <a href="https://exclusivemuseum.cloud/index.html" target="_blank" class="portfolio-card">
-      <div class="portfolio-overlay"></div>
-      <h3>Exclusive Museum</h3>
-      <p>Premium product showcase platform</p>
-    </a>
+        <article class="portfolio-card">
+          <div class="portfolio-top">
+            <span class="portfolio-tag">Marketing + Outreach</span>
+            <strong>Growth systems beyond basic posting</strong>
+          </div>
+          <h3>Campaign planning, content systems, and lead nurture flows</h3>
+          <p>
+            Social media planning, ad support, email journeys, WhatsApp messaging logic,
+            content calendars, and outbound workflows built to generate traction.
+          </p>
+          <ul class="portfolio-points">
+            <li>Monthly content planning</li>
+            <li>Email and follow-up strategy</li>
+            <li>Cross-channel growth execution</li>
+          </ul>
+        </article>
 
-    <a href="https://shoemuseumexclusive.cloud/products/product.html?slug=MFR153" target="_blank" class="portfolio-card">
-      <div class="portfolio-overlay"></div>
-      <h3>Shoe Museum</h3>
-      <p>Ecommerce product UI system</p>
-    </a>
+        <article class="portfolio-card">
+          <div class="portfolio-top">
+            <span class="portfolio-tag">AI + Automation</span>
+            <strong>Interactive products and assistant systems</strong>
+          </div>
+          <h3>Genie AI, automation layers, and intelligent workflows</h3>
+          <p>
+            AI-powered assistants, voice-enabled interfaces, data-assisted outreach, and
+            automation concepts that reduce manual load and improve business response time.
+          </p>
+          <ul class="portfolio-points">
+            <li>AI assistant experiences</li>
+            <li>Workflow automation ideas</li>
+            <li>Business-specific execution support</li>
+          </ul>
+        </article>
+      </div>
 
-    <a href="https://cloudoraserv.cloud/" target="_blank" class="portfolio-card">
-      <div class="portfolio-overlay"></div>
-      <h3>Cloudora Services</h3>
-      <p>Service funnel + lead system</p>
-    </a>
+      <div class="container portfolio-banner">
+        <div>
+          <p class="eyebrow">Need the full picture?</p>
+          <h3>Use the presentation deck for a cleaner company profile and sales narrative.</h3>
+        </div>
+        <div class="inline-actions">
+          <a class="btn" href="assets/Cloudora_Profile.pdf">Open Company Profile</a>
+          <a class="btn btn-ghost" href="#contact">Discuss Your Project</a>
+        </div>
+      </div>
+    </section>
 
-    <a href="https://cloudoraserv-srk.github.io/Secret-Sanctuary/" target="_blank" class="portfolio-card">
-      <div class="portfolio-overlay"></div>
-      <h3>Secret Sanctuary</h3>
-      <p>Dark premium UI experience</p>
-    </a>
-
-    <a href="https://exclusivemuseum.cloud/products/index.html" target="_blank" class="portfolio-card">
-      <div class="portfolio-overlay"></div>
-      <h3>Product System</h3>
-      <p>Dynamic product listing engine</p>
-    </a>
-
-    <!-- Custom Projects -->
-    <div class="portfolio-card static">
-      <h3>Beggar Index Coin</h3>
-      <p>Experimental crypto-based concept</p>
-    </div>
-
-    <div class="portfolio-card static">
-      <h3>Email Marketing Tool</h3>
-      <p>Offline bulk mail automation system</p>
-    </div>
-
-    <div class="portfolio-card static">
-      <h3>Data Extractor</h3>
-      <p>Automated scraping & lead generation tool</p>
-    </div>
-
-    <div class="portfolio-card static">
-      <h3>Trading Bot</h3>
-      <p>Automated strategy-based trading system</p>
-    </div>
-
-  </div>
-</section>
     <section class="section" id="careers">
       <div class="container split-grid">
         <div>
@@ -317,8 +338,9 @@
             The operations side handles employee login, lead assignment, reporting, follow-ups, and delivery workflows.
           </p>
           <div class="inline-actions">
-            <a class="btn" href="apply/apply.html">Apply Now</a>
+            <a class="btn" href="cloudora_genie_v.1.0/frontend/job/job.html">Apply Now</a>
             <a class="btn btn-ghost" href="cloudora_genie_v.1.0/frontend/employee/login.html">Open Employee Area</a>
+            <a class="btn btn-ghost" href="cloudora_genie_v.1.0/frontend/admin/login.html">Supervisor / Admin Login</a>
           </div>
         </div>
 
@@ -346,26 +368,28 @@
     <section class="section alt-section" id="genie">
       <div class="container split-grid">
         <div>
-          <p class="eyebrow">Cloudora Genie</p>
-          <h2>An AI assistant for both visitors and employees.</h2>
+          <p class="eyebrow">Cloudora Genie Assistant</p>
+          <h2>Genie launches first as a business assistant, then expands into other roles.</h2>
           <p class="section-copy">
-            Genie is designed to be the platform's interactive intelligence layer. Publicly it can explain services
-            and guide enquiries. Internally it can train employees, support scripts, explain SOPs, and assist teams.
+            The first public launch priority is the assistant role: business owners can use Genie for monthly marketing plans,
+            post ideas, reel concepts, captions, outreach drafts, and task schedules. Internally it will continue expanding into
+            training, SOP guidance, scripts, and employee support.
           </p>
           <div class="inline-actions">
-            <a class="btn" href="cloudora_genie_v.1.0/frontend/index.html">Open Genie Interface</a>
+            <a class="btn" href="cloudora_genie_v.1.0/frontend/assistant.html">Launch Genie Assistant</a>
+            <a class="btn btn-ghost" href="cloudora_genie_v.1.0/frontend/client/dashboard.html">Client Task Board</a>
             <a class="btn btn-ghost" href="cloudora_genie_v.1.0/frontend/employee/login.html">Employee Login</a>
           </div>
         </div>
 
         <div class="genie-grid">
           <article class="mini-card">
-            <h3>Public Guide</h3>
-            <p>Explains Cloudora, collects interest, and guides users to the right next step.</p>
+            <h3>Business Assistant</h3>
+            <p>Creates monthly plans, content ideas, reel prompts, captions, and daily work schedules.</p>
           </article>
           <article class="mini-card">
-            <h3>Sales Assistant</h3>
-            <p>Helps with qualification, messaging, and objection-handling logic.</p>
+            <h3>Outreach Planner</h3>
+            <p>Prepares email, WhatsApp, and follow-up messaging logic that Cloudora can operationalize.</p>
           </article>
           <article class="mini-card">
             <h3>Trainer</h3>
@@ -409,7 +433,7 @@
             </div>
             <div>
               <strong>WhatsApp</strong>
-              <span>+91 9532 153763</span>
+              <span>+91 70228 58889</span>
             </div>
             <div>
               <strong>Use Cases</strong>
@@ -481,8 +505,11 @@
       <div class="footer-links">
         <a href="assets/Cloudora_Profile.pdf">Presentation</a>
         <a href="#services">Services</a>
+        <a href="cloudora_genie_v.1.0/frontend/assistant.html">Genie Assistant</a>
+        <a href="cloudora_genie_v.1.0/frontend/client/auth.html">Client Login</a>
+        <a href="cloudora_genie_v.1.0/frontend/admin/login.html">Admin Login</a>
         <a href="cloudora_genie_v.1.0/frontend/employee/login.html">Employee Login</a>
-        <a href="apply/apply.html">Careers</a>
+        <a href="cloudora_genie_v.1.0/frontend/job/job.html">Careers</a>
       </div>
     </div>
   </footer>
